@@ -17,14 +17,27 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
+import {
+  ImageLibraryOptions,
+  launchImageLibrary,
+} from 'react-native-image-picker';
 
 const App = () => {
+  const onImage = async () => {
+    const options: ImageLibraryOptions = {
+      mediaType: 'mixed',
+      videoQuality: 'high',
+      selectionLimit: 1,
+    };
+    const result = await launchImageLibrary(options);
+    console.log(result, 'r');
+  };
   return (
     <NavigationContainer>
       <SafeAreaView>
         <StatusBar barStyle={'dark-content'} />
         <ScrollView contentInsetAdjustmentBehavior="automatic">
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onImage}>
             <Text>Upload</Text>
           </TouchableOpacity>
         </ScrollView>
