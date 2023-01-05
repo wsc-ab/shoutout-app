@@ -8,17 +8,28 @@
  * @format
  */
 
+import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
-import {SafeAreaView, ScrollView, StatusBar, Text} from 'react-native';
+import {
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 
 const App = () => {
   return (
-    <SafeAreaView>
-      <StatusBar barStyle={'dark-content'} />
-      <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <Text>1</Text>
-      </ScrollView>
-    </SafeAreaView>
+    <NavigationContainer>
+      <SafeAreaView>
+        <StatusBar barStyle={'dark-content'} />
+        <ScrollView contentInsetAdjustmentBehavior="automatic">
+          <TouchableOpacity>
+            <Text>Upload</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </SafeAreaView>
+    </NavigationContainer>
   );
 };
 
