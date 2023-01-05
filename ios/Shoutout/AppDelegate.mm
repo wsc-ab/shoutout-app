@@ -1,3 +1,4 @@
+#import <Firebase.h> // for react-native-firebase
 #import "AppDelegate.h"
 
 #import <React/RCTBridge.h>
@@ -31,6 +32,8 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [FIRApp configure]; // for react-native-firebase
+
   RCTAppSetupPrepareApp(application);
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
