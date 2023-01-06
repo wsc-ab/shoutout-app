@@ -11,23 +11,16 @@
 import {firebase} from '@react-native-firebase/firestore';
 import {NavigationContainer} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {
-  Pressable,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  Text,
-} from 'react-native';
+import {Pressable, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {
   ImageLibraryOptions,
   launchImageLibrary,
 } from 'react-native-image-picker';
-import DefaultImage from './src/DefaultImage';
-import DefaultVideo from './src/DefaultVideo';
+import ContentCard from './src/ContentCard';
 import {uploadContent} from './src/utils/storage';
 
 const App = () => {
-  const onImage = async () => {
+  const onAdd = async () => {
     const options: ImageLibraryOptions = {
       mediaType: 'mixed',
       videoQuality: 'high',
@@ -48,58 +41,78 @@ const App = () => {
     });
 
     await firebase.firestore().collection('contents').doc().set({
-      content: uploaded,
+      path: uploaded,
       type: asset.type,
     });
   };
 
-  const [data, setData] = useState();
-  const [status, setStatus] = useState('loading');
+  const [index, setIndex] = useState(0);
 
-  console.log(data, 'data');
+  const [data, setData] = useState<{path: string; type: string}[]>([]);
 
   useEffect(() => {
     const load = async () => {
-      const loaded = [];
+      const loaded: {path: string; type: string}[] = [];
 
       (await firebase.firestore().collection('contents').get()).docs.forEach(
-        doc => loaded.push(doc.data()),
+        doc => loaded.push(doc.data() as {path: string; type: string}),
       );
 
       setData(loaded);
     };
 
-    if (status === 'loading') {
-      load();
-    }
-  }, [status]);
+    load();
+  }, []);
+
+  const onNext = () => setIndex(pre => (pre + 1) % data.length);
+
+  const [screen, setScreen] = useState<'contents' | 'rank'>('contents');
 
   return (
     <NavigationContainer>
-      <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-        <StatusBar />
-        <Pressable onPress={onImage}>
-          <Text>Upload</Text>
-        </Pressable>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={{flex: 1, backgroundColor: 'white'}}>
-          {data?.map(item => {
-            if (item.type?.includes('image')) {
-              return (
-                <DefaultImage
-                  image={item.content}
-                  style={{width: 300, height: 300}}
-                />
-              );
-            } else {
-              return <DefaultVideo path={item.content} />;
-            }
-          })}
-        </ScrollView>
+      <SafeAreaView style={{flex: 1}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            padding: 10,
+          }}>
+          <Pressable onPress={() => setScreen('contents')}>
+            <Text>Contents</Text>
+          </Pressable>
+          <Pressable onPress={() => setScreen('rank')}>
+            <Text>Rank</Text>
+          </Pressable>
+        </View>
+        <View style={{flex: 1}}>
+          {screen === 'rank' && <Text>Ranking of yesterday</Text>}
+          {screen === 'contents' && data.length >= 1 && (
+            <ContentCard content={data[index]} />
+          )}
+        </View>
+        <View style={styles.nav}>
+          <Pressable onPress={onNext}>
+            <Text>Next</Text>
+          </Pressable>
+
+          <Pressable onPress={onAdd}>
+            <Text>+</Text>
+          </Pressable>
+          <Pressable>
+            <Text>Shoutout</Text>
+          </Pressable>
+        </View>
       </SafeAreaView>
     </NavigationContainer>
   );
 };
 
 export default App;
+
+const styles = StyleSheet.create({
+  nav: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 20,
+  },
+});
