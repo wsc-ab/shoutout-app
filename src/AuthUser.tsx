@@ -1,10 +1,11 @@
-import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth';
 import firestore, {firebase} from '@react-native-firebase/firestore';
 import React, {createContext, useEffect, useState} from 'react';
+import {Alert} from 'react-native';
 import SignUpModal from './SignUpModal';
-import {TData} from './types/firebase';
+import {TAuthUser, TDocData, TDocSnapshot} from './types/firebase';
 
-type TContextProps = {authUserData: TData; onSignOut: () => void};
+type TContextProps = {authUserData: TDocData; onSignOut: () => void};
 
 const AuthUserContext = createContext({} as TContextProps);
 
@@ -13,7 +14,7 @@ export type TProps = {
 };
 
 const AuthUserProvider = ({children}: TProps) => {
-  const [authUser, setAuthUser] = useState<FirebaseAuthTypes.User | null>();
+  const [authUser, setAuthUser] = useState<TAuthUser | null>();
 
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged(async user => {
@@ -22,7 +23,7 @@ const AuthUserProvider = ({children}: TProps) => {
     return unsubscribe;
   }, []);
 
-  const [authUserData, setAuthUserData] = useState<TData>();
+  const [authUserData, setAuthUserData] = useState<TDocData>();
   const [modal, setModal] = useState<'signUp'>();
 
   console.log(authUserData, 'authUserData');
@@ -32,9 +33,7 @@ const AuthUserProvider = ({children}: TProps) => {
     let isMounted = true;
 
     const loadAuthUser = (authUserId: string) => {
-      console.log('loaded');
-
-      const onNext = userDoc => {
+      const onNext = (userDoc: TDocSnapshot) => {
         const userData = userDoc.data();
 
         if (!userData) {
@@ -46,7 +45,9 @@ const AuthUserProvider = ({children}: TProps) => {
         }
       };
 
-      const onError = error => console.log(error, 'user error');
+      const onError = (error: Error) => {
+        Alert.alert('Please sign in again', error.message);
+      };
 
       const unsubscribe = firestore()
         .collection('users')
