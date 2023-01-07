@@ -41,7 +41,7 @@ const Contents = ({style}: TProps) => {
 
   const [index, setIndex] = useState(0);
 
-  const onNext = () => setIndex(pre => (pre + 1) % data.length);
+  const onPass = () => setIndex(pre => (pre + 1) % data.length);
 
   if (data.length === 0) {
     return (
@@ -55,8 +55,8 @@ const Contents = ({style}: TProps) => {
     <View style={style}>
       <ContentCard content={data[index]} style={styles.card} />
       <View style={styles.nav}>
-        <Pressable onPress={onNext}>
-          <Text>Next</Text>
+        <Pressable onPress={onPass}>
+          <Text>Pass</Text>
         </Pressable>
         <ShoutoutButton collection="contents" id={data[index].id} />
       </View>

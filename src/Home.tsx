@@ -9,9 +9,9 @@ import AuthUserContext from './AuthUser';
 import Contents from './Contents';
 import {createContent} from './functions/content';
 import RankModal from './RankModal';
-import PhoneSignIn from './SignIn';
+import SignIn from './SignIn';
 import UserModal from './UserModal';
-import {uploadContent} from './utils/Storage';
+import {uploadContent} from './utils/storage';
 
 const Home = () => {
   const {authUserData} = useContext(AuthUserContext);
@@ -65,7 +65,7 @@ const Home = () => {
   const [modal, setModal] = useState<'rank' | 'me'>();
 
   if (!authUserData) {
-    return <PhoneSignIn />;
+    return <SignIn />;
   }
 
   return (

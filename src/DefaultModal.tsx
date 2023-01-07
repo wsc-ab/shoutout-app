@@ -3,7 +3,7 @@ import {Button, Modal, Text, View} from 'react-native';
 
 type TProps = {
   title: string;
-  left: {title: string; onPress: () => void};
+  left?: {title: string; onPress: () => void};
   right?: {title: string; onPress: () => void};
   children: ReactNode;
 };
@@ -19,7 +19,7 @@ const DefaultModal = ({title, left, children, right}: TProps) => {
             justifyContent: 'space-between',
           }}>
           <View style={{flex: 1, alignItems: 'flex-start'}}>
-            <Button title={left.title} onPress={left.onPress} />
+            {left && <Button title={left.title} onPress={left.onPress} />}
           </View>
           <Text
             style={{
