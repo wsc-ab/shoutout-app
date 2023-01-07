@@ -69,6 +69,8 @@ export const uploadContent = async ({
     const result = await promise;
     return result;
   } catch (error) {
+    console.log(error, 'e');
+
     throw new Error('upload content failed');
   }
 };

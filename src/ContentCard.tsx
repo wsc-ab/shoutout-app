@@ -15,7 +15,7 @@ const ContentCard = ({content: {path, type}, style}: TProps) => {
     <>
       <View style={[styles.container, style]}>
         {type?.includes('image') && (
-          <DefaultImage image={path} style={{width: 300, height: 300}} />
+          <DefaultImage image={path} style={styles.image} />
         )}
         {type?.includes('video') && <DefaultVideo path={path} />}
       </View>
@@ -29,8 +29,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: 'black',
     flex: 1,
   },
+  image: {width: 300, height: 300},
 });

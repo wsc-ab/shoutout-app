@@ -2,12 +2,20 @@ import React, {useEffect, useState} from 'react';
 import {Alert, Pressable, StyleSheet, Text, View} from 'react-native';
 import ContentCard from './ContentCard';
 import {getItems} from './functions/item';
+import ShoutoutButton from './ShoutoutButton';
 import {TDocData} from './types/firebase';
+import {TStyleView} from './types/style';
 
-const Contents = () => {
+type TProps = {
+  style: TStyleView;
+};
+
+const Contents = ({style}: TProps) => {
   const [data, setData] = useState<TDocData[]>([]);
 
-  console.log(data, 'data');
+  const [status, setStatus] = useState<'loading' | 'loaded' | 'error'>(
+    'loading',
+  );
 
   useEffect(() => {
     const load = async () => {
@@ -19,28 +27,38 @@ const Contents = () => {
         });
 
         setData(items);
+        setStatus('loaded');
       } catch (error) {
         Alert.alert('Please retry', 'Failed to load contents');
+        setStatus('error');
       }
     };
 
-    load();
-  }, []);
+    if (status === 'loading') {
+      load();
+    }
+  }, [status]);
 
   const [index, setIndex] = useState(0);
 
   const onNext = () => setIndex(pre => (pre + 1) % data.length);
 
+  if (data.length === 0) {
+    return (
+      <Pressable>
+        <Text>Refresh</Text>
+      </Pressable>
+    );
+  }
+
   return (
-    <View style={{flex: 1}}>
-      {data[index]?.path && <ContentCard content={data[index]} />}
+    <View style={style}>
+      <ContentCard content={data[index]} style={styles.card} />
       <View style={styles.nav}>
         <Pressable onPress={onNext}>
           <Text>Next</Text>
         </Pressable>
-        <Pressable>
-          <Text>Shoutout</Text>
-        </Pressable>
+        <ShoutoutButton collection="contents" id={data[index].id} />
       </View>
     </View>
   );
@@ -53,5 +71,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 20,
+    bottom: 0,
   },
+  card: {flex: 1},
 });

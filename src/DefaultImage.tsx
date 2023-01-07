@@ -8,6 +8,7 @@ import {
   Text,
   View,
 } from 'react-native';
+import {TStatus} from './types/screen';
 
 export const getThumnailPath = (url: string) => url + '_200x200';
 
@@ -15,10 +16,9 @@ export type Props = {
   image?: string;
   type?: string;
   style?: ImageStyle;
-  noImageIcon?: string;
 };
 
-const DefaultImage = ({image, type, style, noImageIcon = 'image'}: Props) => {
+const DefaultImage = ({image, type, style}: Props) => {
   let design: ImageStyle = {
     overflow: 'hidden',
     justifyContent: 'center',
@@ -96,7 +96,7 @@ const DefaultImage = ({image, type, style, noImageIcon = 'image'}: Props) => {
             isMounted && setImageUrl(downloadUrl);
           }
         } catch {
-          isMounted && setStatus('reload');
+          isMounted && setStatus('error');
         } finally {
           isMounted && setStatus('loaded');
         }
@@ -125,12 +125,12 @@ const DefaultImage = ({image, type, style, noImageIcon = 'image'}: Props) => {
             uri: imageUrl,
             cache: 'force-cache',
           }}
-          onError={() => setStatus('reload')}
+          onError={() => setStatus('error')}
         />
       )}
       {status === 'loaded' && !image && (
         <View style={[styles.image, style]}>
-          <FontAwesomeIcon icon={noImageIcon} />
+          <Text>No image</Text>
         </View>
       )}
       {status === 'loading' && (
@@ -138,9 +138,9 @@ const DefaultImage = ({image, type, style, noImageIcon = 'image'}: Props) => {
           <ActivityIndicator />
         </View>
       )}
-      {status === 'reload' && (
+      {status === 'error' && (
         <View style={[styles.image, style]}>
-          <Text>No image</Text>
+          <Text>Error</Text>
         </View>
       )}
     </>
