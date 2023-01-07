@@ -26,8 +26,6 @@ const AuthUserProvider = ({children}: TProps) => {
   const [authUserData, setAuthUserData] = useState<TDocData>();
   const [modal, setModal] = useState<'signUp'>();
 
-  console.log(authUserData, 'authUserData');
-
   // subscribe to auth user data change
   useEffect(() => {
     let isMounted = true;

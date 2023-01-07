@@ -42,7 +42,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <AuthUserProvider>
-        <SafeAreaView style={{flex: 1}}>
+        <SafeAreaView style={{flex: 1, margin: 20}}>
           <Home />
         </SafeAreaView>
       </AuthUserProvider>

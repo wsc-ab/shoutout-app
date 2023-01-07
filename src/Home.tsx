@@ -1,13 +1,13 @@
 import {firebase} from '@react-native-firebase/firestore';
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {
   ImageLibraryOptions,
   launchImageLibrary,
 } from 'react-native-image-picker';
 import AuthUserContext from './AuthUser';
-import ContentCard from './ContentCard';
-import {getItems} from './functions/item';
+import Contents from './Contents';
+import {createContent} from './functions/content';
 import PhoneSignIn from './SignIn';
 import {uploadContent} from './utils/Storage';
 
@@ -35,47 +35,10 @@ const Home = () => {
 
     const contentId = firebase.firestore().collection('contents').doc().id;
 
-    await firebase
-      .firestore()
-      .collection('contents')
-      .doc(contentId)
-      .set({
-        path: uploaded,
-        type: asset.type,
-        createdFrom: {users: [{id: authUserData.id}]},
-      });
-
-    await firebase
-      .firestore()
-      .collection('users')
-      .doc(authUserData.id)
-      .update({
-        created: {contents: [{id: contentId}]},
-        path: uploaded,
-        type: asset.type,
-        createFrom: {users: [{id: authUserData.id}]},
-      });
+    await createContent({
+      content: {id: contentId, path: uploaded, type: asset.type},
+    });
   };
-
-  const [index, setIndex] = useState(0);
-
-  const [data, setData] = useState<{path: string; type: string}[]>([]);
-
-  useEffect(() => {
-    const load = async () => {
-      const loaded: {path: string; type: string}[] = await getItems({
-        collection: 'contents',
-        pagination: {startAfterId: undefined, numberOfItems: 10},
-        tags: [],
-      });
-
-      setData(loaded);
-    };
-
-    load();
-  }, []);
-
-  const onNext = () => setIndex(pre => (pre + 1) % data.length);
 
   const [screen, setScreen] = useState<'contents' | 'rank'>('contents');
 
@@ -100,20 +63,11 @@ const Home = () => {
       </View>
       <View style={{flex: 1}}>
         {screen === 'rank' && <Text>Ranking of yesterday</Text>}
-        {screen === 'contents' && data.length >= 1 && (
-          <ContentCard content={data[index]} />
-        )}
+        {screen === 'contents' && <Contents />}
       </View>
       <View style={styles.nav}>
-        <Pressable onPress={onNext}>
-          <Text>Next</Text>
-        </Pressable>
-
         <Pressable onPress={onAdd}>
           <Text>+</Text>
-        </Pressable>
-        <Pressable>
-          <Text>Shoutout</Text>
         </Pressable>
         <Pressable onPress={onSignOut}>
           <Text>Signout</Text>
