@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
 import DefaultText from '../defaults/DefaultText';
-import {getContents} from '../functions/Content1';
+import {getContents} from '../functions/Content';
 import {TDocData} from '../types/firebase';
 import {TStyleView} from '../types/style';
 import ContentCard from './ContentCard';

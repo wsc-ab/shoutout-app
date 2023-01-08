@@ -7,7 +7,7 @@ import {
 } from 'react-native-image-picker';
 import AuthUserContext from '../contexts/AuthUser';
 import DefaultText from '../defaults/DefaultText';
-import {createContent} from '../functions/Content1';
+import {createContent} from '../functions/Content';
 import {uploadContent} from '../utils/storage';
 import BestModal from './BestModal';
 import UserModal from './UserModal';

@@ -4,7 +4,7 @@ import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
 import DefaultTextInput from '../defaults/DefaultTextInput';
-import {editUser} from '../functions/User1';
+import {editUser} from '../functions/User';
 
 type TProps = {
   uid: string;
