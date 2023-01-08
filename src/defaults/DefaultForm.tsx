@@ -1,11 +1,16 @@
 import React, {ReactNode} from 'react';
-import {Button, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, Button, StyleSheet, View} from 'react-native';
 import DefaultText from './DefaultText';
 
 type TProps = {
   title: string;
   left?: {title: string; onPress: () => void};
-  right?: {title: string; onPress: () => void};
+  right?: {
+    title: string;
+    onPress: () => void;
+    disabled?: boolean;
+    submitting?: boolean;
+  };
   children: ReactNode;
 };
 
@@ -18,7 +23,14 @@ const DefaultForm = ({title, left, right, children}: TProps) => {
         </View>
         <DefaultText title={title} textStyle={styles.centerText} />
         <View style={styles.right}>
-          {right && <Button title={right.title} onPress={right.onPress} />}
+          {right && !right.submitting && (
+            <Button
+              title={right.title}
+              onPress={right.onPress}
+              disabled={right.disabled}
+            />
+          )}
+          {right?.submitting && <ActivityIndicator />}
         </View>
       </View>
       {children}

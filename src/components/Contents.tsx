@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Alert, Pressable, StyleSheet, Text, View} from 'react-native';
+import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
+import DefaultText from '../defaults/DefaultText';
+import {getItems} from '../functions/item';
+import {TDocData} from '../types/firebase';
+import {TStyleView} from '../types/style';
 import ContentCard from './ContentCard';
-import DefaultText from './DefaultText';
-import {getItems} from './functions/item';
+
 import ShoutoutButton from './ShoutoutButton';
-import {TDocData} from './types/firebase';
-import {TStyleView} from './types/style';
 
 type TProps = {
   style: TStyleView;
@@ -42,13 +43,37 @@ const Contents = ({style}: TProps) => {
 
   const [index, setIndex] = useState(0);
 
-  const onPass = () => setIndex(pre => (pre + 1) % data.length);
+  const onPass = () =>
+    setIndex(pre => {
+      if (pre === data.length - 1) {
+        Alert.alert('Checked all contents', 'Returning to the first content');
+      }
+
+      const newIndex = (pre + 1) % data.length;
+
+      return newIndex;
+    });
+
+  if (status === 'loading') {
+    return <ActivityIndicator style={styles.noData} />;
+  }
+
+  if (status === 'error') {
+    return (
+      <DefaultText
+        title="Error. Please retry."
+        style={styles.noData}
+        onPress={() => setStatus('loading')}
+      />
+    );
+  }
 
   if (data.length === 0) {
     return (
-      <Pressable>
-        <DefaultText title="Refresh" />
-      </Pressable>
+      <DefaultText
+        title="No item to check at the moment. Comeback later!"
+        style={styles.noData}
+      />
     );
   }
 
@@ -56,9 +81,7 @@ const Contents = ({style}: TProps) => {
     <View style={style}>
       <ContentCard content={data[index]} style={styles.card} />
       <View style={styles.nav}>
-        <Pressable onPress={onPass}>
-          <DefaultText title="Pass" />
-        </Pressable>
+        <DefaultText title="Pass" onPress={onPass} />
         <ShoutoutButton collection="contents" id={data[index].id} />
       </View>
     </View>
@@ -75,4 +98,5 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   card: {flex: 1},
+  noData: {flex: 1, justifyContent: 'center', alignItems: 'center'},
 });

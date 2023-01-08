@@ -1,9 +1,9 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import DefaultImage from './DefaultImage';
-import DefaultVideo from './DefaultVideo';
-import {TDocData} from './types/firebase';
-import {TStyleView} from './types/style';
+import DefaultImage from '../defaults/DefaultImage';
+import DefaultVideo from '../defaults/DefaultVideo';
+import {TDocData} from '../types/firebase';
+import {TStyleView} from '../types/style';
 
 type TProps = {
   content: TDocData;

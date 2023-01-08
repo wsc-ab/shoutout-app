@@ -1,20 +1,21 @@
 import {firebase} from '@react-native-firebase/auth';
 import React, {useContext, useState} from 'react';
-import {Alert, Pressable, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
 import {
   ImageLibraryOptions,
   launchImageLibrary,
 } from 'react-native-image-picker';
-import AuthUserContext from './AuthUser';
-import DefaultText from './DefaultText';
-import {createContent} from './functions/content';
-import RankModal from './RankModal';
+import AuthUserContext from '../contexts/AuthUser';
+import DefaultText from '../defaults/DefaultText';
+import {createContent} from '../functions/content';
+import {uploadContent} from '../utils/storage';
+import BestModal from './BestModal';
 import UserModal from './UserModal';
-import {uploadContent} from './utils/storage';
 
 const Header = () => {
-  const [modal, setModal] = useState<'me' | 'rank'>();
+  const [modal, setModal] = useState<'me' | 'best'>();
   const {authUserData} = useContext(AuthUserContext);
+  const [submitting, setSubmitting] = useState(false);
 
   const onAdd = async () => {
     const options: ImageLibraryOptions = {
@@ -39,6 +40,7 @@ const Header = () => {
     let uploaded;
 
     try {
+      setSubmitting(true);
       uploaded = await uploadContent({
         asset,
         id: authUserData.id,
@@ -46,6 +48,7 @@ const Header = () => {
       });
     } catch (error) {
       Alert.alert('Please retry', 'Invalid file');
+      setSubmitting(false);
     }
 
     if (!uploaded) {
@@ -60,6 +63,8 @@ const Header = () => {
       });
     } catch (error) {
       Alert.alert('Please retry', 'Failed upload content');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -67,17 +72,25 @@ const Header = () => {
 
   return (
     <View style={styles.container}>
-      <Pressable onPress={() => setModal('me')} style={styles.left}>
-        <DefaultText title="Me" />
-      </Pressable>
-      <Pressable onPress={() => setModal('rank')} style={styles.center}>
-        <DefaultText title="Rank" />
-      </Pressable>
-      <Pressable onPress={onAdd} style={styles.right}>
-        <DefaultText title="+" />
-      </Pressable>
+      <DefaultText
+        title="Me"
+        onPress={() => setModal('me')}
+        style={styles.left}
+      />
+
+      <DefaultText
+        title="Best"
+        onPress={() => setModal('best')}
+        style={styles.center}
+      />
+
+      {!submitting && (
+        <DefaultText title="+" onPress={onAdd} style={styles.right} />
+      )}
+      {submitting && <ActivityIndicator />}
+
       {modal === 'me' && <UserModal onCancel={hideModal} />}
-      {modal === 'rank' && <RankModal onCancel={hideModal} />}
+      {modal === 'best' && <BestModal onCancel={hideModal} />}
     </View>
   );
 };

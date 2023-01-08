@@ -2,8 +2,9 @@ import auth from '@react-native-firebase/auth';
 import firestore, {firebase} from '@react-native-firebase/firestore';
 import React, {createContext, useEffect, useState} from 'react';
 import {Alert} from 'react-native';
-import SignUpModal from './SignUpModal';
-import {TAuthUser, TDocData, TDocSnapshot} from './types/firebase';
+import SignUpModal from '../components/SignUpModal';
+
+import {TAuthUser, TDocData, TDocSnapshot} from '../types/firebase';
 
 type TContextProps = {authUserData: TDocData; onSignOut: () => void};
 
@@ -83,11 +84,7 @@ const AuthUserProvider = ({children}: TProps) => {
       }}>
       {children}
       {modal === 'signUp' && authUser && (
-        <SignUpModal
-          onCancel={onSignOut}
-          uid={authUser.uid}
-          onSuccess={onSuccess}
-        />
+        <SignUpModal uid={authUser.uid} onSuccess={onSuccess} />
       )}
     </AuthUserContext.Provider>
   );

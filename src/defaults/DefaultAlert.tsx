@@ -1,5 +1,6 @@
 import React, {ReactNode} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {defaultBlack} from '../styles/DefaultColors';
 
 type TProps = {
   children: ReactNode;
@@ -28,6 +29,7 @@ const styles = StyleSheet.create({
   body: {
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: defaultBlack.lv3,
     padding: 50,
     borderRadius: 10,
     elevation: 1,

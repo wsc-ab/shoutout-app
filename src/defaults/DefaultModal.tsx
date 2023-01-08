@@ -1,15 +1,22 @@
 import React, {ReactNode} from 'react';
-import {Modal, StyleSheet, View} from 'react-native';
-import {defaultBlack} from './styles/DefaultColors';
+import {ActivityIndicator, Modal, StyleSheet, View} from 'react-native';
+import {defaultBlack} from '../styles/DefaultColors';
+import DefaultAlert from './DefaultAlert';
 
 type TProps = {
   children: ReactNode;
+  submitting?: boolean;
 };
 
-const DefaultModal = ({children}: TProps) => {
+const DefaultModal = ({children, submitting}: TProps) => {
   return (
     <Modal presentationStyle="pageSheet" animationType="slide">
       <View style={styles.container}>{children}</View>
+      {submitting && (
+        <DefaultAlert>
+          <ActivityIndicator />
+        </DefaultAlert>
+      )}
     </Modal>
   );
 };

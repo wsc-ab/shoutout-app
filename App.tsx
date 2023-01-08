@@ -10,8 +10,8 @@
 
 import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native';
-import {AuthUserProvider} from './src/AuthUser';
-import Home from './src/Home';
+import {AuthUserProvider} from './src/contexts/AuthUser';
+import Home from './src/screen/Home';
 import {initFirebase} from './src/utils/Firebase';
 
 const App = () => {

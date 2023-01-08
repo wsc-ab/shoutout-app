@@ -1,5 +1,5 @@
 import React from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, Text} from 'react-native';
 import {TStyleText, TStyleView} from './types/style';
 
 export type TTextType =
@@ -15,20 +15,28 @@ export type TTextType =
   | 'caption1'
   | 'caption2';
 
-type Props = {
-  title?: string;
+type Props<A extends string> = {
+  title?: A;
   style?: TStyleView;
   textStyle?: TStyleText;
-  onPress?: () => void;
+  onPress?: (text: A) => void;
 };
 
-const DefaultText = ({title, style, textStyle, onPress}: Props) => {
+const DefaultText = <A extends string>({
+  title,
+  style,
+  textStyle,
+  onPress,
+}: Props<A>) => {
   if (!title) {
     return null;
   }
 
   return (
-    <Pressable style={style} onPress={onPress} disabled={!onPress}>
+    <Pressable
+      style={style}
+      onPress={onPress ? () => onPress(title) : undefined}
+      disabled={!onPress}>
       <Text style={[styles.text, textStyle]}>{title}</Text>
     </Pressable>
   );

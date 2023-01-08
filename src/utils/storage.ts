@@ -17,10 +17,12 @@ export const createStoragePath = (id: string, type: string) => {
     today.getSeconds() +
     ':' +
     today.getMilliseconds();
-  var dateTime = date + '_' + time;
+  const dateTime = date + '_' + time;
+
+  const folder = type.split('/')[0];
 
   const fileName = dateTime;
-  const filePath = id + '/' + type + '/' + fileName;
+  const filePath = id + '/' + folder + '/' + fileName;
 
   return filePath;
 };

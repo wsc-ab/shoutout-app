@@ -1,8 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Alert, Pressable, View} from 'react-native';
-import AuthUserContext from './AuthUser';
-import DefaultText from './DefaultText';
-import {addShoutout, removeShoutout} from './functions/content';
+import AuthUserContext from '../contexts/AuthUser';
+import DefaultText from '../defaults/DefaultText';
+import {addShoutout, removeShoutout} from '../functions/content';
 
 type TProps = {collection: string; id: string};
 
