@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
 import DefaultText from '../defaults/DefaultText';
-import {getItems} from '../functions/item';
+import {getContents} from '../functions/Content';
 import {TDocData} from '../types/firebase';
 import {TStyleView} from '../types/style';
 import ContentCard from './ContentCard';
@@ -23,14 +23,13 @@ const Contents = ({style}: TProps) => {
   useEffect(() => {
     const load = async () => {
       try {
-        const {items} = await getItems({
-          collection: 'contents',
-          pagination: {startAfterId: undefined, numberOfItems: 10},
-          tags: [],
+        const {items} = await getContents({
+          numberOfItems: 10,
         });
 
         setData(items);
         setStatus('loaded');
+        setIndex(0);
       } catch (error) {
         Alert.alert('Please retry', 'Failed to load contents');
         setStatus('error');
@@ -46,8 +45,7 @@ const Contents = ({style}: TProps) => {
 
   const onPass = async () => {
     if (index === data.length - 1) {
-      setStatus('loading');
-      return setIndex(0);
+      return setStatus('loading');
     }
 
     setIndex(pre => {
@@ -73,10 +71,14 @@ const Contents = ({style}: TProps) => {
 
   if (data.length === 0) {
     return (
-      <DefaultText
-        title="No item to check at the moment. Comeback later!"
-        style={styles.noData}
-      />
+      <View style={styles.noData}>
+        <DefaultText title="No item to check. Try refreshing later." />
+        <DefaultText
+          title="Refresh now"
+          onPress={() => setStatus('loading')}
+          style={styles.refresh}
+        />
+      </View>
     );
   }
 
@@ -102,4 +104,5 @@ const styles = StyleSheet.create({
   },
   card: {flex: 1},
   noData: {flex: 1, justifyContent: 'center', alignItems: 'center'},
+  refresh: {marginTop: 10},
 });

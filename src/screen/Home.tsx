@@ -6,7 +6,11 @@ import Welcome from '../components/Welcome';
 import AuthUserContext from '../contexts/AuthUser';
 
 const Home = () => {
-  const {authUserData} = useContext(AuthUserContext);
+  const {authUserData, loaded} = useContext(AuthUserContext);
+
+  if (!loaded) {
+    return null;
+  }
 
   if (!authUserData) {
     return <Welcome style={styles.container} />;

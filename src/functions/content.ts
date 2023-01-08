@@ -23,3 +23,9 @@ export const addPass = async (input: {}) => {
 
   return {...data};
 };
+
+export const getContents = async (input: {}) => {
+  const {data} = await firebaseFunctions.httpsCallable('getContents')(input);
+
+  return {...data};
+};

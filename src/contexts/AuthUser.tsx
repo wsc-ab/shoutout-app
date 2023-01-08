@@ -6,7 +6,11 @@ import SignUpModal from '../components/SignUpModal';
 
 import {TAuthUser, TDocData, TDocSnapshot} from '../types/firebase';
 
-type TContextProps = {authUserData: TDocData; onSignOut: () => void};
+type TContextProps = {
+  loaded: boolean;
+  authUserData: TDocData;
+  onSignOut: () => void;
+};
 
 const AuthUserContext = createContext({} as TContextProps);
 
@@ -16,11 +20,17 @@ export type TProps = {
 
 const AuthUserProvider = ({children}: TProps) => {
   const [authUser, setAuthUser] = useState<TAuthUser | null>();
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged(async user => {
-      setAuthUser(user);
+      if (user) {
+        setAuthUser(user);
+      } else {
+        setLoaded(true);
+      }
     });
+
     return unsubscribe;
   }, []);
 
@@ -42,6 +52,9 @@ const AuthUserProvider = ({children}: TProps) => {
         if (isMounted) {
           setAuthUserData(userData);
         }
+        console.log('setloaded');
+
+        setLoaded(true);
       };
 
       const onError = (error: Error) => {
@@ -59,19 +72,16 @@ const AuthUserProvider = ({children}: TProps) => {
     if (authUser?.uid) {
       loadAuthUser(authUser.uid);
     }
-
     return () => {
       isMounted = false;
     };
-  }, [authUser?.uid]);
+  }, [authUser?.uid, loaded]);
 
   const onSignOut = async () => {
-    try {
-      await firebase.auth().signOut();
-      setAuthUser(undefined);
-      setAuthUserData(undefined);
-      setModal(undefined);
-    } catch (error) {}
+    await firebase.auth().signOut();
+    setAuthUser(undefined);
+    setAuthUserData(undefined);
+    setModal(undefined);
   };
 
   const onSuccess = () => setModal(undefined);
@@ -79,6 +89,7 @@ const AuthUserProvider = ({children}: TProps) => {
   return (
     <AuthUserContext.Provider
       value={{
+        loaded,
         authUserData: authUserData!,
         onSignOut,
       }}>
