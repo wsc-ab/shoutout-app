@@ -5,9 +5,9 @@ import {
   Image,
   ImageStyle,
   StyleSheet,
-  Text,
   View,
 } from 'react-native';
+import DefaultText from './DefaultText';
 import {TStatus} from './types/screen';
 
 export const getThumnailPath = (url: string) => url + '_200x200';
@@ -130,7 +130,7 @@ const DefaultImage = ({image, type, style}: Props) => {
       )}
       {status === 'loaded' && !image && (
         <View style={[styles.image, style]}>
-          <Text>No image</Text>
+          <DefaultText title="No image" />
         </View>
       )}
       {status === 'loading' && (
@@ -140,7 +140,7 @@ const DefaultImage = ({image, type, style}: Props) => {
       )}
       {status === 'error' && (
         <View style={[styles.image, style]}>
-          <Text>Error</Text>
+          <DefaultText title="Error" />
         </View>
       )}
     </>

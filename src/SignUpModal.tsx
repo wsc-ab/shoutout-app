@@ -1,6 +1,9 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {StyleSheet} from 'react-native';
+import DefaultForm from './DefaultForm';
 import DefaultModal from './DefaultModal';
+import DefaultText from './DefaultText';
+import DefaultTextInput from './DefaultTextInput';
 import {editUser} from './functions/user';
 
 type TProps = {
@@ -22,32 +25,21 @@ const SignUpModal = ({onSuccess, onCancel, uid}: TProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   return (
-    <DefaultModal
-      title={'Create'}
-      left={{title: 'Cancel', onPress: onCancel}}
-      right={{title: 'Done', onPress: onSubmit}}>
-      <View>
-        <Text style={{fontSize: 20}}>Create your profile</Text>
-        <Text style={{marginTop: 20}}>ID</Text>
-        <TextInput
+    <DefaultModal>
+      <DefaultForm
+        title={'Sign Up'}
+        left={{title: 'Cancel', onPress: onCancel}}
+        right={{title: 'Done', onPress: onSubmit}}>
+        <DefaultText title="Create your profile" textStyle={{fontSize: 20}} />
+        <DefaultText title="ID" style={{marginTop: 20}} />
+        <DefaultTextInput
           value={id}
           onChangeText={setId}
-          style={styles.textInput}
           autoCapitalize="none"
         />
-      </View>
+      </DefaultForm>
     </DefaultModal>
   );
 };
 
 export default SignUpModal;
-
-const styles = StyleSheet.create({
-  textInput: {
-    marginTop: 5,
-    padding: 20,
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 10,
-  },
-});

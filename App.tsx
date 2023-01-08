@@ -8,7 +8,6 @@
  * @format
  */
 
-import {NavigationContainer} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native';
 import {AuthUserProvider} from './src/AuthUser';
@@ -40,13 +39,11 @@ const App = () => {
   }
 
   return (
-    <NavigationContainer>
+    <SafeAreaView style={{flex: 1, backgroundColor: 'black'}}>
       <AuthUserProvider>
-        <SafeAreaView style={{flex: 1, margin: 20}}>
-          <Home />
-        </SafeAreaView>
+        <Home />
       </AuthUserProvider>
-    </NavigationContainer>
+    </SafeAreaView>
   );
 };
 

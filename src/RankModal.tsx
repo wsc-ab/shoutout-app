@@ -1,6 +1,6 @@
 import React from 'react';
-import {Text} from 'react-native';
 import DefaultModal from './DefaultModal';
+import DefaultText from './DefaultText';
 
 type TProps = {
   onCancel: () => void;
@@ -14,7 +14,7 @@ const RankModal = ({onCancel}: TProps) => {
         title: 'Cancel',
         onPress: onCancel,
       }}>
-      <Text>Daily Rank</Text>
+      <DefaultText title="Ranks" />
     </DefaultModal>
   );
 };

@@ -1,7 +1,8 @@
 import React, {useContext} from 'react';
-import {Button, Text} from 'react-native';
+import {Button} from 'react-native';
 import AuthUserContext from './AuthUser';
 import DefaultModal from './DefaultModal';
+import DefaultText from './DefaultText';
 
 type TProps = {
   onCancel: () => void;
@@ -16,7 +17,7 @@ const UserModal = ({onCancel}: TProps) => {
         title: 'Cancel',
         onPress: onCancel,
       }}>
-      <Text>My content of the day</Text>
+      <DefaultText title="My content of the day" />
       <Button title="Sign out" onPress={onSignOut} />
     </DefaultModal>
   );

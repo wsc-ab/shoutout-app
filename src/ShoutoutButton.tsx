@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Alert, Pressable, Text, View} from 'react-native';
+import {Alert, Pressable, View} from 'react-native';
 import AuthUserContext from './AuthUser';
+import DefaultText from './DefaultText';
 import {addShoutout, removeShoutout} from './functions/content';
 
 type TProps = {collection: string; id: string};
@@ -39,12 +40,12 @@ const ShoutoutButton = ({collection, id}: TProps) => {
     <View>
       {isShoutouted && (
         <Pressable onPress={onUnshoutout}>
-          <Text>Shoutouted</Text>
+          <DefaultText title="Shoutouted" />
         </Pressable>
       )}
       {!isShoutouted && (
         <Pressable onPress={onShoutout}>
-          <Text>Shoutout</Text>
+          <DefaultText title="Shoutout" />
         </Pressable>
       )}
     </View>

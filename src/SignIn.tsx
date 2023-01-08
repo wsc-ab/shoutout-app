@@ -1,17 +1,15 @@
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import React, {useState} from 'react';
-import {
-  ActivityIndicator,
-  Alert,
-  Button,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {Alert, TextInput} from 'react-native';
+import DefaultForm from './DefaultForm';
+import DefaultModal from './DefaultModal';
+import DefaultTextInput from './DefaultTextInput';
 
-function PhoneSignIn() {
+type TProps = {
+  onCancel: () => void;
+};
+
+const SignInMoodal = ({onCancel}: TProps) => {
   // If null, no SMS has been sent
   const [confirm, setConfirm] =
     useState<FirebaseAuthTypes.ConfirmationResult | null>();
@@ -44,67 +42,33 @@ function PhoneSignIn() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   return (
-    <KeyboardAwareScrollView contentContainerStyle={{flex: 1}}>
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <Text style={{fontSize: 50, fontWeight: 'bold'}}>Shoutout</Text>
-        <Text style={{fontSize: 20}}>No followers or views, Only contents</Text>
-        <View style={{marginTop: 30}}>
-          <Text>1. Only one content per day</Text>
-          <Text style={{marginTop: 10}}>
-            2. Get and send shoutouts to only the best contents
-          </Text>
-          <Text style={{marginTop: 10}}>
-            3. Check daily, weekly, monthly, yearly rankings
-          </Text>
-        </View>
-      </View>
-
+    <DefaultModal>
       {!confirm && (
-        <>
-          <TextInput
+        <DefaultForm
+          title={'Enter Phone'}
+          left={{title: 'Cancel', onPress: onCancel}}
+          right={{title: 'Done', onPress: signInWithPhoneNumber}}>
+          <DefaultTextInput
             value={phoneNumber}
             onChangeText={setPhoneNumber}
-            style={styles.textInput}
             placeholder="Phone number"
           />
-          <View style={{flexDirection: 'row'}}>
-            {!isSubmitting && (
-              <Button title="Enter" onPress={signInWithPhoneNumber} />
-            )}
-            {isSubmitting && <ActivityIndicator />}
-          </View>
-        </>
+        </DefaultForm>
       )}
       {confirm && (
-        <>
-          <TextInput
+        <DefaultForm
+          title={'Enter Code'}
+          left={{title: 'Cancel', onPress: () => setConfirm(undefined)}}
+          right={{title: 'Done', onPress: () => confirmCode()}}>
+          <DefaultTextInput
             value={code}
             onChangeText={setCode}
-            style={styles.textInput}
-            placeholder="Enter the code sent to your phone"
+            placeholder="6 Digit Code"
           />
-          <View style={{flexDirection: 'row'}}>
-            {!isSubmitting && (
-              <>
-                <Button title="Enter" onPress={() => confirmCode()} />
-                <Button title="Cancel" onPress={() => setConfirm(undefined)} />
-              </>
-            )}
-            {isSubmitting && <ActivityIndicator />}
-          </View>
-        </>
+        </DefaultForm>
       )}
-    </KeyboardAwareScrollView>
+    </DefaultModal>
   );
-}
+};
 
-export default PhoneSignIn;
-
-const styles = StyleSheet.create({
-  textInput: {
-    padding: 20,
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 10,
-  },
-});
+export default SignInMoodal;

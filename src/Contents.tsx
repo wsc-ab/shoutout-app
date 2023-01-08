@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Alert, Pressable, StyleSheet, Text, View} from 'react-native';
 import ContentCard from './ContentCard';
+import DefaultText from './DefaultText';
 import {getItems} from './functions/item';
 import ShoutoutButton from './ShoutoutButton';
 import {TDocData} from './types/firebase';
@@ -46,7 +47,7 @@ const Contents = ({style}: TProps) => {
   if (data.length === 0) {
     return (
       <Pressable>
-        <Text>Refresh</Text>
+        <DefaultText title="Refresh" />
       </Pressable>
     );
   }
@@ -56,7 +57,7 @@ const Contents = ({style}: TProps) => {
       <ContentCard content={data[index]} style={styles.card} />
       <View style={styles.nav}>
         <Pressable onPress={onPass}>
-          <Text>Pass</Text>
+          <DefaultText title="Pass" />
         </Pressable>
         <ShoutoutButton collection="contents" id={data[index].id} />
       </View>
