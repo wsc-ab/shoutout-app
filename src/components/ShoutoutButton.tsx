@@ -39,15 +39,9 @@ const ShoutoutButton = ({collection, id}: TProps) => {
   return (
     <View>
       {isShoutouted && (
-        <Pressable onPress={onUnshoutout}>
-          <DefaultText title="Shoutouted" />
-        </Pressable>
+        <DefaultText title="Shoutouted" onPress={onUnshoutout} />
       )}
-      {!isShoutouted && (
-        <Pressable onPress={onShoutout}>
-          <DefaultText title="Shoutout" />
-        </Pressable>
-      )}
+      {!isShoutouted && <DefaultText title="Shoutout" onPress={onShoutout} />}
     </View>
   );
 };

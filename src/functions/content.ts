@@ -17,3 +17,9 @@ export const removeShoutout = async (input: {}) => {
 
   return {...data};
 };
+
+export const addPass = async (input: {}) => {
+  const {data} = await firebaseFunctions.httpsCallable('addPass')(input);
+
+  return {...data};
+};

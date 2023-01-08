@@ -5,6 +5,7 @@ import {getItems} from '../functions/item';
 import {TDocData} from '../types/firebase';
 import {TStyleView} from '../types/style';
 import ContentCard from './ContentCard';
+import PassButton from './PassButton';
 
 import ShoutoutButton from './ShoutoutButton';
 
@@ -43,16 +44,18 @@ const Contents = ({style}: TProps) => {
 
   const [index, setIndex] = useState(0);
 
-  const onPass = () =>
-    setIndex(pre => {
-      if (pre === data.length - 1) {
-        Alert.alert('Checked all contents', 'Returning to the first content');
-      }
+  const onPass = async () => {
+    if (index === data.length - 1) {
+      setStatus('loading');
+      return setIndex(0);
+    }
 
+    setIndex(pre => {
       const newIndex = (pre + 1) % data.length;
 
       return newIndex;
     });
+  };
 
   if (status === 'loading') {
     return <ActivityIndicator style={styles.noData} />;
@@ -81,7 +84,7 @@ const Contents = ({style}: TProps) => {
     <View style={style}>
       <ContentCard content={data[index]} style={styles.card} />
       <View style={styles.nav}>
-        <DefaultText title="Pass" onPress={onPass} />
+        <PassButton onSuccess={onPass} id={data[index].id} />
         <ShoutoutButton collection="contents" id={data[index].id} />
       </View>
     </View>

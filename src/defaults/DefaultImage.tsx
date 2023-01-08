@@ -7,8 +7,8 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
+import {TStatus} from '../types/screen';
 import DefaultText from './DefaultText';
-import {TStatus} from './types/screen';
 
 export const getThumnailPath = (url: string) => url + '_200x200';
 
@@ -27,8 +27,6 @@ const DefaultImage = ({image, type, style}: Props) => {
   };
 
   let showThumbnail = false;
-
-  console.log(image, 'i');
 
   if (type) {
     switch (type) {

@@ -22,6 +22,7 @@ const BestModal = ({onCancel}: TProps) => {
             const borderBottomWidth = tab === el ? 1 : 0;
             return (
               <DefaultText
+                key={el}
                 title={el}
                 style={[styles.tab, {borderBottomWidth}]}
                 onPress={setTab}

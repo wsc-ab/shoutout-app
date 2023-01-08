@@ -1,6 +1,6 @@
 import {firebase} from '@react-native-firebase/auth';
 import React, {useContext, useState} from 'react';
-import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
+import {Alert, StyleSheet, View} from 'react-native';
 import {
   ImageLibraryOptions,
   launchImageLibrary,
@@ -16,6 +16,7 @@ const Header = () => {
   const [modal, setModal] = useState<'me' | 'best'>();
   const {authUserData} = useContext(AuthUserContext);
   const [submitting, setSubmitting] = useState(false);
+  const [progress, setProgress] = useState(10);
 
   const onAdd = async () => {
     const options: ImageLibraryOptions = {
@@ -44,7 +45,7 @@ const Header = () => {
       uploaded = await uploadContent({
         asset,
         id: authUserData.id,
-        onProgress: prog => console.log(prog, 'prog'),
+        onProgress: setProgress,
       });
     } catch (error) {
       Alert.alert('Please retry', 'Invalid file');
@@ -87,7 +88,12 @@ const Header = () => {
       {!submitting && (
         <DefaultText title="+" onPress={onAdd} style={styles.right} />
       )}
-      {submitting && <ActivityIndicator />}
+      {submitting && (
+        <DefaultText
+          title={Math.round(progress).toString()}
+          style={styles.progess}
+        />
+      )}
 
       {modal === 'me' && <UserModal onCancel={hideModal} />}
       {modal === 'best' && <BestModal onCancel={hideModal} />}
@@ -106,4 +112,11 @@ const styles = StyleSheet.create({
   left: {flex: 1, alignItems: 'flex-start'},
   center: {flex: 1, alignItems: 'center'},
   right: {flex: 1, alignItems: 'flex-end'},
+  progess: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    flex: 1,
+  },
+  activity: {marginLeft: 5},
 });
