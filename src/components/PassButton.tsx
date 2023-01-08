@@ -13,7 +13,7 @@ const PassButton = ({id, onSuccess}: TProps) => {
 
   return (
     <View>
-      <DefaultText title="Pass" onPress={onPass} />
+      <DefaultText title="Next" onPress={onPass} />
     </View>
   );
 };

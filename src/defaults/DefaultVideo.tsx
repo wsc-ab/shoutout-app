@@ -30,8 +30,9 @@ const DefaultVideo = ({path}: TProps) => {
     <Pressable onPress={() => setPaused(pre => !pre)}>
       <Video
         source={{uri}} // Can be a URL or a local file.
-        style={{width: 300, height: 300, borderWidth: 1, flex: 1}}
+        style={styles.video}
         paused={paused}
+        repeat
       />
     </Pressable>
   );
@@ -39,4 +40,6 @@ const DefaultVideo = ({path}: TProps) => {
 
 export default DefaultVideo;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  video: {width: 300, height: 300, borderWidth: 1, flex: 1},
+});
