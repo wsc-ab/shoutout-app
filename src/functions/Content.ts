@@ -29,3 +29,13 @@ export const getContents = async (input: {}) => {
 
   return {...data};
 };
+
+export const replaceContent = async (input: {
+  id: string;
+  path: string;
+  type: string;
+}) => {
+  const {data} = await firebaseFunctions.httpsCallable('replaceContent')(input);
+
+  return {...data};
+};

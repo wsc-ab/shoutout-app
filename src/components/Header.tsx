@@ -38,6 +38,7 @@ const Header = () => {
       return;
     }
 
+    setProgress(0);
     let uploaded;
 
     try {
