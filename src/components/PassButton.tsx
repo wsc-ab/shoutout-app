@@ -1,7 +1,7 @@
 import React from 'react';
 import {View} from 'react-native';
 import DefaultText from '../defaults/DefaultText';
-import {addPass} from '../functions/Content';
+import {addPass} from '../functions/Content1';
 
 type TProps = {id: string; onSuccess: () => void};
 
