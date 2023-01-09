@@ -18,8 +18,8 @@ export const removeShoutout = async (input: {}) => {
   return {...data};
 };
 
-export const addPass = async (input: {}) => {
-  const {data} = await firebaseFunctions.httpsCallable('addPass')(input);
+export const addView = async (input: {}) => {
+  const {data} = await firebaseFunctions.httpsCallable('addView')(input);
 
   return {...data};
 };
@@ -36,6 +36,14 @@ export const replaceContent = async (input: {
   type: string;
 }) => {
   const {data} = await firebaseFunctions.httpsCallable('replaceContent')(input);
+
+  return {...data};
+};
+
+export const getRanking = async (input: {date: string}) => {
+  console.log(input, 'd');
+
+  const {data} = await firebaseFunctions.httpsCallable('getRanking')(input);
 
   return {...data};
 };

@@ -16,7 +16,7 @@ type TProps = {
 
 const DefaultForm = ({title, left, right, children}: TProps) => {
   return (
-    <View>
+    <View style={{flex: 1}}>
       <View style={styles.header}>
         <View style={styles.left}>
           {left && <Button title={left.title} onPress={left.onPress} />}

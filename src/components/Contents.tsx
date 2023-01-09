@@ -5,7 +5,7 @@ import {getContents} from '../functions/Content';
 import {TDocData} from '../types/firebase';
 import {TStyleView} from '../types/style';
 import ContentCard from './ContentCard';
-import PassButton from './PassButton';
+import NextButton from './NextButton';
 
 import ShoutoutButton from './ShoutoutButton';
 
@@ -86,7 +86,7 @@ const Contents = ({style}: TProps) => {
     <View style={style}>
       <ContentCard content={data[index]} style={styles.card} />
       <View style={styles.nav}>
-        <PassButton onSuccess={onPass} id={data[index].id} />
+        <NextButton onSuccess={onPass} id={data[index].id} />
         <ShoutoutButton collection="contents" id={data[index].id} />
       </View>
     </View>

@@ -9,11 +9,11 @@ import AuthUserContext from '../contexts/AuthUser';
 import DefaultText from '../defaults/DefaultText';
 import {createContent} from '../functions/Content';
 import {uploadContent} from '../utils/storage';
-import BestModal from './BestModal';
+import RankingModal from './RankingModal';
 import UserModal from './UserModal';
 
 const Header = () => {
-  const [modal, setModal] = useState<'me' | 'best'>();
+  const [modal, setModal] = useState<'me' | 'ranking'>();
   const {authUserData} = useContext(AuthUserContext);
   const [submitting, setSubmitting] = useState(false);
   const [progress, setProgress] = useState(10);
@@ -81,8 +81,8 @@ const Header = () => {
       />
 
       <DefaultText
-        title="Best"
-        onPress={() => setModal('best')}
+        title="Ranking"
+        onPress={() => setModal('ranking')}
         style={styles.center}
       />
 
@@ -97,7 +97,7 @@ const Header = () => {
       )}
 
       {modal === 'me' && <UserModal onCancel={hideModal} />}
-      {modal === 'best' && <BestModal onCancel={hideModal} />}
+      {modal === 'ranking' && <RankingModal onCancel={hideModal} />}
     </View>
   );
 };
