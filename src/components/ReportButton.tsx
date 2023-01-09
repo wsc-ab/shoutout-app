@@ -19,7 +19,11 @@ const ReportButton = ({id, collection, onSuccess, style}: TProps) => {
         Alert.alert('Successfully reported');
         onSuccess();
       } catch (error) {
-        Alert.alert('Please retry', 'Failed to report');
+        if (error.message === "target doesn't exist") {
+          Alert.alert('This content has been deleted');
+        } else {
+          Alert.alert('Please retry', error.message);
+        }
       }
     };
     Alert.alert(

@@ -3,7 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import DefaultText from '../defaults/DefaultText';
 import {TStyleView} from '../types/style';
 
-import SignIn from './SignInModal';
+import EnterModal from './EnterModal';
 
 type TProps = {style?: TStyleView};
 
@@ -37,7 +37,7 @@ const Welcome = ({style}: TProps) => {
         onPress={() => setModal('enter')}
         style={styles.enter}
       />
-      {modal === 'enter' && <SignIn onCancel={() => setModal(undefined)} />}
+      {modal === 'enter' && <EnterModal onCancel={() => setModal(undefined)} />}
     </View>
   );
 };

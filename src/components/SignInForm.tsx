@@ -1,5 +1,5 @@
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Alert, StyleSheet} from 'react-native';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
@@ -7,10 +7,11 @@ import DefaultText from '../defaults/DefaultText';
 import DefaultTextInput from '../defaults/DefaultTextInput';
 
 type TProps = {
+  phoneNumber: string;
   onCancel: () => void;
 };
 
-const SignInMoodal = ({onCancel}: TProps) => {
+const SignInForm = ({phoneNumber, onCancel}: TProps) => {
   // If null, no SMS has been sent
   const [confirm, setConfirm] =
     useState<FirebaseAuthTypes.ConfirmationResult | null>();
@@ -18,7 +19,6 @@ const SignInMoodal = ({onCancel}: TProps) => {
   const [submitting, setIsSubmitting] = useState(false);
 
   const [code, setCode] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
 
   async function confirmCode() {
     if (!confirm) {
@@ -35,42 +35,24 @@ const SignInMoodal = ({onCancel}: TProps) => {
     }
   }
 
-  const signInWithPhoneNumber = async () => {
-    setIsSubmitting(true);
-    const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
-    setConfirm(confirmation);
-    setIsSubmitting(false);
-  };
+  useEffect(() => {
+    const load = async () => {
+      setIsSubmitting(true);
+      const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+      setConfirm(confirmation);
+      setIsSubmitting(false);
+    };
+    load();
+  }, [phoneNumber]);
 
   return (
     <DefaultModal>
-      {!confirm && (
-        <DefaultForm
-          title={'Enter Phone'}
-          left={{title: 'Cancel', onPress: onCancel}}
-          right={{
-            title: 'Done',
-            onPress: signInWithPhoneNumber,
-            submitting,
-          }}>
-          <DefaultText title="Enter phone number to sign in." />
-          <DefaultTextInput
-            title="Phone number"
-            value={phoneNumber}
-            onChangeText={setPhoneNumber}
-            placeholder="+821064541575"
-            keyboardType="phone-pad"
-            autoComplete="tel"
-            style={styles.textInput}
-          />
-        </DefaultForm>
-      )}
       {confirm && (
         <DefaultForm
           title={'Enter Code'}
-          left={{title: 'Cancel', onPress: () => setConfirm(undefined)}}
-          right={{title: 'Done', onPress: () => confirmCode(), submitting}}>
-          <DefaultText title="We've just sent a code to your phone." />
+          left={{title: 'Cancel', onPress: onCancel}}
+          right={{title: 'Done', onPress: confirmCode, submitting}}>
+          <DefaultText title="Sign in by entering the code we just sent to your phone." />
           <DefaultTextInput
             title="Code"
             value={code}
@@ -86,6 +68,6 @@ const SignInMoodal = ({onCancel}: TProps) => {
   );
 };
 
-export default SignInMoodal;
+export default SignInForm;
 
 const styles = StyleSheet.create({textInput: {marginTop: 10}});

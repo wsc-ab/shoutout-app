@@ -1,5 +1,5 @@
 import {firebase} from '@react-native-firebase/auth';
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Alert, View} from 'react-native';
 import {
   ImageLibraryOptions,
@@ -9,7 +9,8 @@ import AuthUserContext from '../contexts/AuthUser';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
-import {createContent} from '../functions/Content';
+import {createContent, deleteContent} from '../functions/Content';
+import {TObject} from '../types/firebase';
 import {TStyleView} from '../types/style';
 import {getSecondsGap} from '../utils/Date';
 import {uploadContent} from '../utils/storage';
@@ -87,22 +88,42 @@ const CreateButton = ({style}: TProps) => {
     }
   };
 
-  const latestContent =
-    authUserData.contributeTo.contents?.items?.[0] ?? undefined;
+  const [content, setContent] = useState<TObject>();
+
+  useEffect(() => {
+    setContent(authUserData?.contributeTo?.contents?.items?.[0] ?? undefined);
+  }, [authUserData?.contributeTo?.contents?.items]);
 
   const nextSubmitDate = new Date();
 
   nextSubmitDate.setDate(nextSubmitDate.getDate() + 1);
   nextSubmitDate.setHours(8, 59, 59, 999);
 
-  const isSubmitted = latestContent?.createdAt
+  const isSubmitted = content?.createdAt
     ? getSecondsGap({
         date: nextSubmitDate,
-        timestamp: latestContent.createdAt,
+        timestamp: content.createdAt,
       }) > 0
     : false;
 
   const [modal, setModal] = useState<'done'>();
+
+  const onDelete = () => {
+    const onPress = async () => {
+      try {
+        await deleteContent({content: {id: content.id}});
+        setModal(undefined);
+      } catch (error) {
+        console.log(error, 'e');
+      }
+    };
+
+    Alert.alert(
+      'Please confirm',
+      "Delete this content? It will no longer show up in rankings, and others won't be able to shoutout this content",
+      [{text: 'Delete', onPress, style: 'destructive'}, {text: 'No'}],
+    );
+  };
 
   return (
     <View style={style}>
@@ -122,7 +143,18 @@ const CreateButton = ({style}: TProps) => {
               onPress: () => setModal(undefined),
             }}>
             <DefaultText title="This will be submitted at 08:59 am tomorrow." />
-            <ContentCard content={latestContent} />
+            <View style={{flexDirection: 'row', marginTop: 10}}>
+              <DefaultText
+                title="Change"
+                onPress={() => Alert.alert('Not yet implemented')}
+              />
+              <DefaultText
+                title="Delete"
+                style={{marginLeft: 10}}
+                onPress={onDelete}
+              />
+            </View>
+            {content && <ContentCard content={content} />}
           </DefaultForm>
         </DefaultModal>
       )}

@@ -7,8 +7,9 @@ import {TAuthUser, TDocData, TDocSnapshot} from '../types/firebase';
 
 type TContextProps = {
   loaded: boolean;
-  authUser: TAuthUser;
+  authUser: TAuthUser | null | undefined;
   authUserData: TDocData;
+  onReload: () => void;
   onSignOut: () => void;
 };
 
@@ -34,6 +35,12 @@ const AuthUserProvider = ({children}: TProps) => {
     return unsubscribe;
   }, []);
 
+  const onReload = async () => {
+    await auth().currentUser?.reload();
+
+    setAuthUser(auth().currentUser);
+  };
+
   const [authUserData, setAuthUserData] = useState<TDocData>();
 
   // subscribe to auth user data change
@@ -41,8 +48,12 @@ const AuthUserProvider = ({children}: TProps) => {
     let isMounted = true;
 
     const loadAuthUser = (authUserId: string) => {
-      const onNext = (userDoc: TDocSnapshot) => {
+      const onNext = async (userDoc: TDocSnapshot) => {
         const userData = userDoc.data();
+
+        if (!userData) {
+          await onSignOut();
+        }
 
         if (isMounted) {
           setAuthUserData(userData);
@@ -65,6 +76,8 @@ const AuthUserProvider = ({children}: TProps) => {
 
     if (authUser?.uid) {
       loadAuthUser(authUser.uid);
+    } else {
+      setLoaded(true);
     }
     return () => {
       isMounted = false;
@@ -84,6 +97,7 @@ const AuthUserProvider = ({children}: TProps) => {
         authUser,
         authUserData: authUserData!,
         onSignOut,
+        onReload,
       }}>
       {children}
     </AuthUserContext.Provider>

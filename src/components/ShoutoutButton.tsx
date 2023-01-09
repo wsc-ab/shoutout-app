@@ -14,8 +14,12 @@ const ShoutoutButton = ({collection, id, style}: TProps) => {
       setIsShoutouted(true);
       await addShoutout({content: {id}});
     } catch (error) {
+      if (error.message === "content doesn't exist") {
+        Alert.alert('This content has been deleted');
+      } else {
+        Alert.alert('Please retry', error.message);
+      }
       setIsShoutouted(false);
-      Alert.alert('Please retry', 'Failed to shoutout');
     }
   };
 
