@@ -1,19 +1,6 @@
 import React from 'react';
 import {Pressable, StyleSheet, Text} from 'react-native';
-import {TStyleText, TStyleView} from './types/style';
-
-export type TTextType =
-  | 'largeTitle'
-  | 'title1'
-  | 'title2'
-  | 'title3'
-  | 'headline'
-  | 'body'
-  | 'callout'
-  | 'subhead'
-  | 'footnote'
-  | 'caption1'
-  | 'caption2';
+import {TStyleText, TStyleView} from '../types/style';
 
 type Props<A extends string> = {
   title?: A;
