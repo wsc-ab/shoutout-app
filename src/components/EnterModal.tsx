@@ -3,7 +3,7 @@ import DefaultModal from '../defaults/DefaultModal';
 import {checkPhoneNumber} from '../functions/User';
 import PhoneForm from './PhoneForm';
 import SignInForm from './SignInForm';
-import SignUpForm from './SignUpModal';
+import SignUpForm from './SignUpForm';
 
 type TProps = {
   onCancel: () => void;

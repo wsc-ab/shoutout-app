@@ -1,6 +1,6 @@
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import React, {useEffect, useState} from 'react';
-import {Alert, StyleSheet} from 'react-native';
+import {Alert, View} from 'react-native';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
@@ -53,6 +53,10 @@ const SignInForm = ({phoneNumber, onCancel}: TProps) => {
           left={{title: 'Cancel', onPress: onCancel}}
           right={{title: 'Done', onPress: confirmCode, submitting}}>
           <DefaultText title="Sign in by entering the code we just sent to your phone." />
+          <View
+            style={{borderWidth: 1, borderColor: 'gray', marginVertical: 20}}
+          />
+
           <DefaultTextInput
             title="Code"
             value={code}
@@ -60,7 +64,6 @@ const SignInForm = ({phoneNumber, onCancel}: TProps) => {
             placeholder="000000"
             keyboardType="number-pad"
             autoComplete="sms-otp"
-            style={styles.textInput}
           />
         </DefaultForm>
       )}
@@ -69,5 +72,3 @@ const SignInForm = ({phoneNumber, onCancel}: TProps) => {
 };
 
 export default SignInForm;
-
-const styles = StyleSheet.create({textInput: {marginTop: 10}});

@@ -1,6 +1,6 @@
 import auth, {firebase} from '@react-native-firebase/auth';
 import React, {useEffect, useState} from 'react';
-import {Alert, StyleSheet} from 'react-native';
+import {Alert, StyleSheet, View} from 'react-native';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultText from '../defaults/DefaultText';
 import DefaultTextInput from '../defaults/DefaultTextInput';
@@ -50,6 +50,7 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
           phoneNumber,
           email,
           password,
+          code,
           countryCode: 'kr',
         },
       });
@@ -86,6 +87,8 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
         submitting,
       }}>
       <DefaultText title="Please set your ID to sign up." />
+
+      <View style={{borderWidth: 1, borderColor: 'gray', marginVertical: 20}} />
       <DefaultTextInput
         title="email"
         value={email}
@@ -94,7 +97,6 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
         placeholder="airballoon"
         autoComplete="email"
         keyboardType="email-address"
-        style={styles.textInput}
       />
       <DefaultTextInput
         title="password"

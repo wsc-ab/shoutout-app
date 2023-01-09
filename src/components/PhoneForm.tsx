@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {View} from 'react-native';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultText from '../defaults/DefaultText';
 import DefaultTextInput from '../defaults/DefaultTextInput';
@@ -27,6 +27,7 @@ const PhoneForm = ({onCancel, onSuccess, submitting}: TProps) => {
         submitting,
       }}>
       <DefaultText title="Enter phone number to sign in or up." />
+      <View style={{borderWidth: 1, borderColor: 'gray', marginVertical: 20}} />
       <DefaultTextInput
         title="Phone number"
         value={phoneNumber}
@@ -34,12 +35,9 @@ const PhoneForm = ({onCancel, onSuccess, submitting}: TProps) => {
         placeholder="+821012345678"
         keyboardType="phone-pad"
         autoComplete="tel"
-        style={styles.textInput}
       />
     </DefaultForm>
   );
 };
 
 export default PhoneForm;
-
-const styles = StyleSheet.create({textInput: {marginTop: 10}});
