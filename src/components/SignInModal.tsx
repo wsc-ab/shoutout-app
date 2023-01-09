@@ -29,8 +29,6 @@ const SignInMoodal = ({onCancel}: TProps) => {
       setIsSubmitting(true);
       await confirm.confirm(code);
     } catch (error) {
-      console.log(error, 'e');
-
       Alert.alert('Please retry', 'Invalid code');
     } finally {
       setIsSubmitting(false);

@@ -109,14 +109,17 @@ const RankingModal = ({onCancel}: TProps) => {
             style={{
               flex: 1,
             }}>
-            <View style={{flex: 1}}>
-              {ranking.contents.items.map(content => {
+            <View style={{flex: 1, marginTop: 10}}>
+              {ranking.contents.items.map((content, index) => {
                 return (
-                  <ContentCard
-                    content={content}
-                    key={content.id}
-                    style={{flex: 1}}
-                  />
+                  <View style={{flex: 1}} key={content.id}>
+                    <DefaultText
+                      title={`#${index + 1} with ${
+                        content.shoutoutFrom?.users?.number
+                      } shoutouts`}
+                    />
+                    <ContentCard content={content} />
+                  </View>
                 );
               })}
             </View>

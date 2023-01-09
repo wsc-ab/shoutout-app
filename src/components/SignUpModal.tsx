@@ -24,7 +24,11 @@ const SignUpModal = ({onSuccess, uid}: TProps) => {
       await editUser({user: {name: id, id: uid}});
       onSuccess();
     } catch (error) {
-      Alert.alert('Please retry', 'Something went wrong');
+      if (error.message === 'display name exists') {
+        Alert.alert('Use a different ID', 'Duplicate Id');
+      } else {
+        Alert.alert('Please retry', 'Something went wrong');
+      }
     } finally {
       setIsSubmitting(false);
     }

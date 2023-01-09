@@ -2,12 +2,12 @@ import auth from '@react-native-firebase/auth';
 import firestore, {firebase} from '@react-native-firebase/firestore';
 import React, {createContext, useEffect, useState} from 'react';
 import {Alert} from 'react-native';
-import SignUpModal from '../components/SignUpModal';
 
 import {TAuthUser, TDocData, TDocSnapshot} from '../types/firebase';
 
 type TContextProps = {
   loaded: boolean;
+  authUser: TAuthUser;
   authUserData: TDocData;
   onSignOut: () => void;
 };
@@ -35,7 +35,6 @@ const AuthUserProvider = ({children}: TProps) => {
   }, []);
 
   const [authUserData, setAuthUserData] = useState<TDocData>();
-  const [modal, setModal] = useState<'signUp'>();
 
   // subscribe to auth user data change
   useEffect(() => {
@@ -45,14 +44,9 @@ const AuthUserProvider = ({children}: TProps) => {
       const onNext = (userDoc: TDocSnapshot) => {
         const userData = userDoc.data();
 
-        if (!userData) {
-          setModal('signUp');
-        }
-
         if (isMounted) {
           setAuthUserData(userData);
         }
-        console.log('setloaded');
 
         setLoaded(true);
       };
@@ -81,22 +75,17 @@ const AuthUserProvider = ({children}: TProps) => {
     await firebase.auth().signOut();
     setAuthUser(undefined);
     setAuthUserData(undefined);
-    setModal(undefined);
   };
-
-  const onSuccess = () => setModal(undefined);
 
   return (
     <AuthUserContext.Provider
       value={{
         loaded,
+        authUser,
         authUserData: authUserData!,
         onSignOut,
       }}>
       {children}
-      {modal === 'signUp' && authUser && (
-        <SignUpModal uid={authUser.uid} onSuccess={onSuccess} />
-      )}
     </AuthUserContext.Provider>
   );
 };
