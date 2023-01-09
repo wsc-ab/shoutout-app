@@ -1,74 +1,12 @@
-import {firebase} from '@react-native-firebase/auth';
-import React, {useContext, useState} from 'react';
-import {Alert, StyleSheet, View} from 'react-native';
-import {
-  ImageLibraryOptions,
-  launchImageLibrary,
-} from 'react-native-image-picker';
-import AuthUserContext from '../contexts/AuthUser';
+import React, {useState} from 'react';
+import {StyleSheet, View} from 'react-native';
 import DefaultText from '../defaults/DefaultText';
-import {createContent} from '../functions/Content';
-import {uploadContent} from '../utils/storage';
+import CreateButton from './CreateButton';
 import RankingModal from './RankingModal';
 import UserModal from './UserModal';
 
 const Header = () => {
   const [modal, setModal] = useState<'me' | 'ranking'>();
-  const {authUserData} = useContext(AuthUserContext);
-  const [submitting, setSubmitting] = useState(false);
-  const [progress, setProgress] = useState(10);
-
-  const onAdd = async () => {
-    const options: ImageLibraryOptions = {
-      mediaType: 'mixed',
-      videoQuality: 'high',
-      selectionLimit: 1,
-    };
-
-    let asset;
-
-    try {
-      const {assets} = await launchImageLibrary(options);
-      asset = assets?.[0];
-    } catch (error) {
-      Alert.alert('Please retry', 'Failed to launch library');
-    }
-
-    if (!asset) {
-      return;
-    }
-
-    setProgress(0);
-    let uploaded;
-
-    try {
-      setSubmitting(true);
-      uploaded = await uploadContent({
-        asset,
-        id: authUserData.id,
-        onProgress: setProgress,
-      });
-    } catch (error) {
-      Alert.alert('Please retry', 'Invalid file');
-      setSubmitting(false);
-    }
-
-    if (!uploaded) {
-      return;
-    }
-
-    try {
-      const contentId = firebase.firestore().collection('contents').doc().id;
-
-      await createContent({
-        content: {id: contentId, path: uploaded, type: asset.type},
-      });
-    } catch (error) {
-      Alert.alert('Please retry', 'Failed upload content');
-    } finally {
-      setSubmitting(false);
-    }
-  };
 
   const hideModal = () => setModal(undefined);
 
@@ -85,16 +23,7 @@ const Header = () => {
         onPress={() => setModal('ranking')}
         style={styles.center}
       />
-
-      {!submitting && (
-        <DefaultText title="+" onPress={onAdd} style={styles.right} />
-      )}
-      {submitting && (
-        <DefaultText
-          title={Math.round(progress).toString()}
-          style={styles.progess}
-        />
-      )}
+      <CreateButton style={styles.right} />
 
       {modal === 'me' && <UserModal onCancel={hideModal} />}
       {modal === 'ranking' && <RankingModal onCancel={hideModal} />}
@@ -113,11 +42,4 @@ const styles = StyleSheet.create({
   left: {flex: 1, alignItems: 'flex-start'},
   center: {flex: 1, alignItems: 'center'},
   right: {flex: 1, alignItems: 'flex-end'},
-  progess: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    flex: 1,
-  },
-  activity: {marginLeft: 5},
 });

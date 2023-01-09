@@ -6,6 +6,7 @@ import {TDocData} from '../types/firebase';
 import {TStyleView} from '../types/style';
 import ContentCard from './ContentCard';
 import NextButton from './NextButton';
+import ReportButton from './ReportButton';
 
 import ShoutoutButton from './ShoutoutButton';
 
@@ -43,7 +44,7 @@ const Contents = ({style}: TProps) => {
 
   const [index, setIndex] = useState(0);
 
-  const onPass = async () => {
+  const onNext = async () => {
     if (index === data.length - 1) {
       return setStatus('loading');
     }
@@ -86,8 +87,22 @@ const Contents = ({style}: TProps) => {
     <View style={style}>
       <ContentCard content={data[index]} style={styles.card} />
       <View style={styles.nav}>
-        <NextButton onSuccess={onPass} id={data[index].id} />
-        <ShoutoutButton collection="contents" id={data[index].id} />
+        <NextButton
+          onSuccess={onNext}
+          id={data[index].id}
+          style={{flex: 1, alignItems: 'flex-start'}}
+        />
+        <ShoutoutButton
+          collection="contents"
+          id={data[index].id}
+          style={{flex: 1, alignItems: 'center'}}
+        />
+        <ReportButton
+          collection="contents"
+          id={data[index].id}
+          onSuccess={onNext}
+          style={{flex: 1, alignItems: 'flex-end'}}
+        />
       </View>
     </View>
   );

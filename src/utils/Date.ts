@@ -44,3 +44,11 @@ export const getTimeSinceTimestamp = (timestamp: TTimestamp) => {
 export const getDate = (timestamp: TTimestamp) => {
   return new Date(timestamp._seconds * 1000);
 };
+
+export const getSecondsGap = ({
+  timestamp,
+  date,
+}: {
+  timestamp: TTimestampClient;
+  date: Date;
+}) => Math.floor((date.getTime() - getSecondsFromTimestamp(timestamp)) / 1000);

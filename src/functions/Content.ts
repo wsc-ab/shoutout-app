@@ -41,9 +41,23 @@ export const replaceContent = async (input: {
 };
 
 export const getRanking = async (input: {date: string}) => {
-  console.log(input, 'd');
-
   const {data} = await firebaseFunctions.httpsCallable('getRanking')(input);
+
+  return {...data};
+};
+
+export const createReport = async (input: {
+  target: {collection: string; id: string};
+}) => {
+  const {data} = await firebaseFunctions.httpsCallable('createReport')(input);
+
+  return {...data};
+};
+
+export const editContent = async (input: {
+  conent: {id: string; path: string; type: string};
+}) => {
+  const {data} = await firebaseFunctions.httpsCallable('editContent')(input);
 
   return {...data};
 };

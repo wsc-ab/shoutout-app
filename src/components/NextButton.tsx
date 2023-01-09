@@ -2,10 +2,11 @@ import React, {useState} from 'react';
 import {ActivityIndicator, View} from 'react-native';
 import DefaultText from '../defaults/DefaultText';
 import {addView} from '../functions/Content';
+import {TStyleView} from '../types/style';
 
-type TProps = {id: string; onSuccess: () => void};
+type TProps = {id: string; onSuccess: () => void; style?: TStyleView};
 
-const PassButton = ({id, onSuccess}: TProps) => {
+const PassButton = ({id, onSuccess, style}: TProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const onPass = async () => {
     setIsLoading(true);
@@ -15,7 +16,7 @@ const PassButton = ({id, onSuccess}: TProps) => {
   };
 
   return (
-    <View>
+    <View style={style}>
       {!isLoading && <DefaultText title="Next" onPress={onPass} />}
       {isLoading && <ActivityIndicator />}
     </View>

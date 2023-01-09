@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, View} from 'react-native';
+import {ActivityIndicator, FlatList, View} from 'react-native';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
@@ -13,16 +13,16 @@ type TProps = {
 
 const RankingModal = ({onCancel}: TProps) => {
   const [status, setStatus] = useState<TStatus>('loading');
-  const [ranking, setRanking] = useState();
+  const [data, setData] = useState([]);
 
   const [date, setDate] = useState(new Date());
   useEffect(() => {
     const load = async () => {
       try {
-        const {ranking: loadedRanking} = await getRanking({
+        const {ranking} = await getRanking({
           date: date.toUTCString(),
         });
-        setRanking(loadedRanking);
+        setData(ranking);
 
         setStatus('loaded');
       } catch (error) {
@@ -51,8 +51,8 @@ const RankingModal = ({onCancel}: TProps) => {
           style={{
             flexDirection: 'row',
             justifyContent: 'space-around',
-            marginTop: 10,
             alignItems: 'center',
+            marginVertical: 10,
           }}>
           <DefaultText
             title="<"
@@ -104,28 +104,35 @@ const RankingModal = ({onCancel}: TProps) => {
             }}
           />
         )}
-        {status === 'loaded' && ranking && (
-          <View
-            style={{
-              flex: 1,
-            }}>
-            <View style={{flex: 1, marginTop: 10}}>
-              {ranking.contents.items.map((content, index) => {
-                return (
-                  <View style={{flex: 1}} key={content.id}>
-                    <DefaultText
-                      title={`#${index + 1} with ${
-                        content.shoutoutFrom?.users?.number
-                      } shoutouts`}
-                    />
-                    <ContentCard content={content} />
-                  </View>
-                );
-              })}
-            </View>
-          </View>
+        {status === 'loaded' && data && (
+          <FlatList
+            data={data.contents?.items ?? []}
+            renderItem={({item, index}) => (
+              <View key={item.id}>
+                <DefaultText
+                  title={`#${index + 1} with ${
+                    item.shoutoutFrom?.users?.number
+                  } shoutouts`}
+                />
+                <DefaultText
+                  title={`by ${item.contributeFrom?.users.items[0].name}`}
+                  style={{marginBottom: 10}}
+                />
+                <ContentCard content={item} />
+              </View>
+            )}
+            ItemSeparatorComponent={() => (
+              <View
+                style={{
+                  borderWidth: 1,
+                  borderColor: 'gray',
+                  marginVertical: 10,
+                }}
+              />
+            )}
+          />
         )}
-        {status === 'loaded' && !ranking && (
+        {status === 'loaded' && !data && (
           <DefaultText
             title="No ranking for this day"
             style={{

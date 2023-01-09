@@ -15,23 +15,21 @@ const Welcome = ({style}: TProps) => {
         <DefaultText title="Shoutout" textStyle={styles.title} />
 
         <DefaultText
-          title="No follower or views, Only Contents"
-          style={styles.slogan}
+          title="Best content wins, no follower or views"
+          style={{marginTop: 10}}
+          textStyle={styles.slogan}
         />
 
         <View style={styles.steps}>
           <DefaultText
-            title="1. Everyone uploads only one content per day"
+            title="1. Everyone can upload only one content per day"
             style={styles.step}
           />
           <DefaultText
-            title="2. Get and send shoutouts to the best contents"
+            title="2. Get shoutouts from others"
             style={styles.step}
           />
-          <DefaultText
-            title="3. Check daily, weekly, monthly, yearly rankings"
-            style={styles.step}
-          />
+          <DefaultText title="3. Check daily rankings" style={styles.step} />
         </View>
       </View>
       <DefaultText

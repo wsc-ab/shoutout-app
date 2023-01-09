@@ -1,12 +1,13 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Alert, Pressable, View} from 'react-native';
+import {Alert, View} from 'react-native';
 import AuthUserContext from '../contexts/AuthUser';
 import DefaultText from '../defaults/DefaultText';
 import {addShoutout, removeShoutout} from '../functions/Content';
+import {TStyleView} from '../types/style';
 
-type TProps = {collection: string; id: string};
+type TProps = {collection: string; id: string; style?: TStyleView};
 
-const ShoutoutButton = ({collection, id}: TProps) => {
+const ShoutoutButton = ({collection, id, style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
   const onShoutout = async () => {
     try {
@@ -37,7 +38,7 @@ const ShoutoutButton = ({collection, id}: TProps) => {
   }, [authUserData.shoutoutTo, collection, id]);
 
   return (
-    <View>
+    <View style={style}>
       {isShoutouted && (
         <DefaultText title="Shoutouted" onPress={onUnshoutout} />
       )}

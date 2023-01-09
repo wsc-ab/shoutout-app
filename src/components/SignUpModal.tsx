@@ -4,7 +4,7 @@ import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
 import DefaultTextInput from '../defaults/DefaultTextInput';
-import {editUser} from '../functions/User';
+import {createUser} from '../functions/User';
 
 type TProps = {
   uid: string;
@@ -21,7 +21,7 @@ const SignUpModal = ({onSuccess, uid}: TProps) => {
 
     try {
       setIsSubmitting(true);
-      await editUser({user: {name: id, id: uid}});
+      await createUser({user: {name: id, id: uid}});
       onSuccess();
     } catch (error) {
       if (error.message === 'display name exists') {
