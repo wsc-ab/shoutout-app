@@ -2,8 +2,10 @@ import {library} from '@fortawesome/fontawesome-svg-core';
 
 import {
   faAngleLeft,
+  faAngleRight,
   faCheck,
   faFlag,
+  faHeart,
   faList,
   faPlus,
   faRotate,
@@ -19,7 +21,9 @@ library.add(
   faShare,
   faFlag,
   faAngleLeft,
+  faAngleRight,
   faTimes,
   faCheck,
   faRotate,
+  faHeart,
 );

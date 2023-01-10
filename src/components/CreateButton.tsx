@@ -55,7 +55,7 @@ const CreateButton = ({style}: TProps) => {
     const asset = await selectContent();
 
     if (!asset) {
-      return;
+      return {uploaded: undefined, asset: undefined};
     }
 
     let uploaded;
@@ -109,7 +109,7 @@ const CreateButton = ({style}: TProps) => {
 
     Alert.alert(
       'Please confirm',
-      "Delete this content? It will no longer show up in rankings, and others won't be able to shoutout this content",
+      "Delete this content? It will no longer show up in rankings, and others won't be able to shoutout this content.",
       [{text: 'Delete', onPress, style: 'destructive'}, {text: 'No'}],
     );
   };
@@ -141,19 +141,28 @@ const CreateButton = ({style}: TProps) => {
       {submitting && (
         <DefaultText
           title={Math.round(progress).toString()}
-          style={styles.icon}
+          style={styles.progress}
         />
       )}
       {modal === 'done' && (
         <DefaultModal>
           <DefaultForm
             title="Content"
+            style={{flex: 1}}
             left={{
-              title: 'Cancel',
               onPress: () => setModal(undefined),
             }}>
             <DefaultText title="This will start to show to others at next 09:00 am." />
-            <View style={{flexDirection: 'row', marginTop: 10}}>
+            <View
+              style={{borderWidth: 1, borderColor: 'gray', marginVertical: 20}}
+            />
+            {content && <ContentCard content={content} />}
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginTop: 10,
+              }}>
               <DefaultIcon
                 icon="rotate"
                 onPress={() => Alert.alert('Not yet implemented')}
@@ -164,7 +173,6 @@ const CreateButton = ({style}: TProps) => {
                 onPress={onDelete}
               />
             </View>
-            {content && <ContentCard content={content} />}
           </DefaultForm>
         </DefaultModal>
       )}
@@ -174,4 +182,7 @@ const CreateButton = ({style}: TProps) => {
 
 export default CreateButton;
 
-const styles = StyleSheet.create({icon: {alignItems: 'flex-end'}});
+const styles = StyleSheet.create({
+  icon: {alignItems: 'flex-end'},
+  progress: {alignItems: 'flex-end', padding: 10},
+});

@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {View} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultText from '../defaults/DefaultText';
 import DefaultTextInput from '../defaults/DefaultTextInput';
@@ -19,23 +20,28 @@ const PhoneForm = ({onCancel, onSuccess, submitting}: TProps) => {
 
   return (
     <DefaultForm
+      style={{flex: 1}}
       title={'Enter Phone'}
-      left={{title: 'Cancel', onPress: onCancel}}
+      left={{onPress: onCancel}}
       right={{
-        title: 'Done',
         onPress: onEnter,
         submitting,
       }}>
-      <DefaultText title="Enter phone number to sign in or up." />
-      <View style={{borderWidth: 1, borderColor: 'gray', marginVertical: 20}} />
-      <DefaultTextInput
-        title="Phone number"
-        value={phoneNumber}
-        onChangeText={setPhoneNumber}
-        placeholder="+821012345678"
-        keyboardType="phone-pad"
-        autoComplete="tel"
-      />
+      <KeyboardAwareScrollView>
+        <DefaultText title="Enter phone number to sign in or up." />
+        <View
+          style={{borderWidth: 1, borderColor: 'gray', marginVertical: 20}}
+        />
+        <DefaultTextInput
+          title="Phone number"
+          value={phoneNumber}
+          onChangeText={setPhoneNumber}
+          placeholder="+821012345678"
+          keyboardType="phone-pad"
+          autoComplete="tel"
+          autoFocus
+        />
+      </KeyboardAwareScrollView>
     </DefaultForm>
   );
 };

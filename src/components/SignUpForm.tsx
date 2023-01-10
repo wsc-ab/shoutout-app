@@ -1,13 +1,14 @@
 import auth, {firebase} from '@react-native-firebase/auth';
 import React, {useEffect, useState} from 'react';
 import {Alert, StyleSheet, View} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultText from '../defaults/DefaultText';
 import DefaultTextInput from '../defaults/DefaultTextInput';
 import {createUser, sendVerificationCode} from '../functions/User';
 
 type TProps = {
-  phoneNumber: string;
+  phoneNumber?: string;
   onCancel: () => void;
 };
 
@@ -17,14 +18,22 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
   const [code, setCode] = useState('');
   const [password, setPassword] = useState('');
 
+  console.log(phoneNumber, 'phoneNumber');
+
   useEffect(() => {
     const load = async () => {
+      if (!phoneNumber) {
+        return;
+      }
       setIsSubmitting(true);
       await sendVerificationCode({user: {phoneNumber}});
 
       setIsSubmitting(false);
     };
-    load();
+
+    if (phoneNumber) {
+      load();
+    }
   }, [phoneNumber]);
 
   const onSubmit = async () => {
@@ -76,53 +85,59 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
     <DefaultForm
       title={'Sign Up'}
       left={{
-        title: 'Cancel',
         onPress: onCancel,
       }}
       right={{
-        title: 'Done',
         onPress: onSubmit,
         submitting,
-      }}>
-      <DefaultText title="Please set your ID to sign up." />
+      }}
+      style={{flex: 1}}>
+      <KeyboardAwareScrollView>
+        <DefaultText title="Please set your ID to sign up." />
 
-      <View style={{borderWidth: 1, borderColor: 'gray', marginVertical: 20}} />
-      <DefaultTextInput
-        title="Email"
-        value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
-        placeholder="airballoon"
-        autoComplete="email"
-        keyboardType="email-address"
-      />
-      <DefaultTextInput
-        title="Password"
-        value={password}
-        onChangeText={setPassword}
-        autoCapitalize="none"
-        autoComplete="password"
-        secureTextEntry
-        style={styles.textInput}
-      />
-      <DefaultTextInput
-        title="ID"
-        value={id}
-        onChangeText={setId}
-        autoCapitalize="none"
-        placeholder="airballoon"
-        style={styles.textInput}
-      />
-      <DefaultTextInput
-        title="Code"
-        detail="Enter the code we sent to your phone."
-        value={code}
-        onChangeText={setCode}
-        placeholder="000000"
-        keyboardType="number-pad"
-        autoComplete="sms-otp"
-        style={styles.textInput}
-      />
+        <View
+          style={{borderWidth: 1, borderColor: 'gray', marginVertical: 20}}
+        />
+        <DefaultTextInput
+          title="Email"
+          value={email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+          placeholder="hello@airballoon.app"
+          autoComplete="email"
+          keyboardType="email-address"
+        />
+        <DefaultTextInput
+          title="Password"
+          value={password}
+          onChangeText={setPassword}
+          autoCapitalize="none"
+          autoComplete="password"
+          placeholder="keep it a secret"
+          secureTextEntry
+          style={styles.textInput}
+        />
+        <DefaultTextInput
+          title="ID"
+          value={id}
+          onChangeText={setId}
+          autoCapitalize="none"
+          autoComplete="username"
+          placeholder="airballoon"
+          style={styles.textInput}
+        />
+        <DefaultTextInput
+          title="Code"
+          detail="Enter the code we sent to your phone."
+          value={code}
+          onChangeText={setCode}
+          placeholder="000000"
+          keyboardType="number-pad"
+          autoComplete="sms-otp"
+          style={styles.textInput}
+          autoFocus
+        />
+      </KeyboardAwareScrollView>
     </DefaultForm>
   );
 };

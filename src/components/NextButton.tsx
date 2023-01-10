@@ -18,13 +18,16 @@ const NextButton = ({id, onSuccess, style}: TProps) => {
   return (
     <View style={style}>
       {!isLoading && (
-        <DefaultIcon icon="angle-left" onPress={onPass} style={styles.icon} />
+        <DefaultIcon icon="angle-right" onPress={onPass} style={styles.icon} />
       )}
-      {isLoading && <ActivityIndicator style={styles.icon} />}
+      {isLoading && <ActivityIndicator style={styles.indicator} />}
     </View>
   );
 };
 
 export default NextButton;
 
-const styles = StyleSheet.create({icon: {alignItems: 'flex-start'}});
+const styles = StyleSheet.create({
+  icon: {alignItems: 'flex-start'},
+  indicator: {alignItems: 'flex-start', padding: 10},
+});

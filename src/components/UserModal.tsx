@@ -21,10 +21,15 @@ const UserModal = ({onCancel}: TProps) => {
 
   return (
     <DefaultModal>
-      <DefaultForm title={'Me'} left={{title: 'Back', onPress: onCancel}}>
+      <DefaultForm title={'Me'} left={{onPress: onCancel}} style={{flex: 1}}>
         <ScrollView
+          contentContainerStyle={{flex: 1}}
           refreshControl={
-            <RefreshControl refreshing={false} onRefresh={onReload} />
+            <RefreshControl
+              refreshing={false}
+              onRefresh={onReload}
+              tintColor="lightgray"
+            />
           }>
           <View
             style={{

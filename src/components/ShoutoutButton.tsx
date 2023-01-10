@@ -1,9 +1,9 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../contexts/AuthUser';
-import DefaultText from '../defaults/DefaultText';
 import {addShoutout, removeShoutout} from '../functions/Content';
 import {TStyleView} from '../types/style';
+import DefaultIcon from './DefaultIcon';
 
 type TProps = {collection: string; id: string; style?: TStyleView};
 
@@ -54,10 +54,11 @@ const ShoutoutButton = ({collection, id, style}: TProps) => {
   return (
     <View style={style}>
       {!isLoading && (
-        <DefaultText
-          title={isShoutouted ? 'Shoutouted' : 'Shoutout'}
+        <DefaultIcon
+          icon="heart"
           onPress={isShoutouted ? onUnshoutout : onShoutout}
           style={styles.icon}
+          color={isShoutouted ? 'red' : 'white'}
         />
       )}
       {isLoading && <ActivityIndicator style={styles.icon} />}

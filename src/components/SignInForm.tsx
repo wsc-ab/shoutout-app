@@ -1,13 +1,13 @@
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import React, {useEffect, useState} from 'react';
 import {Alert, View} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import DefaultForm from '../defaults/DefaultForm';
-import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
 import DefaultTextInput from '../defaults/DefaultTextInput';
 
 type TProps = {
-  phoneNumber: string;
+  phoneNumber?: string;
   onCancel: () => void;
 };
 
@@ -37,6 +37,11 @@ const SignInForm = ({phoneNumber, onCancel}: TProps) => {
 
   useEffect(() => {
     const load = async () => {
+      if (!phoneNumber) {
+        console.log('retuern called');
+        return;
+      }
+
       setIsSubmitting(true);
       const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
       setConfirm(confirmation);
@@ -46,28 +51,33 @@ const SignInForm = ({phoneNumber, onCancel}: TProps) => {
   }, [phoneNumber]);
 
   return (
-    <DefaultModal>
+    <>
       {confirm && (
         <DefaultForm
           title={'Enter Code'}
-          left={{title: 'Cancel', onPress: onCancel}}
-          right={{title: 'Done', onPress: confirmCode, submitting}}>
-          <DefaultText title="Sign in by entering the code we just sent to your phone." />
-          <View
-            style={{borderWidth: 1, borderColor: 'gray', marginVertical: 20}}
-          />
+          left={{onPress: onCancel}}
+          right={{onPress: confirmCode, submitting}}
+          style={{flex: 1}}>
+          <KeyboardAwareScrollView>
+            <DefaultText title="Sign in by entering the code we just sent to your phone." />
+            <View
+              style={{borderWidth: 1, borderColor: 'gray', marginVertical: 20}}
+            />
 
-          <DefaultTextInput
-            title="Code"
-            value={code}
-            onChangeText={setCode}
-            placeholder="000000"
-            keyboardType="number-pad"
-            autoComplete="sms-otp"
-          />
+            <DefaultTextInput
+              title="Code"
+              detail="Enter the code we sent to your phone."
+              value={code}
+              onChangeText={setCode}
+              placeholder="000000"
+              keyboardType="number-pad"
+              autoComplete="sms-otp"
+              autoFocus
+            />
+          </KeyboardAwareScrollView>
         </DefaultForm>
       )}
-    </DefaultModal>
+    </>
   );
 };
 

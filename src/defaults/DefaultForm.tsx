@@ -1,34 +1,32 @@
 import React, {ReactNode} from 'react';
-import {ActivityIndicator, Button, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import DefaultIcon from '../components/DefaultIcon';
+import {TStyleView} from '../types/style';
 import DefaultText from './DefaultText';
 
 type TProps = {
   title: string;
-  left?: {title: string; onPress: () => void};
+  left?: {onPress: () => void};
   right?: {
-    title: string;
     onPress: () => void;
     disabled?: boolean;
     submitting?: boolean;
   };
   children: ReactNode;
+  style?: TStyleView;
 };
 
-const DefaultForm = ({title, left, right, children}: TProps) => {
+const DefaultForm = ({title, left, right, children, style}: TProps) => {
   return (
-    <View style={{flex: 1}}>
+    <View style={style}>
       <View style={styles.header}>
         <View style={styles.left}>
-          {left && <Button title={left.title} onPress={left.onPress} />}
+          {left && <DefaultIcon icon="angle-left" onPress={left.onPress} />}
         </View>
         <DefaultText title={title} textStyle={styles.centerText} />
         <View style={styles.right}>
           {right && !right.submitting && (
-            <Button
-              title={right.title}
-              onPress={right.onPress}
-              disabled={right.disabled}
-            />
+            <DefaultIcon icon="angle-right" onPress={right.onPress} />
           )}
           {right?.submitting && <ActivityIndicator />}
         </View>
