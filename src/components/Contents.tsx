@@ -90,21 +90,17 @@ const Contents = ({style}: TProps) => {
     <View style={style}>
       <ContentCard content={data[index]} style={styles.card} />
       <View style={styles.nav}>
-        <NextButton
-          onSuccess={onNext}
-          id={data[index].id}
-          style={{flex: 1, alignItems: 'flex-start'}}
-        />
+        <NextButton onSuccess={onNext} id={data[index].id} style={{flex: 1}} />
         <ShoutoutButton
           collection="contents"
           id={data[index].id}
-          style={{flex: 1, alignItems: 'center'}}
+          style={{flex: 1}}
         />
         <ReportButton
           collection="contents"
           id={data[index].id}
           onSuccess={onNext}
-          style={{flex: 1, alignItems: 'flex-end'}}
+          style={{flex: 1}}
         />
       </View>
     </View>
@@ -117,8 +113,7 @@ const styles = StyleSheet.create({
   nav: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 20,
-    bottom: 0,
+    alignItems: 'center',
   },
   card: {flex: 1},
   noData: {flex: 1, justifyContent: 'center', alignItems: 'center'},

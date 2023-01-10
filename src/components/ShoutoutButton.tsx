@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Alert, View} from 'react-native';
+import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../contexts/AuthUser';
 import DefaultText from '../defaults/DefaultText';
 import {addShoutout, removeShoutout} from '../functions/Content';
@@ -9,8 +9,12 @@ type TProps = {collection: string; id: string; style?: TStyleView};
 
 const ShoutoutButton = ({collection, id, style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
+  const [isLoading, setIsLoading] = useState(false);
+
   const onShoutout = async () => {
     try {
+      setIsLoading(true);
+
       setIsShoutouted(true);
       await addShoutout({content: {id}});
     } catch (error) {
@@ -20,11 +24,15 @@ const ShoutoutButton = ({collection, id, style}: TProps) => {
         Alert.alert('Please retry', error.message);
       }
       setIsShoutouted(false);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const onUnshoutout = async () => {
     try {
+      setIsLoading(true);
+
       setIsShoutouted(false);
       await removeShoutout({
         content: {id},
@@ -32,6 +40,8 @@ const ShoutoutButton = ({collection, id, style}: TProps) => {
     } catch (error) {
       setIsShoutouted(false);
       Alert.alert('Please retry', 'Failed to unshoutout');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -43,12 +53,20 @@ const ShoutoutButton = ({collection, id, style}: TProps) => {
 
   return (
     <View style={style}>
-      {isShoutouted && (
-        <DefaultText title="Shoutouted" onPress={onUnshoutout} />
+      {!isLoading && (
+        <DefaultText
+          title={isShoutouted ? 'Shoutouted' : 'Shoutout'}
+          onPress={isShoutouted ? onUnshoutout : onShoutout}
+          style={styles.icon}
+        />
       )}
-      {!isShoutouted && <DefaultText title="Shoutout" onPress={onShoutout} />}
+      {isLoading && <ActivityIndicator style={styles.icon} />}
     </View>
   );
 };
 
 export default ShoutoutButton;
+
+const styles = StyleSheet.create({
+  icon: {alignItems: 'center'},
+});

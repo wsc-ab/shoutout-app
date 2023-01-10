@@ -3,12 +3,13 @@ import {StyleSheet, TextInput, TextInputProps, View} from 'react-native';
 import {placeholderTextColor} from '../styles/DefaultColors';
 import DefaultText from './DefaultText';
 
-type TProps = TextInputProps & {title?: string};
+type TProps = TextInputProps & {title?: string; detail?: string};
 
 const DefaultTextInput = (props: TProps) => {
   return (
     <View style={props.style}>
-      <DefaultText title={props.title} />
+      <DefaultText title={props.title} textStyle={styles.titleText} />
+      <DefaultText title={props.detail} style={styles.detail} />
       <TextInput
         {...props}
         placeholderTextColor={placeholderTextColor}
@@ -29,4 +30,6 @@ const styles = StyleSheet.create({
     color: 'white',
     marginTop: 5,
   },
+  titleText: {fontWeight: 'bold', fontSize: 20},
+  detail: {marginTop: 5},
 });

@@ -14,6 +14,7 @@ import {AuthUserProvider} from './src/contexts/AuthUser';
 import Home from './src/screen/Home';
 import {TStatus} from './src/types/screen';
 import {initFirebase} from './src/utils/Firebase';
+import './src/utils/FontAwesome';
 
 const App = () => {
   const [status, setStatus] = useState<TStatus>('loading');

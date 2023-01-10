@@ -88,7 +88,7 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
 
       <View style={{borderWidth: 1, borderColor: 'gray', marginVertical: 20}} />
       <DefaultTextInput
-        title="email"
+        title="Email"
         value={email}
         onChangeText={setEmail}
         autoCapitalize="none"
@@ -97,7 +97,7 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
         keyboardType="email-address"
       />
       <DefaultTextInput
-        title="password"
+        title="Password"
         value={password}
         onChangeText={setPassword}
         autoCapitalize="none"
@@ -115,6 +115,7 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
       />
       <DefaultTextInput
         title="Code"
+        detail="Enter the code we sent to your phone."
         value={code}
         onChangeText={setCode}
         placeholder="000000"

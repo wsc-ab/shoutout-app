@@ -1,8 +1,8 @@
-import React from 'react';
-import {Alert, View} from 'react-native';
-import DefaultText from '../defaults/DefaultText';
+import React, {useState} from 'react';
+import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
 import {createReport} from '../functions/Content';
 import {TStyleView} from '../types/style';
+import DefaultIcon from './DefaultIcon';
 
 type TProps = {
   collection: string;
@@ -12,11 +12,17 @@ type TProps = {
 };
 
 const ReportButton = ({id, collection, onSuccess, style}: TProps) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const onReport = () => {
     const onPress = async () => {
       try {
+        setIsLoading(true);
+
         await createReport({target: {collection, id}});
+
         Alert.alert('Successfully reported');
+
         onSuccess();
       } catch (error) {
         if (error.message === "target doesn't exist") {
@@ -24,6 +30,8 @@ const ReportButton = ({id, collection, onSuccess, style}: TProps) => {
         } else {
           Alert.alert('Please retry', error.message);
         }
+      } finally {
+        setIsLoading(false);
       }
     };
     Alert.alert(
@@ -35,9 +43,14 @@ const ReportButton = ({id, collection, onSuccess, style}: TProps) => {
 
   return (
     <View style={style}>
-      <DefaultText title="Report" onPress={onReport} />
+      {!isLoading && (
+        <DefaultIcon icon="flag" onPress={onReport} style={styles.icon} />
+      )}
+      {isLoading && <ActivityIndicator style={styles.icon} />}
     </View>
   );
 };
 
 export default ReportButton;
+
+const styles = StyleSheet.create({icon: {alignItems: 'flex-end'}});

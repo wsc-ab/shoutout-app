@@ -1,6 +1,6 @@
 import {firebase} from '@react-native-firebase/auth';
 import React, {useContext, useEffect, useState} from 'react';
-import {Alert, View} from 'react-native';
+import {Alert, StyleSheet, View} from 'react-native';
 import {
   ImageLibraryOptions,
   launchImageLibrary,
@@ -15,6 +15,7 @@ import {TStyleView} from '../types/style';
 import {getSecondsGap} from '../utils/Date';
 import {uploadContent} from '../utils/storage';
 import ContentCard from './ContentCard';
+import DefaultIcon from './DefaultIcon';
 
 type TProps = {style: TStyleView};
 
@@ -128,12 +129,21 @@ const CreateButton = ({style}: TProps) => {
   return (
     <View style={style}>
       {isSubmitted && !submitting && (
-        <DefaultText title="Done" onPress={() => setModal('done')} />
+        <DefaultIcon
+          icon="check"
+          onPress={() => setModal('done')}
+          style={styles.icon}
+        />
       )}
       {!isSubmitted && !submitting && (
-        <DefaultText title="Upload" onPress={onAdd} />
+        <DefaultIcon icon="plus" onPress={onAdd} style={styles.icon} />
       )}
-      {submitting && <DefaultText title={Math.round(progress).toString()} />}
+      {submitting && (
+        <DefaultText
+          title={Math.round(progress).toString()}
+          style={styles.icon}
+        />
+      )}
       {modal === 'done' && (
         <DefaultModal>
           <DefaultForm
@@ -142,14 +152,14 @@ const CreateButton = ({style}: TProps) => {
               title: 'Cancel',
               onPress: () => setModal(undefined),
             }}>
-            <DefaultText title="This start to show to others at next 09:00 am." />
+            <DefaultText title="This will start to show to others at next 09:00 am." />
             <View style={{flexDirection: 'row', marginTop: 10}}>
-              <DefaultText
-                title="Change"
+              <DefaultIcon
+                icon="rotate"
                 onPress={() => Alert.alert('Not yet implemented')}
               />
-              <DefaultText
-                title="Delete"
+              <DefaultIcon
+                icon="times"
                 style={{marginLeft: 10}}
                 onPress={onDelete}
               />
@@ -163,3 +173,5 @@ const CreateButton = ({style}: TProps) => {
 };
 
 export default CreateButton;
+
+const styles = StyleSheet.create({icon: {alignItems: 'flex-end'}});
