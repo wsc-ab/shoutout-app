@@ -62,7 +62,7 @@ const Contents = ({style}: TProps) => {
   if (status === 'error') {
     return (
       <View style={styles.noData}>
-        <DefaultText title="(error as {message: string}) Please retry." />
+        <DefaultText title="Error. Please retry." />
         <DefaultText
           title="Reload"
           onPress={() => setStatus('loading')}

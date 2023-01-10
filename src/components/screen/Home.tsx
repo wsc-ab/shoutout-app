@@ -45,33 +45,8 @@ const Home = () => {
       {!isSubmitted && (
         <View style={styles.upload}>
           <DefaultText
-            title="Please upload a content to view other contents."
-            textStyle={{fontWeight: 'bold'}}
-          />
-          <DefaultText
-            title="Share something funny, informative, engaging or anything that made your day!"
-            style={{marginTop: 5}}
-          />
-          <DefaultText
-            title="How Shoutout works"
-            style={{marginTop: 20}}
-            textStyle={{fontWeight: 'bold'}}
-          />
-          <DefaultText
-            title="1. Everyone can upload only one content per day."
-            style={{marginTop: 5}}
-          />
-          <DefaultText
-            title="2. We only show contents. No user ID, # of followers, # of shoutouts."
-            style={{marginTop: 5}}
-          />
-          <DefaultText
-            title="3. People shoutout to contents, not users."
-            style={{marginTop: 5}}
-          />
-          <DefaultText
-            title="4. If a content receives enough shoutouts, it will be in the ranking. Only then we share who shared that content."
-            style={{marginTop: 5}}
+            title="Please shoutout a content to view others."
+            style={{alignItems: 'center'}}
           />
         </View>
       )}

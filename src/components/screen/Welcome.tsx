@@ -13,20 +13,31 @@ const Welcome = ({style}: TProps) => {
       <View style={styles.texts}>
         <DefaultText title="Shoutout" textStyle={styles.title} />
         <DefaultText
-          title="Which content will get the most shoutouts?"
+          title="Best content wins"
           style={{marginTop: 10}}
           textStyle={styles.slogan}
         />
         <View style={styles.steps}>
           <DefaultText
-            title="1. Shoutout one content per day, without followers"
+            title="1. One shoutout per day, without followers"
             style={styles.step}
           />
           <DefaultText
-            title="2. Get shoutouts from others"
+            title="2. Get shoutouts, without showing who you are"
             style={styles.step}
           />
-          <DefaultText title="3. Check daily rankings" style={styles.step} />
+          <DefaultText
+            title="3. Send shoutouts, without knowing who they are"
+            style={styles.step}
+          />
+          <DefaultText
+            title="4. Check daily rankings, with your ID on it"
+            style={styles.step}
+          />
+          <DefaultText
+            title="5. Only contents matter, not followers"
+            style={styles.step}
+          />
         </View>
       </View>
       <DefaultText
