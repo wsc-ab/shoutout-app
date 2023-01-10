@@ -65,11 +65,11 @@ const Home = () => {
             style={{marginTop: 5}}
           />
           <DefaultText
-            title="3. People shoutout to contents."
+            title="3. People shoutout to contents, not users."
             style={{marginTop: 5}}
           />
           <DefaultText
-            title="4. If your content receives enough shoutouts, it will show up in the ranking chart. Only then we share who shared that content."
+            title="4. If a content receives enough shoutouts, it will be in the ranking. Only then we share who shared that content."
             style={{marginTop: 5}}
           />
         </View>

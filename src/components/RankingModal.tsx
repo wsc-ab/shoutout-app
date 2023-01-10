@@ -44,15 +44,13 @@ const RankingModal = ({onCancel}: TProps) => {
   return (
     <DefaultModal>
       <DefaultForm title="Ranking" left={{title: 'Back', onPress: onCancel}}>
-        <DefaultText
-          title={'Checkout the ranking contents based on # of shoutouts.'}
-        />
+        <DefaultText title={'Top contents based on # of shoutouts.'} />
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-around',
             alignItems: 'center',
-            marginVertical: 10,
+            marginTop: 10,
           }}>
           <DefaultText
             title="<"
@@ -97,6 +95,13 @@ const RankingModal = ({onCancel}: TProps) => {
             }
           />
         </View>
+        <View
+          style={{
+            borderWidth: 1,
+            borderColor: 'gray',
+            marginVertical: 10,
+          }}
+        />
         {status === 'loading' && (
           <ActivityIndicator
             style={{

@@ -1,5 +1,5 @@
 import {firebase} from '@react-native-firebase/auth';
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Alert, View} from 'react-native';
 import {
   ImageLibraryOptions,
@@ -10,6 +10,7 @@ import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
 import {createContent, deleteContent} from '../functions/Content';
+import {TObject} from '../types/firebase';
 import {TStyleView} from '../types/style';
 import {getSecondsGap} from '../utils/Date';
 import {uploadContent} from '../utils/storage';
@@ -23,6 +24,12 @@ const CreateButton = ({style}: TProps) => {
   const [submitting, setSubmitting] = useState(false);
 
   const [progress, setProgress] = useState(0);
+
+  const [content, setContent] = useState<TObject>();
+
+  useEffect(() => {
+    setContent(authUserData?.contributeTo?.contents?.items?.[0] ?? undefined);
+  }, [authUserData?.contributeTo?.contents?.items]);
 
   const selectContent = async () => {
     const options: ImageLibraryOptions = {
@@ -106,32 +113,24 @@ const CreateButton = ({style}: TProps) => {
     );
   };
 
-  const getLastContent = () => {
-    const nextSubmitDate = new Date();
+  const nextSubmitDate = new Date();
 
-    nextSubmitDate.setDate(nextSubmitDate.getDate() + 1);
-    nextSubmitDate.setHours(8, 59, 59, 999);
+  nextSubmitDate.setDate(nextSubmitDate.getDate() + 1);
+  nextSubmitDate.setHours(8, 59, 59, 999);
 
-    const content = authUserData?.contributeTo?.contents?.items?.[0];
-
-    const isSubmitted = content?.createdAt
-      ? getSecondsGap({
-          date: nextSubmitDate,
-          timestamp: content.createdAt,
-        }) > 0
-      : false;
-
-    return {...content, isSubmitted};
-  };
-
-  const lastContent = getLastContent();
+  const isSubmitted = content?.createdAt
+    ? getSecondsGap({
+        date: nextSubmitDate,
+        timestamp: content.createdAt,
+      }) > 0
+    : false;
 
   return (
     <View style={style}>
-      {lastContent?.isSubmitted && !submitting && (
+      {isSubmitted && !submitting && (
         <DefaultText title="Done" onPress={() => setModal('done')} />
       )}
-      {!lastContent?.isSubmitted && !submitting && (
+      {!isSubmitted && !submitting && (
         <DefaultText title="Upload" onPress={onAdd} />
       )}
       {submitting && <DefaultText title={Math.round(progress).toString()} />}
@@ -143,7 +142,7 @@ const CreateButton = ({style}: TProps) => {
               title: 'Cancel',
               onPress: () => setModal(undefined),
             }}>
-            <DefaultText title="This will be submitted at 08:59 am tomorrow." />
+            <DefaultText title="This start to show to others at next 09:00 am." />
             <View style={{flexDirection: 'row', marginTop: 10}}>
               <DefaultText
                 title="Change"
@@ -155,7 +154,7 @@ const CreateButton = ({style}: TProps) => {
                 onPress={onDelete}
               />
             </View>
-            {lastContent && <ContentCard content={lastContent} />}
+            {content && <ContentCard content={content} />}
           </DefaultForm>
         </DefaultModal>
       )}
