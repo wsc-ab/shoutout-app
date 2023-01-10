@@ -12,12 +12,12 @@ import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native';
 import {AuthUserProvider} from './src/contexts/AuthUser';
 import Home from './src/screen/Home';
+import {TStatus} from './src/types/screen';
 import {initFirebase} from './src/utils/Firebase';
 
 const App = () => {
-  const [status, setStatus] = useState<'error' | 'loading' | 'loaded'>(
-    'loading',
-  );
+  const [status, setStatus] = useState<TStatus>('loading');
+
   useEffect(() => {
     const load = async () => {
       try {
@@ -37,6 +37,8 @@ const App = () => {
   if (status === 'loading') {
     return null;
   }
+
+  console.log('called');
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'black'}}>

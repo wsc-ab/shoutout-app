@@ -20,7 +20,7 @@ const SignInForm = ({phoneNumber, onCancel}: TProps) => {
 
   const [code, setCode] = useState('');
 
-  async function confirmCode() {
+  const confirmCode = async () => {
     if (!confirm) {
       return;
     }
@@ -33,7 +33,7 @@ const SignInForm = ({phoneNumber, onCancel}: TProps) => {
     } finally {
       setIsSubmitting(false);
     }
-  }
+  };
 
   useEffect(() => {
     const load = async () => {

@@ -19,14 +19,8 @@ const EnterModal = ({onCancel}: TProps) => {
     setSubmitting(true);
 
     const {status} = await checkPhoneNumber({user: {phoneNumber}});
-
-    if (status === 'signedUp') {
-      setForm('signIn');
-    } else {
-      setForm('signUp');
-    }
-
     setSubmitting(false);
+    setForm(status === 'signedUp' ? 'signIn' : 'signUp');
   };
 
   return (

@@ -13,7 +13,7 @@ type TProps = {
 const PhoneForm = ({onCancel, onSuccess, submitting}: TProps) => {
   const [phoneNumber, setPhoneNumber] = useState('');
 
-  const onEnter = async () => {
+  const onEnter = () => {
     onSuccess(phoneNumber);
   };
 

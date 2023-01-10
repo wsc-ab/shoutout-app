@@ -1,5 +1,5 @@
 import {firebase} from '@react-native-firebase/auth';
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Alert, View} from 'react-native';
 import {
   ImageLibraryOptions,
@@ -10,7 +10,6 @@ import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
 import {createContent, deleteContent} from '../functions/Content';
-import {TObject} from '../types/firebase';
 import {TStyleView} from '../types/style';
 import {getSecondsGap} from '../utils/Date';
 import {uploadContent} from '../utils/storage';
@@ -50,7 +49,7 @@ const CreateButton = ({style}: TProps) => {
     if (!asset) {
       return;
     }
-    setProgress(0);
+
     let uploaded;
 
     try {
@@ -88,24 +87,6 @@ const CreateButton = ({style}: TProps) => {
     }
   };
 
-  const [content, setContent] = useState<TObject>();
-
-  useEffect(() => {
-    setContent(authUserData?.contributeTo?.contents?.items?.[0] ?? undefined);
-  }, [authUserData?.contributeTo?.contents?.items]);
-
-  const nextSubmitDate = new Date();
-
-  nextSubmitDate.setDate(nextSubmitDate.getDate() + 1);
-  nextSubmitDate.setHours(8, 59, 59, 999);
-
-  const isSubmitted = content?.createdAt
-    ? getSecondsGap({
-        date: nextSubmitDate,
-        timestamp: content.createdAt,
-      }) > 0
-    : false;
-
   const [modal, setModal] = useState<'done'>();
 
   const onDelete = () => {
@@ -125,12 +106,32 @@ const CreateButton = ({style}: TProps) => {
     );
   };
 
+  const getLastContent = () => {
+    const nextSubmitDate = new Date();
+
+    nextSubmitDate.setDate(nextSubmitDate.getDate() + 1);
+    nextSubmitDate.setHours(8, 59, 59, 999);
+
+    const content = authUserData?.contributeTo?.contents?.items?.[0];
+
+    const isSubmitted = content?.createdAt
+      ? getSecondsGap({
+          date: nextSubmitDate,
+          timestamp: content.createdAt,
+        }) > 0
+      : false;
+
+    return {...content, isSubmitted};
+  };
+
+  const lastContent = getLastContent();
+
   return (
     <View style={style}>
-      {isSubmitted && !submitting && (
+      {lastContent?.isSubmitted && !submitting && (
         <DefaultText title="Done" onPress={() => setModal('done')} />
       )}
-      {!isSubmitted && !submitting && (
+      {!lastContent?.isSubmitted && !submitting && (
         <DefaultText title="Upload" onPress={onAdd} />
       )}
       {submitting && <DefaultText title={Math.round(progress).toString()} />}
@@ -154,7 +155,7 @@ const CreateButton = ({style}: TProps) => {
                 onPress={onDelete}
               />
             </View>
-            {content && <ContentCard content={content} />}
+            {lastContent && <ContentCard content={lastContent} />}
           </DefaultForm>
         </DefaultModal>
       )}

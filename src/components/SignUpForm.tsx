@@ -60,8 +60,6 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
         Alert.alert('Use a different ID', 'This ID has been used.');
       } else if (error.message === 'email exists') {
         Alert.alert('Use a different email', 'This email has been used.');
-      } else if (error.message === 'email exists') {
-        Alert.alert('Use a different email', 'This email has been used.');
       } else if (error.message === 'invalid code') {
         Alert.alert('Please retry', 'This code is invalid');
       } else {
