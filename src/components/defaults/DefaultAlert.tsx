@@ -1,6 +1,6 @@
 import React, {ReactNode} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {defaultBlack} from '../styles/DefaultColors';
+import {defaultBlack} from './DefaultColors';
 
 type TProps = {
   children: ReactNode;

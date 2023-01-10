@@ -3,7 +3,7 @@ import firestore, {firebase} from '@react-native-firebase/firestore';
 import React, {createContext, useEffect, useState} from 'react';
 import {Alert} from 'react-native';
 
-import {TAuthUser, TDocData, TDocSnapshot} from '../types/firebase';
+import {TAuthUser, TDocData, TDocSnapshot} from '../types/Firebase1';
 
 type TContextProps = {
   loaded: boolean;

@@ -1,9 +1,9 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
-import AuthUserContext from '../contexts/AuthUser';
-import {addShoutout, removeShoutout} from '../functions/Content';
-import {TStyleView} from '../types/style';
-import DefaultIcon from './DefaultIcon';
+import AuthUserContext from '../../contexts/AuthUser';
+import {addShoutout, removeShoutout} from '../../functions/Content';
+import {TStyleView} from '../../types/Style1';
+import DefaultIcon from '../defaults/DefaultIcon';
 
 type TProps = {collection: string; id: string; style?: TStyleView};
 

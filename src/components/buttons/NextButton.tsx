@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
-import {addView} from '../functions/Content';
-import {TStyleView} from '../types/style';
-import DefaultIcon from './DefaultIcon';
+import {addView} from '../../functions/Content';
+import {TStyleView} from '../../types/Style1';
+import DefaultIcon from '../defaults/DefaultIcon';
 
 type TProps = {id: string; onSuccess: () => void; style?: TStyleView};
 

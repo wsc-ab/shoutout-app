@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {TStyleView} from '../../types/Style1';
 import DefaultText from '../defaults/DefaultText';
-import {TStyleView} from '../types/style';
-
-import EnterModal from './EnterModal';
+import EnterModal from '../modals/EnterModal';
 
 type TProps = {style?: TStyleView};
 

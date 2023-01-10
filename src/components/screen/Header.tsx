@@ -1,8 +1,8 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import CreateButton from './CreateButton';
-import RankingButton from './RankingButton';
-import UserButton from './UserButton';
+import CreateButton from '../buttons/CreateButton';
+import RankingButton from '../buttons/RankingButton';
+import UserButton from '../buttons/UserButton';
 
 const Header = () => {
   return (

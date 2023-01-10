@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
-import {createReport} from '../functions/Content';
-import {TStyleView} from '../types/style';
-import DefaultIcon from './DefaultIcon';
+import {createReport} from '../../functions/Content';
+import {TStyleView} from '../../types/Style1';
+import DefaultIcon from '../defaults/DefaultIcon';
 
 type TProps = {
   collection: string;

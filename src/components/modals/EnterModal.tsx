@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 import {Alert} from 'react-native';
+
+import {checkPhoneNumber} from '../../functions/User';
 import DefaultModal from '../defaults/DefaultModal';
-import {checkPhoneNumber} from '../functions/User';
-import PhoneForm from './PhoneForm';
-import SignInForm from './SignInForm';
-import SignUpForm from './SignUpForm';
+import PhoneForm from '../forms/PhoneForm';
+import SignInForm from '../forms/SignInForm';
+import SignUpForm from '../forms/SignUpForm';
 
 type TProps = {
   onCancel: () => void;

@@ -2,7 +2,7 @@ import {IconProp} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import React from 'react';
 import {Pressable, StyleSheet} from 'react-native';
-import {TStyleView} from '../types/style';
+import {TStyleView} from '../../types/Style1';
 
 type TProps = {
   icon: IconProp;

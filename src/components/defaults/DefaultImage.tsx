@@ -7,7 +7,8 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import {TStatus} from '../types/screen';
+import {TStatus} from '../../types/Screen1';
+
 import DefaultText from './DefaultText';
 
 export const getThumnailPath = (url: string) => url + '_200x200';

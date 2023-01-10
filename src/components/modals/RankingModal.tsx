@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, FlatList, View} from 'react-native';
+
+import {getRanking} from '../../functions/Content';
+import {TStatus} from '../../types/Screen1';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
-import {getRanking} from '../functions/Content';
-import {TStatus} from '../types/screen';
-import ContentCard from './ContentCard';
+import ContentCard from '../screen/ContentCard';
 
 type TProps = {
   onCancel: () => void;

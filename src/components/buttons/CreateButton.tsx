@@ -5,17 +5,18 @@ import {
   ImageLibraryOptions,
   launchImageLibrary,
 } from 'react-native-image-picker';
-import AuthUserContext from '../contexts/AuthUser';
+import AuthUserContext from '../../contexts/AuthUser';
+
+import {createContent, deleteContent} from '../../functions/Content';
+import {TObject} from '../../types/Firebase1';
+import {TStyleView} from '../../types/Style1';
+import {getSecondsGap} from '../../utils/Date';
+import {uploadContent} from '../../utils/storage';
 import DefaultForm from '../defaults/DefaultForm';
+import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
-import {createContent, deleteContent} from '../functions/Content';
-import {TObject} from '../types/firebase';
-import {TStyleView} from '../types/style';
-import {getSecondsGap} from '../utils/Date';
-import {uploadContent} from '../utils/storage';
-import ContentCard from './ContentCard';
-import DefaultIcon from './DefaultIcon';
+import ContentCard from '../screen/ContentCard';
 
 type TProps = {style: TStyleView};
 
@@ -99,6 +100,9 @@ const CreateButton = ({style}: TProps) => {
 
   const onDelete = () => {
     const onPress = async () => {
+      if (!content) {
+        return;
+      }
       try {
         await deleteContent({content: {id: content.id}});
         setModal(undefined);

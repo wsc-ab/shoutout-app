@@ -1,10 +1,11 @@
 import React, {useContext} from 'react';
 import {Alert, RefreshControl, ScrollView, View} from 'react-native';
-import AuthUserContext from '../contexts/AuthUser';
+import AuthUserContext from '../../contexts/AuthUser';
+
+import {deleteUser} from '../../functions/User';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
-import {deleteUser} from '../functions/User';
 
 type TProps = {
   onCancel: () => void;

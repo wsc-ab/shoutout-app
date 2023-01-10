@@ -1,7 +1,8 @@
 import React, {ReactNode} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
-import DefaultIcon from '../components/DefaultIcon';
-import {TStyleView} from '../types/style';
+import {TStyleView} from '../../types/Style1';
+import DefaultIcon from './DefaultIcon';
+
 import DefaultText from './DefaultText';
 
 type TProps = {

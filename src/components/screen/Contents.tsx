@@ -1,14 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
+import {getContents} from '../../functions/Content';
+import {TDocData} from '../../types/Firebase1';
+import {TStyleView} from '../../types/Style1';
+import NextButton from '../buttons/NextButton';
+import ReportButton from '../buttons/ReportButton';
+import ShoutoutButton from '../buttons/ShoutoutButton';
 import DefaultText from '../defaults/DefaultText';
-import {getContents} from '../functions/Content';
-import {TDocData} from '../types/firebase';
-import {TStyleView} from '../types/style';
 import ContentCard from './ContentCard';
-import NextButton from './NextButton';
-import ReportButton from './ReportButton';
-
-import ShoutoutButton from './ShoutoutButton';
 
 type TProps = {
   style: TStyleView;

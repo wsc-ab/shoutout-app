@@ -1,12 +1,13 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import Contents from '../components/Contents';
-import Header from '../components/Header';
-import Welcome from '../components/Welcome';
-import AuthUserContext from '../contexts/AuthUser';
+import Contents from './Contents';
+
+import AuthUserContext from '../../contexts/AuthUser';
+import {TObject} from '../../types/Firebase1';
+import {getSecondsGap} from '../../utils/Date';
 import DefaultText from '../defaults/DefaultText';
-import {TObject} from '../types/firebase';
-import {getSecondsGap} from '../utils/Date';
+import Header from './Header';
+import Welcome from './Welcome';
 
 const Home = () => {
   const {authUser, authUserData, loaded} = useContext(AuthUserContext);
@@ -48,7 +49,7 @@ const Home = () => {
             textStyle={{fontWeight: 'bold'}}
           />
           <DefaultText
-            title="Share something funny, insightful or anything that made your day!"
+            title="Share something funny, informative, engaging or anything that made your day!"
             style={{marginTop: 5}}
           />
           <DefaultText

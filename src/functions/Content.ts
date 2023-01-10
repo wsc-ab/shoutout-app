@@ -62,9 +62,7 @@ export const editContent = async (input: {
   return {...data};
 };
 
-export const deleteContent = async (input: {
-  conent: {id: string; path: string; type: string};
-}) => {
+export const deleteContent = async (input: {content: {id: string}}) => {
   const {data} = await firebaseFunctions.httpsCallable('deleteContent')(input);
 
   return {...data};

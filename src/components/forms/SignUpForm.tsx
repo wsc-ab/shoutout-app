@@ -2,10 +2,11 @@ import auth, {firebase} from '@react-native-firebase/auth';
 import React, {useEffect, useState} from 'react';
 import {Alert, StyleSheet, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+
+import {createUser, sendVerificationCode} from '../../functions/User';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultText from '../defaults/DefaultText';
 import DefaultTextInput from '../defaults/DefaultTextInput';
-import {createUser, sendVerificationCode} from '../functions/User';
 
 type TProps = {
   phoneNumber?: string;

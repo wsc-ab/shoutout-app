@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {TStyleView} from '../types/style';
-import DefaultIcon from './DefaultIcon';
-import UserModal from './UserModal';
+import {TStyleView} from '../../types/Style1';
+import DefaultIcon from '../defaults/DefaultIcon';
+import UserModal from '../modals/UserModal';
 
 type TProps = {style: TStyleView};
 

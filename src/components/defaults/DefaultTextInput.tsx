@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, TextInput, TextInputProps, View} from 'react-native';
-import {placeholderTextColor} from '../styles/DefaultColors';
+import {placeholderTextColor} from './DefaultColors';
+
 import DefaultText from './DefaultText';
 
 type TProps = TextInputProps & {title?: string; detail?: string};
