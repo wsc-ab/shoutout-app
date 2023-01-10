@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
 import {createReport} from '../../functions/Content';
-import {TStyleView} from '../../types/Style1';
+import {TStyleView} from '../../types/Style';
 import DefaultIcon from '../defaults/DefaultIcon';
 
 type TProps = {
@@ -25,10 +25,10 @@ const ReportButton = ({id, collection, onSuccess, style}: TProps) => {
 
         onSuccess();
       } catch (error) {
-        if (error.message === "target doesn't exist") {
+        if ((error as {message: string}).message === "target doesn't exist") {
           Alert.alert('This content has been deleted');
         } else {
-          Alert.alert('Please retry', error.message);
+          Alert.alert('Please retry', (error as {message: string}).message);
         }
       } finally {
         setIsLoading(false);

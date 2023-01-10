@@ -1,6 +1,6 @@
 import React from 'react';
 import {Pressable, StyleSheet, Text} from 'react-native';
-import {TStyleText, TStyleView} from '../../types/Style1';
+import {TStyleText, TStyleView} from '../../types/Style';
 
 type Props<A extends string> = {
   title?: A;

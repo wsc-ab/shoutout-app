@@ -12,7 +12,7 @@ import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native';
 import {AuthUserProvider} from './src/contexts/AuthUser';
 import Home from './src/components/screen/Home';
-import {TStatus} from './src/types/Screen1';
+import {TStatus} from './src/types/Screen';
 import {initFirebase} from './src/utils/Firebase';
 import './src/utils/FontAwesome';
 
@@ -38,8 +38,6 @@ const App = () => {
   if (status === 'loading') {
     return null;
   }
-
-  console.log('called');
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'black'}}>

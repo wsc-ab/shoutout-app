@@ -19,8 +19,6 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
   const [code, setCode] = useState('');
   const [password, setPassword] = useState('');
 
-  console.log(phoneNumber, 'phoneNumber');
-
   useEffect(() => {
     const load = async () => {
       if (!phoneNumber) {
@@ -66,14 +64,14 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
       });
       await auth().signInWithEmailAndPassword(email, password);
     } catch (error) {
-      if (error.message === 'display name exists') {
+      if ((error as {message: string}).message === 'display name exists') {
         Alert.alert('Use a different ID', 'This ID has been used.');
-      } else if (error.message === 'email exists') {
+      } else if ((error as {message: string}).message === 'email exists') {
         Alert.alert('Use a different email', 'This email has been used.');
-      } else if (error.message === 'invalid code') {
+      } else if ((error as {message: string}).message === 'invalid code') {
         Alert.alert('Please retry', 'This code is invalid');
       } else {
-        Alert.alert('Please retry', error.message);
+        Alert.alert('Please retry', (error as {message: string}).message);
       }
     } finally {
       setIsSubmitting(false);

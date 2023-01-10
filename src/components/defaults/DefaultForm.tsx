@@ -1,6 +1,6 @@
 import React, {ReactNode} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
-import {TStyleView} from '../../types/Style1';
+import {TStyleView} from '../../types/Style';
 import DefaultIcon from './DefaultIcon';
 
 import DefaultText from './DefaultText';
@@ -29,7 +29,7 @@ const DefaultForm = ({title, left, right, children, style}: TProps) => {
           {right && !right.submitting && (
             <DefaultIcon icon="angle-right" onPress={right.onPress} />
           )}
-          {right?.submitting && <ActivityIndicator />}
+          {right?.submitting && <ActivityIndicator style={styles.acitivity} />}
         </View>
       </View>
       {children}
@@ -52,4 +52,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   right: {flex: 1, alignItems: 'flex-end'},
+  acitivity: {paddingHorizontal: 10},
 });

@@ -3,7 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import Contents from './Contents';
 
 import AuthUserContext from '../../contexts/AuthUser';
-import {TObject} from '../../types/Firebase1';
+import {TObject} from '../../types/Firebase';
 import {getSecondsGap} from '../../utils/Date';
 import DefaultText from '../defaults/DefaultText';
 import Header from './Header';

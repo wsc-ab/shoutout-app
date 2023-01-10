@@ -27,7 +27,7 @@ const EnterModal = ({onCancel}: TProps) => {
       setSubmitting(false);
       setForm(status === 'signedUp' ? 'signIn' : 'signUp');
     } catch (error) {
-      Alert.alert('Please retry', error.message);
+      Alert.alert('Please retry', (error as {message: string}).message);
     } finally {
       setSubmitting(false);
     }

@@ -8,8 +8,8 @@ import {
 import AuthUserContext from '../../contexts/AuthUser';
 
 import {createContent, deleteContent} from '../../functions/Content';
-import {TObject} from '../../types/Firebase1';
-import {TStyleView} from '../../types/Style1';
+import {TObject} from '../../types/Firebase';
+import {TStyleView} from '../../types/Style';
 import {getSecondsGap} from '../../utils/Date';
 import {uploadContent} from '../../utils/storage';
 import DefaultForm from '../defaults/DefaultForm';
@@ -106,9 +106,7 @@ const CreateButton = ({style}: TProps) => {
       try {
         await deleteContent({content: {id: content.id}});
         setModal(undefined);
-      } catch (error) {
-        console.log(error, 'e');
-      }
+      } catch (error) {}
     };
 
     Alert.alert(

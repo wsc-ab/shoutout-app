@@ -38,12 +38,13 @@ const SignInForm = ({phoneNumber, onCancel}: TProps) => {
   useEffect(() => {
     const load = async () => {
       if (!phoneNumber) {
-        console.log('retuern called');
         return;
       }
 
       setIsSubmitting(true);
       const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+      console.log('called');
+
       setConfirm(confirmation);
       setIsSubmitting(false);
     };

@@ -7,7 +7,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import {TStatus} from '../../types/Screen1';
+import {TStatus} from '../../types/Screen';
 
 import DefaultText from './DefaultText';
 

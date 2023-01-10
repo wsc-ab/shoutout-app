@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import {addShoutout, removeShoutout} from '../../functions/Content';
-import {TStyleView} from '../../types/Style1';
+import {TStyleView} from '../../types/Style';
 import DefaultIcon from '../defaults/DefaultIcon';
 
 type TProps = {collection: string; id: string; style?: TStyleView};
@@ -18,10 +18,10 @@ const ShoutoutButton = ({collection, id, style}: TProps) => {
       setIsShoutouted(true);
       await addShoutout({content: {id}});
     } catch (error) {
-      if (error.message === "content doesn't exist") {
+      if ((error as {message: string}).message === "content doesn't exist") {
         Alert.alert('This content has been deleted');
       } else {
-        Alert.alert('Please retry', error.message);
+        Alert.alert('Please retry', (error as {message: string}).message);
       }
       setIsShoutouted(false);
     } finally {

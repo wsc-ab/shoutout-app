@@ -1,4 +1,4 @@
-import {TTimestamp, TTimestampClient} from '../types/Firebase1';
+import {TTimestamp, TTimestampClient} from '../types/Firebase';
 
 export const getSecondsFromTimestamp = (timestamp: TTimestampClient) =>
   new Date(timestamp._seconds * 1000).getTime();

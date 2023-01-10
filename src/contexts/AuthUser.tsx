@@ -3,7 +3,7 @@ import firestore, {firebase} from '@react-native-firebase/firestore';
 import React, {createContext, useEffect, useState} from 'react';
 import {Alert} from 'react-native';
 
-import {TAuthUser, TDocData, TDocSnapshot} from '../types/Firebase1';
+import {TAuthUser, TDocData, TDocSnapshot} from '../types/Firebase';
 
 type TContextProps = {
   loaded: boolean;
@@ -63,7 +63,7 @@ const AuthUserProvider = ({children}: TProps) => {
       };
 
       const onError = (error: Error) => {
-        Alert.alert('Please sign in again', error.message);
+        Alert.alert('Please sign in again', (error as {message: string}).message);
       };
 
       const unsubscribe = firestore()

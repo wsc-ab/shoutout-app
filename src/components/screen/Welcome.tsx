@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {TStyleView} from '../../types/Style1';
+import {TStyleView} from '../../types/Style';
 import DefaultText from '../defaults/DefaultText';
 import EnterModal from '../modals/EnterModal';
 

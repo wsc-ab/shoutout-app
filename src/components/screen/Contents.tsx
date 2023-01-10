@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
 import {getContents} from '../../functions/Content';
-import {TDocData} from '../../types/Firebase1';
-import {TStyleView} from '../../types/Style1';
+import {TDocData} from '../../types/Firebase';
+import {TStyleView} from '../../types/Style';
 import NextButton from '../buttons/NextButton';
 import ReportButton from '../buttons/ReportButton';
 import ShoutoutButton from '../buttons/ShoutoutButton';
@@ -62,7 +62,7 @@ const Contents = ({style}: TProps) => {
   if (status === 'error') {
     return (
       <View style={styles.noData}>
-        <DefaultText title="Error. Please retry." />
+        <DefaultText title="(error as {message: string}) Please retry." />
         <DefaultText
           title="Reload"
           onPress={() => setStatus('loading')}

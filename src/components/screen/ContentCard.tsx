@@ -1,8 +1,8 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 
-import {TDocData} from '../../types/Firebase1';
-import {TStyleView} from '../../types/Style1';
+import {TDocData} from '../../types/Firebase';
+import {TStyleView} from '../../types/Style';
 import DefaultImage from '../defaults/DefaultImage';
 import DefaultVideo from '../defaults/DefaultVideo';
 
