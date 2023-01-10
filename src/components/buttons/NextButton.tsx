@@ -18,7 +18,7 @@ const NextButton = ({id, onSuccess, style}: TProps) => {
   return (
     <View style={style}>
       {!isLoading && (
-        <DefaultIcon icon="angle-right" onPress={onPass} style={styles.icon} />
+        <DefaultIcon icon="angle-down" onPress={onPass} style={styles.icon} />
       )}
       {isLoading && <ActivityIndicator style={styles.indicator} />}
     </View>

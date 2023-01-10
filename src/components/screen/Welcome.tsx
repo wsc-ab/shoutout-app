@@ -12,16 +12,14 @@ const Welcome = ({style}: TProps) => {
     <View style={style}>
       <View style={styles.texts}>
         <DefaultText title="Shoutout" textStyle={styles.title} />
-
         <DefaultText
-          title="Best content wins, no follower or views"
+          title="Which content will get the most shoutouts?"
           style={{marginTop: 10}}
           textStyle={styles.slogan}
         />
-
         <View style={styles.steps}>
           <DefaultText
-            title="1. Everyone can upload only one content per day"
+            title="1. Shoutout one content per day, without followers"
             style={styles.step}
           />
           <DefaultText

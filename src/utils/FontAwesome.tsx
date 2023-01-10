@@ -1,6 +1,7 @@
 import {library} from '@fortawesome/fontawesome-svg-core';
 
 import {
+  faAngleDown,
   faAngleLeft,
   faAngleRight,
   faCheck,
@@ -26,4 +27,5 @@ library.add(
   faCheck,
   faRotate,
   faHeart,
+  faAngleDown,
 );
