@@ -10,7 +10,7 @@ import AuthUserContext from '../../contexts/AuthUser';
 import {createContent, deleteContent} from '../../functions/Content';
 import {TStyleView} from '../../types/Style';
 import {getStartDate} from '../../utils/Date';
-import {uploadContent} from '../../utils/storage1';
+import {uploadContent} from '../../utils/Storage';
 import DefaultDivider from '../defaults/DefaultDivider';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultIcon from '../defaults/DefaultIcon';
