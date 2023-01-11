@@ -25,7 +25,7 @@ steps:
     args:
       [
         'cp',
-        'gs://playstore-version-code/gradle.properties',
+        'gs://shoutout-version-code/gradle.properties',
         'gradle.properties',
       ]
 
@@ -88,7 +88,7 @@ steps:
       [
         'cp',
         'gradle.properties',
-        'gs://playstore-version-code/gradle.properties',
+        'gs://shoutout-version-code/gradle.properties',
       ]
 
   #

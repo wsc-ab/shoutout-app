@@ -192,7 +192,7 @@ android {
         applicationId "app.airballoon.Shoutout"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode newVersionCode 
+        versionCode newVersionCode
         versionName newVersionName
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 

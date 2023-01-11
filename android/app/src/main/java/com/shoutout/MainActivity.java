@@ -1,4 +1,4 @@
-package com.shoutout;
+package app.airballoon.Shoutout;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

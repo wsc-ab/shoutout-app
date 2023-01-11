@@ -1,4 +1,4 @@
-package com.shoutout.newarchitecture.modules;
+package app.airballoon.Shoutout.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;

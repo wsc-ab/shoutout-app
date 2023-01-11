@@ -4,7 +4,7 @@
  * <p>This source code is licensed under the MIT license found in the LICENSE file in the root
  * directory of this source tree.
  */
-package com.shoutout;
+package app.airballoon.Shoutout;
 
 import android.content.Context;
 import com.facebook.flipper.android.AndroidFlipperClient;
