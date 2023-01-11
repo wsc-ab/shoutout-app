@@ -33,18 +33,21 @@ const Contents = ({style}: TProps) => {
         });
 
         const contentItems = ranking.contents.items;
-        const filteredItems = contentItems.filter(
-          ({
-            contributeFrom: {
-              users: {ids},
-            },
-          }) => {
-            return !ids.includes(authUserData.id);
-          },
-        );
+
+        const filteredItems = contentItems.filter(item => {
+          const isNotFromUser = !item.contributeFrom?.users?.ids.includes(
+            authUserData.id,
+          );
+          const isNotViewed = !authUserData.viewed?.contents.ids.includes(
+            item.id,
+          );
+          return isNotFromUser && isNotViewed;
+        });
+
         const shuffledArray = shuffleArray(filteredItems);
 
         setData(shuffledArray);
+
         setStatus('loaded');
         setIndex(0);
       } catch (error) {
