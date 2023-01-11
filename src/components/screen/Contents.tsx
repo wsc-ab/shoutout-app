@@ -75,7 +75,7 @@ const Contents = ({style}: TProps) => {
   if (data.length === 0) {
     return (
       <View style={styles.noData}>
-        <DefaultText title="No item to check. Try refreshing later." />
+        <DefaultText title="We are still gathering contents. Try refreshing later." />
         <DefaultText
           title="Refresh now"
           onPress={() => setStatus('loading')}
