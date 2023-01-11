@@ -8,13 +8,15 @@ import Header from './Header';
 import Welcome from './Welcome';
 
 const Home = () => {
-  const {authUser, content, loaded} = useContext(AuthUserContext);
+  const {authUserData, content, loaded} = useContext(AuthUserContext);
 
   if (!loaded) {
     return null;
   }
 
-  if (!authUser) {
+  console.log(authUserData, 'authUserData');
+
+  if (!authUserData) {
     return <Welcome style={styles.container} />;
   }
 

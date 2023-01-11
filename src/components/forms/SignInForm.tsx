@@ -38,16 +38,23 @@ const SignInForm = ({phoneNumber, onCancel}: TProps) => {
 
   useEffect(() => {
     const load = async () => {
+      console.log(phoneNumber, 'phoneNumber');
+
       if (!phoneNumber) {
         return;
       }
 
       setIsSubmitting(true);
-      const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
-      console.log('called');
 
-      setConfirm(confirmation);
-      setIsSubmitting(false);
+      try {
+        const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+
+        setConfirm(confirmation);
+      } catch (error) {
+        Alert.alert('Please retry', (error as {message: string}).message);
+      } finally {
+        setIsSubmitting(false);
+      }
     };
     load();
   }, [phoneNumber]);
