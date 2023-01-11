@@ -4,6 +4,9 @@ apply plugin: 'com.google.gms.google-services' // for react-native-firebase
 import com.android.build.OutputFile
 import org.apache.tools.ant.taskdefs.condition.Os
 
+// for cloud-build
+import groovy.json.JsonSlurper 
+
 /**
  * The react.gradle file registers a task for each build variant (e.g. bundleDebugJsAndAssets
  * and bundleReleaseJsAndAssets).
@@ -186,10 +189,10 @@ android {
     println "Set version code to $newVersionCode"
 
     defaultConfig {
-        applicationId "com.shoutout"
+        applicationId "app.airballoon.Shoutout"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode newVersionCode
+        versionCode newVersionCode 
         versionName newVersionName
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 
