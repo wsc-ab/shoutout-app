@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>34711621260-o1b4gc2f2nogce0e08j487cr0pho64od.apps.googleusercontent.com</string>
+	<string>315556622122-8gsck935k4be1je08o45hmiqtjodh982.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.34711621260-o1b4gc2f2nogce0e08j487cr0pho64od</string>
+	<string>com.googleusercontent.apps.315556622122-8gsck935k4be1je08o45hmiqtjodh982</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCJhIsWQpFpFZzJAOaLGC9v_LI_KAZ_4lA</string>
+	<string>AIzaSyCExEGKZ6iD8c29smLov3iyAtYoLcIFBwQ</string>
 	<key>GCM_SENDER_ID</key>
-	<string>34711621260</string>
+	<string>315556622122</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>app.airballoon.Shoutout</string>
 	<key>PROJECT_ID</key>
-	<string>shoutout-509dd</string>
+	<string>shoutout-89829</string>
 	<key>STORAGE_BUCKET</key>
-	<string>shoutout-509dd.appspot.com</string>
+	<string>shoutout-89829.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:34711621260:ios:fef6896f2bfc9fd2fbf5a9</string>
+	<string>1:315556622122:ios:4be072a3a7bb9bcf89f853</string>
 </dict>
 </plist>
