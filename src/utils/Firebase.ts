@@ -14,15 +14,14 @@ export const initFirebase = () => {
 
     const ip = 'localhost';
 
+    const region = 'us-central1';
+
     auth().useEmulator(`http://${ip}:9099`);
     firestore().useEmulator(ip, 8080);
     storage().useEmulator(ip, 9199);
 
-    firebase
-      .app()
-      .functions('asia-northeast3')
-      .useFunctionsEmulator(`http://${ip}:5001`);
+    firebase.app().functions(region).useFunctionsEmulator(`http://${ip}:5001`);
   }
 
-  firebaseFunctions = firebase.app().functions('asia-northeast3');
+  firebaseFunctions = firebase.app().functions(region);
 };
