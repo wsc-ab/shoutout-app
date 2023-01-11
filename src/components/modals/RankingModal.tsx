@@ -127,13 +127,12 @@ const RankingModal = ({onCancel}: TProps) => {
             renderItem={({item, index}) => (
               <View key={item.id}>
                 <DefaultText
-                  title={`#${index + 1} with ${
+                  title={`#${index + 1} received ${
                     item.shoutoutFrom?.users?.number
-                  } shoutouts`}
-                />
-                <DefaultText
-                  title={`by ${item.contributeFrom?.users.items[0].name}`}
-                  style={{marginBottom: 10}}
+                  } shoutouts / by ${
+                    item.contributeFrom?.users.items[0].name
+                  } `}
+                  style={{marginBottom: 10, alignItems: 'center'}}
                   onPress={() =>
                     setUserModalId(item.contributeFrom?.users.items[0].id)
                   }

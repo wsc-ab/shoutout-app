@@ -1,12 +1,15 @@
 import firebase from '@react-native-firebase/app';
 import React, {useEffect, useState} from 'react';
-import {Alert, Linking, RefreshControl, ScrollView, View} from 'react-native';
+import {Alert, FlatList, Linking, View} from 'react-native';
 
 import {TObject} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
+import {getDate} from '../../utils/Date';
+import DefaultDivider from '../defaults/DefaultDivider';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
+import ContentCard from '../screen/ContentCard';
 
 type TProps = {
   id: string;
@@ -50,33 +53,50 @@ const UserModal = ({id, onCancel}: TProps) => {
     <DefaultModal>
       {data && (
         <DefaultForm title={data.name} left={{onPress: onCancel}}>
-          <ScrollView
-            contentContainerStyle={{flex: 1}}
-            refreshControl={
-              <RefreshControl
-                refreshing={false}
-                onRefresh={() => setStatus('loading')}
-                tintColor="lightgray"
-              />
-            }>
-            <View
+          <View
+            style={{
+              flexDirection: 'row',
+            }}>
+            <DefaultText title="Link" textStyle={{fontWeight: 'bold'}} />
+            <DefaultText
+              title={data?.link ?? 'Link is not set.'}
               style={{
-                flexDirection: 'row',
-              }}>
-              <DefaultText title="Link" textStyle={{fontWeight: 'bold'}} />
-              <DefaultText
-                title={data?.link ?? 'Link is not set.'}
+                marginLeft: 10,
+              }}
+              onPress={
+                data?.link
+                  ? () => Linking.openURL('https://' + data?.link)
+                  : undefined
+              }
+            />
+          </View>
+          <DefaultDivider />
+          <FlatList
+            data={data.contributeTo?.contents.items ?? []}
+            renderItem={({item}) => {
+              const createdAt = getDate(item.createdAt);
+              return (
+                <View key={item.id}>
+                  <DefaultText
+                    title={`${createdAt.getFullYear()}/${
+                      createdAt.getMonth() + 1
+                    }/${createdAt.getDate() + 1}`}
+                    style={{marginBottom: 5, alignItems: 'center'}}
+                  />
+                  <ContentCard content={item} />
+                </View>
+              );
+            }}
+            ItemSeparatorComponent={() => (
+              <View
                 style={{
-                  marginLeft: 10,
+                  borderWidth: 1,
+                  borderColor: 'gray',
+                  marginVertical: 10,
                 }}
-                onPress={
-                  data?.link
-                    ? () => Linking.openURL('https://' + data?.link)
-                    : undefined
-                }
               />
-            </View>
-          </ScrollView>
+            )}
+          />
         </DefaultForm>
       )}
     </DefaultModal>
