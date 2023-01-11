@@ -16,8 +16,15 @@ const AuthUserModal = ({onCancel}: TProps) => {
     useContext(AuthUserContext);
 
   const onDelete = async () => {
-    await deleteUser({user: {id: authUserData.id}});
-    onSignOut();
+    const onPress = async () => {
+      await deleteUser({user: {id: authUserData.id}});
+      onSignOut();
+    };
+    Alert.alert(
+      'Are you sure?',
+      "Your data will be removed, and you can't restore data once you delete your account.",
+      [{text: 'Delete', onPress, style: 'destructive'}, {text: 'No'}],
+    );
   };
 
   return (

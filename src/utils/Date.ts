@@ -41,7 +41,7 @@ export const getTimeSinceTimestamp = (timestamp: TTimestamp) => {
   return timeGap + ' ago';
 };
 
-export const getDate = (timestamp: TTimestamp) => {
+export const getDate = (timestamp: TTimestampClient) => {
   return new Date(timestamp._seconds * 1000);
 };
 
