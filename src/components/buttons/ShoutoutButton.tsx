@@ -3,6 +3,7 @@ import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import {addShoutout, removeShoutout} from '../../functions/Content';
 import {TStyleView} from '../../types/Style';
+import {defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 
 type TProps = {collection: string; id: string; style?: TStyleView};
@@ -58,7 +59,7 @@ const ShoutoutButton = ({collection, id, style}: TProps) => {
           icon="heart"
           onPress={isShoutouted ? onUnshoutout : onShoutout}
           style={styles.icon}
-          color={isShoutouted ? 'red' : 'white'}
+          color={isShoutouted ? defaultRed : 'white'}
         />
       )}
       {isLoading && <ActivityIndicator style={styles.icon} />}

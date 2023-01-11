@@ -10,7 +10,11 @@ import AuthUserContext from '../../contexts/AuthUser';
 import {createContent, deleteContent} from '../../functions/Content';
 import {TObject} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
-import {getSecondsGap} from '../../utils/Date';
+import {
+  getCurrentSubmitDate,
+  getSecondsGap,
+  getStartDate,
+} from '../../utils/Date';
 import {uploadContent} from '../../utils/storage';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultIcon from '../defaults/DefaultIcon';
@@ -116,14 +120,12 @@ const CreateButton = ({style}: TProps) => {
     );
   };
 
-  const nextSubmitDate = new Date();
-
-  nextSubmitDate.setDate(nextSubmitDate.getDate() + 1);
-  nextSubmitDate.setHours(8, 59, 59, 999);
+  const submitDate = getCurrentSubmitDate();
+  const startDate = getStartDate();
 
   const isSubmitted = content?.createdAt
     ? getSecondsGap({
-        date: nextSubmitDate,
+        date: submitDate,
         timestamp: content.createdAt,
       }) > 0
     : false;
@@ -154,7 +156,11 @@ const CreateButton = ({style}: TProps) => {
             left={{
               onPress: () => setModal(undefined),
             }}>
-            <DefaultText title="This will start to show to others at next 09:00 am." />
+            <DefaultText
+              title={`This will start to be shown to others at ${
+                startDate.getMonth() + 1
+              }/${startDate.getDate()} ${startDate.getHours()}:00.`}
+            />
             <View
               style={{borderWidth: 1, borderColor: 'gray', marginVertical: 20}}
             />

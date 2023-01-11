@@ -23,19 +23,11 @@ const Welcome = ({style}: TProps) => {
             style={styles.step}
           />
           <DefaultText
-            title="2. Get shoutouts, without showing who you are"
+            title="2. Send shoutouts, without knowing creators"
             style={styles.step}
           />
           <DefaultText
-            title="3. Send shoutouts, without knowing who they are"
-            style={styles.step}
-          />
-          <DefaultText
-            title="4. Check daily rankings, with your ID on it"
-            style={styles.step}
-          />
-          <DefaultText
-            title="5. Only contents matter, not followers"
+            title="3. Check content rankings, now findout creators"
             style={styles.step}
           />
         </View>

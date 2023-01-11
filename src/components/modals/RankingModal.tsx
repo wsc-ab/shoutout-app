@@ -2,8 +2,12 @@ import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, FlatList, View} from 'react-native';
 
 import {getRanking} from '../../functions/Content';
+import {TObject} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
+import {getCurrentDate} from '../../utils/Date';
+import {defaultRed} from '../defaults/DefaultColors';
 import DefaultForm from '../defaults/DefaultForm';
+import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
 import ContentCard from '../screen/ContentCard';
@@ -14,9 +18,9 @@ type TProps = {
 
 const RankingModal = ({onCancel}: TProps) => {
   const [status, setStatus] = useState<TStatus>('loading');
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<TObject>();
 
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(getCurrentDate());
   useEffect(() => {
     const load = async () => {
       try {
@@ -44,8 +48,13 @@ const RankingModal = ({onCancel}: TProps) => {
 
   return (
     <DefaultModal>
-      <DefaultForm title="Ranking" left={{onPress: onCancel}}>
-        <DefaultText title={'Top contents based on # of shoutouts.'} />
+      <DefaultForm
+        title="Ranking"
+        left={{onPress: onCancel}}
+        style={{flex: 1, paddingBottom: 50}}>
+        <DefaultText
+          title={'Based only on # of shoutouts, not # of followers.'}
+        />
         <View
           style={{
             flexDirection: 'row',
@@ -53,8 +62,8 @@ const RankingModal = ({onCancel}: TProps) => {
             alignItems: 'center',
             marginTop: 10,
           }}>
-          <DefaultText
-            title="<"
+          <DefaultIcon
+            icon="arrow-left"
             onPress={() => {
               setDate(pre => {
                 const copy = new Date(pre);
@@ -64,37 +73,37 @@ const RankingModal = ({onCancel}: TProps) => {
               });
             }}
           />
-          <View style={{alignItems: 'center'}}>
-            <DefaultText title={'Start at'} />
-            <DefaultText
-              title={`${date.getMonth() + 1}/${date.getDate() + 1} 09:00`}
-            />
-          </View>
-          <View style={{alignItems: 'center'}}>
-            <DefaultText title={'End at'} />
-            <DefaultText
-              title={`${date.getMonth() + 1}/${date.getDate() + 2} 08:59`}
-            />
-          </View>
 
           <DefaultText
-            title=">"
-            textStyle={{
-              color: date.getDate() === now.getDate() ? 'gray' : 'white',
-            }}
-            onPress={
-              date.getDate() === now.getDate()
-                ? undefined
-                : () => {
-                    setDate(pre => {
-                      const copy = new Date(pre);
-
-                      copy.setDate(pre.getDate() + 1);
-                      return copy;
-                    });
-                  }
-            }
+            title={`${
+              date.getMonth() + 1
+            }/${date.getDate()} ${date.getHours()}:00`}
           />
+
+          <DefaultText title={'~'} />
+
+          <DefaultText
+            title={`${date.getMonth() + 1}/${date.getDate() + 1} ${
+              date.getHours() - 1
+            }:59`}
+          />
+
+          {date.getDate() === now.getDate() && (
+            <DefaultText title="Live" textStyle={{color: defaultRed}} />
+          )}
+          {date.getDate() !== now.getDate() && (
+            <DefaultIcon
+              icon="arrow-right"
+              onPress={() => {
+                setDate(pre => {
+                  const copy = new Date(pre);
+
+                  copy.setDate(pre.getDate() + 1);
+                  return copy;
+                });
+              }}
+            />
+          )}
         </View>
         <View
           style={{
@@ -107,6 +116,8 @@ const RankingModal = ({onCancel}: TProps) => {
           <ActivityIndicator
             style={{
               flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           />
         )}

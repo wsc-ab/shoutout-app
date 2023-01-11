@@ -4,7 +4,7 @@ import Contents from './Contents';
 
 import AuthUserContext from '../../contexts/AuthUser';
 import {TObject} from '../../types/Firebase';
-import {getSecondsGap} from '../../utils/Date';
+import {getCurrentSubmitDate, getSecondsGap} from '../../utils/Date';
 import DefaultText from '../defaults/DefaultText';
 import Header from './Header';
 import Welcome from './Welcome';
@@ -18,14 +18,11 @@ const Home = () => {
     setContent(authUserData?.contributeTo?.contents?.items?.[0] ?? undefined);
   }, [authUserData?.contributeTo?.contents?.items]);
 
-  const nextSubmitDate = new Date();
-
-  nextSubmitDate.setDate(nextSubmitDate.getDate() + 1);
-  nextSubmitDate.setHours(8, 59, 59, 999);
+  const submitDate = getCurrentSubmitDate();
 
   const isSubmitted = content?.createdAt
     ? getSecondsGap({
-        date: nextSubmitDate,
+        date: submitDate,
         timestamp: content.createdAt,
       }) > 0
     : false;

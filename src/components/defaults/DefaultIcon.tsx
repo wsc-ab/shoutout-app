@@ -6,7 +6,7 @@ import {TStyleView} from '../../types/Style';
 
 type TProps = {
   icon: IconProp;
-  onPress: (icon: IconProp) => void;
+  onPress: (icon?: IconProp) => void;
   style?: TStyleView;
   color?: string;
 };

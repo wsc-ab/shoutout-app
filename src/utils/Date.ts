@@ -52,3 +52,86 @@ export const getSecondsGap = ({
   timestamp: TTimestampClient;
   date: Date;
 }) => Math.floor((date.getTime() - getSecondsFromTimestamp(timestamp)) / 1000);
+
+export const getNextSubmitDate = () => {
+  const now = new Date();
+
+  const submitDate = new Date(
+    Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate(),
+      now.getUTCHours(),
+      now.getUTCMinutes(),
+      now.getUTCSeconds(),
+      now.getUTCMilliseconds(),
+    ),
+  );
+
+  submitDate.setDate(submitDate.getUTCDate() + 1);
+  submitDate.setUTCHours(23, 59, 59, 999);
+
+  return submitDate;
+};
+
+export const getCurrentSubmitDate = () => {
+  const now = new Date();
+
+  const submitDate = new Date(
+    Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate(),
+      now.getUTCHours(),
+      now.getUTCMinutes(),
+      now.getUTCSeconds(),
+      now.getUTCMilliseconds(),
+    ),
+  );
+
+  submitDate.setDate(submitDate.getUTCDate());
+  submitDate.setUTCHours(23, 59, 59, 999);
+
+  return submitDate;
+};
+
+export const getStartDate = () => {
+  const now = new Date();
+
+  const submitDate = new Date(
+    Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate(),
+      now.getUTCHours(),
+      now.getUTCMinutes(),
+      now.getUTCSeconds(),
+      now.getUTCMilliseconds(),
+    ),
+  );
+
+  submitDate.setDate(submitDate.getUTCDate() + 1);
+  submitDate.setUTCHours(0, 0, 0, 0);
+
+  return submitDate;
+};
+
+export const getCurrentDate = () => {
+  const now = new Date();
+
+  const submitDate = new Date(
+    Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate(),
+      now.getUTCHours(),
+      now.getUTCMinutes(),
+      now.getUTCSeconds(),
+      now.getUTCMilliseconds(),
+    ),
+  );
+
+  submitDate.setUTCHours(0, 0, 0, 0);
+
+  return submitDate;
+};
