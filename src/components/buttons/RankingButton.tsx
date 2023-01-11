@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {useContext, useState} from 'react';
+import {Alert, StyleSheet, View} from 'react-native';
+import AuthUserContext from '../../contexts/AuthUser';
 import {TStyleView} from '../../types/Style';
 import DefaultIcon from '../defaults/DefaultIcon';
 import RankingModal from '../modals/RankingModal';
@@ -7,15 +8,23 @@ import RankingModal from '../modals/RankingModal';
 type TProps = {style: TStyleView};
 
 const RankingButton = ({style}: TProps) => {
+  const {content} = useContext(AuthUserContext);
   const [modal, setModal] = useState<'ranking'>();
+
+  const onPress = () => {
+    if (!content) {
+      return Alert.alert(
+        'Please upload a content',
+        'Upload a content to check the latest ranking.',
+      );
+    }
+
+    setModal('ranking');
+  };
 
   return (
     <View style={style}>
-      <DefaultIcon
-        icon="list"
-        onPress={() => setModal('ranking')}
-        style={styles.icon}
-      />
+      <DefaultIcon icon="list" onPress={onPress} style={styles.icon} />
       {modal === 'ranking' && (
         <RankingModal onCancel={() => setModal(undefined)} />
       )}

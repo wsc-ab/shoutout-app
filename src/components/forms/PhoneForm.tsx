@@ -2,6 +2,7 @@ import {CountryCode, parsePhoneNumber} from 'libphonenumber-js/mobile';
 import React, {useState} from 'react';
 import {Alert, ScrollView, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import DefaultDivider from '../defaults/DefaultDivider';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
@@ -49,9 +50,7 @@ const PhoneForm = ({onCancel, onSuccess, submitting}: TProps) => {
       }}>
       <KeyboardAwareScrollView>
         <DefaultText title="Enter phone number to sign in or up." />
-        <View
-          style={{borderWidth: 1, borderColor: 'gray', marginVertical: 20}}
-        />
+        <DefaultDivider />
         <DefaultText
           title="Phone number"
           textStyle={{fontWeight: 'bold', fontSize: 20}}

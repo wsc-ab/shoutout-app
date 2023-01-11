@@ -6,16 +6,12 @@ import {
   launchImageLibrary,
 } from 'react-native-image-picker';
 import AuthUserContext from '../../contexts/AuthUser';
-import LastContentContext from '../../contexts/LastContent';
 
 import {createContent, deleteContent} from '../../functions/Content';
 import {TStyleView} from '../../types/Style';
-import {
-  getCurrentSubmitDate,
-  getSecondsGap,
-  getStartDate,
-} from '../../utils/Date';
+import {getStartDate} from '../../utils/Date';
 import {uploadContent} from '../../utils/storage';
+import DefaultDivider from '../defaults/DefaultDivider';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultModal from '../defaults/DefaultModal';
@@ -25,8 +21,7 @@ import ContentCard from '../screen/ContentCard';
 type TProps = {style: TStyleView};
 
 const CreateButton = ({style}: TProps) => {
-  const {authUserData} = useContext(AuthUserContext);
-  const {content} = useContext(LastContentContext);
+  const {authUserData, content} = useContext(AuthUserContext);
 
   const [submitting, setSubmitting] = useState(false);
 
@@ -119,26 +114,18 @@ const CreateButton = ({style}: TProps) => {
     );
   };
 
-  const submitDate = getCurrentSubmitDate();
   const startDate = getStartDate();
-
-  const isSubmitted = content?.createdAt
-    ? getSecondsGap({
-        date: submitDate,
-        timestamp: content.createdAt,
-      }) > 0
-    : false;
 
   return (
     <View style={style}>
-      {isSubmitted && !submitting && (
+      {content && !submitting && (
         <DefaultIcon
           icon="check"
           onPress={() => setModal('done')}
           style={styles.icon}
         />
       )}
-      {!isSubmitted && !submitting && (
+      {!content && !submitting && (
         <DefaultIcon icon="plus" onPress={onAdd} style={styles.icon} />
       )}
       {submitting && progress === 0 && <ActivityIndicator style={styles.act} />}
@@ -160,13 +147,7 @@ const CreateButton = ({style}: TProps) => {
                 startDate.getMonth() + 1
               }/${startDate.getDate()} ${startDate.getHours()}:00.`}
             />
-            <View
-              style={{
-                borderWidth: 1,
-                borderColor: 'gray',
-                marginVertical: 20,
-              }}
-            />
+            <DefaultDivider />
 
             {content && <ContentCard content={content} />}
             <View

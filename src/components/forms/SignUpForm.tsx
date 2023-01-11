@@ -4,6 +4,7 @@ import {Alert, Linking, StyleSheet, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import {createUser, sendVerificationCode} from '../../functions/User';
+import DefaultDivider from '../defaults/DefaultDivider';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultText from '../defaults/DefaultText';
 import DefaultTextInput from '../defaults/DefaultTextInput';
@@ -94,7 +95,7 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
       }}>
       <KeyboardAwareScrollView>
         <DefaultText title="Please set your ID to sign up." />
-        <View style={styles.divider} />
+        <DefaultDivider />
         <DefaultTextInput
           title="Email"
           value={email}
@@ -179,5 +180,4 @@ const Terms = () => {
 const styles = StyleSheet.create({
   textInput: {marginTop: 10},
   terms: {marginTop: 10, flexDirection: 'row', flexWrap: 'wrap'},
-  divider: {borderWidth: 1, borderColor: 'gray', marginVertical: 20},
 });

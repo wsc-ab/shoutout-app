@@ -1,7 +1,8 @@
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, Alert, StyleSheet} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import DefaultDivider from '../defaults/DefaultDivider';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultText from '../defaults/DefaultText';
 import DefaultTextInput from '../defaults/DefaultTextInput';
@@ -60,9 +61,7 @@ const SignInForm = ({phoneNumber, onCancel}: TProps) => {
         {confirm && (
           <KeyboardAwareScrollView>
             <DefaultText title="Sign in by entering the code we just sent to your phone." />
-            <View
-              style={{borderWidth: 1, borderColor: 'gray', marginVertical: 20}}
-            />
+            <DefaultDivider />
 
             <DefaultTextInput
               title="Code"

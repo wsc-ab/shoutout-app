@@ -3,7 +3,8 @@ import firestore, {firebase} from '@react-native-firebase/firestore';
 import React, {createContext, useEffect, useState} from 'react';
 import {Alert} from 'react-native';
 
-import {TAuthUser, TDocData, TDocSnapshot} from '../types/Firebase';
+import {TAuthUser, TDocData, TDocSnapshot, TObject} from '../types/Firebase';
+import {getCurrentSubmitDate, getSecondsGap} from '../utils/Date';
 
 type TContextProps = {
   loaded: boolean;
@@ -11,6 +12,7 @@ type TContextProps = {
   authUserData: TDocData;
   onReload: () => void;
   onSignOut: () => void;
+  content?: TObject;
 };
 
 const AuthUserContext = createContext({} as TContextProps);
@@ -42,6 +44,8 @@ const AuthUserProvider = ({children}: TProps) => {
   };
 
   const [authUserData, setAuthUserData] = useState<TDocData>();
+
+  console.log('authUser context called');
 
   // subscribe to auth user data change
   useEffect(() => {
@@ -93,7 +97,15 @@ const AuthUserProvider = ({children}: TProps) => {
     setAuthUserData(undefined);
   };
 
-  console.log(authUserData?.name, 'auth');
+  const lastContent = authUserData?.contributeTo?.contents?.items?.[0];
+  const submitDate = getCurrentSubmitDate();
+
+  const submitted = lastContent?.createdAt
+    ? getSecondsGap({
+        date: submitDate,
+        timestamp: lastContent.createdAt,
+      }) > 0
+    : false;
 
   return (
     <AuthUserContext.Provider
@@ -103,6 +115,7 @@ const AuthUserProvider = ({children}: TProps) => {
         authUserData: authUserData!,
         onSignOut,
         onReload,
+        content: submitted ? lastContent : undefined,
       }}>
       {children}
     </AuthUserContext.Provider>

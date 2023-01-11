@@ -3,14 +3,12 @@ import {StyleSheet, View} from 'react-native';
 import Contents from './Contents';
 
 import AuthUserContext from '../../contexts/AuthUser';
-import LastContentContext from '../../contexts/LastContent';
 import DefaultText from '../defaults/DefaultText';
 import Header from './Header';
 import Welcome from './Welcome';
 
 const Home = () => {
-  const {authUser, loaded} = useContext(AuthUserContext);
-  const {submitted} = useContext(LastContentContext);
+  const {authUser, content, loaded} = useContext(AuthUserContext);
 
   if (!loaded) {
     return null;
@@ -23,8 +21,8 @@ const Home = () => {
   return (
     <View style={styles.container}>
       <Header />
-      {submitted && <Contents style={styles.contents} />}
-      {!submitted && (
+      {content && <Contents style={styles.contents} />}
+      {!content && (
         <DefaultText
           title="Please add a content to cast your shoutouts"
           style={styles.upload}
