@@ -23,7 +23,7 @@ const App = () => {
   useEffect(() => {
     const load = async () => {
       try {
-        initFirebase('korea');
+        initFirebase();
 
         setStatus('loaded');
       } catch (error) {
