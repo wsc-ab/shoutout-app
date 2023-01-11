@@ -22,10 +22,7 @@ const AuthUserModal = ({onCancel}: TProps) => {
 
   return (
     <DefaultModal>
-      <DefaultForm
-        title={authUserData.name}
-        left={{onPress: onCancel}}
-        style={{flex: 1}}>
+      <DefaultForm title={authUserData.name} left={{onPress: onCancel}}>
         <ScrollView
           contentContainerStyle={{flex: 1}}
           refreshControl={

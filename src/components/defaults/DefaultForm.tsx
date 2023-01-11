@@ -19,7 +19,7 @@ type TProps = {
 
 const DefaultForm = ({title, left, right, children, style}: TProps) => {
   return (
-    <View style={style}>
+    <View style={[styles.container, style]}>
       <View style={styles.header}>
         <View style={styles.left}>
           {left && <DefaultIcon icon="angle-left" onPress={left.onPress} />}
@@ -40,6 +40,7 @@ const DefaultForm = ({title, left, right, children, style}: TProps) => {
 export default DefaultForm;
 
 const styles = StyleSheet.create({
+  container: {flex: 1, paddingBottom: 50},
   header: {
     flexDirection: 'row',
     alignItems: 'center',

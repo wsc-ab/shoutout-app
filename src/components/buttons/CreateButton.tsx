@@ -155,7 +155,6 @@ const CreateButton = ({style}: TProps) => {
         <DefaultModal>
           <DefaultForm
             title="Content"
-            style={{flex: 1}}
             left={{
               onPress: () => setModal(undefined),
             }}>

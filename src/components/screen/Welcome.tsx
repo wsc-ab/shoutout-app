@@ -14,8 +14,8 @@ const Welcome = ({style}: TProps) => {
         <DefaultText title="Shoutout" textStyle={styles.title} />
         <DefaultText
           title="Best content wins"
-          style={{marginTop: 10}}
-          textStyle={styles.slogan}
+          style={styles.slogan}
+          textStyle={styles.sloganText}
         />
         <View style={styles.steps}>
           <DefaultText
@@ -28,6 +28,10 @@ const Welcome = ({style}: TProps) => {
           />
           <DefaultText
             title="3. Check content rankings, now findout creators"
+            style={styles.step}
+          />
+          <DefaultText
+            title="4. Rankings are posted on our social profiles for free"
             style={styles.step}
           />
         </View>
@@ -47,7 +51,8 @@ export default Welcome;
 const styles = StyleSheet.create({
   texts: {flex: 1, alignItems: 'center', justifyContent: 'center'},
   title: {fontSize: 50, fontWeight: 'bold'},
-  slogan: {fontSize: 20},
+  slogan: {marginTop: 10},
+  sloganText: {fontSize: 20},
   steps: {marginTop: 30},
   step: {marginTop: 10},
   enter: {

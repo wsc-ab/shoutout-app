@@ -49,10 +49,7 @@ const UserModal = ({id, onCancel}: TProps) => {
   return (
     <DefaultModal>
       {data && (
-        <DefaultForm
-          title={data.name}
-          left={{onPress: onCancel}}
-          style={{flex: 1}}>
+        <DefaultForm title={data.name} left={{onPress: onCancel}}>
           <ScrollView
             contentContainerStyle={{flex: 1}}
             refreshControl={

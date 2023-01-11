@@ -56,8 +56,7 @@ const SignInForm = ({phoneNumber, onCancel}: TProps) => {
       <DefaultForm
         title={'Enter Code'}
         left={{onPress: onCancel}}
-        right={{onPress: confirmCode, submitting}}
-        style={{flex: 1}}>
+        right={{onPress: confirmCode, submitting}}>
         {confirm && (
           <KeyboardAwareScrollView>
             <DefaultText title="Sign in by entering the code we just sent to your phone." />

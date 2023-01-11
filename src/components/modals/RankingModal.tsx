@@ -51,10 +51,7 @@ const RankingModal = ({onCancel}: TProps) => {
 
   return (
     <DefaultModal>
-      <DefaultForm
-        title="Ranking"
-        left={{onPress: onCancel}}
-        style={{flex: 1, paddingBottom: 50}}>
+      <DefaultForm title="Ranking" left={{onPress: onCancel}}>
         <DefaultText
           title={'Based only on # of shoutouts, not # of followers.'}
         />

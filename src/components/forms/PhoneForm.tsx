@@ -41,7 +41,6 @@ const PhoneForm = ({onCancel, onSuccess, submitting}: TProps) => {
 
   return (
     <DefaultForm
-      style={{flex: 1}}
       title={'Enter Phone'}
       left={{onPress: onCancel}}
       right={{

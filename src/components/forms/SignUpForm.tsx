@@ -1,6 +1,6 @@
 import auth, {firebase} from '@react-native-firebase/auth';
 import React, {useEffect, useState} from 'react';
-import {Alert, StyleSheet, View} from 'react-native';
+import {Alert, Linking, StyleSheet, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import {createUser, sendVerificationCode} from '../../functions/User';
@@ -91,14 +91,10 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
       right={{
         onPress: onSubmit,
         submitting,
-      }}
-      style={{flex: 1}}>
+      }}>
       <KeyboardAwareScrollView>
         <DefaultText title="Please set your ID to sign up." />
-
-        <View
-          style={{borderWidth: 1, borderColor: 'gray', marginVertical: 20}}
-        />
+        <View style={styles.divider} />
         <DefaultTextInput
           title="Email"
           value={email}
@@ -147,6 +143,7 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
           style={styles.textInput}
           autoFocus
         />
+        <Terms />
       </KeyboardAwareScrollView>
     </DefaultForm>
   );
@@ -154,4 +151,33 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
 
 export default SignUpForm;
 
-const styles = StyleSheet.create({textInput: {marginTop: 10}});
+const Terms = () => {
+  return (
+    <View style={styles.terms}>
+      <DefaultText title="By signing up you agree to Airballoon's " />
+      <DefaultText
+        title={'terms'}
+        onPress={async () => {
+          await Linking.openURL(
+            'https://hello456575.wixsite.com/website/terms',
+          );
+        }}
+      />
+      <DefaultText title={' and '} />
+      <DefaultText
+        title={'privacy policy'}
+        onPress={async () => {
+          await Linking.openURL(
+            'https://hello456575.wixsite.com/website/privacypolicy',
+          );
+        }}
+      />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  textInput: {marginTop: 10},
+  terms: {marginTop: 10, flexDirection: 'row', flexWrap: 'wrap'},
+  divider: {borderWidth: 1, borderColor: 'gray', marginVertical: 20},
+});
