@@ -1,8 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
-import {getContents} from '../../functions/Content';
+import AuthUserContext from '../../contexts/AuthUser';
+import {getRanking} from '../../functions/Content';
 import {TDocData} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
+import {shuffleArray} from '../../utils/Array';
+import {getCurrentDate} from '../../utils/Date';
 import NextButton from '../buttons/NextButton';
 import ReportButton from '../buttons/ReportButton';
 import ShoutoutButton from '../buttons/ShoutoutButton';
@@ -20,14 +23,28 @@ const Contents = ({style}: TProps) => {
     'loading',
   );
 
+  const {authUserData} = useContext(AuthUserContext);
+
   useEffect(() => {
     const load = async () => {
       try {
-        const {items} = await getContents({
-          numberOfItems: 10,
+        const {ranking} = await getRanking({
+          date: getCurrentDate().toUTCString(),
         });
 
-        setData(items);
+        const contentItems = ranking.contents.items;
+        const filteredItems = contentItems.filter(
+          ({
+            contributeFrom: {
+              users: {ids},
+            },
+          }) => {
+            return !ids.includes(authUserData.id);
+          },
+        );
+        const shuffledArray = shuffleArray(filteredItems);
+
+        setData(shuffledArray);
         setStatus('loaded');
         setIndex(0);
       } catch (error) {
@@ -39,7 +56,7 @@ const Contents = ({style}: TProps) => {
     if (status === 'loading') {
       load();
     }
-  }, [status]);
+  }, [authUserData.id, status]);
 
   const [index, setIndex] = useState(0);
 
