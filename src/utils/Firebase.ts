@@ -13,7 +13,7 @@ export const initFirebase = (country: 'korea' | 'us') => {
   const region = regions[country];
   // firestore setting that works for both ios and android simulators
   if (__DEV__) {
-    console.log('using firebase emulator');
+    console.log('using firebase emulator in region:', region);
 
     const ip = 'localhost';
 
