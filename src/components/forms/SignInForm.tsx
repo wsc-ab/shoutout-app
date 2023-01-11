@@ -1,6 +1,6 @@
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import React, {useEffect, useState} from 'react';
-import {Alert, View} from 'react-native';
+import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultText from '../defaults/DefaultText';
@@ -53,12 +53,12 @@ const SignInForm = ({phoneNumber, onCancel}: TProps) => {
 
   return (
     <>
-      {confirm && (
-        <DefaultForm
-          title={'Enter Code'}
-          left={{onPress: onCancel}}
-          right={{onPress: confirmCode, submitting}}
-          style={{flex: 1}}>
+      <DefaultForm
+        title={'Enter Code'}
+        left={{onPress: onCancel}}
+        right={{onPress: confirmCode, submitting}}
+        style={{flex: 1}}>
+        {confirm && (
           <KeyboardAwareScrollView>
             <DefaultText title="Sign in by entering the code we just sent to your phone." />
             <View
@@ -76,10 +76,15 @@ const SignInForm = ({phoneNumber, onCancel}: TProps) => {
               autoFocus
             />
           </KeyboardAwareScrollView>
-        </DefaultForm>
-      )}
+        )}
+        {!confirm && <ActivityIndicator style={styles.act} />}
+      </DefaultForm>
     </>
   );
 };
 
 export default SignInForm;
+
+const styles = StyleSheet.create({
+  act: {flex: 1},
+});
