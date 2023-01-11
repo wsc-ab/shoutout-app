@@ -1,6 +1,6 @@
 import {firebase} from '@react-native-firebase/auth';
 import React, {useContext, useEffect, useState} from 'react';
-import {Alert, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
 import {
   ImageLibraryOptions,
   launchImageLibrary,
@@ -81,13 +81,14 @@ const CreateButton = ({style}: TProps) => {
   };
 
   const onAdd = async () => {
-    const {uploaded, asset} = await selectAndUploadContent();
-
-    if (!uploaded) {
-      return;
-    }
-
     try {
+      setSubmitting(true);
+
+      const {uploaded, asset} = await selectAndUploadContent();
+
+      if (!uploaded) {
+        return;
+      }
       const contentId = firebase.firestore().collection('contents').doc().id;
 
       await createContent({
@@ -109,6 +110,7 @@ const CreateButton = ({style}: TProps) => {
       }
       try {
         await deleteContent({content: {id: content.id}});
+        setProgress(0);
         setModal(undefined);
       } catch (error) {}
     };
@@ -142,7 +144,8 @@ const CreateButton = ({style}: TProps) => {
       {!isSubmitted && !submitting && (
         <DefaultIcon icon="plus" onPress={onAdd} style={styles.icon} />
       )}
-      {submitting && (
+      {submitting && progress === 0 && <ActivityIndicator style={styles.act} />}
+      {submitting && progress !== 0 && (
         <DefaultText
           title={Math.round(progress).toString()}
           style={styles.progress}
@@ -157,19 +160,25 @@ const CreateButton = ({style}: TProps) => {
               onPress: () => setModal(undefined),
             }}>
             <DefaultText
-              title={`This will start to be shown to others at ${
+              title={`This will be shown starting at ${
                 startDate.getMonth() + 1
               }/${startDate.getDate()} ${startDate.getHours()}:00.`}
             />
             <View
-              style={{borderWidth: 1, borderColor: 'gray', marginVertical: 20}}
+              style={{
+                borderWidth: 1,
+                borderColor: 'gray',
+                marginVertical: 20,
+              }}
             />
+
             {content && <ContentCard content={content} />}
             <View
               style={{
                 flexDirection: 'row',
+                paddingHorizontal: 10,
+                paddingBottom: 50,
                 justifyContent: 'space-between',
-                marginTop: 10,
               }}>
               <DefaultIcon
                 icon="rotate"
@@ -193,4 +202,5 @@ export default CreateButton;
 const styles = StyleSheet.create({
   icon: {alignItems: 'flex-end'},
   progress: {alignItems: 'flex-end', padding: 10},
+  act: {alignItems: 'flex-end', paddingHorizontal: 10},
 });

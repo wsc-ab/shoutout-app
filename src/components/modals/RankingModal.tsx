@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, FlatList, Linking, View} from 'react-native';
+import {ActivityIndicator, FlatList, View} from 'react-native';
 
 import {getRanking} from '../../functions/Content';
 import {TObject} from '../../types/Firebase';
@@ -11,6 +11,7 @@ import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
 import ContentCard from '../screen/ContentCard';
+import UserModal from './UserModal';
 
 type TProps = {
   onCancel: () => void;
@@ -19,6 +20,8 @@ type TProps = {
 const RankingModal = ({onCancel}: TProps) => {
   const [status, setStatus] = useState<TStatus>('loading');
   const [data, setData] = useState<TObject>();
+
+  const [userModalId, setUserModalId] = useState<string>();
 
   const [date, setDate] = useState(getCurrentDate());
   useEffect(() => {
@@ -134,13 +137,8 @@ const RankingModal = ({onCancel}: TProps) => {
                 <DefaultText
                   title={`by ${item.contributeFrom?.users.items[0].name}`}
                   style={{marginBottom: 10}}
-                  onPress={
-                    item.contributeFrom?.users.items[0].link
-                      ? () =>
-                          Linking.openURL(
-                            item.contributeFrom?.users.items[0].link,
-                          )
-                      : undefined
+                  onPress={() =>
+                    setUserModalId(item.contributeFrom?.users.items[0].id)
                   }
                 />
                 <ContentCard content={item} />
@@ -168,6 +166,12 @@ const RankingModal = ({onCancel}: TProps) => {
           />
         )}
       </DefaultForm>
+      {userModalId && (
+        <UserModal
+          id={userModalId}
+          onCancel={() => setUserModalId(undefined)}
+        />
+      )}
     </DefaultModal>
   );
 };

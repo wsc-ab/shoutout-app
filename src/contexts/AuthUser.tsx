@@ -63,7 +63,10 @@ const AuthUserProvider = ({children}: TProps) => {
       };
 
       const onError = (error: Error) => {
-        Alert.alert('Please sign in again', (error as {message: string}).message);
+        Alert.alert(
+          'Please sign in again',
+          (error as {message: string}).message,
+        );
       };
 
       const unsubscribe = firestore()
