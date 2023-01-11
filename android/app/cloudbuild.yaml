@@ -74,7 +74,7 @@ steps:
         'download_properties',
       ]
     entrypoint: bash
-    args: ['./app/src/bundle.sh']
+    args: ['./app/bundle.sh']
     env:
       - 'BRANCH_NAME=$BRANCH_NAME'
     secretEnv: ['KEY_STORE_PASSWORD', 'KEY_ALIAS', 'KEY_PASSWORD']
