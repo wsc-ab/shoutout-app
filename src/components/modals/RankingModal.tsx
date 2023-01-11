@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, FlatList, View} from 'react-native';
+import {ActivityIndicator, FlatList, Linking, View} from 'react-native';
 
 import {getRanking} from '../../functions/Content';
 import {TObject} from '../../types/Firebase';
@@ -134,6 +134,14 @@ const RankingModal = ({onCancel}: TProps) => {
                 <DefaultText
                   title={`by ${item.contributeFrom?.users.items[0].name}`}
                   style={{marginBottom: 10}}
+                  onPress={
+                    item.contributeFrom?.users.items[0].link
+                      ? () =>
+                          Linking.openURL(
+                            item.contributeFrom?.users.items[0].link,
+                          )
+                      : undefined
+                  }
                 />
                 <ContentCard content={item} />
               </View>
@@ -151,7 +159,7 @@ const RankingModal = ({onCancel}: TProps) => {
         )}
         {status === 'loaded' && !data && (
           <DefaultText
-            title="No ranking for this day"
+            title="No ranking found."
             style={{
               flex: 1,
               justifyContent: 'center',

@@ -18,6 +18,7 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
   const [password, setPassword] = useState('');
+  const [link, setLink] = useState<string>();
 
   useEffect(() => {
     const load = async () => {
@@ -59,6 +60,7 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
           email,
           password,
           code,
+          link,
           countryCode: 'kr',
         },
       });
@@ -123,6 +125,15 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
           autoCapitalize="none"
           autoComplete="username"
           placeholder="airballoon"
+          style={styles.textInput}
+        />
+        <DefaultTextInput
+          title="Link"
+          detail="A link to your social profile. If set users will navigate to the link when your ID is pressed."
+          value={link}
+          onChangeText={setLink}
+          autoCapitalize="none"
+          placeholder="www.airballoon.app"
           style={styles.textInput}
         />
         <DefaultTextInput

@@ -73,6 +73,28 @@ const UserModal = ({onCancel}: TProps) => {
             />
           )}
           <View
+            style={{
+              flexDirection: 'row',
+            }}>
+            <DefaultText title="Link" textStyle={{fontWeight: 'bold'}} />
+            {authUserData.link && (
+              <DefaultText
+                title={authUserData.link}
+                style={{
+                  marginLeft: 10,
+                }}
+              />
+            )}
+            {!authUserData.link && (
+              <DefaultText
+                title={'No link has been set'}
+                style={{
+                  marginLeft: 10,
+                }}
+              />
+            )}
+          </View>
+          <View
             style={{borderWidth: 1, borderColor: 'gray', marginVertical: 20}}
           />
           <DefaultText title="Sign out" onPress={onSignOut} />
