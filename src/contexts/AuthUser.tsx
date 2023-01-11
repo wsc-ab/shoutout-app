@@ -93,6 +93,8 @@ const AuthUserProvider = ({children}: TProps) => {
     setAuthUserData(undefined);
   };
 
+  console.log(authUserData?.name, 'auth');
+
   return (
     <AuthUserContext.Provider
       value={{

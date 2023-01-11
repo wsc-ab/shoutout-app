@@ -1,14 +1,14 @@
 import {firebase} from '@react-native-firebase/auth';
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
 import {
   ImageLibraryOptions,
   launchImageLibrary,
 } from 'react-native-image-picker';
 import AuthUserContext from '../../contexts/AuthUser';
+import LastContentContext from '../../contexts/LastContent';
 
 import {createContent, deleteContent} from '../../functions/Content';
-import {TObject} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
 import {
   getCurrentSubmitDate,
@@ -26,16 +26,11 @@ type TProps = {style: TStyleView};
 
 const CreateButton = ({style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
+  const {content} = useContext(LastContentContext);
 
   const [submitting, setSubmitting] = useState(false);
 
   const [progress, setProgress] = useState(0);
-
-  const [content, setContent] = useState<TObject>();
-
-  useEffect(() => {
-    setContent(authUserData?.contributeTo?.contents?.items?.[0] ?? undefined);
-  }, [authUserData?.contributeTo?.contents?.items]);
 
   const selectContent = async () => {
     const options: ImageLibraryOptions = {
@@ -73,6 +68,8 @@ const CreateButton = ({style}: TProps) => {
         onProgress: setProgress,
       });
     } catch (error) {
+      console.log(error, 'e');
+
       Alert.alert('Please retry', 'Invalid file');
       setSubmitting(false);
     }

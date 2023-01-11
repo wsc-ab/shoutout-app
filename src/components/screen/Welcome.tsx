@@ -18,20 +18,15 @@ const Welcome = ({style}: TProps) => {
           textStyle={styles.sloganText}
         />
         <View style={styles.steps}>
+          <DefaultText title="Only one content per day" style={styles.step} />
+          <DefaultText title="Send and receive shoutouts" style={styles.step} />
+          <DefaultText title="Check daily rankings" style={styles.step} />
           <DefaultText
-            title="1. One shoutout per day, without followers"
+            title="No followers, only contents"
             style={styles.step}
           />
           <DefaultText
-            title="2. Send shoutouts, without knowing creators"
-            style={styles.step}
-          />
-          <DefaultText
-            title="3. Check content rankings, now findout creators"
-            style={styles.step}
-          />
-          <DefaultText
-            title="4. Rankings are posted on our social profiles for free"
+            title="Top contents are posted online"
             style={styles.step}
           />
         </View>
@@ -53,7 +48,7 @@ const styles = StyleSheet.create({
   title: {fontSize: 50, fontWeight: 'bold'},
   slogan: {marginTop: 10},
   sloganText: {fontSize: 20},
-  steps: {marginTop: 30},
+  steps: {marginTop: 30, alignItems: 'center'},
   step: {marginTop: 10},
   enter: {
     alignItems: 'center',

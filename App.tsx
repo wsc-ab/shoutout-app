@@ -15,6 +15,7 @@ import Home from './src/components/screen/Home';
 import {TStatus} from './src/types/Screen';
 import {initFirebase} from './src/utils/Firebase';
 import './src/utils/FontAwesome';
+import {LastContentProvider} from './src/contexts/LastContent';
 
 const App = () => {
   const [status, setStatus] = useState<TStatus>('loading');
@@ -42,7 +43,9 @@ const App = () => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'black'}}>
       <AuthUserProvider>
-        <Home />
+        <LastContentProvider>
+          <Home />
+        </LastContentProvider>
       </AuthUserProvider>
     </SafeAreaView>
   );
