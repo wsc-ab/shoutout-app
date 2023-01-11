@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "315556622122",
+    "project_id": "shoutout-89829",
+    "storage_bucket": "shoutout-89829.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:315556622122:android:a6a50833cb0d6ba089f853",
+        "android_client_info": {
+          "package_name": "app.airballoon.Shoutout"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "315556622122-m97o6q960pgf93ut8oaa1266vsi7rq0f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOX2H9gZ0sOfWg9D1UdBrsqUZqs7DBazQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "315556622122-m97o6q960pgf93ut8oaa1266vsi7rq0f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "315556622122-8gsck935k4be1je08o45hmiqtjodh982.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "app.airballoon.Shoutout"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

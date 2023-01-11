@@ -13,7 +13,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		76F7E115696E6F11BEC89EA3 /* Pods_Shoutout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9DE69B1840F6573E3770A5E /* Pods_Shoutout.framework */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		87A58FE32966B585004FC826 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 87A58FE22966B585004FC826 /* GoogleService-Info.plist */; };
+		87CD4314296E910C00CC32A0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 87CD4313296E910B00CC32A0 /* GoogleService-Info.plist */; };
 		A9EEAF7A3FB34AC63992C566 /* Pods_Shoutout_ShoutoutTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A3BACC95A6E6E6C183B7254 /* Pods_Shoutout_ShoutoutTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -42,8 +42,8 @@
 		5709B34CF0A7D63546082F79 /* Pods-Shoutout.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shoutout.release.xcconfig"; path = "Target Support Files/Pods-Shoutout/Pods-Shoutout.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-Shoutout-ShoutoutTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shoutout-ShoutoutTests.debug.xcconfig"; path = "Target Support Files/Pods-Shoutout-ShoutoutTests/Pods-Shoutout-ShoutoutTests.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Shoutout/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		87A58FE22966B585004FC826 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		87B8BBC92967B85D00B04A2D /* Shoutout.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Shoutout.entitlements; path = Shoutout/Shoutout.entitlements; sourceTree = "<group>"; };
+		87CD4313296E910B00CC32A0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-Shoutout-ShoutoutTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shoutout-ShoutoutTests.release.xcconfig"; path = "Target Support Files/Pods-Shoutout-ShoutoutTests/Pods-Shoutout-ShoutoutTests.release.xcconfig"; sourceTree = "<group>"; };
 		B9DE69B1840F6573E3770A5E /* Pods_Shoutout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Shoutout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -90,9 +90,9 @@
 			isa = PBXGroup;
 			children = (
 				87B8BBC92967B85D00B04A2D /* Shoutout.entitlements */,
-				87A58FE22966B585004FC826 /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
+				87CD4313296E910B00CC32A0 /* GoogleService-Info.plist */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
@@ -250,7 +250,7 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				87A58FE32966B585004FC826 /* GoogleService-Info.plist in Resources */,
+				87CD4314296E910C00CC32A0 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
