@@ -50,59 +50,75 @@ const AuthUserModal = ({onCancel}: TProps) => {
           </View>
           <View
             style={{
-              marginTop: 10,
+              marginTop: 20,
               flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
             }}>
-            <DefaultText title="Email" textStyle={{fontWeight: 'bold'}} />
-            <DefaultText
-              title={authUser?.email!}
-              style={{
-                marginLeft: 10,
-              }}
-            />
+            <View style={{flexDirection: 'row', flex: 1, alignItems: 'center'}}>
+              <DefaultText title="Email" textStyle={{fontWeight: 'bold'}} />
+              <DefaultText
+                title={authUser?.email!}
+                style={{
+                  marginLeft: 10,
+                }}
+              />
+            </View>
+            {!authUser?.emailVerified && (
+              <DefaultText
+                title={'Not verified'}
+                onPress={async () => {
+                  Alert.alert(
+                    'Please check your email',
+                    'We have just sent a verification email. Refresh this page once you have pressed the verification link.',
+                  );
+                  await authUser?.sendEmailVerification();
+                }}
+                style={{
+                  marginTop: 5,
+                }}
+              />
+            )}
           </View>
-          {!authUser?.emailVerified && (
-            <DefaultText
-              title={'Please verify your email.'}
-              onPress={async () => {
-                Alert.alert(
-                  'Please check your email',
-                  'We have just sent a verification email. Refresh this page once you have pressed the verification link.',
-                );
-                await authUser?.sendEmailVerification();
-              }}
-              style={{
-                marginTop: 5,
-              }}
-            />
-          )}
+
           <View
             style={{
-              marginTop: 10,
+              marginTop: 20,
               flexDirection: 'row',
+              alignItems: 'center',
             }}>
-            <DefaultText title="Link" textStyle={{fontWeight: 'bold'}} />
-            {authUserData.link && (
-              <DefaultText
-                title={authUserData.link}
-                style={{
-                  marginLeft: 10,
-                }}
-              />
-            )}
-            {!authUserData.link && (
-              <DefaultText
-                title={'No link has been set'}
-                style={{
-                  marginLeft: 10,
-                }}
-              />
-            )}
+            <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+              <DefaultText title="Link" textStyle={{fontWeight: 'bold'}} />
+              {authUserData.link && (
+                <DefaultText
+                  title={authUserData.link}
+                  style={{
+                    marginLeft: 10,
+                  }}
+                />
+              )}
+              {!authUserData.link && (
+                <DefaultText
+                  title={'No link has been set'}
+                  style={{
+                    marginLeft: 10,
+                  }}
+                />
+              )}
+            </View>
           </View>
           <View
             style={{borderWidth: 1, borderColor: 'gray', marginVertical: 20}}
           />
-          <DefaultText title="Sign out" onPress={onSignOut} />
+          <DefaultText
+            title="Edit"
+            onPress={() => Alert.alert('Not yet implemented')}
+          />
+          <DefaultText
+            title="Sign out"
+            onPress={onSignOut}
+            style={{marginTop: 20}}
+          />
           <DefaultText
             title="Delete account"
             onPress={onDelete}
