@@ -10,12 +10,12 @@
 
 import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native';
-import {AuthUserProvider} from './src/contexts/AuthUser';
 import Home from './src/components/screen/Home';
+import {AuthUserProvider} from './src/contexts/AuthUser';
+import {LastContentProvider} from './src/contexts/LastContent';
 import {TStatus} from './src/types/Screen';
 import {initFirebase} from './src/utils/Firebase';
 import './src/utils/FontAwesome';
-import {LastContentProvider} from './src/contexts/LastContent';
 
 const App = () => {
   const [status, setStatus] = useState<TStatus>('loading');
@@ -23,7 +23,7 @@ const App = () => {
   useEffect(() => {
     const load = async () => {
       try {
-        initFirebase();
+        initFirebase('korea');
 
         setStatus('loaded');
       } catch (error) {
