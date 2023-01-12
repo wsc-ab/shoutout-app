@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import {getRanking} from '../../functions/Content';
-import {TDocData} from '../../types/Firebase';
+import {TDocData, TObject} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
 import {shuffleArray} from '../../utils/Array';
 import {getCurrentDate} from '../../utils/Date';
@@ -41,7 +41,7 @@ const Contents = ({style}: TProps) => {
 
         const contentItems = ranking?.contents?.items ?? [];
 
-        const filteredItems = contentItems.filter(item => {
+        const filteredItems = contentItems.filter((item: TObject) => {
           const isNotFromUser = !item.contributeFrom?.users?.ids.includes(
             authUserData.id,
           );
@@ -51,7 +51,7 @@ const Contents = ({style}: TProps) => {
           return !isNotFromUser && !isNotViewed;
         });
 
-        const shuffledArray = shuffleArray(contentItems);
+        const shuffledArray = shuffleArray(filteredItems);
 
         setData(shuffledArray);
 
