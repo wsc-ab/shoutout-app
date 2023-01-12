@@ -15,7 +15,7 @@ import AuthUserContext from '../../contexts/AuthUser';
 
 import {createContent, deleteContent} from '../../functions/Content';
 import {TStyleView} from '../../types/Style';
-import {getSubmitDate} from '../../utils/Date';
+import {getStartDate} from '../../utils/Date';
 import {uploadContent} from '../../utils/Storage';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultIcon from '../defaults/DefaultIcon';
@@ -124,7 +124,7 @@ const CreateButton = ({style, onModal}: TProps) => {
     );
   };
 
-  const submitDate = getSubmitDate();
+  const startDate = getStartDate();
 
   const {height, width} = useWindowDimensions();
 
@@ -162,10 +162,10 @@ const CreateButton = ({style, onModal}: TProps) => {
             }}>
             <DefaultText
               title={`This will receive shoutouts from ${
-                submitDate.getMonth() + 1
-              }/${submitDate.getDate()} ${submitDate.getHours()}:00 to ${
-                submitDate.getMonth() + 1
-              }/${submitDate.getDate() + 1} ${submitDate.getHours() - 1}:59.`}
+                startDate.getMonth() + 1
+              }/${startDate.getDate()} ${startDate.getHours()}:00 to ${
+                startDate.getMonth() + 1
+              }/${startDate.getDate() + 1} ${startDate.getHours() - 1}:59.`}
               style={{zIndex: 100}}
             />
 
