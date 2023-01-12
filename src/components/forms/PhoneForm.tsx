@@ -1,12 +1,16 @@
+import {yupResolver} from '@hookform/resolvers/yup';
 import {CountryCode, parsePhoneNumber} from 'libphonenumber-js/mobile';
 import React, {useState} from 'react';
+import {Controller, useForm} from 'react-hook-form';
 import {Alert, ScrollView, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {object} from 'yup';
+import {defaultSchema} from '../../utils/Schema';
 import DefaultDivider from '../defaults/DefaultDivider';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
-import DefaultTextInput from '../defaults/DefaultTextInput';
+import FormText from '../defaults/FormText';
 
 type TProps = {
   onSuccess: (phoneNumber: string) => void;
@@ -15,37 +19,58 @@ type TProps = {
 };
 
 const PhoneForm = ({onCancel, onSuccess, submitting}: TProps) => {
-  const [phoneNumber, setPhoneNumber] = useState<string>();
+  const {text} = defaultSchema();
+
+  const schema = object({
+    phone: text({required: true}),
+    countryCode: text({required: true}),
+  }).required();
+
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+    getValues,
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      countryCode: 'KR' as CountryCode,
+      phone: '',
+    },
+  });
 
   const [modal, setModal] = useState<'code'>();
-  const [countryCode, setCountryCode] = useState<CountryCode>('KR');
 
-  const onEnter = () => {
-    if (!phoneNumber) {
-      return Alert.alert('Please retry', 'Phone number not set');
-    }
-
-    if (phoneNumber.startsWith('0100000')) {
-      return onSuccess('+82' + phoneNumber.slice(1));
+  const onSubmit = ({
+    phone,
+    countryCode,
+  }: {
+    phone: string;
+    countryCode: CountryCode;
+  }) => {
+    if (phone.startsWith('0100000')) {
+      return onSuccess('+82' + phone.slice(1));
     }
     const fullPhoneNumber = formatMobileNumber({
-      phoneNumber,
+      phoneNumber: phone,
       countryCode,
     });
 
     if (!fullPhoneNumber) {
-      return Alert.alert('Please retry', 'Not a mobile number');
+      return Alert.alert('Please retry', 'Not a valid mobile number');
     }
 
     onSuccess(fullPhoneNumber);
   };
+
+  const countryCode = getValues('countryCode');
 
   return (
     <DefaultForm
       title={'Enter Phone'}
       left={{onPress: onCancel}}
       right={{
-        onPress: onEnter,
+        onPress: handleSubmit(onSubmit),
         submitting,
       }}>
       <KeyboardAwareScrollView>
@@ -58,7 +83,7 @@ const PhoneForm = ({onCancel, onSuccess, submitting}: TProps) => {
         <View
           style={{
             flexDirection: 'row',
-            alignItems: 'center',
+            alignItems: 'flex-start',
           }}>
           <DefaultText
             title={countryCode}
@@ -71,14 +96,15 @@ const PhoneForm = ({onCancel, onSuccess, submitting}: TProps) => {
               marginTop: 5,
             }}
           />
-          <DefaultTextInput
-            value={phoneNumber}
-            onChangeText={setPhoneNumber}
+          <FormText
+            control={control}
+            name="phone"
             placeholder={countryCode === 'KR' ? '01012345678' : '6501235678'}
             keyboardType="phone-pad"
             autoComplete="tel"
             style={{marginLeft: 10, flex: 1}}
             autoFocus
+            errors={errors.phone}
           />
         </View>
       </KeyboardAwareScrollView>
@@ -88,20 +114,30 @@ const PhoneForm = ({onCancel, onSuccess, submitting}: TProps) => {
             title={'Country'}
             left={{onPress: () => setModal(undefined)}}>
             <ScrollView>
-              <DefaultText
-                title="US +1"
-                onPress={() => {
-                  setCountryCode('US');
-                  setModal(undefined);
-                }}
-              />
-              <DefaultText
-                title="KR +82"
-                onPress={() => {
-                  setCountryCode('KR');
-                  setModal(undefined);
-                }}
-                style={{marginTop: 10}}
+              <Controller
+                control={control}
+                name="countryCode"
+                render={({field: {onChange, onBlur}}) => (
+                  <>
+                    <DefaultText
+                      title="US +1"
+                      onPress={() => {
+                        onBlur();
+                        onChange('US');
+                        setModal(undefined);
+                      }}
+                    />
+                    <DefaultText
+                      title="KR +82"
+                      onPress={() => {
+                        onChange('KR');
+                        onBlur();
+                        setModal(undefined);
+                      }}
+                      style={{marginTop: 10}}
+                    />
+                  </>
+                )}
               />
             </ScrollView>
           </DefaultForm>

@@ -1,13 +1,17 @@
-import auth, {firebase} from '@react-native-firebase/auth';
-import React, {useEffect, useState} from 'react';
-import {Alert, Linking, StyleSheet, View} from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { yupResolver } from '@hookform/resolvers/yup';
+import auth, { firebase } from '@react-native-firebase/auth';
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Alert, Linking, StyleSheet, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { object } from 'yup';
 
-import {createUser, sendVerificationCode} from '../../functions/User';
+import { createUser, sendVerificationCode } from '../../functions/User';
+import { defaultSchema } from '../../utils/Schema';
 import DefaultDivider from '../defaults/DefaultDivider';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultText from '../defaults/DefaultText';
-import DefaultTextInput from '../defaults/DefaultTextInput';
+import FormText from '../defaults/FormText';
 
 type TProps = {
   phoneNumber?: string;
@@ -15,11 +19,30 @@ type TProps = {
 };
 
 const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
-  const [id, setId] = useState('');
-  const [email, setEmail] = useState('');
-  const [code, setCode] = useState('');
-  const [password, setPassword] = useState('');
-  const [link, setLink] = useState<string>();
+  const {text, email, website} = defaultSchema();
+
+  const schema = object({
+    id: text({min: 4, max: 10, required: true}),
+    email: email({required: true}),
+    code: text({min: 6, max: 6, required: true}),
+    password: text({min: 8, required: true}),
+    link: website({}),
+  }).required();
+
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      id: '',
+      email: '',
+      code: '',
+      password: '',
+      link: undefined,
+    },
+  });
 
   useEffect(() => {
     const load = async () => {
@@ -37,35 +60,35 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
     }
   }, [phoneNumber]);
 
-  const onSubmit = async () => {
-    if (id.length === 0) {
-      return Alert.alert('Please retry', "ID can't be empty");
-    }
-
-    if (email.length === 0) {
-      return Alert.alert('Please retry', "Email can't be empty");
-    }
-
-    if (password.length === 0) {
-      return Alert.alert('Please retry', "Password can't be empty");
-    }
-
+  const onSubmit = async ({
+    id: name,
+    email: inputEmail,
+    password,
+    code,
+    link,
+  }: {
+    id: string;
+    email: string;
+    password: string;
+    code: string;
+    link?: string;
+  }) => {
     setIsSubmitting(true);
     const userId = firebase.firestore().collection('users').doc().id;
     try {
       await createUser({
         user: {
-          name: id,
+          name,
           id: userId,
           phoneNumber,
-          email,
+          email: inputEmail,
           password,
           code,
           link,
           countryCode: 'kr',
         },
       });
-      await auth().signInWithEmailAndPassword(email, password);
+      await auth().signInWithEmailAndPassword(inputEmail, password);
     } catch (error) {
       if ((error as {message: string}).message === 'display name exists') {
         Alert.alert('Use a different ID', 'This ID has been used.');
@@ -90,60 +113,65 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
         onPress: onCancel,
       }}
       right={{
-        onPress: onSubmit,
+        onPress: handleSubmit(onSubmit),
         submitting,
       }}>
       <KeyboardAwareScrollView>
-        <DefaultText title="Please set your ID to sign up." />
+        <DefaultText title="Please set your profile to sign up." />
         <DefaultDivider />
-        <DefaultTextInput
+        <FormText
+          control={control}
+          name="email"
           title="Email"
-          value={email}
-          onChangeText={setEmail}
           autoCapitalize="none"
           placeholder="hello@airballoon.app"
           autoComplete="email"
           keyboardType="email-address"
+          errors={errors.email}
         />
-        <DefaultTextInput
+        <FormText
+          control={control}
+          name="password"
           title="Password"
-          value={password}
-          onChangeText={setPassword}
+          errors={errors.password}
           autoCapitalize="none"
           autoComplete="password"
           placeholder="keep it a secret"
           secureTextEntry
           style={styles.textInput}
         />
-        <DefaultTextInput
+        <FormText
+          control={control}
+          name="id"
           title="ID"
-          value={id}
-          onChangeText={setId}
+          errors={errors.id}
           autoCapitalize="none"
           autoComplete="username"
           placeholder="airballoon"
+          secureTextEntry
           style={styles.textInput}
         />
-        <DefaultTextInput
+        <FormText
+          control={control}
+          name="link"
           title="Link"
-          detail="A link to your social profile. If set users will navigate to the link when your ID is pressed."
-          value={link}
-          onChangeText={setLink}
+          errors={errors.link}
           autoCapitalize="none"
           placeholder="www.airballoon.app"
           style={styles.textInput}
+          optional
         />
-        <DefaultTextInput
+        <FormText
+          control={control}
+          name="code"
           title="Code"
-          detail="Enter the code we sent to your phone."
-          value={code}
-          onChangeText={setCode}
+          errors={errors.code}
           placeholder="000000"
           keyboardType="number-pad"
           autoComplete="sms-otp"
           style={styles.textInput}
-          autoFocus
         />
+
         <Terms />
       </KeyboardAwareScrollView>
     </DefaultForm>
