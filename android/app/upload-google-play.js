@@ -12,16 +12,12 @@ const bundleDir = './build/outputs/bundle';
 
 const bundlePaths = {
   main: {
-    path: `${bundleDir}/airballoon_Release/app-airballoon_-release.aab`,
-    applicationId: 'app.airballoon.Airballoon',
-  },
-  release: {
-    path: `${bundleDir}/release_Release/app-release_-release.aab`,
-    applicationId: 'app.airballoon.Airballoon.release',
+    path: `${bundleDir}/release/app-release.aab`,
+    applicationId: 'app.airballoon.Shoutout',
   },
   development: {
-    path: `${bundleDir}/development_Release/app-development_-release.aab`,
-    applicationId: 'app.airballoon.Airballoon.development',
+    path: `${bundleDir}/release/app-release.aab`,
+    applicationId: 'app.airballoon.Shoutout',
   },
 };
 
