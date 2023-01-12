@@ -102,7 +102,7 @@ const Contents = ({style}: TProps) => {
   if (data.length === 0) {
     return (
       <View style={styles.noData}>
-        <DefaultText title="You've viewed all contents for today." />
+        <DefaultText title="You've viewed all contents for now." />
         <DefaultText
           title="Refresh"
           onPress={() => setStatus('loading')}
