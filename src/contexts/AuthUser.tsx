@@ -4,7 +4,7 @@ import React, {createContext, useEffect, useState} from 'react';
 import {Alert} from 'react-native';
 
 import {TAuthUser, TDocData, TDocSnapshot, TObject} from '../types/Firebase';
-import {getSubmitDate, getDate, getSecondsGap} from '../utils/Date';
+import {getSubmitDate, getSecondsGap} from '../utils/Date';
 
 type TContextProps = {
   loaded: boolean;

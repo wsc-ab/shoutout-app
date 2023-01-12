@@ -89,7 +89,7 @@ export const getSubmitDate = () => {
     ),
   );
 
-  submitDate.setDate(submitDate.getUTCDate() + 1);
+  submitDate.setUTCDate(submitDate.getUTCDate());
   submitDate.setUTCHours(23, 59, 59, 999);
 
   return submitDate;
