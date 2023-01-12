@@ -12,30 +12,26 @@ const Welcome = ({style}: TProps) => {
     <View style={style}>
       <View style={styles.texts}>
         <DefaultText title="Shoutout" textStyle={styles.title} />
-        <DefaultText
-          title="Best content wins"
-          style={styles.slogan}
-          textStyle={styles.sloganText}
-        />
+        <DefaultText title="Best content wins" textStyle={styles.sloganText} />
         <View style={styles.steps}>
-          <DefaultText title="Only one content per day" style={styles.step} />
-          <DefaultText title="Send and receive shoutouts" style={styles.step} />
-          <DefaultText title="Check daily rankings" style={styles.step} />
+          <DefaultText title="One shot, One opportunity, Everyday" />
           <DefaultText
-            title="No followers, only contents"
+            title="Only contents matter, not followers"
             style={styles.step}
           />
           <DefaultText
-            title="Top contents are posted online"
+            title="Top contents are shared online for free"
             style={styles.step}
           />
         </View>
+        <DefaultText
+          title="Enter"
+          onPress={() => setModal('enter')}
+          textStyle={{fontSize: 20, fontWeight: 'bold'}}
+          style={styles.enter}
+        />
       </View>
-      <DefaultText
-        title="Enter"
-        onPress={() => setModal('enter')}
-        style={styles.enter}
-      />
+
       {modal === 'enter' && <EnterModal onCancel={() => setModal(undefined)} />}
     </View>
   );
@@ -46,12 +42,10 @@ export default Welcome;
 const styles = StyleSheet.create({
   texts: {flex: 1, alignItems: 'center', justifyContent: 'center'},
   title: {fontSize: 50, fontWeight: 'bold'},
-  slogan: {marginTop: 10},
   sloganText: {fontSize: 20},
-  steps: {marginTop: 30, alignItems: 'center'},
+  steps: {marginTop: 50, alignItems: 'center'},
   step: {marginTop: 10},
   enter: {
-    alignItems: 'center',
-    bottom: 50,
+    marginTop: 50,
   },
 });
