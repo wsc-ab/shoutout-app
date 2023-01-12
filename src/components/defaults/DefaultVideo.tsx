@@ -1,6 +1,6 @@
 import storage from '@react-native-firebase/storage';
 import React, {useEffect, useState} from 'react';
-import {Pressable} from 'react-native';
+import {ActivityIndicator, Pressable} from 'react-native';
 import Video from 'react-native-video';
 import {TStyleView} from '../../types/Style';
 
@@ -9,11 +9,19 @@ type TProps = {
   style?: TStyleView;
   initPaused?: boolean;
   modalVisible: boolean;
+  onLoaded?: () => void;
 };
 
-const DefaultVideo = ({path, modalVisible, initPaused, style}: TProps) => {
+const DefaultVideo = ({
+  path,
+  modalVisible,
+  initPaused,
+  style,
+  onLoaded,
+}: TProps) => {
   const [uri, setUri] = useState<string>();
   const [paused, setPaused] = useState(initPaused);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const load = async () => {
@@ -32,11 +40,16 @@ const DefaultVideo = ({path, modalVisible, initPaused, style}: TProps) => {
 
   return (
     <Pressable onPress={() => setPaused(pre => !pre)} style={style}>
+      {loading && <ActivityIndicator style={[style]} />}
       <Video
         source={{uri}} // Can be a URL or a local file.
         style={style}
         resizeMode="cover"
         paused={paused || modalVisible}
+        onLoad={() => {
+          setLoading(false);
+          onLoaded && onLoaded();
+        }}
         repeat
       />
     </Pressable>

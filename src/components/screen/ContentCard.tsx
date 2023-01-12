@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 
 import {TDocData} from '../../types/Firebase';
@@ -24,11 +24,17 @@ const ContentCard = ({
   initPaused,
   showType,
 }: TProps) => {
+  const [loaded, setLoaded] = useState(false);
+  const onLoaded = () => setLoaded(true);
   return (
     <>
       <View style={[styles.container, style]}>
         {type?.includes('image') && (
-          <DefaultImage image={path} style={[styles.content, contentStyle]} />
+          <DefaultImage
+            image={path}
+            style={[styles.content, contentStyle]}
+            onLoaded={onLoaded}
+          />
         )}
         {type?.includes('video') && (
           <DefaultVideo
@@ -36,12 +42,13 @@ const ContentCard = ({
             style={[styles.content, contentStyle]}
             modalVisible={!!modalVisible}
             initPaused={initPaused}
+            onLoaded={onLoaded}
           />
         )}
-        {showType && (
+        {showType && loaded && (
           <DefaultIcon
             icon={type.includes('video') ? 'video' : 'image'}
-            style={{position: 'absolute', top: 10, left: 10}}
+            style={styles.typeIcon}
           />
         )}
       </View>
@@ -58,4 +65,5 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {borderRadius: 10},
+  typeIcon: {position: 'absolute', top: 10, left: 10},
 });

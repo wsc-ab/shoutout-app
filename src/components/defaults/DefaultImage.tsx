@@ -12,9 +12,10 @@ export type Props = {
   image?: string;
   type?: string;
   style?: TStyleImage;
+  onLoaded?: () => void;
 };
 
-const DefaultImage = ({image, type, style}: Props) => {
+const DefaultImage = ({image, type, style, onLoaded}: Props) => {
   let design: TStyleImage = {
     overflow: 'hidden',
     justifyContent: 'center',
@@ -119,6 +120,7 @@ const DefaultImage = ({image, type, style}: Props) => {
             uri: imageUrl,
             cache: 'force-cache',
           }}
+          onLoadEnd={onLoaded}
           onError={() => setStatus('error')}
         />
       )}
