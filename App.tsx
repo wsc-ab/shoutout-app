@@ -12,7 +12,6 @@ import React, {useEffect, useState} from 'react';
 import {StatusBar, View} from 'react-native';
 import Home from './src/components/screen/Home';
 import {AuthUserProvider} from './src/contexts/AuthUser';
-import {LastContentProvider} from './src/contexts/LastContent';
 import {TStatus} from './src/types/Screen';
 import {initFirebase} from './src/utils/Firebase';
 import './src/utils/FontAwesome';
@@ -44,9 +43,7 @@ const App = () => {
     <View style={{flex: 1, backgroundColor: 'black'}}>
       <StatusBar barStyle="light-content" />
       <AuthUserProvider>
-        <LastContentProvider>
-          <Home />
-        </LastContentProvider>
+        <Home />
       </AuthUserProvider>
     </View>
   );

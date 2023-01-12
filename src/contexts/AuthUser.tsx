@@ -4,7 +4,7 @@ import React, {createContext, useEffect, useState} from 'react';
 import {Alert} from 'react-native';
 
 import {TAuthUser, TDocData, TDocSnapshot, TObject} from '../types/Firebase';
-import {getCurrentSubmitDate, getSecondsGap} from '../utils/Date';
+import {getSubmitDate, getDate, getSecondsGap} from '../utils/Date';
 
 type TContextProps = {
   loaded: boolean;
@@ -83,7 +83,8 @@ const AuthUserProvider = ({children}: TProps) => {
   };
 
   const lastContent = authUserData?.contributeTo?.contents?.items?.[0];
-  const submitDate = getCurrentSubmitDate();
+
+  const submitDate = getSubmitDate();
 
   const submitted = lastContent?.createdAt
     ? getSecondsGap({

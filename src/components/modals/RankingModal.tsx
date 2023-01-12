@@ -112,7 +112,7 @@ const RankingModal = ({onCancel}: TProps) => {
           style={{
             borderWidth: 1,
             borderColor: 'gray',
-            marginVertical: 10,
+            marginVertical: 20,
           }}
         />
         {status === 'loading' && (
@@ -131,27 +131,34 @@ const RankingModal = ({onCancel}: TProps) => {
             renderItem={({item, index}) => {
               return (
                 <View key={item.id} style={{alignItems: 'center'}}>
-                  <DefaultText
-                    title={`#${index + 1}`}
-                    textStyle={{
-                      fontWeight: 'bold',
-                      fontSize: 20,
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      flex: 1,
                       marginBottom: 10,
-                    }}
-                  />
-                  <DefaultText
-                    title={`${item.shoutoutFrom?.users?.number} shoutouts`}
-                    style={{marginBottom: 10, alignItems: 'center'}}
-                    textStyle={{fontWeight: 'bold'}}
-                  />
-                  <DefaultText
-                    title={`by ${item.contributeFrom?.users.items[0].name}`}
-                    style={{marginBottom: 10, alignItems: 'center'}}
-                    textStyle={{fontWeight: 'bold'}}
-                    onPress={() =>
-                      setUserModalId(item.contributeFrom?.users.items[0].id)
-                    }
-                  />
+                    }}>
+                    <DefaultText
+                      title={`#${index + 1}`}
+                      textStyle={{
+                        fontWeight: 'bold',
+                      }}
+                      style={{flex: 1}}
+                    />
+                    <DefaultText
+                      title={`${item.shoutoutFrom?.users?.number} shoutouts`}
+                      textStyle={{fontWeight: 'bold'}}
+                      style={{flex: 1, alignItems: 'center'}}
+                    />
+                    <DefaultText
+                      title={`${item.contributeFrom?.users.items[0].name}`}
+                      textStyle={{fontWeight: 'bold'}}
+                      style={{flex: 1, alignItems: 'flex-end'}}
+                      onPress={() =>
+                        setUserModalId(item.contributeFrom?.users.items[0].id)
+                      }
+                    />
+                  </View>
                   <ContentCard content={item} initPaused={true} showType />
                 </View>
               );

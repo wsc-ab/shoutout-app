@@ -74,7 +74,7 @@ export const getNextSubmitDate = () => {
   return submitDate;
 };
 
-export const getCurrentSubmitDate = () => {
+export const getSubmitDate = () => {
   const now = new Date();
 
   const submitDate = new Date(
@@ -89,7 +89,7 @@ export const getCurrentSubmitDate = () => {
     ),
   );
 
-  submitDate.setDate(submitDate.getUTCDate());
+  submitDate.setDate(submitDate.getUTCDate() + 1);
   submitDate.setUTCHours(23, 59, 59, 999);
 
   return submitDate;
