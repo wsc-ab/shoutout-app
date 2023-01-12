@@ -17,6 +17,8 @@ const ContentCard = ({
   style,
   contentStyle = {height: 300, width: 300},
 }: TProps) => {
+  console.log(contentStyle, 'contentStyle');
+
   return (
     <>
       <View style={[styles.container, style]}>

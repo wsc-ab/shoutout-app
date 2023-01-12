@@ -55,6 +55,9 @@ const AuthUserProvider = ({children}: TProps) => {
 
         if (!userData) {
           await onSignOut();
+          setAuthUserData(undefined);
+          setLoaded(true);
+          return;
         }
 
         if (isMounted) {

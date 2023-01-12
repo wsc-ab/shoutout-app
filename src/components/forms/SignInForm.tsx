@@ -62,7 +62,7 @@ const SignInForm = ({phoneNumber, onCancel}: TProps) => {
   return (
     <>
       <DefaultForm
-        title={'Enter Code'}
+        title={'Sign in'}
         left={{onPress: onCancel}}
         right={{onPress: confirmCode, submitting}}>
         {confirm && (

@@ -1,6 +1,6 @@
 import storage from '@react-native-firebase/storage';
 import React, {useEffect, useState} from 'react';
-import {Pressable, StyleSheet} from 'react-native';
+import {Pressable} from 'react-native';
 import Video from 'react-native-video';
 import {TStyleView} from '../../types/Style';
 
@@ -32,7 +32,7 @@ const DefaultVideo = ({path, style}: TProps) => {
     <Pressable onPress={() => setPaused(pre => !pre)} style={style}>
       <Video
         source={{uri}} // Can be a URL or a local file.
-        style={styles.video}
+        style={style}
         paused={paused}
         repeat
       />
@@ -41,7 +41,3 @@ const DefaultVideo = ({path, style}: TProps) => {
 };
 
 export default DefaultVideo;
-
-const styles = StyleSheet.create({
-  video: {width: 300, height: 300, flex: 1},
-});

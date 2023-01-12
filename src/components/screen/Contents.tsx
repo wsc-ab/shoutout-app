@@ -66,7 +66,7 @@ const Contents = ({style}: TProps) => {
     if (status === 'loading') {
       load();
     }
-  }, [authUserData.id, status]);
+  }, [authUserData.id, authUserData.viewed?.contents.ids, status]);
 
   const [index, setIndex] = useState(0);
 
