@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {Alert, RefreshControl, ScrollView, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 
@@ -6,6 +6,7 @@ import {deleteUser} from '../../functions/User';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
+import UserModal from './UserModal';
 
 type TProps = {
   onCancel: () => void;
@@ -30,6 +31,8 @@ const AuthUserModal = ({onCancel}: TProps) => {
       [{text: 'Delete', onPress, style: 'destructive'}, {text: 'No'}],
     );
   };
+
+  const [modal, setModal] = useState<'profile' | 'setting'>();
 
   return (
     <DefaultModal>
@@ -119,8 +122,13 @@ const AuthUserModal = ({onCancel}: TProps) => {
             style={{borderWidth: 1, borderColor: 'gray', marginVertical: 20}}
           />
           <DefaultText
-            title="Edit"
+            title="View profile"
+            onPress={() => setModal('profile')}
+          />
+          <DefaultText
+            title="Edit profile"
             onPress={() => Alert.alert('Not yet implemented')}
+            style={{marginTop: 20}}
           />
           <DefaultText
             title="Sign out"
@@ -134,6 +142,9 @@ const AuthUserModal = ({onCancel}: TProps) => {
           />
         </ScrollView>
       </DefaultForm>
+      {modal === 'profile' && (
+        <UserModal id={authUserData.id} onCancel={() => setModal(undefined)} />
+      )}
     </DefaultModal>
   );
 };

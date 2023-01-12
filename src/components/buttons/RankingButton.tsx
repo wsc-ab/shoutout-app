@@ -24,7 +24,7 @@ const RankingButton = ({style}: TProps) => {
 
   return (
     <View style={style}>
-      <DefaultIcon icon="list" onPress={onPress} style={styles.icon} />
+      <DefaultIcon icon="ranking-star" onPress={onPress} style={styles.icon} />
       {modal === 'ranking' && (
         <RankingModal onCancel={() => setModal(undefined)} />
       )}

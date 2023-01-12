@@ -65,7 +65,7 @@ const FormText = ({
       {errors && (
         <DefaultText
           title={errors.message}
-          textStyle={{color: defaultRed}}
+          textStyle={{color: defaultRed.lv2}}
           style={styles.error}
         />
       )}

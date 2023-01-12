@@ -89,7 +89,7 @@ const RankingModal = ({onCancel}: TProps) => {
           />
 
           {date.getDate() === now.getDate() && (
-            <DefaultText title="Live" textStyle={{color: defaultRed}} />
+            <DefaultText title="Live" textStyle={{color: defaultRed.lv1}} />
           )}
           {date.getDate() !== now.getDate() && (
             <DefaultIcon

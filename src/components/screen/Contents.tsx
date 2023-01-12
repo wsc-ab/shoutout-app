@@ -30,11 +30,13 @@ const Contents = ({style}: TProps) => {
   );
 
   const {authUserData} = useContext(AuthUserContext);
+  const [index, setIndex] = useState(0);
   const {height, width} = useWindowDimensions();
 
   useEffect(() => {
     const load = async () => {
       try {
+        setIndex(0);
         const {ranking} = await getRanking({
           date: getCurrentDate().toUTCString(),
         });
@@ -48,7 +50,7 @@ const Contents = ({style}: TProps) => {
           const isNotViewed = !authUserData.viewed?.contents.ids.includes(
             item.id,
           );
-          return !isNotFromUser && !isNotViewed;
+          return isNotFromUser && isNotViewed;
         });
 
         const shuffledArray = shuffleArray(filteredItems);
@@ -56,7 +58,6 @@ const Contents = ({style}: TProps) => {
         setData(shuffledArray);
 
         setStatus('loaded');
-        setIndex(0);
       } catch (error) {
         Alert.alert('Please retry', 'Failed to load contents');
         setStatus('error');
@@ -67,8 +68,6 @@ const Contents = ({style}: TProps) => {
       load();
     }
   }, [authUserData.id, authUserData.viewed?.contents.ids, status]);
-
-  const [index, setIndex] = useState(0);
 
   const onNext = async () => {
     if (index === data.length - 1) {
