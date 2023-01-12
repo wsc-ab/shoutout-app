@@ -1,6 +1,12 @@
 import {firebase} from '@react-native-firebase/auth';
 import React, {useContext, useState} from 'react';
-import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import {
   ImageLibraryOptions,
   launchImageLibrary,
@@ -11,16 +17,15 @@ import {createContent, deleteContent} from '../../functions/Content';
 import {TStyleView} from '../../types/Style';
 import {getStartDate} from '../../utils/Date';
 import {uploadContent} from '../../utils/Storage';
-import DefaultDivider from '../defaults/DefaultDivider';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
 import ContentCard from '../screen/ContentCard';
 
-type TProps = {style: TStyleView};
+type TProps = {style: TStyleView; onModal: (visible: boolean) => void};
 
-const CreateButton = ({style}: TProps) => {
+const CreateButton = ({style, onModal}: TProps) => {
   const {authUserData, content} = useContext(AuthUserContext);
 
   const [submitting, setSubmitting] = useState(false);
@@ -105,6 +110,7 @@ const CreateButton = ({style}: TProps) => {
         await deleteContent({content: {id: content.id}});
         setProgress(0);
         setSubmitting(false);
+        onModal(false);
         setModal(undefined);
       } catch (error) {
         Alert.alert('Please retry', (error as {message: string}).message);
@@ -120,12 +126,17 @@ const CreateButton = ({style}: TProps) => {
 
   const startDate = getStartDate();
 
+  const {height, width} = useWindowDimensions();
+
   return (
     <View style={style}>
       {content && !submitting && (
         <DefaultIcon
           icon="check"
-          onPress={() => setModal('done')}
+          onPress={() => {
+            onModal(true);
+            setModal('done');
+          }}
           style={styles.icon}
         />
       )}
@@ -144,7 +155,10 @@ const CreateButton = ({style}: TProps) => {
           <DefaultForm
             title="Content"
             left={{
-              onPress: () => setModal(undefined),
+              onPress: () => {
+                onModal(false);
+                setModal(undefined);
+              },
             }}>
             <DefaultText
               title={`This will receive shoutouts from ${
@@ -152,10 +166,18 @@ const CreateButton = ({style}: TProps) => {
               }/${startDate.getDate()} ${startDate.getHours()}:00 to ${
                 startDate.getMonth() + 1
               }/${startDate.getDate() + 1} ${startDate.getHours() - 1}:59.`}
+              style={{zIndex: 100}}
             />
-            <DefaultDivider />
 
-            {content && <ContentCard content={content} />}
+            {content && (
+              <ContentCard
+                content={content}
+                contentStyle={{
+                  width,
+                  height,
+                }}
+              />
+            )}
             <View style={styles.icons}>
               <DefaultIcon
                 icon="rotate"

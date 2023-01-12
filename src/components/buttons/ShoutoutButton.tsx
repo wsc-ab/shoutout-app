@@ -59,7 +59,7 @@ const ShoutoutButton = ({collection, id, style}: TProps) => {
           icon="heart"
           onPress={isShoutouted ? onUnshoutout : onShoutout}
           style={styles.icon}
-          color={isShoutouted ? defaultRed : 'white'}
+          color={isShoutouted ? defaultRed.lv1 : 'white'}
         />
       )}
       {isLoading && <ActivityIndicator style={styles.icon} />}

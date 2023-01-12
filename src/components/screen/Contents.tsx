@@ -20,9 +20,10 @@ import ContentCard from './ContentCard';
 
 type TProps = {
   style: TStyleView;
+  modalVisible: boolean;
 };
 
-const Contents = ({style}: TProps) => {
+const Contents = ({style, modalVisible}: TProps) => {
   const [data, setData] = useState<TDocData[]>([]);
 
   const [status, setStatus] = useState<'loading' | 'loaded' | 'error'>(
@@ -53,7 +54,7 @@ const Contents = ({style}: TProps) => {
           return isNotFromUser && isNotViewed;
         });
 
-        const shuffledArray = shuffleArray(filteredItems);
+        const shuffledArray = shuffleArray(contentItems);
 
         setData(shuffledArray);
 
@@ -117,6 +118,7 @@ const Contents = ({style}: TProps) => {
         content={data[index]}
         style={styles.card}
         contentStyle={{height, width}}
+        modalVisible={modalVisible}
       />
       <View style={styles.nav}>
         <NextButton onSuccess={onNext} id={data[index].id} style={{flex: 1}} />

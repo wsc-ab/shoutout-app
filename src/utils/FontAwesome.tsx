@@ -9,12 +9,14 @@ import {
   faCheck,
   faFlag,
   faHeart,
+  faImage,
   faPlus,
   faRankingStar,
   faRotate,
   faShare,
   faTimes,
   faUser,
+  faVideo,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -29,7 +31,9 @@ library.add(
   faCheck,
   faRotate,
   faHeart,
+  faImage,
   faArrowLeft,
   faArrowRight,
   faArrowDown,
+  faVideo,
 );

@@ -19,6 +19,7 @@ const DefaultImage = ({image, type, style}: Props) => {
     overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
+    resizeMode: 'cover',
   };
 
   let showThumbnail = false;

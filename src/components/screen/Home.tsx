@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import Contents from './Contents';
 
@@ -9,6 +9,9 @@ import Welcome from './Welcome';
 
 const Home = () => {
   const {authUserData, content, loaded} = useContext(AuthUserContext);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const onModal = (visible: boolean) => setModalVisible(visible);
 
   if (!loaded) {
     return null;
@@ -20,8 +23,10 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
-      <Header />
-      {content && <Contents style={styles.contents} />}
+      <Header onModal={onModal} />
+      {content && (
+        <Contents style={styles.contents} modalVisible={modalVisible} />
+      )}
       {!content && (
         <DefaultText
           title="Please share a content to cast your shoutouts"

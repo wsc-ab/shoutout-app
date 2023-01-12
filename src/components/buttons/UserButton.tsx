@@ -4,19 +4,29 @@ import {TStyleView} from '../../types/Style';
 import DefaultIcon from '../defaults/DefaultIcon';
 import UserModal from '../modals/AuthUserModal';
 
-type TProps = {style: TStyleView};
+type TProps = {style: TStyleView; onModal: (visible: boolean) => void};
 
-const UserButton = ({style}: TProps) => {
+const UserButton = ({style, onModal}: TProps) => {
   const [modal, setModal] = useState<'me'>();
 
   return (
     <View style={style}>
       <DefaultIcon
         icon="user"
-        onPress={() => setModal('me')}
+        onPress={() => {
+          onModal(true);
+          setModal('me');
+        }}
         style={styles.icon}
       />
-      {modal === 'me' && <UserModal onCancel={() => setModal(undefined)} />}
+      {modal === 'me' && (
+        <UserModal
+          onCancel={() => {
+            onModal(false);
+            setModal(undefined);
+          }}
+        />
+      )}
     </View>
   );
 };

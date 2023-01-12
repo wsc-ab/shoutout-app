@@ -4,12 +4,16 @@ import CreateButton from '../buttons/CreateButton';
 import RankingButton from '../buttons/RankingButton';
 import UserButton from '../buttons/UserButton';
 
-const Header = () => {
+type TProps = {
+  onModal: (visible: boolean) => void;
+};
+
+const Header = ({onModal}: TProps) => {
   return (
     <View style={styles.container}>
-      <UserButton style={styles.button} />
-      <RankingButton style={styles.button} />
-      <CreateButton style={styles.button} />
+      <UserButton style={styles.button} onModal={onModal} />
+      <RankingButton style={styles.button} onModal={onModal} />
+      <CreateButton style={styles.button} onModal={onModal} />
     </View>
   );
 };

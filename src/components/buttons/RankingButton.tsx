@@ -5,9 +5,9 @@ import {TStyleView} from '../../types/Style';
 import DefaultIcon from '../defaults/DefaultIcon';
 import RankingModal from '../modals/RankingModal';
 
-type TProps = {style: TStyleView};
+type TProps = {style: TStyleView; onModal: (visible: boolean) => void};
 
-const RankingButton = ({style}: TProps) => {
+const RankingButton = ({style, onModal}: TProps) => {
   const {content} = useContext(AuthUserContext);
   const [modal, setModal] = useState<'ranking'>();
 
@@ -19,6 +19,7 @@ const RankingButton = ({style}: TProps) => {
       );
     }
 
+    onModal(true);
     setModal('ranking');
   };
 
@@ -26,7 +27,12 @@ const RankingButton = ({style}: TProps) => {
     <View style={style}>
       <DefaultIcon icon="ranking-star" onPress={onPress} style={styles.icon} />
       {modal === 'ranking' && (
-        <RankingModal onCancel={() => setModal(undefined)} />
+        <RankingModal
+          onCancel={() => {
+            onModal(false);
+            setModal(undefined);
+          }}
+        />
       )}
     </View>
   );

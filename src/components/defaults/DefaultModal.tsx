@@ -17,5 +17,9 @@ const DefaultModal = ({children}: TProps) => {
 export default DefaultModal;
 
 const styles = StyleSheet.create({
-  container: {padding: 10, backgroundColor: defaultBlack.lv2, flex: 1},
+  container: {
+    paddingHorizontal: 10,
+    backgroundColor: defaultBlack.lv2,
+    flex: 1,
+  },
 });

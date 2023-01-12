@@ -89,7 +89,10 @@ const RankingModal = ({onCancel}: TProps) => {
           />
 
           {date.getDate() === now.getDate() && (
-            <DefaultText title="Live" textStyle={{color: defaultRed.lv1}} />
+            <DefaultText
+              title="Live"
+              textStyle={{color: defaultRed.lv1, fontWeight: 'bold'}}
+            />
           )}
           {date.getDate() !== now.getDate() && (
             <DefaultIcon
@@ -125,29 +128,40 @@ const RankingModal = ({onCancel}: TProps) => {
           <FlatList
             data={data.contents?.items ?? []}
             contentContainerStyle={{paddingBottom: 50}}
-            renderItem={({item, index}) => (
-              <View key={item.id}>
-                <DefaultText
-                  title={`#${index + 1}. ${
-                    item.shoutoutFrom?.users?.number
-                  } shoutouts. Shared by ${
-                    item.contributeFrom?.users.items[0].name
-                  }.`}
-                  style={{marginBottom: 10, alignItems: 'center'}}
-                  textStyle={{fontWeight: 'bold'}}
-                  onPress={() =>
-                    setUserModalId(item.contributeFrom?.users.items[0].id)
-                  }
-                />
-                <ContentCard content={item} />
-              </View>
-            )}
+            renderItem={({item, index}) => {
+              return (
+                <View key={item.id} style={{alignItems: 'center'}}>
+                  <DefaultText
+                    title={`#${index + 1}`}
+                    textStyle={{
+                      fontWeight: 'bold',
+                      fontSize: 20,
+                      marginBottom: 10,
+                    }}
+                  />
+                  <DefaultText
+                    title={`${item.shoutoutFrom?.users?.number} shoutouts`}
+                    style={{marginBottom: 10, alignItems: 'center'}}
+                    textStyle={{fontWeight: 'bold'}}
+                  />
+                  <DefaultText
+                    title={`by ${item.contributeFrom?.users.items[0].name}`}
+                    style={{marginBottom: 10, alignItems: 'center'}}
+                    textStyle={{fontWeight: 'bold'}}
+                    onPress={() =>
+                      setUserModalId(item.contributeFrom?.users.items[0].id)
+                    }
+                  />
+                  <ContentCard content={item} initPaused={true} showType />
+                </View>
+              );
+            }}
             ItemSeparatorComponent={() => (
               <View
                 style={{
                   borderWidth: 1,
                   borderColor: 'gray',
-                  marginVertical: 10,
+                  marginVertical: 20,
                 }}
               />
             )}

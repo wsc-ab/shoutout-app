@@ -47,22 +47,11 @@ const AuthUserProvider = ({children}: TProps) => {
 
   // subscribe to auth user data change
   useEffect(() => {
-    let isMounted = true;
-
     const loadAuthUser = (authUserId: string) => {
       const onNext = async (userDoc: TDocSnapshot) => {
         const userData = userDoc.data();
 
-        if (!userData) {
-          setAuthUserData(undefined);
-          setLoaded(true);
-          return;
-        }
-
-        if (isMounted) {
-          setAuthUserData(userData);
-        }
-
+        setAuthUserData(userData);
         setLoaded(true);
       };
 
@@ -84,12 +73,7 @@ const AuthUserProvider = ({children}: TProps) => {
 
     if (authUser?.uid) {
       loadAuthUser(authUser.uid);
-    } else {
-      setLoaded(true);
     }
-    return () => {
-      isMounted = false;
-    };
   }, [authUser?.uid, loaded]);
 
   const onSignOut = async () => {
