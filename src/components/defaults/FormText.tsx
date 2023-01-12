@@ -41,7 +41,7 @@ const FormText = ({
     <View style={style}>
       <DefaultText
         textStyle={styles.titleText}
-        title={optional ? title : `${title}*`}
+        title={optional ? title : title ? `${title}*` : undefined}
       />
       <DefaultText title={detail} style={styles.detail} />
       <Controller

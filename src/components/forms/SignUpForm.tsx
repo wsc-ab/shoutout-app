@@ -1,13 +1,13 @@
-import { yupResolver } from '@hookform/resolvers/yup';
-import auth, { firebase } from '@react-native-firebase/auth';
-import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Alert, Linking, StyleSheet, View } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { object } from 'yup';
+import {yupResolver} from '@hookform/resolvers/yup';
+import auth, {firebase} from '@react-native-firebase/auth';
+import React, {useEffect, useState} from 'react';
+import {useForm} from 'react-hook-form';
+import {Alert, Linking, StyleSheet, View} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {object} from 'yup';
 
-import { createUser, sendVerificationCode } from '../../functions/User';
-import { defaultSchema } from '../../utils/Schema';
+import {createUser, sendVerificationCode} from '../../functions/User';
+import {defaultSchema} from '../../utils/Schema';
 import DefaultDivider from '../defaults/DefaultDivider';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultText from '../defaults/DefaultText';
@@ -128,6 +128,7 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
           autoComplete="email"
           keyboardType="email-address"
           errors={errors.email}
+          autoFocus
         />
         <FormText
           control={control}
@@ -157,7 +158,7 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
           title="Link"
           errors={errors.link}
           autoCapitalize="none"
-          placeholder="www.airballoon.app"
+          placeholder="https://www.airballoon.app"
           style={styles.textInput}
           optional
         />

@@ -1,11 +1,15 @@
+import {yupResolver} from '@hookform/resolvers/yup';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import React, {useEffect, useState} from 'react';
+import {useForm} from 'react-hook-form';
 import {ActivityIndicator, Alert, StyleSheet} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {object} from 'yup';
+import {defaultSchema} from '../../utils/Schema';
 import DefaultDivider from '../defaults/DefaultDivider';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultText from '../defaults/DefaultText';
-import DefaultTextInput from '../defaults/DefaultTextInput';
+import FormText from '../defaults/FormText';
 
 type TProps = {
   phoneNumber?: string;
@@ -13,15 +17,28 @@ type TProps = {
 };
 
 const SignInForm = ({phoneNumber, onCancel}: TProps) => {
+  const {text} = defaultSchema();
+  const schema = object({
+    code: text({min: 6, max: 6, required: true}),
+  }).required();
+
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      code: '',
+    },
+  });
   // If null, no SMS has been sent
   const [confirm, setConfirm] =
     useState<FirebaseAuthTypes.ConfirmationResult | null>();
 
   const [submitting, setIsSubmitting] = useState(false);
 
-  const [code, setCode] = useState('');
-
-  const confirmCode = async () => {
+  const onSubmit = async ({code}: {code: string}) => {
     if (!confirm) {
       return;
     }
@@ -38,8 +55,6 @@ const SignInForm = ({phoneNumber, onCancel}: TProps) => {
 
   useEffect(() => {
     const load = async () => {
-      console.log(phoneNumber, 'phoneNumber');
-
       if (!phoneNumber) {
         return;
       }
@@ -64,17 +79,16 @@ const SignInForm = ({phoneNumber, onCancel}: TProps) => {
       <DefaultForm
         title={'Sign in'}
         left={{onPress: onCancel}}
-        right={{onPress: confirmCode, submitting}}>
+        right={{onPress: handleSubmit(onSubmit), submitting}}>
         {confirm && (
           <KeyboardAwareScrollView>
             <DefaultText title="Sign in by entering the code we just sent to your phone." />
             <DefaultDivider />
-
-            <DefaultTextInput
+            <FormText
+              control={control}
+              name="code"
               title="Code"
-              detail="Enter the code we sent to your phone."
-              value={code}
-              onChangeText={setCode}
+              errors={errors.code}
               placeholder="000000"
               keyboardType="number-pad"
               autoComplete="sms-otp"

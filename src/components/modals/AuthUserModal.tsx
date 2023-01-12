@@ -17,8 +17,12 @@ const AuthUserModal = ({onCancel}: TProps) => {
 
   const onDelete = async () => {
     const onPress = async () => {
-      await deleteUser({user: {id: authUserData.id}});
-      onSignOut();
+      try {
+        await deleteUser({user: {id: authUserData.id}});
+        onSignOut();
+      } catch (error) {
+        Alert.alert('Please retry', (error as {message: string}).message);
+      }
     };
     Alert.alert(
       'Are you sure?',

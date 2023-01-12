@@ -4,6 +4,7 @@ import {
   faAngleDown,
   faAngleLeft,
   faAngleRight,
+  faArrowDown,
   faArrowLeft,
   faArrowRight,
   faCheck,
@@ -29,7 +30,7 @@ library.add(
   faCheck,
   faRotate,
   faHeart,
-  faAngleDown,
   faArrowLeft,
   faArrowRight,
+  faArrowDown,
 );

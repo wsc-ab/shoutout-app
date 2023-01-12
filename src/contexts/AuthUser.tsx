@@ -54,7 +54,6 @@ const AuthUserProvider = ({children}: TProps) => {
         const userData = userDoc.data();
 
         if (!userData) {
-          await onSignOut();
           setAuthUserData(undefined);
           setLoaded(true);
           return;
@@ -68,6 +67,7 @@ const AuthUserProvider = ({children}: TProps) => {
       };
 
       const onError = (error: Error) => {
+        onSignOut();
         Alert.alert(
           'Please sign in again',
           (error as {message: string}).message,
