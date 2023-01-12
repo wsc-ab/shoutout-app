@@ -61,6 +61,14 @@ steps:
     waitFor: ['-']
     entrypoint: npm
     args: ['install', '--legacy-peer-deps']
+
+  #
+  # Install @googleapis/androidpublisher
+  - id: install_androidpublisher_package
+    name: 'reactnativecommunity/react-native-android'
+    waitFor: ['-']
+    entrypoint: npm
+    args: ['install', '@googleapis/androidpublisher', '--legacy-peer-deps']
   #
   # Build
   - id: build
