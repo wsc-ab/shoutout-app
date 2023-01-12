@@ -110,7 +110,7 @@ export const getStartDate = () => {
     ),
   );
 
-  submitDate.setDate(submitDate.getUTCDate() + 1);
+  submitDate.setUTCDate(submitDate.getUTCDate() + 1);
   submitDate.setUTCHours(0, 0, 0, 0);
 
   return submitDate;
