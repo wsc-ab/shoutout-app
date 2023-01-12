@@ -101,10 +101,14 @@ const CreateButton = ({style}: TProps) => {
         return;
       }
       try {
+        setSubmitting(true);
         await deleteContent({content: {id: content.id}});
         setProgress(0);
+        setSubmitting(false);
         setModal(undefined);
-      } catch (error) {}
+      } catch (error) {
+        Alert.alert('Please retry', (error as {message: string}).message);
+      }
     };
 
     Alert.alert(
@@ -143,29 +147,22 @@ const CreateButton = ({style}: TProps) => {
               onPress: () => setModal(undefined),
             }}>
             <DefaultText
-              title={`This will be shown starting at ${
+              title={`This will receive shoutouts from ${
                 startDate.getMonth() + 1
-              }/${startDate.getDate()} ${startDate.getHours()}:00.`}
+              }/${startDate.getDate()} ${startDate.getHours()}:00 to ${
+                startDate.getMonth() + 1
+              }/${startDate.getDate() + 1} ${startDate.getHours() - 1}:59.`}
             />
             <DefaultDivider />
 
             {content && <ContentCard content={content} />}
-            <View
-              style={{
-                flexDirection: 'row',
-                paddingHorizontal: 10,
-                paddingBottom: 50,
-                justifyContent: 'space-between',
-              }}>
+            <View style={styles.icons}>
               <DefaultIcon
                 icon="rotate"
                 onPress={() => Alert.alert('Not yet implemented')}
               />
-              <DefaultIcon
-                icon="times"
-                style={{marginLeft: 10}}
-                onPress={onDelete}
-              />
+              {!submitting && <DefaultIcon icon="times" onPress={onDelete} />}
+              {submitting && <ActivityIndicator style={{paddingRight: 10}} />}
             </View>
           </DefaultForm>
         </DefaultModal>
@@ -180,4 +177,11 @@ const styles = StyleSheet.create({
   icon: {alignItems: 'flex-end'},
   progress: {alignItems: 'flex-end', padding: 10},
   act: {alignItems: 'flex-end', paddingHorizontal: 10},
+  icons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    bottom: 20,
+    paddingHorizontal: 20,
+  },
 });

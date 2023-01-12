@@ -52,6 +52,6 @@ const styles = StyleSheet.create({
   step: {marginTop: 10},
   enter: {
     alignItems: 'center',
-    margin: 20,
+    bottom: 50,
   },
 });

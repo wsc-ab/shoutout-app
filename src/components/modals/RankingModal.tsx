@@ -124,15 +124,17 @@ const RankingModal = ({onCancel}: TProps) => {
         {status === 'loaded' && data && (
           <FlatList
             data={data.contents?.items ?? []}
+            contentContainerStyle={{paddingBottom: 50}}
             renderItem={({item, index}) => (
               <View key={item.id}>
                 <DefaultText
-                  title={`#${index + 1} received ${
+                  title={`#${index + 1}. ${
                     item.shoutoutFrom?.users?.number
-                  } shoutouts / by ${
+                  } shoutouts. Shared by ${
                     item.contributeFrom?.users.items[0].name
-                  } `}
+                  }.`}
                   style={{marginBottom: 10, alignItems: 'center'}}
+                  textStyle={{fontWeight: 'bold'}}
                   onPress={() =>
                     setUserModalId(item.contributeFrom?.users.items[0].id)
                   }

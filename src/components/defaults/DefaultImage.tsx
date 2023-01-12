@@ -1,13 +1,8 @@
 import storage from '@react-native-firebase/storage';
 import React, {useEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  Image,
-  ImageStyle,
-  StyleSheet,
-  View,
-} from 'react-native';
+import {ActivityIndicator, Image, StyleSheet, View} from 'react-native';
 import {TStatus} from '../../types/Screen';
+import {TStyleImage} from '../../types/Style';
 
 import DefaultText from './DefaultText';
 
@@ -16,14 +11,13 @@ export const getThumnailPath = (url: string) => url + '_200x200';
 export type Props = {
   image?: string;
   type?: string;
-  style?: ImageStyle;
+  style?: TStyleImage;
 };
 
 const DefaultImage = ({image, type, style}: Props) => {
-  let design: ImageStyle = {
+  let design: TStyleImage = {
     overflow: 'hidden',
     justifyContent: 'center',
-    backgroundColor: 'lightgray',
     alignItems: 'center',
   };
 

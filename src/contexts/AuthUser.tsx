@@ -45,8 +45,6 @@ const AuthUserProvider = ({children}: TProps) => {
 
   const [authUserData, setAuthUserData] = useState<TDocData>();
 
-  console.log('authUser context called');
-
   // subscribe to auth user data change
   useEffect(() => {
     let isMounted = true;

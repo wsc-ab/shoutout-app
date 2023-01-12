@@ -9,16 +9,23 @@ import DefaultVideo from '../defaults/DefaultVideo';
 type TProps = {
   content: TDocData;
   style?: TStyleView;
+  contentStyle?: {height: number; width: number};
 };
 
-const ContentCard = ({content: {path, type}, style}: TProps) => {
+const ContentCard = ({
+  content: {path, type},
+  style,
+  contentStyle = {height: 300, width: 300},
+}: TProps) => {
   return (
     <>
       <View style={[styles.container, style]}>
         {type?.includes('image') && (
-          <DefaultImage image={path} style={styles.image} />
+          <DefaultImage image={path} style={[styles.content, contentStyle]} />
         )}
-        {type?.includes('video') && <DefaultVideo path={path} />}
+        {type?.includes('video') && (
+          <DefaultVideo path={path} style={[styles.content, contentStyle]} />
+        )}
       </View>
     </>
   );
@@ -32,5 +39,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
   },
-  image: {width: 300, height: 300},
+  content: {borderRadius: 10},
 });

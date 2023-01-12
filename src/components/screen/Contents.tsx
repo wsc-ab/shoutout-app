@@ -1,5 +1,11 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import {getRanking} from '../../functions/Content';
 import {TDocData} from '../../types/Firebase';
@@ -24,6 +30,7 @@ const Contents = ({style}: TProps) => {
   );
 
   const {authUserData} = useContext(AuthUserContext);
+  const {height, width} = useWindowDimensions();
 
   useEffect(() => {
     const load = async () => {
@@ -32,7 +39,7 @@ const Contents = ({style}: TProps) => {
           date: getCurrentDate().toUTCString(),
         });
 
-        const contentItems = ranking.contents.items;
+        const contentItems = ranking?.contents?.items ?? [];
 
         const filteredItems = contentItems.filter(item => {
           const isNotFromUser = !item.contributeFrom?.users?.ids.includes(
@@ -41,10 +48,10 @@ const Contents = ({style}: TProps) => {
           const isNotViewed = !authUserData.viewed?.contents.ids.includes(
             item.id,
           );
-          return isNotFromUser && isNotViewed;
+          return !isNotFromUser && !isNotViewed;
         });
 
-        const shuffledArray = shuffleArray(filteredItems);
+        const shuffledArray = shuffleArray(contentItems);
 
         setData(shuffledArray);
 
@@ -95,9 +102,9 @@ const Contents = ({style}: TProps) => {
   if (data.length === 0) {
     return (
       <View style={styles.noData}>
-        <DefaultText title="We are still gathering contents. Try refreshing later." />
+        <DefaultText title="You've viewed all contents for today." />
         <DefaultText
-          title="Refresh now"
+          title="Refresh"
           onPress={() => setStatus('loading')}
           style={styles.refresh}
         />
@@ -107,7 +114,11 @@ const Contents = ({style}: TProps) => {
 
   return (
     <View style={style}>
-      <ContentCard content={data[index]} style={styles.card} />
+      <ContentCard
+        content={data[index]}
+        style={styles.card}
+        contentStyle={{height, width}}
+      />
       <View style={styles.nav}>
         <NextButton onSuccess={onNext} id={data[index].id} style={{flex: 1}} />
         <ShoutoutButton
@@ -133,6 +144,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    bottom: 20,
+    paddingHorizontal: 20,
   },
   card: {flex: 1},
   noData: {flex: 1, justifyContent: 'center', alignItems: 'center'},

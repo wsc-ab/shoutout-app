@@ -14,8 +14,6 @@ const Home = () => {
     return null;
   }
 
-  console.log(authUserData, 'authUserData');
-
   if (!authUserData) {
     return <Welcome style={styles.container} />;
   }
@@ -26,7 +24,7 @@ const Home = () => {
       {content && <Contents style={styles.contents} />}
       {!content && (
         <DefaultText
-          title="Please add a content to cast your shoutouts"
+          title="Please share a content to cast your shoutouts"
           style={styles.upload}
         />
       )}
@@ -37,7 +35,7 @@ const Home = () => {
 export default Home;
 
 const styles = StyleSheet.create({
-  container: {padding: 20, flex: 1},
+  container: {flex: 1},
   contents: {flex: 1},
   upload: {flex: 1, justifyContent: 'center', alignItems: 'center'},
 });

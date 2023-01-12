@@ -29,7 +29,7 @@ const DefaultForm = ({title, left, right, children, style}: TProps) => {
           {right && !right.submitting && (
             <DefaultIcon icon="angle-right" onPress={right.onPress} />
           )}
-          {right?.submitting && <ActivityIndicator style={styles.acitivity} />}
+          {right?.submitting && <ActivityIndicator style={styles.act} />}
         </View>
       </View>
       {children}
@@ -40,7 +40,7 @@ const DefaultForm = ({title, left, right, children, style}: TProps) => {
 export default DefaultForm;
 
 const styles = StyleSheet.create({
-  container: {flex: 1, paddingBottom: 50},
+  container: {flex: 1},
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -53,5 +53,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   right: {flex: 1, alignItems: 'flex-end'},
-  acitivity: {paddingHorizontal: 10},
+  act: {paddingHorizontal: 10},
 });

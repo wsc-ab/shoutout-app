@@ -9,7 +9,7 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView} from 'react-native';
+import {StatusBar, View} from 'react-native';
 import Home from './src/components/screen/Home';
 import {AuthUserProvider} from './src/contexts/AuthUser';
 import {LastContentProvider} from './src/contexts/LastContent';
@@ -41,13 +41,14 @@ const App = () => {
   }
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: 'black'}}>
+    <View style={{flex: 1, backgroundColor: 'black'}}>
+      <StatusBar barStyle="light-content" />
       <AuthUserProvider>
         <LastContentProvider>
           <Home />
         </LastContentProvider>
       </AuthUserProvider>
-    </SafeAreaView>
+    </View>
   );
 };
 
