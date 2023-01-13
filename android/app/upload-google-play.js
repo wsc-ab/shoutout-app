@@ -39,6 +39,7 @@ async function uploadToPlayStore(branchName) {
   try {
     authClient = await authAndroid.getClient();
   } catch (error) {
+    console.log('getClient error', error.message);
     throw Error('getClient error', error);
   }
 
@@ -47,6 +48,7 @@ async function uploadToPlayStore(branchName) {
   try {
     appEditId = await getOrCreateEdit({applicationId, auth: authClient});
   } catch (error) {
+    console.log('getOrCreateEdit error', error.message);
     throw Error('getOrCreateEdit error', error);
   }
 
@@ -108,6 +110,7 @@ async function addReleasesToTrack(
 
     return res.data;
   } catch (error) {
+    console.log('addReleasesToTrack error', error.message);
     throw Error('addReleasesToTrack error', error);
   }
 }
