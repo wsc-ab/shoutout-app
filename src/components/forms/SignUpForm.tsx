@@ -23,7 +23,7 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
   const {text, email, website} = defaultSchema();
 
   const schema = object({
-    id: text({min: 4, max: 10, required: true}),
+    id: text({min: 4, max: 20, required: true}),
     email: email({required: true}),
     code: text({min: 6, max: 6, required: true}),
     password: text({min: 8, required: true}),
