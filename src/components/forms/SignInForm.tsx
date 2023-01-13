@@ -3,12 +3,12 @@ import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import React, {useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {ActivityIndicator, StyleSheet} from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {object} from 'yup';
 import {defaultSchema} from '../../utils/Schema';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultDivider from '../defaults/DefaultDivider';
 import DefaultForm from '../defaults/DefaultForm';
+import DefaultKeyboardAwareScrollView from '../defaults/DefaultKeyboardAwareScrollView';
 import DefaultText from '../defaults/DefaultText';
 import FormText from '../defaults/FormText';
 
@@ -88,7 +88,7 @@ const SignInForm = ({phoneNumber, onCancel}: TProps) => {
         left={{onPress: onCancel}}
         right={{onPress: handleSubmit(onSubmit), submitting}}>
         {confirm && (
-          <KeyboardAwareScrollView>
+          <DefaultKeyboardAwareScrollView>
             <DefaultText title="Sign in by entering the code we just sent to your phone." />
             <DefaultDivider />
             <FormText
@@ -101,7 +101,7 @@ const SignInForm = ({phoneNumber, onCancel}: TProps) => {
               autoComplete="sms-otp"
               autoFocus
             />
-          </KeyboardAwareScrollView>
+          </DefaultKeyboardAwareScrollView>
         )}
         {!confirm && <ActivityIndicator style={styles.act} />}
       </DefaultForm>

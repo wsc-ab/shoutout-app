@@ -3,7 +3,6 @@ import auth, {firebase} from '@react-native-firebase/auth';
 import React, {useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {Linking, StyleSheet, View} from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {object} from 'yup';
 
 import {createUser, sendVerificationCode} from '../../functions/User';
@@ -11,6 +10,7 @@ import {defaultSchema} from '../../utils/Schema';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultDivider from '../defaults/DefaultDivider';
 import DefaultForm from '../defaults/DefaultForm';
+import DefaultKeyboardAwareScrollView from '../defaults/DefaultKeyboardAwareScrollView';
 import DefaultText from '../defaults/DefaultText';
 import FormText from '../defaults/FormText';
 
@@ -129,7 +129,7 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
         onPress: handleSubmit(onSubmit),
         submitting,
       }}>
-      <KeyboardAwareScrollView>
+      <DefaultKeyboardAwareScrollView>
         <DefaultText title="Please set your profile to sign up." />
         <DefaultDivider />
         <FormText
@@ -186,7 +186,7 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
         />
 
         <Terms />
-      </KeyboardAwareScrollView>
+      </DefaultKeyboardAwareScrollView>
     </DefaultForm>
   );
 };

@@ -2,13 +2,13 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {CountryCode, parsePhoneNumber} from 'libphonenumber-js/mobile';
 import React, {useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {ScrollView, View} from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {ScrollView} from 'react-native';
 import {object} from 'yup';
 import {defaultSchema} from '../../utils/Schema';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultDivider from '../defaults/DefaultDivider';
 import DefaultForm from '../defaults/DefaultForm';
+import DefaultKeyboardAwareScrollView from '../defaults/DefaultKeyboardAwareScrollView';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
 import FormText from '../defaults/FormText';
@@ -78,41 +78,41 @@ const PhoneForm = ({onCancel, onSuccess, submitting}: TProps) => {
         onPress: handleSubmit(onSubmit),
         submitting,
       }}>
-      <KeyboardAwareScrollView>
+      <DefaultKeyboardAwareScrollView>
         <DefaultText title="Enter phone number to sign in or up." />
         <DefaultDivider />
         <DefaultText
-          title="Phone number"
+          title="Country"
           textStyle={{fontWeight: 'bold', fontSize: 20}}
         />
-        <View
+        <DefaultText
+          title={countryCode}
+          onPress={() => setModal('code')}
           style={{
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-          }}>
-          <DefaultText
-            title={countryCode}
-            onPress={() => setModal('code')}
-            style={{
-              padding: 20,
-              borderWidth: 1,
-              borderRadius: 10,
-              borderColor: 'gray',
-              marginTop: 5,
-            }}
-          />
-          <FormText
-            control={control}
-            name="phone"
-            placeholder={countryCode === 'KR' ? '01012345678' : '6501235678'}
-            keyboardType="phone-pad"
-            autoComplete="tel"
-            style={{marginLeft: 10, flex: 1}}
-            autoFocus
-            errors={errors.phone}
-          />
-        </View>
-      </KeyboardAwareScrollView>
+            padding: 10,
+            borderWidth: 1,
+            borderColor: 'gray',
+            borderRadius: 10,
+            marginTop: 5,
+            justifyContent: 'center',
+            alignSelf: 'flex-start',
+          }}
+        />
+        <DefaultText
+          title="Phone number"
+          textStyle={{fontWeight: 'bold', fontSize: 20, marginTop: 10}}
+        />
+
+        <FormText
+          control={control}
+          name="phone"
+          placeholder={countryCode === 'KR' ? '01012345678' : '6501235678'}
+          keyboardType="phone-pad"
+          autoComplete="tel"
+          autoFocus
+          errors={errors.phone}
+        />
+      </DefaultKeyboardAwareScrollView>
       {modal === 'code' && (
         <DefaultModal>
           <DefaultForm
@@ -131,6 +131,12 @@ const PhoneForm = ({onCancel, onSuccess, submitting}: TProps) => {
                         onChange('US');
                         setModal(undefined);
                       }}
+                      style={{
+                        padding: 20,
+                        borderWidth: 1,
+                        borderColor: 'gray',
+                        borderRadius: 10,
+                      }}
                     />
                     <DefaultText
                       title="KR +82"
@@ -139,7 +145,13 @@ const PhoneForm = ({onCancel, onSuccess, submitting}: TProps) => {
                         onBlur();
                         setModal(undefined);
                       }}
-                      style={{marginTop: 10}}
+                      style={{
+                        marginTop: 10,
+                        padding: 20,
+                        borderWidth: 1,
+                        borderColor: 'gray',
+                        borderRadius: 10,
+                      }}
                     />
                   </>
                 )}

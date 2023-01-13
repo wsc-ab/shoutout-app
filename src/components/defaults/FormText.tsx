@@ -6,11 +6,12 @@ import {
   FieldErrorsImpl,
   Merge,
 } from 'react-hook-form';
-import {StyleSheet, TextInput, TextInputProps, View} from 'react-native';
+import {StyleSheet, TextInputProps, View} from 'react-native';
 import {TStyleView} from '../../types/Style';
 import {defaultRed, placeholderTextColor} from './DefaultColors';
 
 import DefaultText from './DefaultText';
+import DefaultTextInput from './DefaultTextInput';
 
 type TProps = TextInputProps & {
   name: string;
@@ -39,25 +40,21 @@ const FormText = ({
 }: TProps) => {
   return (
     <View style={style}>
-      <DefaultText
-        textStyle={styles.titleText}
-        title={optional ? title : title ? `${title}*` : undefined}
-      />
-      <DefaultText title={detail} style={styles.detail} />
       <Controller
         control={control}
         rules={{
           required: true,
         }}
         render={({field: {onChange, onBlur, value}}) => (
-          <TextInput
+          <DefaultTextInput
             {...props}
+            title={optional ? title : title ? `${title}*` : undefined}
+            detail={detail}
             value={value}
             placeholder={placeholder}
             placeholderTextColor={placeholderTextColor}
             onChangeText={onChange}
             onBlur={onBlur}
-            style={styles.textInput}
           />
         )}
         name={name}
