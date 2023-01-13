@@ -1,8 +1,9 @@
 import React, {useContext, useState} from 'react';
-import {Alert, RefreshControl, ScrollView, View} from 'react-native';
+import {RefreshControl, ScrollView, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 
 import {deleteUser} from '../../functions/User';
+import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
@@ -22,14 +23,19 @@ const AuthUserModal = ({onCancel}: TProps) => {
         await deleteUser({user: {id: authUserData.id}});
         onSignOut();
       } catch (error) {
-        Alert.alert('Please retry', (error as {message: string}).message);
+        DefaultAlert({
+          title: 'Error',
+          message: (error as {message: string}).message,
+        });
       }
     };
-    Alert.alert(
-      'Are you sure?',
-      "Your data will be removed, and you can't restore data once you delete your account.",
-      [{text: 'Delete', onPress, style: 'destructive'}, {text: 'No'}],
-    );
+
+    DefaultAlert({
+      title: 'Delete user?',
+      message:
+        "Your data will be removed, and you can't restore data once you delete your account",
+      buttons: [{text: 'Delete', onPress, style: 'destructive'}, {text: 'No'}],
+    });
   };
 
   const [modal, setModal] = useState<'profile' | 'setting'>();
@@ -79,10 +85,12 @@ const AuthUserModal = ({onCancel}: TProps) => {
               <DefaultText
                 title={'Not verified'}
                 onPress={async () => {
-                  Alert.alert(
-                    'Please check your email',
-                    'We have just sent a verification email. Refresh this page once you have pressed the verification link.',
-                  );
+                  DefaultAlert({
+                    title: 'Email sent',
+                    message:
+                      'We have just sent a verification email. Refresh this page once you have pressed the verification link.',
+                  });
+
                   await authUser?.sendEmailVerification();
                 }}
                 style={{
@@ -127,7 +135,12 @@ const AuthUserModal = ({onCancel}: TProps) => {
           />
           <DefaultText
             title="Edit profile"
-            onPress={() => Alert.alert('Not yet implemented')}
+            onPress={() => {
+              DefaultAlert({
+                title: 'Not yet developed',
+                message: "We'll launch this feature soon",
+              });
+            }}
             style={{marginTop: 20}}
           />
           <DefaultText

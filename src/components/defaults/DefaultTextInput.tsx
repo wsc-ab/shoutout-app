@@ -15,6 +15,7 @@ const DefaultTextInput = (props: TProps) => {
         {...props}
         placeholderTextColor={placeholderTextColor}
         style={styles.textInput}
+        keyboardAppearance="dark"
       />
     </View>
   );

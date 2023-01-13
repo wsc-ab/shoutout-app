@@ -1,8 +1,9 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import {addShoutout, removeShoutout} from '../../functions/Content';
 import {TStyleView} from '../../types/Style';
+import DefaultAlert from '../defaults/DefaultAlert';
 import {defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 
@@ -20,9 +21,14 @@ const ShoutoutButton = ({collection, id, style}: TProps) => {
       await addShoutout({content: {id}});
     } catch (error) {
       if ((error as {message: string}).message === "content doesn't exist") {
-        Alert.alert('This content has been deleted');
+        DefaultAlert({
+          title: 'Deleted content',
+        });
       } else {
-        Alert.alert('Please retry', (error as {message: string}).message);
+        DefaultAlert({
+          title: 'Error',
+          message: (error as {message: string}).message,
+        });
       }
       setIsShoutouted(false);
     } finally {
@@ -40,7 +46,10 @@ const ShoutoutButton = ({collection, id, style}: TProps) => {
       });
     } catch (error) {
       setIsShoutouted(false);
-      Alert.alert('Please retry', 'Failed to unshoutout');
+      DefaultAlert({
+        title: 'Error',
+        message: (error as {message: string}).message,
+      });
     } finally {
       setIsLoading(false);
     }

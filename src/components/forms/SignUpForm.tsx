@@ -2,12 +2,13 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import auth, {firebase} from '@react-native-firebase/auth';
 import React, {useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
-import {Alert, Linking, StyleSheet, View} from 'react-native';
+import {Linking, StyleSheet, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {object} from 'yup';
 
 import {createUser, sendVerificationCode} from '../../functions/User';
 import {defaultSchema} from '../../utils/Schema';
+import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultDivider from '../defaults/DefaultDivider';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultText from '../defaults/DefaultText';
@@ -91,13 +92,25 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
       await auth().signInWithEmailAndPassword(inputEmail, password);
     } catch (error) {
       if ((error as {message: string}).message === 'display name exists') {
-        Alert.alert('Use a different ID', 'This ID has been used.');
+        DefaultAlert({
+          title: 'Error',
+          message: 'Please use a different ID. This ID has been used',
+        });
       } else if ((error as {message: string}).message === 'email exists') {
-        Alert.alert('Use a different email', 'This email has been used.');
+        DefaultAlert({
+          title: 'Error',
+          message: 'Please user a different email. This email has been used',
+        });
       } else if ((error as {message: string}).message === 'invalid code') {
-        Alert.alert('Please retry', 'This code is invalid');
+        DefaultAlert({
+          title: 'Error',
+          message: 'This code is invalid',
+        });
       } else {
-        Alert.alert('Please retry', (error as {message: string}).message);
+        DefaultAlert({
+          title: 'Error',
+          message: (error as {message: string}).message,
+        });
       }
     } finally {
       setIsSubmitting(false);

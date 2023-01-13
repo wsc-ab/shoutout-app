@@ -15,6 +15,7 @@ import {getCurrentDate} from '../../utils/Date';
 import NextButton from '../buttons/NextButton';
 import ReportButton from '../buttons/ReportButton';
 import ShoutoutButton from '../buttons/ShoutoutButton';
+import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultText from '../defaults/DefaultText';
 import ContentCard from './ContentCard';
 
@@ -45,22 +46,21 @@ const Contents = ({style, modalVisible}: TProps) => {
         const contentItems = ranking?.contents?.items ?? [];
 
         const filteredItems = contentItems.filter((item: TObject) => {
-          const isNotFromUser = !item.contributeFrom?.users?.ids.includes(
-            authUserData.id,
-          );
-          const isNotViewed = !authUserData.viewed?.contents.ids.includes(
-            item.id,
-          );
-          return isNotFromUser && isNotViewed;
+          const isViewed = authUserData.viewed?.contents.ids.includes(item.id);
+          return !isViewed;
         });
 
-        const shuffledArray = shuffleArray(contentItems);
+        const shuffledArray = shuffleArray(filteredItems);
 
         setData(shuffledArray);
 
         setStatus('loaded');
       } catch (error) {
-        Alert.alert('Please retry', 'Failed to load contents');
+        DefaultAlert({
+          title: 'Error',
+          message: (error as {message: string}).message,
+        });
+
         setStatus('error');
       }
     };

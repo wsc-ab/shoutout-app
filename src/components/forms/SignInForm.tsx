@@ -6,6 +6,7 @@ import {ActivityIndicator, Alert, StyleSheet} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {object} from 'yup';
 import {defaultSchema} from '../../utils/Schema';
+import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultDivider from '../defaults/DefaultDivider';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultText from '../defaults/DefaultText';
@@ -47,7 +48,10 @@ const SignInForm = ({phoneNumber, onCancel}: TProps) => {
       setIsSubmitting(true);
       await confirm.confirm(code);
     } catch (error) {
-      Alert.alert('Please retry', 'Invalid code');
+      DefaultAlert({
+        title: 'Error',
+        message: (error as {message: string}).message,
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -66,7 +70,10 @@ const SignInForm = ({phoneNumber, onCancel}: TProps) => {
 
         setConfirm(confirmation);
       } catch (error) {
-        Alert.alert('Please retry', (error as {message: string}).message);
+        DefaultAlert({
+          title: 'Error',
+          message: (error as {message: string}).message,
+        });
       } finally {
         setIsSubmitting(false);
       }

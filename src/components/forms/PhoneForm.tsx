@@ -2,10 +2,11 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {CountryCode, parsePhoneNumber} from 'libphonenumber-js/mobile';
 import React, {useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {Alert, ScrollView, View} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {object} from 'yup';
 import {defaultSchema} from '../../utils/Schema';
+import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultDivider from '../defaults/DefaultDivider';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
@@ -57,7 +58,10 @@ const PhoneForm = ({onCancel, onSuccess, submitting}: TProps) => {
     });
 
     if (!fullPhoneNumber) {
-      return Alert.alert('Please retry', 'Not a valid mobile number');
+      return DefaultAlert({
+        title: 'Error',
+        message: 'Please use a valid mobile number to enter',
+      });
     }
 
     onSuccess(fullPhoneNumber);

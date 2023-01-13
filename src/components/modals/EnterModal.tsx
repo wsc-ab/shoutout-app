@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {Alert} from 'react-native';
 
 import {checkPhoneNumber} from '../../functions/User';
+import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultModal from '../defaults/DefaultModal';
 import PhoneForm from '../forms/PhoneForm';
 import SignInForm from '../forms/SignInForm';
@@ -27,7 +27,10 @@ const EnterModal = ({onCancel}: TProps) => {
       setSubmitting(false);
       setForm(status === 'signedUp' ? 'signIn' : 'signUp');
     } catch (error) {
-      Alert.alert('Please retry', (error as {message: string}).message);
+      DefaultAlert({
+        title: 'Error',
+        message: (error as {message: string}).message,
+      });
     } finally {
       setSubmitting(false);
     }

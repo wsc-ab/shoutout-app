@@ -2,7 +2,6 @@ import {firebase} from '@react-native-firebase/auth';
 import React, {useContext, useState} from 'react';
 import {
   ActivityIndicator,
-  Alert,
   StyleSheet,
   useWindowDimensions,
   View,
@@ -17,6 +16,7 @@ import {createContent, deleteContent} from '../../functions/Content';
 import {TStyleView} from '../../types/Style';
 import {getStartDate} from '../../utils/Date';
 import {uploadContent} from '../../utils/Storage';
+import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultModal from '../defaults/DefaultModal';
@@ -45,7 +45,10 @@ const CreateButton = ({style, onModal}: TProps) => {
       const {assets} = await launchImageLibrary(options);
       asset = assets?.[0];
     } catch (error) {
-      Alert.alert('Please retry', 'Failed to launch library');
+      DefaultAlert({
+        title: 'Error',
+        message: 'Failed to launch library',
+      });
     }
 
     return asset;
@@ -68,9 +71,11 @@ const CreateButton = ({style, onModal}: TProps) => {
         onProgress: setProgress,
       });
     } catch (error) {
-      console.log(error, 'e');
+      DefaultAlert({
+        title: 'Error',
+        message: 'This file is not supported',
+      });
 
-      Alert.alert('Please retry', 'Invalid file');
       setSubmitting(false);
     }
 
@@ -92,7 +97,10 @@ const CreateButton = ({style, onModal}: TProps) => {
         content: {id: contentId, path: uploaded, type: asset.type},
       });
     } catch (error) {
-      Alert.alert('Please retry', 'Failed upload content');
+      DefaultAlert({
+        title: 'Error',
+        message: (error as {message: string}).message,
+      });
     } finally {
       setSubmitting(false);
     }
@@ -113,15 +121,19 @@ const CreateButton = ({style, onModal}: TProps) => {
         onModal(false);
         setModal(undefined);
       } catch (error) {
-        Alert.alert('Please retry', (error as {message: string}).message);
+        DefaultAlert({
+          title: 'Error',
+          message: (error as {message: string}).message,
+        });
       }
     };
 
-    Alert.alert(
-      'Please confirm',
-      "Delete this content? It will no longer show up in rankings, and others won't be able to shoutout this content.",
-      [{text: 'Delete', onPress, style: 'destructive'}, {text: 'No'}],
-    );
+    DefaultAlert({
+      title: 'Please confirm',
+      message:
+        "Delete this content? It will no longer show up in rankings, and others won't be able to shoutout this content.",
+      buttons: [{text: 'Delete', onPress, style: 'destructive'}, {text: 'No'}],
+    });
   };
 
   const startDate = getStartDate();
@@ -179,10 +191,6 @@ const CreateButton = ({style, onModal}: TProps) => {
               />
             )}
             <View style={styles.icons}>
-              <DefaultIcon
-                icon="rotate"
-                onPress={() => Alert.alert('Not yet implemented')}
-              />
               {!submitting && <DefaultIcon icon="times" onPress={onDelete} />}
               {submitting && <ActivityIndicator style={{paddingRight: 10}} />}
             </View>

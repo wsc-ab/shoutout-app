@@ -1,10 +1,10 @@
 import auth from '@react-native-firebase/auth';
 import firestore, {firebase} from '@react-native-firebase/firestore';
 import React, {createContext, useEffect, useState} from 'react';
-import {Alert} from 'react-native';
+import DefaultAlert from '../components/defaults/DefaultAlert';
 
 import {TAuthUser, TDocData, TDocSnapshot, TObject} from '../types/Firebase';
-import {getSubmitDate, getSecondsGap} from '../utils/Date';
+import {getSecondsGap, getSubmitDate} from '../utils/Date';
 
 type TContextProps = {
   loaded: boolean;
@@ -57,10 +57,10 @@ const AuthUserProvider = ({children}: TProps) => {
 
       const onError = (error: Error) => {
         onSignOut();
-        Alert.alert(
-          'Please sign in again',
-          (error as {message: string}).message,
-        );
+        DefaultAlert({
+          title: 'Please sign in again',
+          message: (error as {message: string}).message,
+        });
       };
 
       const unsubscribe = firestore()

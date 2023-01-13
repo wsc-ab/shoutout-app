@@ -1,10 +1,11 @@
 import firebase from '@react-native-firebase/app';
 import React, {useEffect, useState} from 'react';
-import {Alert, FlatList, Linking, View} from 'react-native';
+import {ActivityIndicator, FlatList, Linking, View} from 'react-native';
 
 import {TObject} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import {getDate} from '../../utils/Date';
+import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultDivider from '../defaults/DefaultDivider';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
@@ -34,7 +35,10 @@ const UserModal = ({id, onCancel}: TProps) => {
         }
       } catch (error) {
         if (isMounted) {
-          Alert.alert('Please retry', (error as {message: string}).message);
+          DefaultAlert({
+            title: 'Error',
+            message: (error as {message: string}).message,
+          });
           setStatus('error');
         }
       }
@@ -51,6 +55,7 @@ const UserModal = ({id, onCancel}: TProps) => {
 
   return (
     <DefaultModal>
+      {status === 'loading' && !data && <ActivityIndicator style={{flex: 1}} />}
       {data && (
         <DefaultForm title={data.name} left={{onPress: onCancel}}>
           <View

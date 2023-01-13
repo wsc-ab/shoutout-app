@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {createReport} from '../../functions/Content';
 import {TStyleView} from '../../types/Style';
+import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultIcon from '../defaults/DefaultIcon';
 
 type TProps = {
@@ -21,24 +22,32 @@ const ReportButton = ({id, collection, onSuccess, style}: TProps) => {
 
         await createReport({target: {collection, id}});
 
-        Alert.alert('Successfully reported');
+        DefaultAlert({
+          title: 'Reported',
+        });
 
         onSuccess();
       } catch (error) {
         if ((error as {message: string}).message === "target doesn't exist") {
-          Alert.alert('This content has been deleted');
+          DefaultAlert({
+            title: 'Deleted content',
+          });
         } else {
-          Alert.alert('Please retry', (error as {message: string}).message);
+          DefaultAlert({
+            title: 'Error',
+            message: (error as {message: string}).message,
+          });
         }
       } finally {
         setIsLoading(false);
       }
     };
-    Alert.alert(
-      'Please confirm',
-      "Report this content? We'll no longer show you this content.",
-      [{text: 'Report', onPress, style: 'destructive'}, {text: 'No'}],
-    );
+
+    DefaultAlert({
+      title: 'Please confirm',
+      message: "Report this content? We'll no longer show you this content.",
+      buttons: [{text: 'Report', onPress, style: 'destructive'}, {text: 'No'}],
+    });
   };
 
   return (
