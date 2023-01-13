@@ -52,6 +52,7 @@ const PhoneForm = ({onCancel, onSuccess, submitting}: TProps) => {
     if (phone.startsWith('0100000')) {
       return onSuccess('+82' + phone.slice(1));
     }
+
     const fullPhoneNumber = formatMobileNumber({
       phoneNumber: phone,
       countryCode,

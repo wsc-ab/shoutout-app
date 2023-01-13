@@ -29,5 +29,5 @@ export default NextButton;
 
 const styles = StyleSheet.create({
   icon: {alignItems: 'flex-start'},
-  act: {alignItems: 'flex-start', paddingLeft: 10},
+  act: {alignItems: 'flex-start', paddingHorizontal: 10},
 });

@@ -163,7 +163,7 @@ const CreateButton = ({style, onModal}: TProps) => {
         />
       )}
       {modal === 'done' && (
-        <DefaultModal>
+        <DefaultModal style={{paddingHorizontal: 0}}>
           <DefaultForm
             title="Content"
             left={{
@@ -172,18 +172,10 @@ const CreateButton = ({style, onModal}: TProps) => {
                 setModal(undefined);
               },
             }}>
-            <DefaultText
-              title={`This will receive shoutouts from ${
-                startDate.getMonth() + 1
-              }/${startDate.getDate()} ${startDate.getHours()}:00 to ${
-                startDate.getMonth() + 1
-              }/${startDate.getDate() + 1} ${startDate.getHours() - 1}:59.`}
-              style={{zIndex: 100}}
-            />
-
             {content && (
               <ContentCard
                 content={content}
+                style={{position: 'absolute', top: 0, left: 0}}
                 contentStyle={{
                   width,
                   height,
@@ -191,8 +183,18 @@ const CreateButton = ({style, onModal}: TProps) => {
               />
             )}
             <View style={styles.icons}>
+              <DefaultText
+                title={`Will be shown from ${
+                  startDate.getMonth() + 1
+                }/${startDate.getDate()} ${startDate.getHours()}:00 to ${
+                  startDate.getMonth() + 1
+                }/${startDate.getDate() + 1} ${startDate.getHours() - 1}:59`}
+                style={{flex: 1, paddingVertical: 10}}
+              />
               {!submitting && <DefaultIcon icon="times" onPress={onDelete} />}
-              {submitting && <ActivityIndicator style={{paddingRight: 10}} />}
+              {submitting && (
+                <ActivityIndicator style={{paddingHorizontal: 10}} />
+              )}
             </View>
           </DefaultForm>
         </DefaultModal>
@@ -209,9 +211,10 @@ const styles = StyleSheet.create({
   act: {alignItems: 'flex-end', paddingHorizontal: 10},
   icons: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
     bottom: 40,
     paddingHorizontal: 20,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    position: 'absolute',
   },
 });

@@ -2,7 +2,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import React, {useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
-import {ActivityIndicator, Alert, StyleSheet} from 'react-native';
+import {ActivityIndicator, StyleSheet} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {object} from 'yup';
 import {defaultSchema} from '../../utils/Schema';

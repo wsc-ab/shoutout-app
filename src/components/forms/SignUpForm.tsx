@@ -162,7 +162,6 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
           autoCapitalize="none"
           autoComplete="username"
           placeholder="airballoon"
-          secureTextEntry
           style={styles.textInput}
         />
         <FormText

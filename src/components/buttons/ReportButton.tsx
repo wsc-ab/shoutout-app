@@ -55,11 +55,14 @@ const ReportButton = ({id, collection, onSuccess, style}: TProps) => {
       {!isLoading && (
         <DefaultIcon icon="flag" onPress={onReport} style={styles.icon} />
       )}
-      {isLoading && <ActivityIndicator style={styles.icon} />}
+      {isLoading && <ActivityIndicator style={styles.act} />}
     </View>
   );
 };
 
 export default ReportButton;
 
-const styles = StyleSheet.create({icon: {alignItems: 'flex-end'}});
+const styles = StyleSheet.create({
+  icon: {alignItems: 'flex-end'},
+  act: {paddingHorizontal: 10, alignItems: 'flex-end'},
+});

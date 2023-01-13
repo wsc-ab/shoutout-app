@@ -71,7 +71,7 @@ const ShoutoutButton = ({collection, id, style}: TProps) => {
           color={isShoutouted ? defaultRed.lv1 : 'white'}
         />
       )}
-      {isLoading && <ActivityIndicator style={styles.icon} />}
+      {isLoading && <ActivityIndicator style={styles.act} />}
     </View>
   );
 };
@@ -80,4 +80,5 @@ export default ShoutoutButton;
 
 const styles = StyleSheet.create({
   icon: {alignItems: 'center'},
+  act: {paddingHorizontal: 10},
 });
