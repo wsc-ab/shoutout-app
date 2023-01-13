@@ -35,6 +35,7 @@ async function uploadToPlayStore(branchName) {
   const bundleReleaseFile = bundlePath.path;
 
   let authClient;
+  console.log(applicationId, bundleReleaseFile, 'bundle path');
 
   try {
     authClient = await authAndroid.getClient();
@@ -194,9 +195,8 @@ async function getOrCreateEdit(options) {
 
 // Start function
 const start = async function () {
-  console.log('upload to play store started');
-
   const branchName = process.argv.slice(2)[0];
+  console.log(branchName, 'upload to play store started');
 
   if (!branchName) {
     throw Error('failed to read branch name from process arguments');
