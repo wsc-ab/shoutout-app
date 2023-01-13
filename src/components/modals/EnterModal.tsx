@@ -25,7 +25,28 @@ const EnterModal = ({onCancel}: TProps) => {
         user: {phoneNumber: newPhoneNumber},
       });
       setSubmitting(false);
-      setForm(status === 'signedUp' ? 'signIn' : 'signUp');
+
+      switch (status) {
+        case 'signedUp':
+          setForm('signIn');
+          break;
+
+        case 'new':
+          setForm('signUp');
+          break;
+
+        case 'deleted':
+          DefaultAlert({
+            title: 'deleted number',
+            message:
+              'If you want to restore this number, send an email to hello@airballoon.app',
+          });
+
+          break;
+
+        default:
+          break;
+      }
     } catch (error) {
       DefaultAlert({
         title: 'Error',
