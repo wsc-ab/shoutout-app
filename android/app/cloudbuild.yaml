@@ -66,7 +66,7 @@ steps:
   # Install @googleapis/androidpublisher
   - id: install_androidpublisher_package
     name: 'reactnativecommunity/react-native-android'
-    waitFor: ['-']
+    waitFor: ['install_packages']
     entrypoint: npm
     args: ['install', '@googleapis/androidpublisher', '--legacy-peer-deps']
   #
@@ -78,7 +78,7 @@ steps:
       [
         'read_key_store',
         'read_service_account_key',
-        'install_packages',
+        'install_androidpublisher_package',
         'download_properties',
       ]
     entrypoint: bash
