@@ -1,4 +1,4 @@
-package app.airballoon.Shoutout.newarchitecture.components;
+package com.airballoon.Shoutout.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

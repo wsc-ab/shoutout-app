@@ -19,7 +19,7 @@ const targets = {
 const bundlePaths = {
   shoutout: {
     path: `${bundleDir}/release/app-release.aab`,
-    applicationId: 'app.airballoon.Shoutout',
+    applicationId: 'com.airballoon.Shoutout',
   },
 };
 

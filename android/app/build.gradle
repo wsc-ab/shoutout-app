@@ -189,7 +189,7 @@ android {
     println "Set version code to $newVersionCode"
 
     defaultConfig {
-        applicationId "app.airballoon.Shoutout"
+        applicationId "com.airballoon.Shoutout"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode newVersionCode
