@@ -10,12 +10,14 @@ const authAndroid = new auth.GoogleAuth({
 
 const bundleDir = './build/outputs/bundle';
 
+const targets = {
+  main: 'shoutout',
+  development: 'shoutout',
+  release: 'shoutout',
+};
+
 const bundlePaths = {
-  main: {
-    path: `${bundleDir}/release/app-release.aab`,
-    applicationId: 'app.airballoon.Shoutout',
-  },
-  development: {
+  shoutout: {
     path: `${bundleDir}/release/app-release.aab`,
     applicationId: 'app.airballoon.Shoutout',
   },
@@ -29,13 +31,11 @@ async function uploadToPlayStore(branchName) {
   } else if (branchName.startsWith('release')) {
     branch = 'release';
   }
-  const bundlePath = bundlePaths[branch];
-
-  const applicationId = bundlePath.applicationId;
-  const bundleReleaseFile = bundlePath.path;
+  const target = targets[branch];
+  const {path, applicationId} = bundlePaths[target];
 
   let authClient;
-  console.log(applicationId, bundleReleaseFile, 'bundle path');
+  console.log(applicationId, path, 'bundle path');
 
   try {
     authClient = await authAndroid.getClient();
@@ -58,7 +58,7 @@ async function uploadToPlayStore(branchName) {
     authClient,
     appEditId,
     applicationId,
-    bundleReleaseFile,
+    path,
   );
   console.log('uploadReleaseFiles ended with version code', versionCode);
 
