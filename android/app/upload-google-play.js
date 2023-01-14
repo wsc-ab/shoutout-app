@@ -22,7 +22,7 @@ const bundlePaths = {
 };
 
 async function uploadToPlayStore(branchName) {
-  let target = 'development'; // [TODO] set Shoutout product development flavor
+  let target = 'development';
 
   if (branchName.startsWith('release')) {
     target = 'shoutout';
