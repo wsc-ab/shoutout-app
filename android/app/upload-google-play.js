@@ -12,11 +12,11 @@ const bundleDir = './build/outputs/bundle';
 
 const bundlePaths = {
   shoutout: {
-    path: `${bundleDir}/release/app-release.aab`,
+    path: `${bundleDir}/shoutoutRelease/app-shoutout-elease.aab`,
     applicationId: 'com.airballoon.Shoutout',
   },
   development: {
-    path: `${bundleDir}/release/app-release.aab`,
+    path: `${bundleDir}/developmentRelease/app-development-release.aab`,
     applicationId: 'app.airballoon.Shoutout',
   },
 };

@@ -289,6 +289,15 @@ android {
         }
     }
 
+    flavorDimensions "target"
+    productFlavors {
+        development {
+            applicationId "app.airballoon.Shoutout"
+        }
+        shoutout {
+        }
+    }
+
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
