@@ -14,13 +14,9 @@ const RankingButton = ({style, onModal}: TProps) => {
 
   const onPress = () => {
     if (!content) {
-      DefaultAlert({
+      return DefaultAlert({
         title: 'Please share a content',
-        message: 'share a content to check the latest ranking.',
-        buttons: [
-          {text: 'Delete', onPress, style: 'destructive'},
-          {text: 'No'},
-        ],
+        message: 'Share a content to check the latest ranking.',
       });
     }
 

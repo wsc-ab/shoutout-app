@@ -61,6 +61,14 @@ const CreateButton = ({style, onModal}: TProps) => {
       return {uploaded: undefined, asset: undefined};
     }
 
+    if (asset.duration && asset.duration > 30) {
+      DefaultAlert({
+        title: 'Video is too long',
+        message: ' Please select a video with less than 30 seconds.',
+      });
+      return {uploaded: undefined, asset: undefined};
+    }
+
     let uploaded;
 
     try {

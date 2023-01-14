@@ -119,7 +119,7 @@ export const getStartDate = () => {
 export const getCurrentDate = () => {
   const now = new Date();
 
-  const submitDate = new Date(
+  const date = new Date(
     Date.UTC(
       now.getUTCFullYear(),
       now.getUTCMonth(),
@@ -131,7 +131,7 @@ export const getCurrentDate = () => {
     ),
   );
 
-  submitDate.setUTCHours(0, 0, 0, 0);
+  date.setUTCHours(0, 0, 0, 0);
 
-  return submitDate;
+  return date;
 };
