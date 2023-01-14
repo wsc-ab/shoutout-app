@@ -7,12 +7,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:315556622122:android:a6a50833cb0d6ba089f853",
+        "mobilesdk_app_id": "1:315556622122:android:708810e43f01eafe89f853",
         "android_client_info": {
-          "package_name": "app.airballoon.Shoutout"
+          "package_name": "com.airballoon.Shoutout"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "315556622122-om7i9dvk5luhjuakve9gelucnsmvummk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.airballoon.Shoutout",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
         {
           "client_id": "315556622122-m97o6q960pgf93ut8oaa1266vsi7rq0f.apps.googleusercontent.com",
           "client_type": 3
