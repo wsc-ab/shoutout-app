@@ -154,12 +154,12 @@ android {
 
         def branchName = System.env."BRANCH_NAME"
 
-        def branch = "development" 
+        def target = "shoutout" 
 
         if (branchName == "main") {
-            branch = "main"
+            target = "shoutout"
         } else if (branchName.startsWith('release')) {
-            branch = "release"
+            target = "shoutout"
         }
 
         newVersionCode = versionProps[branch].toInteger() + 1
