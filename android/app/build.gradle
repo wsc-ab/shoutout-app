@@ -154,11 +154,9 @@ android {
 
         def branchName = System.env."BRANCH_NAME"
 
-        def target = "shoutout" 
+        def target = "development" 
 
-        if (branchName == "main") {
-            target = "shoutout"
-        } else if (branchName.startsWith('release')) {
+        if (branchName.startsWith('release')) {
             target = "shoutout"
         }
 

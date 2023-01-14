@@ -6,11 +6,11 @@ install! 'cocoapods', :deterministic_uuids => false
 use_frameworks! :linkage => :static # for react-native-firebase
 $RNFirebaseAsStaticFramework = true # for react-native-firebase
 
-target 'Shoutout' do
-  config = use_native_modules!
+# [START] shared config
+config = use_native_modules!
 
-  # Flags change depending on the env values.
-  flags = get_default_flags()
+# Flags change depending on the env values.
+flags = get_default_flags()
 
   use_react_native!(
     :path => config[:reactNativePath],
@@ -27,11 +27,6 @@ target 'Shoutout' do
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
-
-  target 'ShoutoutTests' do
-    inherit! :complete
-    # Pods for testing
-  end
 
   post_install do |installer|
     react_native_post_install(
@@ -53,4 +48,14 @@ target 'Shoutout' do
     end
     # [END] fix build xcode build issue
   end
+# [END] shared config
+
+target 'Shoutout' do
+  target 'ShoutoutTests' do
+    inherit! :complete
+    # Pods for testing
+  end
+end
+
+target 'Development' do
 end

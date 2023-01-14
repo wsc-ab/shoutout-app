@@ -10,28 +10,24 @@ const authAndroid = new auth.GoogleAuth({
 
 const bundleDir = './build/outputs/bundle';
 
-const targets = {
-  main: 'shoutout',
-  development: 'shoutout',
-  release: 'shoutout',
-};
-
 const bundlePaths = {
   shoutout: {
     path: `${bundleDir}/release/app-release.aab`,
     applicationId: 'com.airballoon.Shoutout',
   },
+  development: {
+    path: `${bundleDir}/release/app-release.aab`,
+    applicationId: 'app.airballoon.Shoutout',
+  },
 };
 
 async function uploadToPlayStore(branchName) {
-  let branch = 'development';
+  let target = 'development'; // [TODO] set Shoutout product development flavor
 
-  if (branchName === 'main') {
-    branch = 'main';
-  } else if (branchName.startsWith('release')) {
-    branch = 'release';
+  if (branchName.startsWith('release')) {
+    target = 'shoutout';
   }
-  const target = targets[branch];
+
   const {path, applicationId} = bundlePaths[target];
 
   let authClient;
