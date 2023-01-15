@@ -7,4 +7,7 @@ echo fs.inotify.max_user_watches=582222 | sudo tee -a /etc/sysctl.conf && sudo s
 
 echo "running bundle script"
 
-./gradlew :app:bundleRelease || "exit 1"
+[[ "$BRANCH_NAME" == release* ]] && ./gradlew :app:bundleShoutoutRelease ||
+./gradlew :app:bundleDevelopmentRelease ||
+
+"exit 1"
