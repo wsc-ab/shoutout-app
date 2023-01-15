@@ -66,6 +66,7 @@ const SignInForm = ({phoneNumber, onCancel}: TProps) => {
       setIsSubmitting(true);
 
       try {
+        console.log('sign in');
         const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
 
         setConfirm(confirmation);
@@ -74,13 +75,12 @@ const SignInForm = ({phoneNumber, onCancel}: TProps) => {
           title: 'Error',
           message: (error as {message: string}).message,
         });
-        onCancel();
       } finally {
         setIsSubmitting(false);
       }
     };
     load();
-  }, [onCancel, phoneNumber]);
+  }, [phoneNumber]);
 
   return (
     <>
