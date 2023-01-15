@@ -1,5 +1,6 @@
 # extract version information from package.json
 PACKAGE_JSON_PATH="${PROJECT_DIR}/../package.json"
+
 PACKAGE_VERSION=$(cat ${PACKAGE_JSON_PATH} | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]')
 
 # set Internal Field Separator to .

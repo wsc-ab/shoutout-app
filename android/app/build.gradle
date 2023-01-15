@@ -154,16 +154,14 @@ android {
 
         def branchName = System.env."BRANCH_NAME"
 
-        def target = "shoutout" 
+        def target = "development" 
 
-        if (branchName == "main") {
-            target = "shoutout"
-        } else if (branchName.startsWith('release')) {
+        if (branchName.startsWith('release')) {
             target = "shoutout"
         }
 
-        newVersionCode = versionProps[branch].toInteger() + 1
-        versionProps[branch]=newVersionCode.toString()
+        newVersionCode = versionProps[target].toInteger() + 1
+        versionProps[target]=newVersionCode.toString()
 
         versionProps.store(versionPropsFile.newWriter(), null)
     }
@@ -288,6 +286,15 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }
+    }
+
+    flavorDimensions "target"
+    productFlavors {
+        development {
+            applicationId "app.airballoon.Shoutout"
+        }
+        shoutout {
         }
     }
 

@@ -50,6 +50,9 @@ const AuthUserProvider = ({children}: TProps) => {
     const loadAuthUser = (authUserId: string) => {
       const onNext = async (userDoc: TDocSnapshot) => {
         const userData = userDoc.data();
+        if (!userData) {
+          setAuthUser(undefined);
+        }
 
         setAuthUserData(userData);
         setLoaded(true);
@@ -74,7 +77,7 @@ const AuthUserProvider = ({children}: TProps) => {
     if (authUser?.uid) {
       loadAuthUser(authUser.uid);
     }
-  }, [authUser?.uid, loaded]);
+  }, [authUser?.uid]);
 
   const onSignOut = async () => {
     await firebase.auth().signOut();
@@ -86,11 +89,15 @@ const AuthUserProvider = ({children}: TProps) => {
 
   const submitDate = getSubmitDate();
 
+  // set is submitted to ture
+  // if last content has been updated within 24 hours till the next submit date.
+
   const submitted = lastContent?.createdAt
     ? getSecondsGap({
         date: submitDate,
         timestamp: lastContent.createdAt,
-      }) > 0
+      }) <
+      60 * 60 * 24
     : false;
 
   return (

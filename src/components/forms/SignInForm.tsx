@@ -74,12 +74,13 @@ const SignInForm = ({phoneNumber, onCancel}: TProps) => {
           title: 'Error',
           message: (error as {message: string}).message,
         });
+        onCancel();
       } finally {
         setIsSubmitting(false);
       }
     };
     load();
-  }, [phoneNumber]);
+  }, [onCancel, phoneNumber]);
 
   return (
     <>
