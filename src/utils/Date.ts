@@ -46,11 +46,11 @@ export const getDate = (timestamp: TTimestampClient) => {
 };
 
 export const getSecondsGap = ({
-  timestamp,
   date,
+  timestamp,
 }: {
-  timestamp: TTimestampClient;
   date: Date;
+  timestamp: TTimestampClient;
 }) => Math.floor((date.getTime() - getSecondsFromTimestamp(timestamp)) / 1000);
 
 export const getNextSubmitDate = () => {
