@@ -27,7 +27,7 @@ const Welcome = ({style}: TProps) => {
         <DefaultText
           title="Enter"
           onPress={() => setModal('enter')}
-          textStyle={{fontSize: 20, fontWeight: 'bold'}}
+          textStyle={styles.enterText}
           style={styles.enter}
         />
       </View>
@@ -48,4 +48,5 @@ const styles = StyleSheet.create({
   enter: {
     marginTop: 50,
   },
+  enterText: {fontSize: 20, fontWeight: 'bold'},
 });

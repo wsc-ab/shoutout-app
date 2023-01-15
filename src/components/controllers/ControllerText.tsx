@@ -8,10 +8,10 @@ import {
 } from 'react-hook-form';
 import {StyleSheet, TextInputProps, View} from 'react-native';
 import {TStyleView} from '../../types/Style';
-import {defaultRed, placeholderTextColor} from './DefaultColors';
+import {defaultRed, placeholderTextColor} from '../defaults/DefaultColors';
 
-import DefaultText from './DefaultText';
-import DefaultTextInput from './DefaultTextInput';
+import DefaultText from '../defaults/DefaultText';
+import DefaultTextInput from '../defaults/DefaultTextInput';
 
 type TProps = TextInputProps & {
   name: string;
@@ -27,7 +27,7 @@ type TProps = TextInputProps & {
   placeholder?: string;
 };
 
-const FormText = ({
+const ControllerText = ({
   title,
   detail,
   name,
@@ -70,18 +70,8 @@ const FormText = ({
   );
 };
 
-export default FormText;
+export default ControllerText;
 
 const styles = StyleSheet.create({
-  textInput: {
-    padding: 20,
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 10,
-    color: 'white',
-    marginTop: 5,
-  },
-  titleText: {fontWeight: 'bold', fontSize: 20},
-  detail: {marginTop: 5},
   error: {marginTop: 5},
 });

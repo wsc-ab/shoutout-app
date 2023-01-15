@@ -10,7 +10,7 @@ import DefaultDivider from '../defaults/DefaultDivider';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultKeyboardAwareScrollView from '../defaults/DefaultKeyboardAwareScrollView';
 import DefaultText from '../defaults/DefaultText';
-import FormText from '../defaults/FormText';
+import ControllerText from '../controllers/ControllerText';
 
 type TProps = {
   phoneNumber?: string;
@@ -91,7 +91,7 @@ const SignInForm = ({phoneNumber, onCancel}: TProps) => {
           <DefaultKeyboardAwareScrollView>
             <DefaultText title="Sign in by entering the code we just sent to your phone." />
             <DefaultDivider />
-            <FormText
+            <ControllerText
               control={control}
               name="code"
               title="Code"

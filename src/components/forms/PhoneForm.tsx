@@ -11,7 +11,7 @@ import DefaultForm from '../defaults/DefaultForm';
 import DefaultKeyboardAwareScrollView from '../defaults/DefaultKeyboardAwareScrollView';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
-import FormText from '../defaults/FormText';
+import ControllerText from '../controllers/ControllerText';
 
 type TProps = {
   onSuccess: (phoneNumber: string) => void;
@@ -103,7 +103,7 @@ const PhoneForm = ({onCancel, onSuccess, submitting}: TProps) => {
           textStyle={{fontWeight: 'bold', fontSize: 20, marginTop: 10}}
         />
 
-        <FormText
+        <ControllerText
           control={control}
           name="phone"
           placeholder={countryCode === 'KR' ? '01012345678' : '6501235678'}

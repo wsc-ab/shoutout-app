@@ -1,27 +1,19 @@
 import {firebase} from '@react-native-firebase/auth';
 import React, {useContext, useState} from 'react';
-import {
-  ActivityIndicator,
-  StyleSheet,
-  useWindowDimensions,
-  View,
-} from 'react-native';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {
   ImageLibraryOptions,
   launchImageLibrary,
 } from 'react-native-image-picker';
 import AuthUserContext from '../../contexts/AuthUser';
 
-import {createContent, deleteContent} from '../../functions/Content';
+import {createContent} from '../../functions/Content';
 import {TStyleView} from '../../types/Style';
-import {getStartDate} from '../../utils/Date';
 import {uploadContent} from '../../utils/Storage';
 import DefaultAlert from '../defaults/DefaultAlert';
-import DefaultForm from '../defaults/DefaultForm';
 import DefaultIcon from '../defaults/DefaultIcon';
-import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
-import ContentCard from '../screen/ContentCard';
+import ContentModal from '../modals/ContentModal';
 
 type TProps = {style: TStyleView; onModal: (visible: boolean) => void};
 
@@ -116,38 +108,6 @@ const CreateButton = ({style, onModal}: TProps) => {
 
   const [modal, setModal] = useState<'done'>();
 
-  const onDelete = () => {
-    const onPress = async () => {
-      if (!content) {
-        return;
-      }
-      try {
-        setSubmitting(true);
-        await deleteContent({content: {id: content.id}});
-        setProgress(0);
-        setSubmitting(false);
-        onModal(false);
-        setModal(undefined);
-      } catch (error) {
-        DefaultAlert({
-          title: 'Error',
-          message: (error as {message: string}).message,
-        });
-      }
-    };
-
-    DefaultAlert({
-      title: 'Please confirm',
-      message:
-        "Delete this content? It will no longer show up in rankings, and others won't be able to shoutout this content.",
-      buttons: [{text: 'Delete', onPress, style: 'destructive'}, {text: 'No'}],
-    });
-  };
-
-  const startDate = getStartDate();
-
-  const {height, width} = useWindowDimensions();
-
   return (
     <View style={style}>
       {content && !submitting && (
@@ -171,41 +131,14 @@ const CreateButton = ({style, onModal}: TProps) => {
         />
       )}
       {modal === 'done' && (
-        <DefaultModal style={{paddingHorizontal: 0}}>
-          <DefaultForm
-            title="Content"
-            left={{
-              onPress: () => {
-                onModal(false);
-                setModal(undefined);
-              },
-            }}>
-            {content && (
-              <ContentCard
-                content={content}
-                style={{position: 'absolute', top: 0, left: 0}}
-                contentStyle={{
-                  width,
-                  height,
-                }}
-              />
-            )}
-            <View style={styles.icons}>
-              <DefaultText
-                title={`Will be shown from ${
-                  startDate.getMonth() + 1
-                }/${startDate.getDate()} ${startDate.getHours()}:00 to ${
-                  startDate.getMonth() + 1
-                }/${startDate.getDate() + 1} ${startDate.getHours() - 1}:59`}
-                style={{flex: 1, paddingVertical: 10}}
-              />
-              {!submitting && <DefaultIcon icon="times" onPress={onDelete} />}
-              {submitting && (
-                <ActivityIndicator style={{paddingHorizontal: 10}} />
-              )}
-            </View>
-          </DefaultForm>
-        </DefaultModal>
+        <ContentModal
+          content={content}
+          onCancel={() => {
+            onModal(false);
+            setModal(undefined);
+            setProgress(0);
+          }}
+        />
       )}
     </View>
   );
@@ -217,12 +150,4 @@ const styles = StyleSheet.create({
   icon: {alignItems: 'flex-end'},
   progress: {alignItems: 'flex-end', padding: 10},
   act: {alignItems: 'flex-end', paddingHorizontal: 10},
-  icons: {
-    flexDirection: 'row',
-    bottom: 40,
-    paddingHorizontal: 20,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    position: 'absolute',
-  },
 });

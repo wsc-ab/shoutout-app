@@ -12,7 +12,7 @@ import DefaultDivider from '../defaults/DefaultDivider';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultKeyboardAwareScrollView from '../defaults/DefaultKeyboardAwareScrollView';
 import DefaultText from '../defaults/DefaultText';
-import FormText from '../defaults/FormText';
+import ControllerText from '../controllers/ControllerText';
 
 type TProps = {
   phoneNumber?: string;
@@ -132,7 +132,7 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
       <DefaultKeyboardAwareScrollView>
         <DefaultText title="Please set your profile to sign up." />
         <DefaultDivider />
-        <FormText
+        <ControllerText
           control={control}
           name="email"
           title="Email"
@@ -143,7 +143,7 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
           errors={errors.email}
           autoFocus
         />
-        <FormText
+        <ControllerText
           control={control}
           name="password"
           title="Password"
@@ -154,7 +154,7 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
           secureTextEntry
           style={styles.textInput}
         />
-        <FormText
+        <ControllerText
           control={control}
           name="id"
           title="ID"
@@ -164,7 +164,7 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
           placeholder="airballoon"
           style={styles.textInput}
         />
-        <FormText
+        <ControllerText
           control={control}
           name="link"
           title="Link"
@@ -174,7 +174,7 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
           style={styles.textInput}
           optional
         />
-        <FormText
+        <ControllerText
           control={control}
           name="code"
           title="Code"
