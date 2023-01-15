@@ -9,6 +9,7 @@ import AuthUserContext from '../../contexts/AuthUser';
 
 import {createContent} from '../../functions/Content';
 import {TStyleView} from '../../types/Style';
+import {getStartDate} from '../../utils/Date';
 import {uploadContent} from '../../utils/Storage';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultIcon from '../defaults/DefaultIcon';
@@ -70,10 +71,19 @@ const CreateButton = ({style, onModal}: TProps) => {
         id: authUserData.id,
         onProgress: setProgress,
       });
+      const startDate = getStartDate();
+      DefaultAlert({
+        title: 'Uploaded',
+        message: `This content will be shown from ${
+          startDate.getMonth() + 1
+        }/${startDate.getDate()} ${startDate.getHours()}:00 to ${
+          startDate.getMonth() + 1
+        }/${startDate.getDate() + 1} ${startDate.getHours() - 1}:59.`,
+      });
     } catch (error) {
       DefaultAlert({
         title: 'Error',
-        message: 'This file is not supported',
+        message: 'This file is not supported.',
       });
 
       setSubmitting(false);
