@@ -160,8 +160,8 @@ android {
             target = "shoutout"
         }
 
-        newVersionCode = versionProps[branch].toInteger() + 1
-        versionProps[branch]=newVersionCode.toString()
+        newVersionCode = versionProps[target].toInteger() + 1
+        versionProps[target]=newVersionCode.toString()
 
         versionProps.store(versionPropsFile.newWriter(), null)
     }
