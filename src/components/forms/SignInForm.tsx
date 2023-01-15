@@ -66,7 +66,6 @@ const SignInForm = ({phoneNumber, onCancel}: TProps) => {
       setIsSubmitting(true);
 
       try {
-        console.log('sign in');
         const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
 
         setConfirm(confirmation);
