@@ -6,7 +6,7 @@ import {
   View,
 } from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
-import {getRanking} from '../../functions/Content';
+import {getRank} from '../../functions/Content';
 import {TDocData, TObject} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
 import {shuffleArray} from '../../utils/Array';
@@ -38,11 +38,11 @@ const Contents = ({style, modalVisible}: TProps) => {
     const load = async () => {
       try {
         setIndex(0);
-        const {ranking} = await getRanking({
+        const {rank} = await getRank({
           date: getCurrentDate().toUTCString(),
         });
 
-        const contentItems = ranking?.contents?.items ?? [];
+        const contentItems = rank?.contents?.items ?? [];
 
         const filteredItems = contentItems.filter((item: TObject) => {
           const isViewed = authUserData.viewed?.contents.ids.includes(item.id);

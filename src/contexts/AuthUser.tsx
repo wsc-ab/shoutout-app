@@ -92,10 +92,10 @@ const AuthUserProvider = ({children}: TProps) => {
   // set is submitted to ture
   // if last content has been updated within 24 hours till the next submit date.
 
-  const submitted = lastContent?.createdAt
+  const submitted = lastContent?.addedAt
     ? getSecondsGap({
         date: submitDate,
-        timestamp: lastContent.createdAt,
+        timestamp: lastContent.addedAt,
       }) <
       60 * 60 * 24
     : false;

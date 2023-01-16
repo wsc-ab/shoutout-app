@@ -40,8 +40,8 @@ export const replaceContent = async (input: {
   return {...data};
 };
 
-export const getRanking = async (input: {date: string}) => {
-  const {data} = await firebaseFunctions.httpsCallable('getRanking')(input);
+export const getRank = async (input: {date: string}) => {
+  const {data} = await firebaseFunctions.httpsCallable('getRank')(input);
 
   return {...data};
 };
