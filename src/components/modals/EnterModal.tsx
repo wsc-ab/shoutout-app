@@ -26,6 +26,8 @@ const EnterModal = ({onCancel}: TProps) => {
       } = await checkPhoneNumber({
         user: {phoneNumber: newPhoneNumber},
       });
+      console.log(status, 'status');
+
       setSubmitting(false);
 
       switch (status) {

@@ -42,6 +42,8 @@ const Contents = ({style, modalVisible}: TProps) => {
           date: getCurrentDate().toUTCString(),
         });
 
+        console.log(rank, 'rank');
+
         const contentItems = rank?.contents?.items ?? [];
 
         console.log(rank, contentItems, 'contentItems');

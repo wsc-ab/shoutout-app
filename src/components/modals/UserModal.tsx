@@ -1,10 +1,11 @@
 import firebase from '@react-native-firebase/app';
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, FlatList, Linking, View} from 'react-native';
+import {ActivityIndicator, FlatList, View} from 'react-native';
 
 import {TObject} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import {getDate} from '../../utils/Date';
+import LinkButton from '../buttons/LinkButton';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultDivider from '../defaults/DefaultDivider';
 import DefaultForm from '../defaults/DefaultForm';
@@ -58,28 +59,12 @@ const UserModal = ({id, onCancel}: TProps) => {
       {status === 'loading' && !data && <ActivityIndicator style={{flex: 1}} />}
       {data && (
         <DefaultForm title={data.name} left={{onPress: onCancel}}>
-          <View
-            style={{
-              flexDirection: 'row',
-            }}>
-            <DefaultText title="Link" textStyle={{fontWeight: 'bold'}} />
-            <DefaultText
-              title={data?.link ?? 'Link is not set.'}
-              style={{
-                marginLeft: 10,
-              }}
-              onPress={
-                data?.link
-                  ? () => Linking.openURL('https://' + data?.link)
-                  : undefined
-              }
-            />
-          </View>
+          <LinkButton links={data?.links} />
           <DefaultDivider />
           <FlatList
             data={data.contributeTo?.contents.items ?? []}
             renderItem={({item}) => {
-              const createdAt = getDate(item.createdAt);
+              const createdAt = getDate(item.addedAt);
               return (
                 <View key={item.id}>
                   <DefaultText

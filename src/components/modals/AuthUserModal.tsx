@@ -3,6 +3,7 @@ import {RefreshControl, ScrollView, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 
 import {deleteUser} from '../../functions/User';
+import LinkButton from '../buttons/LinkButton';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
@@ -99,33 +100,7 @@ const AuthUserModal = ({onCancel}: TProps) => {
               />
             )}
           </View>
-
-          <View
-            style={{
-              marginTop: 20,
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-              <DefaultText title="Link" textStyle={{fontWeight: 'bold'}} />
-              {authUserData.link && (
-                <DefaultText
-                  title={authUserData.link}
-                  style={{
-                    marginLeft: 10,
-                  }}
-                />
-              )}
-              {!authUserData.link && (
-                <DefaultText
-                  title={'No link has been set'}
-                  style={{
-                    marginLeft: 10,
-                  }}
-                />
-              )}
-            </View>
-          </View>
+          <LinkButton links={authUserData?.links} style={{marginTop: 20}} />
           <View
             style={{borderWidth: 1, borderColor: 'gray', marginVertical: 20}}
           />
