@@ -42,15 +42,10 @@ const Contents = ({style, modalVisible}: TProps) => {
           date: getCurrentDate().toUTCString(),
         });
 
-        console.log(rank, 'rank');
-
         const contentItems = rank?.contents?.items ?? [];
-
-        console.log(rank, contentItems, 'contentItems');
 
         const filteredItems = contentItems.filter((item: TObject) => {
           const isViewed = authUserData.viewed?.contents.ids.includes(item.id);
-          console.log(isViewed);
 
           return !isViewed;
         });

@@ -31,8 +31,6 @@ const RankModal = ({onCancel}: TProps) => {
           date: date.toUTCString(),
         });
 
-        console.log(rank?.contents.items[0], 'items');
-
         setData(rank);
 
         setStatus('loaded');

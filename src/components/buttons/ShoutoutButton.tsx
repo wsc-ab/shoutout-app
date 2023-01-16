@@ -57,8 +57,6 @@ const ShoutoutButton = ({collection, id, style}: TProps) => {
 
   const [isShoutouted, setIsShoutouted] = useState(false);
 
-  console.log(authUserData.shoutoutTo[collection].ids, id);
-
   useEffect(() => {
     setIsShoutouted(authUserData.shoutoutTo?.[collection]?.ids.includes(id));
   }, [authUserData.shoutoutTo, collection, id]);

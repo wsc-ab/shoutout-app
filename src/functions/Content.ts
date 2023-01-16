@@ -42,7 +42,6 @@ export const replaceContent = async (input: {
 
 export const getRank = async (input: {date: string}) => {
   const {data} = await firebaseFunctions.httpsCallable('getRank')(input);
-  console.log(data, 'data');
 
   return {...data};
 };

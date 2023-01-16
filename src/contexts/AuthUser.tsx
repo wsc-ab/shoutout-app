@@ -25,8 +25,6 @@ const AuthUserProvider = ({children}: TProps) => {
   const [authUser, setAuthUser] = useState<TAuthUser | null>();
   const [loaded, setLoaded] = useState(false);
 
-  console.log(authUser, 'authUser');
-
   useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged(async user => {
       if (user) {
