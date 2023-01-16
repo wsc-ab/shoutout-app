@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, FlatList, View} from 'react-native';
 
-import {getRanking} from '../../functions/Content';
+import {getRank} from '../../functions/Content';
 import {TObject} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import {getCurrentDate} from '../../utils/Date';
@@ -17,7 +17,7 @@ type TProps = {
   onCancel: () => void;
 };
 
-const RankingModal = ({onCancel}: TProps) => {
+const RankModal = ({onCancel}: TProps) => {
   const [status, setStatus] = useState<TStatus>('loading');
   const [data, setData] = useState<TObject>();
 
@@ -27,10 +27,13 @@ const RankingModal = ({onCancel}: TProps) => {
   useEffect(() => {
     const load = async () => {
       try {
-        const {ranking} = await getRanking({
+        const {rank} = await getRank({
           date: date.toUTCString(),
         });
-        setData(ranking);
+
+        console.log(rank?.contents.items[0], 'items');
+
+        setData(rank);
 
         setStatus('loaded');
       } catch (error) {
@@ -51,7 +54,7 @@ const RankingModal = ({onCancel}: TProps) => {
 
   return (
     <DefaultModal>
-      <DefaultForm title="Ranking" left={{onPress: onCancel}}>
+      <DefaultForm title="Rank" left={{onPress: onCancel}}>
         <DefaultText title={'Based only on number of shoutouts received.'} />
         <View
           style={{
@@ -144,7 +147,11 @@ const RankingModal = ({onCancel}: TProps) => {
                       style={{flex: 1}}
                     />
                     <DefaultText
-                      title={`${item.shoutoutFrom?.users?.number} shoutouts`}
+                      title={
+                        item.shoutoutFrom?.users?.number
+                          ? `${item.shoutoutFrom?.users?.number} shoutouts`
+                          : '0 shoutouts'
+                      }
                       textStyle={{fontWeight: 'bold'}}
                       style={{flex: 1, alignItems: 'center'}}
                     />
@@ -174,7 +181,7 @@ const RankingModal = ({onCancel}: TProps) => {
         )}
         {status === 'loaded' && !data && (
           <DefaultText
-            title="No ranking found."
+            title="No rank found."
             style={{
               flex: 1,
               justifyContent: 'center',
@@ -193,4 +200,4 @@ const RankingModal = ({onCancel}: TProps) => {
   );
 };
 
-export default RankingModal;
+export default RankModal;

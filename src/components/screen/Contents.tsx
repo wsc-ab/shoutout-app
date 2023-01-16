@@ -44,8 +44,12 @@ const Contents = ({style, modalVisible}: TProps) => {
 
         const contentItems = rank?.contents?.items ?? [];
 
+        console.log(rank, contentItems, 'contentItems');
+
         const filteredItems = contentItems.filter((item: TObject) => {
           const isViewed = authUserData.viewed?.contents.ids.includes(item.id);
+          console.log(isViewed);
+
           return !isViewed;
         });
 

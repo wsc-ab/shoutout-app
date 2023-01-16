@@ -45,7 +45,7 @@ const ContentModal = ({onCancel, content}: TProps) => {
     DefaultAlert({
       title: 'Please confirm',
       message:
-        "Delete this content? It will no longer show up in rankings, and others won't be able to shoutout this content.",
+        "Delete this content? It will no longer show up in ranks, and others won't be able to shoutout this content.",
       buttons: [{text: 'Delete', onPress, style: 'destructive'}, {text: 'No'}],
     });
   };

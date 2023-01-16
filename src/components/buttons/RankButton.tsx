@@ -4,31 +4,31 @@ import AuthUserContext from '../../contexts/AuthUser';
 import {TStyleView} from '../../types/Style';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultIcon from '../defaults/DefaultIcon';
-import RankingModal from '../modals/RankingModal';
+import RankModal from '../modals/RankModal';
 
 type TProps = {style: TStyleView; onModal: (visible: boolean) => void};
 
-const RankingButton = ({style, onModal}: TProps) => {
+const RankButton = ({style, onModal}: TProps) => {
   const {content} = useContext(AuthUserContext);
-  const [modal, setModal] = useState<'ranking'>();
+  const [modal, setModal] = useState<'rank'>();
 
   const onPress = () => {
     if (!content) {
       return DefaultAlert({
         title: 'Please share a content',
-        message: 'Share a content to check the latest ranking.',
+        message: 'Share a content to check the latest rank.',
       });
     }
 
     onModal(true);
-    setModal('ranking');
+    setModal('rank');
   };
 
   return (
     <View style={style}>
       <DefaultIcon icon="ranking-star" onPress={onPress} style={styles.icon} />
-      {modal === 'ranking' && (
-        <RankingModal
+      {modal === 'rank' && (
+        <RankModal
           onCancel={() => {
             onModal(false);
             setModal(undefined);
@@ -39,6 +39,6 @@ const RankingButton = ({style, onModal}: TProps) => {
   );
 };
 
-export default RankingButton;
+export default RankButton;
 
 const styles = StyleSheet.create({icon: {alignItems: 'center'}});
