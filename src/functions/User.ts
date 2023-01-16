@@ -29,3 +29,9 @@ export const sendVerificationCode = async (input: {
 
   return {...data};
 };
+
+export const signIn = async (input: {user: {id: string; token?: string}}) => {
+  const {data} = await firebaseFunctions.httpsCallable('signIn')(input);
+
+  return {...data};
+};

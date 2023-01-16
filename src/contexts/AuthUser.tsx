@@ -2,6 +2,7 @@ import auth from '@react-native-firebase/auth';
 import firestore, {firebase} from '@react-native-firebase/firestore';
 import React, {createContext, useEffect, useState} from 'react';
 import DefaultAlert from '../components/defaults/DefaultAlert';
+import {signIn} from '../functions/User';
 
 import {TAuthUser, TDocData, TDocSnapshot, TObject} from '../types/Firebase';
 import {getSecondsGap, getSubmitDate} from '../utils/Date';
@@ -29,6 +30,7 @@ const AuthUserProvider = ({children}: TProps) => {
     const unsubscribe = auth().onAuthStateChanged(async user => {
       if (user) {
         setAuthUser(user);
+        await signIn({user: {id: user.uid}});
       } else {
         setLoaded(true);
       }
