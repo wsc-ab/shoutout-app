@@ -131,7 +131,6 @@ export const getCurrentDate = () => {
     ),
   );
 
-  date.setUTCDate(date.getDate() + 1);
   date.setUTCHours(0, 0, 0, 0);
 
   return date;
