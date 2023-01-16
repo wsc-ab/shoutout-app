@@ -294,7 +294,7 @@ android {
         development {
             applicationId "app.airballoon.Shoutout"
         }
-        shoutout {
+        production {
         }
     }
 

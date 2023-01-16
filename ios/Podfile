@@ -50,7 +50,7 @@ flags = get_default_flags()
   end
 # [END] shared config
 
-target 'Shoutout' do
+target 'Production' do
   target 'ShoutoutTests' do
     inherit! :complete
     # Pods for testing
