@@ -157,7 +157,7 @@ android {
         def target = "development" 
 
         if (branchName.startsWith('release')) {
-            target = "shoutout"
+            target = "production"
         }
 
         newVersionCode = versionProps[target].toInteger() + 1
