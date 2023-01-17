@@ -11,12 +11,15 @@ type TProps = {
 const LinkButton = ({links, style}: TProps) => {
   return (
     <View style={[styles.container, style]}>
-      <DefaultText title="Link" textStyle={styles.titleText} />
+      <DefaultText
+        title="Link"
+        textStyle={styles.titleText}
+        style={styles.title}
+      />
       {links.length === 0 && <DefaultText title="Link is not set." />}
       {links.length >= 1 && links[0].website && (
         <DefaultText
           title={links[0].name || links[0].website}
-          style={styles.website}
           onPress={() => Linking.openURL(links[0].website)}
         />
       )}
@@ -29,7 +32,5 @@ export default LinkButton;
 const styles = StyleSheet.create({
   container: {flexDirection: 'row', alignItems: 'center'},
   titleText: {fontWeight: 'bold'},
-  website: {
-    marginLeft: 10,
-  },
+  title: {marginRight: 10},
 });

@@ -5,7 +5,8 @@ import DefaultAlert from '../components/defaults/DefaultAlert';
 import {signIn} from '../functions/User';
 
 import {TAuthUser, TDocData, TDocSnapshot, TObject} from '../types/Firebase';
-import {getSecondsGap, getSubmitDate} from '../utils/Date';
+import {sortByTimestamp} from '../utils/Array';
+import {getDate, getSecondsGap, getSubmitDate} from '../utils/Date';
 
 type TContextProps = {
   loaded: boolean;
@@ -87,7 +88,10 @@ const AuthUserProvider = ({children}: TProps) => {
     setAuthUserData(undefined);
   };
 
-  const lastContent = authUserData?.contributeTo?.contents?.items?.[0];
+  const lastContent = sortByTimestamp(
+    authUserData?.contributeTo?.contents?.items ?? [],
+    'addedAt',
+  )[0];
 
   const submitDate = getSubmitDate();
 
@@ -101,6 +105,20 @@ const AuthUserProvider = ({children}: TProps) => {
       }) <
       60 * 60 * 24
     : false;
+
+  if (lastContent?.addedAt) {
+    console.log(submitDate.toLocaleString(), 'submit');
+    console.log(getDate(lastContent.addedAt), 'submit');
+
+    console.log(
+      getSecondsGap({
+        date: submitDate,
+        timestamp: lastContent.addedAt,
+      }),
+      60 * 60 * 24,
+      'gap',
+    );
+  }
 
   return (
     <AuthUserContext.Provider
