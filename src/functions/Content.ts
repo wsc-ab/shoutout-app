@@ -18,6 +18,18 @@ export const removeShoutout = async (input: {}) => {
   return {...data};
 };
 
+export const addLike = async (input: {}) => {
+  const {data} = await firebaseFunctions.httpsCallable('addLike')(input);
+
+  return {...data};
+};
+
+export const removeLike = async (input: {}) => {
+  const {data} = await firebaseFunctions.httpsCallable('removeLike')(input);
+
+  return {...data};
+};
+
 export const addView = async (input: {}) => {
   const {data} = await firebaseFunctions.httpsCallable('addView')(input);
 

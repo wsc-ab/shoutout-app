@@ -144,24 +144,30 @@ const RankModal = ({onCancel}: TProps) => {
                       }}
                       style={{flex: 1}}
                     />
-                    <DefaultText
-                      title={
-                        item.shoutoutFrom?.users?.number
-                          ? `${item.shoutoutFrom?.users?.number} shoutouts`
-                          : '0 shoutouts'
-                      }
-                      textStyle={{fontWeight: 'bold'}}
-                      style={{flex: 1, alignItems: 'center'}}
-                    />
-                    <DefaultText
-                      title={`${item.contributeFrom?.users.items[0].name}`}
-                      textStyle={{fontWeight: 'bold'}}
-                      style={{flex: 1, alignItems: 'flex-end'}}
-                      onPress={() =>
-                        setUserModalId(item.contributeFrom?.users.items[0].id)
-                      }
-                    />
+                    <View
+                      style={{
+                        flex: 1,
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                      }}>
+                      <DefaultIcon
+                        icon="heart"
+                        style={{padding: 0, marginRight: 5}}
+                      />
+                      <DefaultText
+                        title={(item.likeFrom?.users?.number ?? 0).toString()}
+                        textStyle={{fontWeight: 'bold'}}
+                      />
+                    </View>
                   </View>
+                  <DefaultText
+                    title={`${item.contributeFrom?.users.items[0].name}`}
+                    textStyle={{fontWeight: 'bold'}}
+                    style={{alignSelf: 'flex-start'}}
+                    onPress={() =>
+                      setUserModalId(item.contributeFrom?.users.items[0].id)
+                    }
+                  />
                   <ContentCard content={item} initPaused={true} showType />
                 </View>
               );
