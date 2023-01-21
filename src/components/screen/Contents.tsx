@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import {getRank} from '../../functions/Content';
-import {TDocData, TObject} from '../../types/Firebase';
+import {TDocData} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
 import {shuffleArray} from '../../utils/Array';
 import {getCurrentDate} from '../../utils/Date';
@@ -44,13 +44,7 @@ const Contents = ({style, modalVisible}: TProps) => {
 
         const contentItems = rank?.contents?.items ?? [];
 
-        const filteredItems = contentItems.filter((item: TObject) => {
-          const isViewed = authUserData.viewed?.contents.ids.includes(item.id);
-
-          return !isViewed;
-        });
-
-        const shuffledArray = shuffleArray(filteredItems);
+        const shuffledArray = shuffleArray(contentItems);
 
         setData(shuffledArray);
 

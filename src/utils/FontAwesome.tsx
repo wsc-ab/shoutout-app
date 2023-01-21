@@ -7,6 +7,7 @@ import {
   faArrowLeft,
   faArrowRight,
   faCheck,
+  faCommentDollar,
   faFlag,
   faHeart,
   faImage,
@@ -34,4 +35,5 @@ library.add(
   faArrowRight,
   faArrowDown,
   faVideo,
+  faCommentDollar,
 );
