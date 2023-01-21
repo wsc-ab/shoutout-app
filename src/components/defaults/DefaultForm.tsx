@@ -40,12 +40,15 @@ const DefaultForm = ({title, left, right, children, style}: TProps) => {
 export default DefaultForm;
 
 const styles = StyleSheet.create({
-  container: {flex: 1},
+  container: {
+    flex: 1,
+    top: 40,
+  },
   header: {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
-    marginVertical: 20,
+    alignItems: 'center',
+    marginBottom: 20,
     zIndex: 100,
   },
   left: {flex: 1, alignItems: 'flex-start'},

@@ -10,7 +10,7 @@ type TProps = {
 
 const DefaultModal = ({children, style}: TProps) => {
   return (
-    <Modal presentationStyle="pageSheet" animationType="slide">
+    <Modal animationType="slide">
       <View style={[styles.container, style]}>{children}</View>
     </Modal>
   );

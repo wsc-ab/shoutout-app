@@ -51,14 +51,6 @@ const CreateButton = ({style, onModal}: TProps) => {
       return {uploaded: undefined, asset: undefined};
     }
 
-    if (asset.duration && asset.duration > 30) {
-      DefaultAlert({
-        title: 'Content is too long',
-        message: ' Content length should be less then 30 seconds.',
-      });
-      return {uploaded: undefined, asset: undefined};
-    }
-
     let uploaded;
 
     try {
