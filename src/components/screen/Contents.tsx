@@ -11,9 +11,9 @@ import {TDocData} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
 import {shuffleArray} from '../../utils/Array';
 import {getCurrentDate} from '../../utils/Date';
+import LikeButton from '../buttons/LikeButton';
 import NextButton from '../buttons/NextButton';
 import ReportButton from '../buttons/ReportButton';
-import ShoutoutButton from '../buttons/ShoutoutButton';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultText from '../defaults/DefaultText';
 import ContentCard from './ContentCard';
@@ -117,7 +117,7 @@ const Contents = ({style, modalVisible}: TProps) => {
       />
       <View style={styles.nav}>
         <NextButton onSuccess={onNext} id={data[index].id} style={{flex: 1}} />
-        <ShoutoutButton
+        <LikeButton
           collection="contents"
           id={data[index].id}
           style={{flex: 1}}

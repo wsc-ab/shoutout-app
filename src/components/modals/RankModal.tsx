@@ -163,7 +163,7 @@ const RankModal = ({onCancel}: TProps) => {
                   <DefaultText
                     title={`${item.contributeFrom?.users.items[0].name}`}
                     textStyle={{fontWeight: 'bold'}}
-                    style={{alignSelf: 'flex-start'}}
+                    style={{alignSelf: 'flex-start', marginBottom: 10}}
                     onPress={() =>
                       setUserModalId(item.contributeFrom?.users.items[0].id)
                     }
