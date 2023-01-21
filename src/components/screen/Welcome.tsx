@@ -12,17 +12,9 @@ const Welcome = ({style}: TProps) => {
     <View style={style}>
       <View style={styles.texts}>
         <DefaultText title="Shoutout" textStyle={styles.title} />
-        <DefaultText title="Best contents win" textStyle={styles.sloganText} />
+        <DefaultText title="Make people laugh" textStyle={styles.sloganText} />
         <View style={styles.steps}>
           <DefaultText title="One shot, One opportunity, Everyday" />
-          <DefaultText
-            title="Only contents matter, not followers"
-            style={styles.step}
-          />
-          <DefaultText
-            title="Top contents are shared online for free"
-            style={styles.step}
-          />
         </View>
         <DefaultText
           title="Enter"
@@ -44,7 +36,6 @@ const styles = StyleSheet.create({
   title: {fontSize: 50, fontWeight: 'bold'},
   sloganText: {fontSize: 20},
   steps: {marginTop: 50, alignItems: 'center'},
-  step: {marginTop: 10},
   enter: {
     marginTop: 50,
   },

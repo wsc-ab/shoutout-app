@@ -1,10 +1,7 @@
 import {firebase} from '@react-native-firebase/auth';
 import React, {useContext, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
-import {
-  ImageLibraryOptions,
-  launchImageLibrary,
-} from 'react-native-image-picker';
+import {CameraOptions, launchCamera} from 'react-native-image-picker';
 import AuthUserContext from '../../contexts/AuthUser';
 
 import {createContent} from '../../functions/Content';
@@ -26,21 +23,21 @@ const CreateButton = ({style, onModal}: TProps) => {
   const [progress, setProgress] = useState(0);
 
   const selectContent = async () => {
-    const options: ImageLibraryOptions = {
-      mediaType: 'mixed',
+    const options: CameraOptions = {
+      mediaType: 'video',
       videoQuality: 'high',
-      selectionLimit: 1,
+      durationLimit: 30,
     };
 
     let asset;
 
     try {
-      const {assets} = await launchImageLibrary(options);
+      const {assets} = await launchCamera(options);
       asset = assets?.[0];
     } catch (error) {
       DefaultAlert({
         title: 'Error',
-        message: 'Failed to launch library',
+        message: 'Failed to launch camera,',
       });
     }
 
@@ -56,8 +53,8 @@ const CreateButton = ({style, onModal}: TProps) => {
 
     if (asset.duration && asset.duration > 30) {
       DefaultAlert({
-        title: 'Video is too long',
-        message: ' Please select a video with less than 30 seconds.',
+        title: 'Content is too long',
+        message: ' Content length should be less then 30 seconds.',
       });
       return {uploaded: undefined, asset: undefined};
     }
