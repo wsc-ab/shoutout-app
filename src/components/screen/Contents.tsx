@@ -62,7 +62,7 @@ const Contents = ({style, modalVisible}: TProps) => {
     if (status === 'loading') {
       load();
     }
-  }, [authUserData.id, authUserData.viewed?.contents.ids, status]);
+  }, [authUserData.id, status]);
 
   const onNext = async () => {
     if (index === data.length - 1) {
