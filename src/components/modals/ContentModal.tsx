@@ -9,7 +9,6 @@ import {deleteContent} from '../../functions/Content';
 import {TObject} from '../../types/Firebase';
 import {getStartDate} from '../../utils/Date';
 import DefaultAlert from '../defaults/DefaultAlert';
-import DefaultForm from '../defaults/DefaultForm';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
@@ -53,35 +52,35 @@ const ContentModal = ({onCancel, content}: TProps) => {
 
   return (
     <DefaultModal style={styles.container}>
-      <DefaultForm
-        title="Content"
-        style={styles.form}
-        left={{
-          onPress: onCancel,
-        }}>
-        {content && (
-          <ContentCard
-            content={content}
-            style={styles.content}
-            contentStyle={{
-              width,
-              height,
-            }}
-          />
-        )}
-        <View style={styles.icons}>
-          <DefaultText
-            title={`Will be shown from ${
-              startDate.getMonth() + 1
-            }/${startDate.getDate()} ${startDate.getHours()}:00 to ${
-              startDate.getMonth() + 1
-            }/${startDate.getDate() + 1} ${startDate.getHours() - 1}:59`}
-            style={styles.date}
-          />
-          {!submitting && <DefaultIcon icon="times" onPress={onDelete} />}
-          {submitting && <ActivityIndicator style={styles.act} />}
+      <View style={styles.header}>
+        <View style={styles.left}>
+          <DefaultIcon icon="angle-left" onPress={onCancel} />
         </View>
-      </DefaultForm>
+        <DefaultText title={'Content'} textStyle={styles.centerText} />
+        <View style={styles.right} />
+      </View>
+      {content && (
+        <ContentCard
+          content={content}
+          style={styles.content}
+          contentStyle={{
+            width,
+            height,
+          }}
+        />
+      )}
+      <View style={styles.icons}>
+        <DefaultText
+          title={`Will be shown from ${
+            startDate.getMonth() + 1
+          }/${startDate.getDate()} ${startDate.getHours()}:00 to ${
+            startDate.getMonth() + 1
+          }/${startDate.getDate() + 1} ${startDate.getHours() - 1}:59`}
+          style={styles.date}
+        />
+        {!submitting && <DefaultIcon icon="times" onPress={onDelete} />}
+        {submitting && <ActivityIndicator style={styles.act} />}
+      </View>
     </DefaultModal>
   );
 };
@@ -90,7 +89,6 @@ export default ContentModal;
 
 const styles = StyleSheet.create({
   container: {paddingHorizontal: 0},
-  form: {paddingHorizontal: 10},
   content: {position: 'absolute', top: 0, left: 0},
   date: {flex: 1, padding: 10},
   act: {paddingHorizontal: 10},
@@ -103,4 +101,18 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     position: 'absolute',
   },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    top: 40,
+    zIndex: 100,
+  },
+  left: {flex: 1, alignItems: 'flex-start'},
+  centerText: {
+    fontSize: 20,
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  right: {flex: 1, alignItems: 'flex-end'},
 });
