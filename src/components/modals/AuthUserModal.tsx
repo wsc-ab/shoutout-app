@@ -1,6 +1,7 @@
 import React, {useContext, useState} from 'react';
 import {RefreshControl, ScrollView, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
+import auth from '@react-native-firebase/auth';
 
 import {deleteUser} from '../../functions/User';
 import LinkButton from '../buttons/LinkButton';
@@ -15,8 +16,7 @@ type TProps = {
 };
 
 const AuthUserModal = ({onCancel}: TProps) => {
-  const {onSignOut, authUserData, authUser, onReload} =
-    useContext(AuthUserContext);
+  const {onSignOut, authUserData, onReload} = useContext(AuthUserContext);
 
   const onDelete = async () => {
     const onPress = async () => {
@@ -41,6 +41,8 @@ const AuthUserModal = ({onCancel}: TProps) => {
 
   const [modal, setModal] = useState<'profile' | 'setting'>();
 
+  const currentUser = auth().currentUser;
+
   return (
     <DefaultModal>
       <DefaultForm title={authUserData.name} left={{onPress: onCancel}}>
@@ -60,7 +62,7 @@ const AuthUserModal = ({onCancel}: TProps) => {
             }}>
             <DefaultText title="Phone" textStyle={{fontWeight: 'bold'}} />
             <DefaultText
-              title={authUser?.phoneNumber!}
+              title={authUserData?.phoneNumber!}
               style={{
                 marginLeft: 10,
               }}
@@ -76,13 +78,13 @@ const AuthUserModal = ({onCancel}: TProps) => {
             <View style={{flexDirection: 'row', flex: 1, alignItems: 'center'}}>
               <DefaultText title="Email" textStyle={{fontWeight: 'bold'}} />
               <DefaultText
-                title={authUser?.email!}
+                title={authUserData?.email!}
                 style={{
                   marginLeft: 10,
                 }}
               />
             </View>
-            {!authUser?.emailVerified && (
+            {!currentUser?.emailVerified && (
               <DefaultText
                 title={'Not verified'}
                 onPress={async () => {
@@ -92,7 +94,7 @@ const AuthUserModal = ({onCancel}: TProps) => {
                       'We have just sent a verification email. Refresh this page once you have pressed the verification link.',
                   });
 
-                  await authUser?.sendEmailVerification();
+                  await currentUser?.sendEmailVerification();
                 }}
                 style={{
                   marginTop: 5,

@@ -10,7 +10,6 @@ import {getSecondsGap, getSubmitDate} from '../utils/Date';
 
 type TContextProps = {
   loaded: boolean;
-  authUser: TAuthUser | null | undefined;
   authUserData: TDocData;
   onReload: () => void;
   onSignOut: () => void;
@@ -110,7 +109,6 @@ const AuthUserProvider = ({children}: TProps) => {
     <AuthUserContext.Provider
       value={{
         loaded,
-        authUser,
         authUserData: authUserData!,
         onSignOut,
         onReload,
