@@ -24,7 +24,7 @@ const CreateButton = ({style, onModal}: TProps) => {
 
   const selectContent = async () => {
     const options: CameraOptions = {
-      mediaType: 'mixed',
+      mediaType: 'video',
       videoQuality: 'high',
       durationLimit: 30,
     };
