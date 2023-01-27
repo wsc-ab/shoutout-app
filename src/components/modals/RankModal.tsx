@@ -125,7 +125,11 @@ const RankModal = ({onCancel}: TProps) => {
         )}
         {status === 'loaded' && data && (
           <FlatList
-            data={data.contents?.items ?? []}
+            data={
+              data.contents?.items.filter(
+                (item: TObject) => item.likeFrom?.users?.number >= 1,
+              ) ?? []
+            }
             contentContainerStyle={{paddingBottom: 50}}
             renderItem={({item, index}) => {
               return (
