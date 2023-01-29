@@ -1,7 +1,10 @@
 import {firebase} from '@react-native-firebase/auth';
 import React, {useContext, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
-import {CameraOptions, launchCamera} from 'react-native-image-picker';
+import {
+  ImageLibraryOptions,
+  launchImageLibrary,
+} from 'react-native-image-picker';
 import AuthUserContext from '../../contexts/AuthUser';
 
 import {createContent} from '../../functions/Content';
@@ -23,16 +26,15 @@ const CreateButton = ({style, onModal}: TProps) => {
   const [progress, setProgress] = useState(0);
 
   const selectContent = async () => {
-    const options: CameraOptions = {
+    const options: ImageLibraryOptions = {
       mediaType: 'video',
       videoQuality: 'high',
-      durationLimit: 30,
     };
 
     let asset;
 
     try {
-      const {assets} = await launchCamera(options);
+      const {assets} = await launchImageLibrary(options);
       asset = assets?.[0];
     } catch (error) {
       DefaultAlert({
@@ -48,6 +50,16 @@ const CreateButton = ({style, onModal}: TProps) => {
     const asset = await selectContent();
 
     if (!asset) {
+      return {uploaded: undefined, asset: undefined};
+    }
+
+    const maxVideoLength = 2 * 60;
+
+    if (asset.duration && asset.duration > maxVideoLength) {
+      DefaultAlert({
+        title: 'Video is too long',
+        message: ' Please select a video with less than 2 minutes.',
+      });
       return {uploaded: undefined, asset: undefined};
     }
 
