@@ -36,6 +36,7 @@ const CreateButton = ({style, onModal}: TProps) => {
     try {
       const {assets} = await launchImageLibrary(options);
       asset = assets?.[0];
+      console.log(asset, 'asset');
     } catch (error) {
       DefaultAlert({
         title: 'Error',
@@ -58,7 +59,7 @@ const CreateButton = ({style, onModal}: TProps) => {
     if (asset.duration && asset.duration > maxVideoLength) {
       DefaultAlert({
         title: 'Video is too long',
-        message: ' Please select a video with less than 2 minutes.',
+        message: 'Please select a video with less than 2 minutes.',
       });
       return {uploaded: undefined, asset: undefined};
     }
@@ -86,6 +87,7 @@ const CreateButton = ({style, onModal}: TProps) => {
         title: 'Error',
         message: 'This file is not supported.',
       });
+      setProgress(0);
 
       setSubmitting(false);
     }
