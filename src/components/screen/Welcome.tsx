@@ -11,14 +11,11 @@ const Welcome = ({style}: TProps) => {
   return (
     <View style={style}>
       <View style={styles.texts}>
-        <DefaultText title="Shoutout" textStyle={styles.title} />
+        <DefaultText title="Shoutout" textStyle={styles.titleText} />
         <DefaultText
-          title="Content Challenge Platform"
+          title="Share contents to make money"
           textStyle={styles.sloganText}
         />
-        <View style={styles.steps}>
-          <DefaultText title="Win cash with One shot, One opportunity, Everyday" />
-        </View>
         <DefaultText
           title="Enter"
           onPress={() => setModal('enter')}
@@ -26,7 +23,6 @@ const Welcome = ({style}: TProps) => {
           style={styles.enter}
         />
       </View>
-
       {modal === 'enter' && <EnterModal onCancel={() => setModal(undefined)} />}
     </View>
   );
@@ -35,12 +31,17 @@ const Welcome = ({style}: TProps) => {
 export default Welcome;
 
 const styles = StyleSheet.create({
-  texts: {flex: 1, alignItems: 'center', justifyContent: 'center'},
-  title: {fontSize: 70, fontWeight: 'bold'},
+  texts: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+  },
+  titleText: {fontSize: 70, fontWeight: 'bold'},
   sloganText: {fontSize: 20},
-  steps: {marginTop: 50, alignItems: 'center'},
   enter: {
-    marginTop: 50,
+    position: 'absolute',
+    bottom: 100,
   },
   enterText: {fontSize: 20, fontWeight: 'bold'},
 });
