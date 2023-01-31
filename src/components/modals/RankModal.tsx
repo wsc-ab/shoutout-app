@@ -49,11 +49,12 @@ const RankModal = ({onCancel}: TProps) => {
   }, [date]);
 
   const now = new Date();
+  const tomorrow = new Date(date);
+  tomorrow.setUTCDate(date.getUTCDate() + 1);
 
   return (
     <DefaultModal>
       <DefaultForm title="Rank" left={{onPress: onCancel}}>
-        <DefaultText title={'Based only on number of shoutouts received.'} />
         <View
           style={{
             flexDirection: 'row',
@@ -82,8 +83,8 @@ const RankModal = ({onCancel}: TProps) => {
           <DefaultText title={'~'} />
 
           <DefaultText
-            title={`${date.getMonth() + 1}/${date.getDate() + 1} ${
-              date.getHours() - 1
+            title={`${tomorrow.getMonth() + 1}/${tomorrow.getDate()} ${
+              tomorrow.getHours() - 1
             }:59`}
           />
 
