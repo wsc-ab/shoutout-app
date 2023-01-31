@@ -13,7 +13,7 @@ const Welcome = ({style}: TProps) => {
       <View style={styles.texts}>
         <DefaultText title="Shoutout" textStyle={styles.titleText} />
         <DefaultText
-          title="Share the best moment and make money"
+          title="Share the best live moment"
           textStyle={styles.sloganText}
         />
         <DefaultText
