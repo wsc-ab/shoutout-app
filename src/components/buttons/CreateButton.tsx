@@ -1,10 +1,7 @@
 import {firebase} from '@react-native-firebase/auth';
 import React, {useContext, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
-import {
-  ImageLibraryOptions,
-  launchImageLibrary,
-} from 'react-native-image-picker';
+import {CameraOptions, launchCamera} from 'react-native-image-picker';
 import AuthUserContext from '../../contexts/AuthUser';
 
 import {createContent} from '../../functions/Content';
@@ -24,17 +21,19 @@ const CreateButton = ({style, onModal}: TProps) => {
   const [submitting, setSubmitting] = useState(false);
 
   const [progress, setProgress] = useState(0);
+  const durationLimit = 60;
 
   const selectContent = async () => {
-    const options: ImageLibraryOptions = {
+    const options: CameraOptions = {
       mediaType: 'video',
       videoQuality: 'high',
+      durationLimit,
     };
 
     let asset;
 
     try {
-      const {assets} = await launchImageLibrary(options);
+      const {assets} = await launchCamera(options);
       asset = assets?.[0];
       console.log(asset, 'asset');
     } catch (error) {
@@ -54,12 +53,10 @@ const CreateButton = ({style, onModal}: TProps) => {
       return {uploaded: undefined, asset: undefined};
     }
 
-    const maxVideoLength = 2 * 60;
-
-    if (asset.duration && asset.duration > maxVideoLength) {
+    if (asset.duration && asset.duration < 10) {
       DefaultAlert({
-        title: 'Video is too long',
-        message: 'Please select a video with less than 2 minutes.',
+        title: 'Video is too short',
+        message: 'Video should be at least 10 seconds long.',
       });
       return {uploaded: undefined, asset: undefined};
     }
