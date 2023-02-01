@@ -76,7 +76,6 @@ const ReplyButton = ({id, style, link: {ids: linkIds}}: TProps) => {
       <DefaultIcon
         icon="reply"
         onPress={onReply}
-        style={styles.icon}
         color={isReplyed ? defaultRed.lv1 : 'white'}
       />
       {submitting && progress === 0 && <ActivityIndicator style={styles.act} />}
@@ -93,7 +92,6 @@ const ReplyButton = ({id, style, link: {ids: linkIds}}: TProps) => {
 export default ReplyButton;
 
 const styles = StyleSheet.create({
-  icon: {alignItems: 'center'},
   progress: {padding: 10},
   act: {paddingHorizontal: 10},
 });

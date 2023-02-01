@@ -5,6 +5,7 @@ import {getContent} from '../../functions/Content';
 import {TDocData} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
+import {getTimeSinceTimestamp} from '../../utils/Date';
 import LikeButton from '../buttons/LikeButton';
 import NextButton from '../buttons/NextButton';
 import ReplyButton from '../buttons/ReplyButton';
@@ -67,62 +68,85 @@ const ContentCard = ({
   }, [data.links, index, status]);
 
   return (
-    <>
-      <View style={[styles.container, style]}>
+    <View style={style}>
+      <View>
         {status === 'loaded' && (
           <DefaultVideo
             path={data.path}
-            style={[styles.content, contentStyle]}
+            style={contentStyle}
             modalVisible={!!modalVisible}
             initPaused={initPaused}
           />
         )}
       </View>
-
       {showNav && (
         <View style={styles.nav}>
-          <DefaultText
-            title={data.contributeFrom?.items[0].name}
-            style={{flex: 1}}
-          />
-
-          {data.link.ids.length >= 1 && (
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+            <DefaultText
+              title={data.contributeFrom?.items[0].name}
+              style={{flex: 1, alignItems: 'center'}}
+            />
+            <DefaultText
+              title={getTimeSinceTimestamp(data.createdAt)}
+              style={{flex: 1, alignItems: 'center'}}
+            />
             <DefaultIcon
               icon={'arrow-right'}
               onPress={onNextLink}
-              style={{flex: 1, paddingHorizontal: 10}}
-            />
-          )}
+              style={{
+                flex: 1,
 
-          <NextButton onSuccess={onNext} style={{flex: 1}} id={data.id} />
-          <ReplyButton id={data.id} style={{flex: 1}} link={data.link} />
-          <LikeButton id={data.id} style={{flex: 1}} collection="contents" />
-          <ReportButton
-            collection="contents"
-            id={data.id}
-            onSuccess={onNext}
-            style={{flex: 1}}
-          />
+                paddingHorizontal: 10,
+                alignItems: 'center',
+              }}
+            />
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+            <NextButton
+              onSuccess={onNext}
+              style={{flex: 1, alignItems: 'center'}}
+              id={data.id}
+            />
+            <ReplyButton
+              id={data.id}
+              style={{flex: 1, alignItems: 'center'}}
+              link={data.link}
+            />
+            <LikeButton
+              id={data.id}
+              style={{flex: 1, alignItems: 'center'}}
+              collection="contents"
+            />
+            <ReportButton
+              collection="contents"
+              id={data.id}
+              onSuccess={onNext}
+              style={{flex: 1, alignItems: 'center'}}
+            />
+          </View>
         </View>
       )}
-    </>
+    </View>
   );
 };
 
 export default ContentCard;
 
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 1,
-  },
-  content: {borderRadius: 10},
   nav: {
     bottom: 40,
-    paddingHorizontal: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    paddingHorizontal: 10,
+    position: 'absolute',
+    zIndex: 100,
+    left: 0,
+    right: 0,
   },
 });

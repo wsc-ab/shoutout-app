@@ -33,7 +33,6 @@ const Contents = ({style, modalVisible}: TProps) => {
   useEffect(() => {
     const load = async () => {
       try {
-        setIndex(0);
         const {contents, pagination: newPagination} = await getContents({
           pagination: {
             startAfterId: pagination?.startAfterId ?? undefined,
@@ -42,6 +41,7 @@ const Contents = ({style, modalVisible}: TProps) => {
 
         setData(contents);
         setPagination(newPagination);
+        setIndex(pre => (pre === 0 ? 0 : pre + 1));
 
         setStatus('loaded');
       } catch (error) {
@@ -59,16 +59,12 @@ const Contents = ({style, modalVisible}: TProps) => {
     }
   }, [authUserData.id, pagination, status]);
 
-  const onNext = async () => {
+  const onNext = () => {
     if (index === data.length - 1) {
       return setStatus('loading');
     }
 
-    setIndex(pre => {
-      const newIndex = (pre + 1) % data.length;
-
-      return newIndex;
-    });
+    setIndex(pre => pre + 1);
   };
 
   if (status === 'loading') {
