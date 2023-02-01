@@ -20,7 +20,9 @@ type TProps = {
   contentStyle?: {height: number; width: number};
   modalVisible?: boolean;
   initPaused?: boolean;
-} & ({onNext: () => void; showNav: true} | {showNav: false; onNext: undefined});
+  showNav: boolean;
+  onNext: () => void;
+};
 
 const ContentCard = ({
   content,
@@ -32,15 +34,21 @@ const ContentCard = ({
   showNav,
 }: TProps) => {
   const [data, setData] = useState(content);
+
+  const [ids] = useState([...content.id, ...content.link.ids]);
   const [index, setIndex] = useState<number>();
   const [status, setStatus] = useState<TStatus>('loaded');
+
+  useEffect(() => {
+    setData(content);
+  }, [content]);
 
   const onNextLink = async () => {
     setIndex(pre => {
       if (pre === undefined) {
         return 0;
       } else if (index === data.link.ids.length - 1) {
-        return undefined;
+        return 0;
       } else {
         return pre + 1;
       }
@@ -53,7 +61,7 @@ const ContentCard = ({
       if (index !== undefined) {
         setStatus('loading');
         const {content: linkedContent} = await getContent({
-          content: {id: data.links[index]},
+          content: {id: ids[index]},
         });
 
         setStatus('loaded');
@@ -65,7 +73,7 @@ const ContentCard = ({
     if (status === 'loading') {
       load();
     }
-  }, [data.links, index, status]);
+  }, [data.link, ids, index, status]);
 
   return (
     <View style={style}>
@@ -73,7 +81,7 @@ const ContentCard = ({
         {status === 'loaded' && (
           <DefaultVideo
             path={data.path}
-            style={contentStyle}
+            style={{...contentStyle, borderRadius: 10}}
             modalVisible={!!modalVisible}
             initPaused={initPaused}
           />
@@ -96,10 +104,10 @@ const ContentCard = ({
             />
             <DefaultIcon
               icon={'arrow-right'}
-              onPress={onNextLink}
+              onPress={data.link.ids.length >= 1 ? onNextLink : undefined}
+              color={data.link.ids.length >= 1 ? 'white' : 'gray'}
               style={{
                 flex: 1,
-
                 paddingHorizontal: 10,
                 alignItems: 'center',
               }}

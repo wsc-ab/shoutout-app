@@ -1,15 +1,15 @@
 import firebase from '@react-native-firebase/app';
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, FlatList, View} from 'react-native';
+import {ActivityIndicator, FlatList, Pressable, View} from 'react-native';
 
 import {TObject} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
-import {getDate} from '../../utils/Date';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
 import ContentCard from '../screen/ContentCard';
+import ContentModal from './ContentModal';
 
 type TProps = {
   id: string;
@@ -52,6 +52,9 @@ const UserModal = ({id, onCancel}: TProps) => {
     };
   }, [id, status]);
 
+  const [modal, setModal] = useState<'content'>();
+  const [contentId, setContentId] = useState<string>();
+
   return (
     <DefaultModal>
       {status === 'loading' && !data && <ActivityIndicator style={{flex: 1}} />}
@@ -60,21 +63,25 @@ const UserModal = ({id, onCancel}: TProps) => {
           <FlatList
             data={data.contributeTo?.items ?? []}
             renderItem={({item}) => {
-              const createdAt = getDate(item.addedAt);
               return (
-                <View key={item.id}>
-                  <DefaultText
-                    title={`${createdAt.getFullYear()}/${
-                      createdAt.getMonth() + 1
-                    }/${createdAt.getDate() + 1}`}
-                    style={{marginBottom: 5, alignItems: 'center'}}
-                  />
+                <Pressable key={item.id}>
                   <ContentCard
                     content={item}
                     showNav={false}
                     onNext={undefined}
+                    initPaused={true}
+                    style={{alignSelf: 'center'}}
                   />
-                </View>
+                  <DefaultText
+                    title="Show"
+                    onPress={() => {
+                      console.log('called');
+
+                      setContentId(item.id);
+                      setModal('content');
+                    }}
+                  />
+                </Pressable>
               );
             }}
             ItemSeparatorComponent={() => (
@@ -88,6 +95,9 @@ const UserModal = ({id, onCancel}: TProps) => {
             )}
           />
         </DefaultForm>
+      )}
+      {modal === 'content' && contentId && (
+        <ContentModal onCancel={() => setModal(undefined)} id={contentId} />
       )}
     </DefaultModal>
   );

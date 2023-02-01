@@ -1,13 +1,12 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   StyleSheet,
   useWindowDimensions,
   View,
 } from 'react-native';
-import {deleteContent} from '../../functions/Content';
-import {TObject} from '../../types/Firebase';
-import {getStartDate} from '../../utils/Date';
+import {deleteContent, getContent} from '../../functions/Content';
+import {TDocData} from '../../types/Firebase';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultModal from '../defaults/DefaultModal';
@@ -16,21 +15,34 @@ import ContentCard from '../screen/ContentCard';
 
 type TProps = {
   onCancel: () => void;
-  content?: TObject;
+  id: string;
+  onNext: () => void;
 };
 
-const ContentModal = ({onCancel, content}: TProps) => {
+const ContentModal = ({onCancel, onNext, id}: TProps) => {
   const [submitting, setSubmitting] = useState(false);
   const {height, width} = useWindowDimensions();
 
+  const [data, setData] = useState<TDocData>();
+
+  useEffect(() => {
+    const load = async () => {
+      const {content} = await getContent({content: {id}});
+
+      setData(content);
+    };
+
+    load();
+  }, [id]);
+
   const onDelete = () => {
     const onPress = async () => {
-      if (!content) {
+      if (!data) {
         return;
       }
       try {
         setSubmitting(true);
-        await deleteContent({content: {id: content.id}});
+        await deleteContent({content: {id: data.id}});
         setSubmitting(false);
         onCancel();
       } catch (error) {
@@ -48,8 +60,6 @@ const ContentModal = ({onCancel, content}: TProps) => {
     });
   };
 
-  const startDate = getStartDate();
-
   return (
     <DefaultModal style={styles.container}>
       <View style={styles.header}>
@@ -59,25 +69,19 @@ const ContentModal = ({onCancel, content}: TProps) => {
         <DefaultText title={'Content'} textStyle={styles.centerText} />
         <View style={styles.right} />
       </View>
-      {content && (
+      {data && (
         <ContentCard
-          content={content}
+          content={data}
           style={styles.content}
           contentStyle={{
             width,
             height,
           }}
+          showNav={true}
+          onNext={onNext}
         />
       )}
       <View style={styles.icons}>
-        <DefaultText
-          title={`Will be shown from ${
-            startDate.getMonth() + 1
-          }/${startDate.getDate()} ${startDate.getHours()}:00 to ${
-            startDate.getMonth() + 1
-          }/${startDate.getDate() + 1} ${startDate.getHours() - 1}:59`}
-          style={styles.date}
-        />
         {!submitting && <DefaultIcon icon="times" onPress={onDelete} />}
         {submitting && <ActivityIndicator style={styles.act} />}
       </View>
@@ -90,13 +94,11 @@ export default ContentModal;
 const styles = StyleSheet.create({
   container: {paddingHorizontal: 0},
   content: {position: 'absolute', top: 0, left: 0},
-  date: {flex: 1, padding: 10},
   act: {paddingHorizontal: 10},
   icons: {
     flexDirection: 'row',
-    bottom: 40,
-    left: 10,
-    right: 10,
+    top: 80,
+    paddingHorizontal: 10,
     alignItems: 'center',
     justifyContent: 'space-between',
     position: 'absolute',

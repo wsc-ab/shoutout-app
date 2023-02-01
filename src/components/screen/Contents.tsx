@@ -27,7 +27,13 @@ const Contents = ({style, modalVisible}: TProps) => {
 
   const {authUserData} = useContext(AuthUserContext);
   const [index, setIndex] = useState(0);
-  const [pagination, setPagination] = useState<{startAfterId: string}>();
+  const [pagination, setPagination] = useState<{
+    isLast: boolean;
+    startAfterId?: string;
+  }>({
+    isLast: true,
+    startAfterId: undefined,
+  });
   const {height, width} = useWindowDimensions();
 
   useEffect(() => {
@@ -40,10 +46,10 @@ const Contents = ({style, modalVisible}: TProps) => {
         });
 
         setData(contents);
-        setPagination(newPagination);
-        setIndex(pre => (pre === 0 ? 0 : pre + 1));
-
         setStatus('loaded');
+        setPagination(newPagination);
+
+        setIndex(0);
       } catch (error) {
         DefaultAlert({
           title: 'Error',
@@ -61,6 +67,7 @@ const Contents = ({style, modalVisible}: TProps) => {
 
   const onNext = () => {
     if (index === data.length - 1) {
+      setPagination({isLast: true, startAfterId: undefined});
       return setStatus('loading');
     }
 
@@ -86,14 +93,16 @@ const Contents = ({style, modalVisible}: TProps) => {
 
   return (
     <View style={style}>
-      <ContentCard
-        content={data[index]}
-        style={styles.card}
-        contentStyle={{height, width}}
-        modalVisible={modalVisible}
-        onNext={onNext}
-        showNav={true}
-      />
+      {data[index] && (
+        <ContentCard
+          content={data[index]}
+          style={styles.card}
+          contentStyle={{height, width}}
+          modalVisible={modalVisible}
+          onNext={onNext}
+          showNav={true}
+        />
+      )}
     </View>
   );
 };
