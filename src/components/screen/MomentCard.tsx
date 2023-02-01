@@ -35,16 +35,16 @@ const MomentCard = ({
   onNext,
   showNav,
 }: TProps) => {
-  const [data, setData] = useState(moment);
+  const [data, setData] = useState<TDocData>();
 
-  const [ids] = useState<string[]>([moment.id, ...moment.linkFrom.ids]);
+  const [ids, setIds] = useState<string[]>([]);
   const [index, setIndex] = useState<number>(0);
   const [status, setStatus] = useState<TStatus>('loaded');
 
-  console.log(moment.linkFrom, 'ids');
-
   useEffect(() => {
     setData(moment);
+    setIds([moment.id, ...moment.linkFrom.ids]);
+    setIndex(0);
   }, [moment]);
 
   const onNextLink = async () => {
@@ -55,27 +55,7 @@ const MomentCard = ({
         return pre + 1;
       }
     });
-    setStatus('loading');
   };
-
-  useEffect(() => {
-    const load = async () => {
-      if (index !== undefined) {
-        setStatus('loading');
-        const {moment: linkedmoment} = await getMoment({
-          moment: {id: ids[index]},
-        });
-
-        setStatus('loaded');
-
-        setData(linkedmoment);
-      }
-    };
-
-    if (status === 'loading') {
-      load();
-    }
-  }, [data.link, ids, index, status]);
 
   const onPreLink = () => {
     setIndex(pre => {
@@ -85,10 +65,25 @@ const MomentCard = ({
         return pre - 1;
       }
     });
-    setStatus('loading');
   };
 
-  if (status === 'loading') {
+  useEffect(() => {
+    const load = async () => {
+      setStatus('loading');
+      const {moment: linkedmoment} = await getMoment({
+        moment: {id: ids[index]},
+      });
+
+      setData(linkedmoment);
+      setStatus('loaded');
+    };
+
+    if (ids.length >= 1) {
+      load();
+    }
+  }, [ids, index]);
+
+  if (status === 'loading' || !data) {
     return null;
   }
 
@@ -155,7 +150,11 @@ const MomentCard = ({
             }}>
             {onNext && (
               <NextButton
-                onSuccess={onNext}
+                onSuccess={() => {
+                  setIds([]);
+                  setIndex(0);
+                  onNext();
+                }}
                 style={{flex: 1, alignItems: 'center'}}
               />
             )}
