@@ -45,7 +45,11 @@ const Moments = ({style, modalVisible}: TProps) => {
           },
         });
 
-        setData(moments);
+        const filter = moments.filter(
+          ({linkTo: {number}}: {linkTo: {number: number}}) => number === 0,
+        );
+
+        setData(filter);
         setStatus('loaded');
         setPagination(newPagination);
 
