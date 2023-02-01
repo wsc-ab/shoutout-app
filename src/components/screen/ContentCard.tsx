@@ -73,12 +73,12 @@ const ContentCard = ({
         />
       )}
       <DefaultText title={data.contributeFrom.items[0].name} />
+      {data.link.ids.length >= 1 && (
+        <DefaultIcon icon={'arrow-right'} onPress={onNextLink} />
+      )}
       {showNav && (
         <View style={styles.nav}>
           <NextButton onSuccess={onNext} style={{flex: 1}} id={content.id} />
-          {data.link.ids.length >= 1 && (
-            <DefaultIcon icon={'arrow-right'} onPress={onNextLink} />
-          )}
           <LikeButton id={content.id} style={{flex: 1}} collection="contents" />
           <ReplyButton id={content.id} style={{flex: 1}} link={content.links} />
           <ReportButton
