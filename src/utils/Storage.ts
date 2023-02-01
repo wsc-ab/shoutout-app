@@ -27,26 +27,25 @@ export const createStoragePath = (id: string, type: string) => {
   return filePath;
 };
 
-export const uploadContent = async ({
+export const uploadFile = async ({
   asset,
   id,
   onProgress,
 }: {
   asset: Asset;
   id: string;
-
   onProgress: (progress: number) => void;
 }): Promise<string | undefined> => {
   const uri = asset.uri;
 
-  // if uri doesn't start from file, no need to upload content
+  // if uri doesn't start from file, no need to upload file
   // return the uri
 
   if (!uri?.startsWith('file://')) {
     return uri;
   }
 
-  const path = createStoragePath(id, asset.type ?? 'content');
+  const path = createStoragePath(id, asset.type ?? 'file');
   const ref = storage().ref(path);
 
   const uploadTask = ref.putFile(uri);
@@ -62,7 +61,7 @@ export const uploadContent = async ({
 
         onProgress(progress);
       },
-      () => rej(new Error('content upload error')),
+      () => rej(new Error('file upload error')),
       () => res(path),
     );
   });
@@ -71,6 +70,6 @@ export const uploadContent = async ({
     const result = await promise;
     return result;
   } catch (error) {
-    throw new Error('upload content failed');
+    throw new Error('upload file failed');
   }
 };

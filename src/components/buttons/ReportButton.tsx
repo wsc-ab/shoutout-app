@@ -30,7 +30,7 @@ const ReportButton = ({id, collection, onSuccess, style}: TProps) => {
       } catch (error) {
         if ((error as {message: string}).message === "target doesn't exist") {
           DefaultAlert({
-            title: 'Deleted content',
+            title: 'Deleted moment',
           });
         } else {
           DefaultAlert({
@@ -45,7 +45,7 @@ const ReportButton = ({id, collection, onSuccess, style}: TProps) => {
 
     DefaultAlert({
       title: 'Please confirm',
-      message: "Report this content? We'll no longer show you this content.",
+      message: "Report this moment? We'll no longer show you this moment.",
       buttons: [{text: 'Report', onPress, style: 'destructive'}, {text: 'No'}],
     });
   };

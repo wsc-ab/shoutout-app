@@ -1,7 +1,7 @@
 import {CameraOptions, launchCamera} from 'react-native-image-picker';
 import DefaultAlert from '../components/defaults/DefaultAlert';
 import {TDocData} from '../types/Firebase';
-import {uploadContent} from './Storage';
+import {uploadFile} from './Storage';
 
 const durationLimit = 30;
 
@@ -56,7 +56,7 @@ export const uploadVideo = async ({
 
   try {
     setSubmitting(true);
-    uploaded = await uploadContent({
+    uploaded = await uploadFile({
       asset,
       id: authUserData.id,
       onProgress: setProgress,

@@ -11,7 +11,7 @@ import {TDocData} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultText from '../defaults/DefaultText';
-import ContentCard from './MomentCard';
+import MomentCard from './MomentCard';
 
 type TProps = {
   style: TStyleView;
@@ -94,10 +94,10 @@ const Moments = ({style, modalVisible}: TProps) => {
   return (
     <View style={style}>
       {data[index] && (
-        <ContentCard
-          content={data[index]}
+        <MomentCard
+          moment={data[index]}
           style={styles.card}
-          videoStyle={{height, width}}
+          momentStyle={{height, width}}
           modalVisible={modalVisible}
           onNext={onNext}
           showNav={true}

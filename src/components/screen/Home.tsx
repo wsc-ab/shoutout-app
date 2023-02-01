@@ -1,6 +1,6 @@
 import React, {useContext, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import Contents from './Moments';
+import Moments from './Moments';
 
 import AuthUserContext from '../../contexts/AuthUser';
 import Header from './Header';
@@ -23,7 +23,7 @@ const Home = () => {
   return (
     <View style={styles.container}>
       <Header onModal={onModal} />
-      <Contents style={styles.contents} modalVisible={modalVisible} />
+      <Moments style={styles.moments} modalVisible={modalVisible} />
     </View>
   );
 };
@@ -32,5 +32,5 @@ export default Home;
 
 const styles = StyleSheet.create({
   container: {flex: 1},
-  contents: {flex: 1},
+  moments: {flex: 1},
 });

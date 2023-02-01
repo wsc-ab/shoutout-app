@@ -9,7 +9,7 @@ import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
 import MomentCard from '../screen/MomentCard';
-import ContentModal from './MomentModal';
+import MomentModal from './MomentModal';
 
 type TProps = {
   id: string;
@@ -52,8 +52,8 @@ const UserModal = ({id, onCancel}: TProps) => {
     };
   }, [id, status]);
 
-  const [modal, setModal] = useState<'content'>();
-  const [contentIndex, setContentIndex] = useState<number>();
+  const [modal, setModal] = useState<'moment'>();
+  const [momentIndex, setMomentIndex] = useState<number>();
 
   return (
     <DefaultModal>
@@ -77,8 +77,8 @@ const UserModal = ({id, onCancel}: TProps) => {
                     onPress={() => {
                       console.log('called');
 
-                      setContentIndex(index);
-                      setModal('content');
+                      setMomentIndex(index);
+                      setModal('moment');
                     }}
                   />
                 </Pressable>
@@ -96,16 +96,16 @@ const UserModal = ({id, onCancel}: TProps) => {
           />
         </DefaultForm>
       )}
-      {modal === 'content' && data && contentIndex && (
-        <ContentModal
+      {modal === 'moment' && data && momentIndex && (
+        <MomentModal
           onCancel={() => setModal(undefined)}
-          id={data.contributeTo.items[contentIndex].id}
+          id={data.contributeTo.items[momentIndex].id}
           onNext={() => {
-            const nextContentId =
-              contentIndex !== data.contributeTo.items.length - 1
+            const nextmomentId =
+              momentIndex !== data.contributeTo.items.length - 1
                 ? 0
-                : contentIndex + 1;
-            setContentIndex(nextContentId);
+                : momentIndex + 1;
+            setMomentIndex(nextmomentId);
           }}
         />
       )}

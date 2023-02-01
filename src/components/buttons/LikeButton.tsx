@@ -18,11 +18,11 @@ const LikeButton = ({collection, id, style}: TProps) => {
       setIsLoading(true);
 
       setIsLiked(true);
-      await addLike({content: {id}});
+      await addLike({moment: {id}});
     } catch (error) {
-      if ((error as {message: string}).message === "content doesn't exist") {
+      if ((error as {message: string}).message === "moment doesn't exist") {
         DefaultAlert({
-          title: 'Deleted content',
+          title: 'Deleted moment',
         });
       } else {
         DefaultAlert({
@@ -42,7 +42,7 @@ const LikeButton = ({collection, id, style}: TProps) => {
 
       setIsLiked(false);
       await removeLike({
-        content: {id},
+        moment: {id},
       });
     } catch (error) {
       setIsLiked(false);
