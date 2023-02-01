@@ -5,7 +5,7 @@ import {uploadContent} from './Storage';
 
 const durationLimit = 30;
 
-const selectContent = async () => {
+const takeVideo = async () => {
   const options: CameraOptions = {
     mediaType: 'video',
     videoQuality: 'high',
@@ -29,7 +29,7 @@ const selectContent = async () => {
   return asset;
 };
 
-export const selectAndUploadContent = async ({
+export const uploadVideo = async ({
   authUserData,
   setSubmitting,
   setProgress,
@@ -38,7 +38,7 @@ export const selectAndUploadContent = async ({
   setSubmitting: (submitting: boolean) => void;
   setProgress: (progress: number) => void;
 }) => {
-  const asset = await selectContent();
+  const asset = await takeVideo();
 
   if (!asset) {
     return {uploaded: undefined, asset: undefined};

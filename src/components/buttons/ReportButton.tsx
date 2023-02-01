@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
-import {createReport} from '../../functions/Content';
+import {createReport} from '../../functions/Moment';
 import {TStyleView} from '../../types/Style';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultIcon from '../defaults/DefaultIcon';
@@ -52,9 +52,7 @@ const ReportButton = ({id, collection, onSuccess, style}: TProps) => {
 
   return (
     <View style={style}>
-      {!isLoading && (
-        <DefaultIcon icon="flag" onPress={onReport} style={styles.icon} />
-      )}
+      {!isLoading && <DefaultIcon icon="flag" onPress={onReport} />}
       {isLoading && <ActivityIndicator style={styles.act} />}
     </View>
   );

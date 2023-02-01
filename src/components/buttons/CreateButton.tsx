@@ -2,9 +2,9 @@ import {firebase} from '@react-native-firebase/auth';
 import React, {useContext, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
-import {createContent} from '../../functions/Content';
+import {createMoment} from '../../functions/Moment';
 import {TStyleView} from '../../types/Style';
-import {selectAndUploadContent} from '../../utils/Content';
+import {uploadVideo} from '../../utils/Moment';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
@@ -22,7 +22,7 @@ const CreateButton = ({style}: TProps) => {
     try {
       setSubmitting(true);
 
-      const {uploaded, asset} = await selectAndUploadContent({
+      const {uploaded, asset} = await uploadVideo({
         authUserData,
         setProgress,
         setSubmitting,
@@ -31,11 +31,11 @@ const CreateButton = ({style}: TProps) => {
       if (!uploaded) {
         return;
       }
-      const contentId = firebase.firestore().collection('contents').doc().id;
+      const momentId = firebase.firestore().collection('moments').doc().id;
 
-      await createContent({
-        content: {
-          id: contentId,
+      await createMoment({
+        moment: {
+          id: momentId,
           path: uploaded,
           type: asset.type,
           isFirst: true,

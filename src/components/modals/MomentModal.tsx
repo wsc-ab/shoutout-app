@@ -5,13 +5,13 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import {deleteContent, getContent} from '../../functions/Content';
+import {deleteMoment, getMoment} from '../../functions/Moment';
 import {TDocData} from '../../types/Firebase';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
-import ContentCard from '../screen/ContentCard';
+import MomentCard from '../screen/MomentCard';
 
 type TProps = {
   onCancel: () => void;
@@ -19,7 +19,7 @@ type TProps = {
   onNext: () => void;
 };
 
-const ContentModal = ({onCancel, onNext, id}: TProps) => {
+const MomentModal = ({onCancel, onNext, id}: TProps) => {
   const [submitting, setSubmitting] = useState(false);
   const {height, width} = useWindowDimensions();
 
@@ -27,9 +27,9 @@ const ContentModal = ({onCancel, onNext, id}: TProps) => {
 
   useEffect(() => {
     const load = async () => {
-      const {content} = await getContent({content: {id}});
+      const {moment} = await getMoment({moment: {id}});
 
-      setData(content);
+      setData(moment);
     };
 
     load();
@@ -42,7 +42,7 @@ const ContentModal = ({onCancel, onNext, id}: TProps) => {
       }
       try {
         setSubmitting(true);
-        await deleteContent({content: {id: data.id}});
+        await deleteMoment({moment: {id: data.id}});
         setSubmitting(false);
         onCancel();
       } catch (error) {
@@ -55,7 +55,7 @@ const ContentModal = ({onCancel, onNext, id}: TProps) => {
 
     DefaultAlert({
       title: 'Please confirm',
-      message: 'Delete this content? It will no longer receive shoutouts.',
+      message: 'Delete this moment? It will no longer receive shoutouts.',
       buttons: [{text: 'Delete', onPress, style: 'destructive'}, {text: 'No'}],
     });
   };
@@ -66,14 +66,14 @@ const ContentModal = ({onCancel, onNext, id}: TProps) => {
         <View style={styles.left}>
           <DefaultIcon icon="angle-left" onPress={onCancel} />
         </View>
-        <DefaultText title={'Content'} textStyle={styles.centerText} />
+        <DefaultText title={'moment'} textStyle={styles.centerText} />
         <View style={styles.right} />
       </View>
       {data && (
-        <ContentCard
-          content={data}
-          style={styles.content}
-          contentStyle={{
+        <MomentCard
+          moment={data}
+          style={styles.moment}
+          momentStyle={{
             width,
             height,
           }}
@@ -89,23 +89,23 @@ const ContentModal = ({onCancel, onNext, id}: TProps) => {
   );
 };
 
-export default ContentModal;
+export default MomentModal;
 
 const styles = StyleSheet.create({
   container: {paddingHorizontal: 0},
-  content: {position: 'absolute', top: 0, left: 0},
+  moment: {position: 'absolute', top: 0, left: 0},
   act: {paddingHorizontal: 10},
   icons: {
     flexDirection: 'row',
     top: 80,
     paddingHorizontal: 10,
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifymoment: 'space-between',
     position: 'absolute',
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifymoment: 'space-between',
     alignItems: 'center',
     top: 40,
     zIndex: 100,

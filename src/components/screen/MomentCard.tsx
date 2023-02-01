@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {getContent} from '../../functions/Content';
+import {getMoment} from '../../functions/Moment';
 
 import {TDocData} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
@@ -15,33 +15,33 @@ import DefaultText from '../defaults/DefaultText';
 import DefaultVideo from '../defaults/DefaultVideo';
 
 type TProps = {
-  content: TDocData;
+  moment: TDocData;
   style?: TStyleView;
-  contentStyle?: {height: number; width: number};
+  momentStyle?: {height: number; width: number};
   modalVisible?: boolean;
   initPaused?: boolean;
   showNav: boolean;
   onNext?: () => void;
 };
 
-const ContentCard = ({
-  content,
+const MomentCard = ({
+  moment,
   style,
-  contentStyle = {height: 400, width: 300},
+  momentStyle = {height: 400, width: 300},
   modalVisible,
   initPaused,
   onNext,
   showNav,
 }: TProps) => {
-  const [data, setData] = useState(content);
+  const [data, setData] = useState(moment);
 
-  const [ids] = useState<string[]>([...content.id, ...content.links.ids]);
+  const [ids] = useState<string[]>([...moment.id, ...moment.links.ids]);
   const [index, setIndex] = useState<number>();
   const [status, setStatus] = useState<TStatus>('loaded');
 
   useEffect(() => {
-    setData(content);
-  }, [content]);
+    setData(moment);
+  }, [moment]);
 
   const onNextLink = async () => {
     setIndex(pre => {
@@ -60,13 +60,13 @@ const ContentCard = ({
     const load = async () => {
       if (index !== undefined) {
         setStatus('loading');
-        const {content: linkedContent} = await getContent({
-          content: {id: ids[index]},
+        const {moment: linkedmoment} = await getMoment({
+          moment: {id: ids[index]},
         });
 
         setStatus('loaded');
 
-        setData(linkedContent);
+        setData(linkedmoment);
       }
     };
 
@@ -81,7 +81,7 @@ const ContentCard = ({
         {status === 'loaded' && (
           <DefaultVideo
             path={data.path}
-            style={{...contentStyle, borderRadius: 10}}
+            style={{...momentStyle, borderRadius: 10}}
             modalVisible={!!modalVisible}
             initPaused={initPaused}
           />
@@ -118,10 +118,12 @@ const ContentCard = ({
               flexDirection: 'row',
               alignItems: 'center',
             }}>
-            <NextButton
-              onSuccess={onNext}
-              style={{flex: 1, alignItems: 'center'}}
-            />
+            {onNext && (
+              <NextButton
+                onSuccess={onNext}
+                style={{flex: 1, alignItems: 'center'}}
+              />
+            )}
             <ReplyButton
               linkIds={ids.slice(1)}
               id={ids[0]}
@@ -130,14 +132,16 @@ const ContentCard = ({
             <LikeButton
               id={ids[0]}
               style={{flex: 1, alignItems: 'center'}}
-              collection="contents"
+              collection="moments"
             />
-            <ReportButton
-              collection="contents"
-              id={ids[0]}
-              onSuccess={onNext}
-              style={{flex: 1, alignItems: 'center'}}
-            />
+            {onNext && (
+              <ReportButton
+                collection="moments"
+                id={ids[0]}
+                onSuccess={onNext}
+                style={{flex: 1, alignItems: 'center'}}
+              />
+            )}
           </View>
         </View>
       )}
@@ -145,7 +149,7 @@ const ContentCard = ({
   );
 };
 
-export default ContentCard;
+export default MomentCard;
 
 const styles = StyleSheet.create({
   nav: {

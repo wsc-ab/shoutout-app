@@ -6,19 +6,19 @@ import {
   View,
 } from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
-import {getContents} from '../../functions/Content';
+import {getMoments} from '../../functions/Moment';
 import {TDocData} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultText from '../defaults/DefaultText';
-import ContentCard from './ContentCard';
+import ContentCard from './MomentCard';
 
 type TProps = {
   style: TStyleView;
   modalVisible: boolean;
 };
 
-const Contents = ({style, modalVisible}: TProps) => {
+const Moments = ({style, modalVisible}: TProps) => {
   const [data, setData] = useState<TDocData[]>([]);
 
   const [status, setStatus] = useState<'loading' | 'loaded' | 'error'>(
@@ -39,13 +39,13 @@ const Contents = ({style, modalVisible}: TProps) => {
   useEffect(() => {
     const load = async () => {
       try {
-        const {contents, pagination: newPagination} = await getContents({
+        const {moments, pagination: newPagination} = await getMoments({
           pagination: {
             startAfterId: pagination?.startAfterId ?? undefined,
           },
         });
 
-        setData(contents);
+        setData(moments);
         setStatus('loaded');
         setPagination(newPagination);
 
@@ -97,7 +97,7 @@ const Contents = ({style, modalVisible}: TProps) => {
         <ContentCard
           content={data[index]}
           style={styles.card}
-          contentStyle={{height, width}}
+          videoStyle={{height, width}}
           modalVisible={modalVisible}
           onNext={onNext}
           showNav={true}
@@ -107,7 +107,7 @@ const Contents = ({style, modalVisible}: TProps) => {
   );
 };
 
-export default Contents;
+export default Moments;
 
 const styles = StyleSheet.create({
   card: {flex: 1},

@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
-import {addLike, removeLike} from '../../functions/Content';
+import {addLike, removeLike} from '../../functions/Moment';
 import {TStyleView} from '../../types/Style';
 import DefaultAlert from '../defaults/DefaultAlert';
 import {defaultRed} from '../defaults/DefaultColors';

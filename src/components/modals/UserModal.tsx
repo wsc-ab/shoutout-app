@@ -8,8 +8,8 @@ import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
-import ContentCard from '../screen/ContentCard';
-import ContentModal from './ContentModal';
+import MomentCard from '../screen/MomentCard';
+import ContentModal from './MomentModal';
 
 type TProps = {
   id: string;
@@ -66,8 +66,8 @@ const UserModal = ({id, onCancel}: TProps) => {
             renderItem={({item, index}) => {
               return (
                 <Pressable key={item.id}>
-                  <ContentCard
-                    content={item}
+                  <MomentCard
+                    moment={item}
                     showNav={false}
                     initPaused={true}
                     style={{alignSelf: 'center'}}

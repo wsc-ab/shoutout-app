@@ -1,6 +1,6 @@
 import React, {useContext, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import Contents from './Contents';
+import Contents from './Moments';
 
 import AuthUserContext from '../../contexts/AuthUser';
 import Header from './Header';

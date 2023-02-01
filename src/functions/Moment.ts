@@ -1,9 +1,9 @@
 import {firebaseFunctions} from '../utils/Firebase';
 
-export const createContent = async (input: {
-  content: {id: string; path: string; type?: string; isFirst: boolean};
+export const createMoment = async (input: {
+  moment: {id: string; path: string; type?: string; isFirst: boolean};
 }) => {
-  const {data} = await firebaseFunctions.httpsCallable('createContent')(input);
+  const {data} = await firebaseFunctions.httpsCallable('createMoment')(input);
 
   return {...data};
 };
@@ -26,10 +26,10 @@ export const addView = async (input: {}) => {
   return {...data};
 };
 
-export const getContents = async (input: {
+export const getMoments = async (input: {
   pagination: {startAfterId?: string};
 }) => {
-  const {data} = await firebaseFunctions.httpsCallable('getContents')(input);
+  const {data} = await firebaseFunctions.httpsCallable('getMoments')(input);
 
   return {...data};
 };
@@ -42,8 +42,8 @@ export const createReport = async (input: {
   return {...data};
 };
 
-export const deleteContent = async (input: {content: {id: string}}) => {
-  const {data} = await firebaseFunctions.httpsCallable('deleteContent')(input);
+export const deleteMoment = async (input: {moment: {id: string}}) => {
+  const {data} = await firebaseFunctions.httpsCallable('deleteMoment')(input);
 
   return {...data};
 };
@@ -57,8 +57,8 @@ export const addLink = async (input: {
   return {...data};
 };
 
-export const getContent = async (input: {content: {id: string}}) => {
-  const {data} = await firebaseFunctions.httpsCallable('getContent')(input);
+export const getMoment = async (input: {moment: {id: string}}) => {
+  const {data} = await firebaseFunctions.httpsCallable('getMoment')(input);
 
   return {...data};
 };
