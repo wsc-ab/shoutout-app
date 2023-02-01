@@ -6,6 +6,7 @@ import {TObject} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
+import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
 import MomentCard from '../screen/MomentCard';
@@ -63,32 +64,68 @@ const UserModal = ({id, onCancel}: TProps) => {
           <FlatList
             data={data.contributeTo?.items ?? []}
             ListEmptyComponent={<DefaultText title="No moments found" />}
+            contentContainerStyle={{paddingBottom: 100}}
             renderItem={({item, index}) => {
               return (
-                <Pressable key={item.id}>
+                <Pressable
+                  key={item.id}
+                  style={{justifyContent: 'center', alignItems: 'center'}}
+                  onPress={() => {
+                    setMomentIndex(index);
+                    setModal('moment');
+                  }}>
                   <MomentCard
                     moment={item}
                     showNav={false}
                     initPaused={true}
                     style={{alignSelf: 'center'}}
+                    disabled={true}
                   />
-                  <DefaultText
-                    title="Show"
-                    onPress={() => {
-                      console.log('called');
-
-                      setMomentIndex(index);
-                      setModal('moment');
-                    }}
-                  />
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      marginTop: 5,
+                      alignItems: 'center',
+                      width: 300,
+                    }}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}>
+                      <DefaultIcon icon="heart" />
+                      <DefaultText
+                        title={item.likeFrom.number.toString()}
+                        style={{marginLeft: 5}}
+                        onPress={() => {
+                          setMomentIndex(index);
+                          setModal('moment');
+                        }}
+                      />
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        marginLeft: 10,
+                      }}>
+                      <DefaultIcon icon="reply" />
+                      <DefaultText
+                        title={item.linkFrom.number.toString()}
+                        style={{marginLeft: 5}}
+                        onPress={() => {
+                          setMomentIndex(index);
+                          setModal('moment');
+                        }}
+                      />
+                    </View>
+                  </View>
                 </Pressable>
               );
             }}
             ItemSeparatorComponent={() => (
               <View
                 style={{
-                  borderWidth: 1,
-                  borderColor: 'gray',
                   marginVertical: 10,
                 }}
               />
@@ -96,7 +133,7 @@ const UserModal = ({id, onCancel}: TProps) => {
           />
         </DefaultForm>
       )}
-      {modal === 'moment' && data && momentIndex && (
+      {modal === 'moment' && data && momentIndex !== undefined && (
         <MomentModal
           onCancel={() => setModal(undefined)}
           id={data.contributeTo.items[momentIndex].id}

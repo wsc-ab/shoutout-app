@@ -65,20 +65,21 @@ const ReplyButton = ({id, linkIds, style}: TProps) => {
   const [isReplyed, setIsReplyed] = useState(false);
 
   useEffect(() => {
-    setIsReplyed(
-      authUserData.contributeTo?.ids.some((elId: string) =>
-        linkIds.includes(elId),
-      ),
-    );
+    setIsReplyed(false);
+    // authUserData.contributeTo?.ids.some((elId: string) =>
+    //   linkIds.includes(elId),
+    // ),
   }, [authUserData.contributeTo?.ids, linkIds]);
 
   return (
     <View style={style}>
-      <DefaultIcon
-        icon="reply"
-        onPress={onReply}
-        color={isReplyed ? defaultRed.lv1 : 'white'}
-      />
+      {!submitting && (
+        <DefaultIcon
+          icon="reply"
+          onPress={onReply}
+          color={isReplyed ? defaultRed.lv1 : 'white'}
+        />
+      )}
       {submitting && progress === 0 && <ActivityIndicator style={styles.act} />}
       {submitting && progress !== 0 && (
         <DefaultText

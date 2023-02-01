@@ -10,6 +10,7 @@ const takeVideo = async () => {
     mediaType: 'video',
     videoQuality: 'high',
     durationLimit,
+    presentationStyle: 'fullScreen',
   };
 
   let asset;
@@ -44,10 +45,10 @@ export const uploadVideo = async ({
     return {uploaded: undefined, asset: undefined};
   }
 
-  if (asset.duration && asset.duration < 5) {
+  if (asset.duration && asset.duration < 3) {
     DefaultAlert({
       title: 'Video is too short',
-      message: 'Video should be at least 5 seconds long.',
+      message: 'Video should be at least 3 seconds long.',
     });
     return {uploaded: undefined, asset: undefined};
   }
@@ -60,10 +61,6 @@ export const uploadVideo = async ({
       asset,
       id: authUserData.id,
       onProgress: setProgress,
-    });
-
-    DefaultAlert({
-      title: 'Uploaded',
     });
   } catch (error) {
     DefaultAlert({

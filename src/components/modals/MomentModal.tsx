@@ -62,13 +62,18 @@ const MomentModal = ({onCancel, onNext, id}: TProps) => {
 
   return (
     <DefaultModal style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.left}>
-          <DefaultIcon icon="angle-left" onPress={onCancel} />
+      {data && (
+        <View style={styles.header}>
+          <View style={styles.left}>
+            <DefaultIcon icon="angle-left" onPress={onCancel} />
+          </View>
+          <DefaultText title={'Moment'} textStyle={styles.centerText} />
+          <View style={styles.right}>
+            {!submitting && <DefaultIcon icon="times" onPress={onDelete} />}
+            {submitting && <ActivityIndicator style={styles.act} />}
+          </View>
         </View>
-        <DefaultText title={'moment'} textStyle={styles.centerText} />
-        <View style={styles.right} />
-      </View>
+      )}
       {data && (
         <MomentCard
           moment={data}
@@ -81,10 +86,6 @@ const MomentModal = ({onCancel, onNext, id}: TProps) => {
           onNext={onNext}
         />
       )}
-      <View style={styles.icons}>
-        {!submitting && <DefaultIcon icon="times" onPress={onDelete} />}
-        {submitting && <ActivityIndicator style={styles.act} />}
-      </View>
     </DefaultModal>
   );
 };
@@ -95,19 +96,13 @@ const styles = StyleSheet.create({
   container: {paddingHorizontal: 0},
   moment: {position: 'absolute', top: 0, left: 0},
   act: {paddingHorizontal: 10},
-  icons: {
-    flexDirection: 'row',
-    top: 80,
-    paddingHorizontal: 10,
-    alignItems: 'center',
-    justifymoment: 'space-between',
-    position: 'absolute',
-  },
+
   header: {
     flexDirection: 'row',
     justifymoment: 'space-between',
     alignItems: 'center',
     top: 40,
+    paddingHorizontal: 10,
     zIndex: 100,
   },
   left: {flex: 1, alignItems: 'flex-start'},

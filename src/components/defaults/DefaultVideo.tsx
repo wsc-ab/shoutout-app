@@ -10,12 +10,14 @@ type TProps = {
   initPaused?: boolean;
   modalVisible: boolean;
   onLoaded?: () => void;
+  disabled?: boolean;
 };
 
 const DefaultVideo = ({
   path,
   modalVisible,
   initPaused,
+  disabled,
   style,
   onLoaded,
 }: TProps) => {
@@ -39,7 +41,10 @@ const DefaultVideo = ({
   }
 
   return (
-    <Pressable onPress={() => setPaused(pre => !pre)} style={style}>
+    <Pressable
+      onPress={() => setPaused(pre => !pre)}
+      style={style}
+      disabled={disabled}>
       {loading && <ActivityIndicator style={[style]} />}
       <Video
         source={{uri}} // Can be a URL or a local file.
