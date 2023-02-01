@@ -86,11 +86,13 @@ const ContentCard = ({
             style={{flex: 1}}
           />
 
-          <DefaultIcon
-            icon={'arrow-right'}
-            onPress={onNextLink}
-            style={{flex: 1, paddingHorizontal: 10}}
-          />
+          {data.link.ids.length >= 1 && (
+            <DefaultIcon
+              icon={'arrow-right'}
+              onPress={onNextLink}
+              style={{flex: 1, paddingHorizontal: 10}}
+            />
+          )}
 
           <NextButton onSuccess={onNext} style={{flex: 1}} id={data.id} />
           <ReplyButton id={data.id} style={{flex: 1}} link={data.link} />
