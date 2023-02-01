@@ -78,7 +78,7 @@ const Contents = ({style, modalVisible}: TProps) => {
     return <ActivityIndicator style={styles.noData} />;
   }
 
-  if (status === 'error') {
+  if (status === 'error' || data.length === 0) {
     return (
       <View style={styles.noData}>
         <DefaultText title="Error. Please retry." />

@@ -62,6 +62,7 @@ const UserModal = ({id, onCancel}: TProps) => {
         <DefaultForm title={data.name} left={{onPress: onCancel}}>
           <FlatList
             data={data.contributeTo?.items ?? []}
+            ListEmptyComponent={<DefaultText title="No moments found" />}
             renderItem={({item, index}) => {
               return (
                 <Pressable key={item.id}>
