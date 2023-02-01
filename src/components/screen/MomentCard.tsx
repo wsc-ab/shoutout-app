@@ -35,7 +35,9 @@ const MomentCard = ({
 }: TProps) => {
   const [data, setData] = useState(moment);
 
-  const [ids] = useState<string[]>([...moment.id, ...moment.links.ids]);
+  const [ids] = useState<string[]>(
+    moment.linkFrom?.ids ? [moment.id, ...moment.linkFrom.ids] : [moment.id],
+  );
   const [index, setIndex] = useState<number>();
   const [status, setStatus] = useState<TStatus>('loaded');
 
@@ -47,7 +49,7 @@ const MomentCard = ({
     setIndex(pre => {
       if (pre === undefined) {
         return 0;
-      } else if (index === data.links.ids.length - 1) {
+      } else if (index === data.linkFrom.ids.length - 1) {
         return 0;
       } else {
         return pre + 1;
@@ -104,8 +106,8 @@ const MomentCard = ({
             />
             <DefaultIcon
               icon={'arrow-right'}
-              onPress={data.links.ids.length >= 1 ? onNextLink : undefined}
-              color={data.links.ids.length >= 1 ? 'white' : 'gray'}
+              onPress={data.linkFrom.ids.length >= 1 ? onNextLink : undefined}
+              color={data.linkFrom.ids.length >= 1 ? 'white' : 'gray'}
               style={{
                 flex: 1,
                 paddingHorizontal: 10,

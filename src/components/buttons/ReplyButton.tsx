@@ -24,6 +24,7 @@ const ReplyButton = ({id, linkIds, style}: TProps) => {
   const onReply = async () => {
     try {
       setSubmitting(true);
+      console.log(id, 'toId');
 
       const {uploaded, asset} = await uploadVideo({
         authUserData,
