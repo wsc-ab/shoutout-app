@@ -44,6 +44,7 @@ const ContentCard = ({
         return pre + 1;
       }
     });
+    setStatus('loading');
   };
 
   useEffect(() => {
@@ -53,43 +54,56 @@ const ContentCard = ({
         const {content: linkedContent} = await getContent({
           content: {id: data.links[index]},
         });
+
         setStatus('loaded');
 
         setData(linkedContent);
       }
     };
 
-    load();
-  }, [data.links, index]);
+    if (status === 'loading') {
+      load();
+    }
+  }, [data.links, index, status]);
 
   return (
-    <View style={[styles.container, style]}>
-      {status === 'loaded' && (
-        <DefaultVideo
-          path={data.path}
-          style={[styles.content, contentStyle]}
-          modalVisible={!!modalVisible}
-          initPaused={initPaused}
-        />
-      )}
-      <DefaultText title={data.contributeFrom.items[0].name} />
-      {data.link.ids.length >= 1 && (
-        <DefaultIcon icon={'arrow-right'} onPress={onNextLink} />
-      )}
+    <>
+      <View style={[styles.container, style]}>
+        {status === 'loaded' && (
+          <DefaultVideo
+            path={data.path}
+            style={[styles.content, contentStyle]}
+            modalVisible={!!modalVisible}
+            initPaused={initPaused}
+          />
+        )}
+      </View>
+
       {showNav && (
         <View style={styles.nav}>
-          <NextButton onSuccess={onNext} style={{flex: 1}} id={content.id} />
-          <LikeButton id={content.id} style={{flex: 1}} collection="contents" />
-          <ReplyButton id={content.id} style={{flex: 1}} link={content.links} />
+          <DefaultText
+            title={data.contributeFrom?.items[0].name}
+            style={{flex: 1}}
+          />
+
+          <DefaultIcon
+            icon={'arrow-right'}
+            onPress={onNextLink}
+            style={{flex: 1, paddingHorizontal: 10}}
+          />
+
+          <NextButton onSuccess={onNext} style={{flex: 1}} id={data.id} />
+          <ReplyButton id={data.id} style={{flex: 1}} link={data.link} />
+          <LikeButton id={data.id} style={{flex: 1}} collection="contents" />
           <ReportButton
             collection="contents"
-            id={content.id}
+            id={data.id}
             onSuccess={onNext}
             style={{flex: 1}}
           />
         </View>
       )}
-    </View>
+    </>
   );
 };
 
@@ -103,10 +117,10 @@ const styles = StyleSheet.create({
   },
   content: {borderRadius: 10},
   nav: {
+    bottom: 40,
+    paddingHorizontal: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    bottom: 40,
-    paddingHorizontal: 20,
   },
 });

@@ -94,6 +94,6 @@ export default ReplyButton;
 
 const styles = StyleSheet.create({
   icon: {alignItems: 'center'},
-  progress: {alignItems: 'flex-end', padding: 10},
-  act: {alignItems: 'flex-end', paddingHorizontal: 10},
+  progress: {padding: 10},
+  act: {paddingHorizontal: 10},
 });

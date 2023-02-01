@@ -16,9 +16,7 @@ const NextButton = ({onSuccess, style}: TProps) => {
 
   return (
     <View style={style}>
-      {!isLoading && (
-        <DefaultIcon icon="arrow-down" onPress={onPass} style={styles.icon} />
-      )}
+      {!isLoading && <DefaultIcon icon="arrow-down" onPress={onPass} />}
       {isLoading && <ActivityIndicator style={styles.act} />}
     </View>
   );
@@ -27,6 +25,5 @@ const NextButton = ({onSuccess, style}: TProps) => {
 export default NextButton;
 
 const styles = StyleSheet.create({
-  icon: {alignItems: 'flex-start'},
-  act: {alignItems: 'flex-start', paddingHorizontal: 10},
+  act: {paddingHorizontal: 10},
 });

@@ -63,6 +63,5 @@ const ReportButton = ({id, collection, onSuccess, style}: TProps) => {
 export default ReportButton;
 
 const styles = StyleSheet.create({
-  icon: {alignItems: 'flex-end'},
-  act: {paddingHorizontal: 10, alignItems: 'flex-end'},
+  act: {paddingHorizontal: 10},
 });

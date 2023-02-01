@@ -88,20 +88,6 @@ const Contents = ({style, modalVisible}: TProps) => {
     );
   }
 
-  if (data.length === 0) {
-    return (
-      <View style={styles.noData}>
-        <DefaultText title="You've viewed all contents for today." />
-        <DefaultText title="Comeback tomorrow!" style={{marginTop: 5}} />
-        <DefaultText
-          title="Refresh"
-          onPress={() => setStatus('loading')}
-          style={styles.refresh}
-        />
-      </View>
-    );
-  }
-
   return (
     <View style={style}>
       <ContentCard

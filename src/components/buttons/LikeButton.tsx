@@ -67,7 +67,6 @@ const LikeButton = ({collection, id, style}: TProps) => {
         <DefaultIcon
           icon="heart"
           onPress={isLiked ? onUnlike : onLike}
-          style={styles.icon}
           color={isLiked ? defaultRed.lv1 : 'white'}
         />
       )}
@@ -79,6 +78,5 @@ const LikeButton = ({collection, id, style}: TProps) => {
 export default LikeButton;
 
 const styles = StyleSheet.create({
-  icon: {alignItems: 'center'},
   act: {paddingHorizontal: 10},
 });
