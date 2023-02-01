@@ -3,7 +3,7 @@ import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {TStyleView} from '../../types/Style';
 import DefaultIcon from '../defaults/DefaultIcon';
 
-type TProps = {id: string; onSuccess: () => void; style?: TStyleView};
+type TProps = {onSuccess: () => void; style?: TStyleView};
 
 const NextButton = ({onSuccess, style}: TProps) => {
   const [isLoading, setIsLoading] = useState(false);

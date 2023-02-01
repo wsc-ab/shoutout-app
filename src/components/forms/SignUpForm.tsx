@@ -7,12 +7,12 @@ import {object} from 'yup';
 
 import {createUser, sendVerificationCode} from '../../functions/User';
 import {defaultSchema} from '../../utils/Schema';
+import ControllerText from '../controllers/ControllerText';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultDivider from '../defaults/DefaultDivider';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultKeyboardAwareScrollView from '../defaults/DefaultKeyboardAwareScrollView';
 import DefaultText from '../defaults/DefaultText';
-import ControllerText from '../controllers/ControllerText';
 
 type TProps = {
   phoneNumber?: string;
@@ -20,14 +20,13 @@ type TProps = {
 };
 
 const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
-  const {text, email, website} = defaultSchema();
+  const {text, email} = defaultSchema();
 
   const schema = object({
     id: text({min: 4, max: 20, required: true}),
     email: email({required: true}),
     code: text({min: 6, max: 6, required: true}),
     password: text({min: 8, required: true}),
-    link: website({}),
   }).required();
 
   const {
@@ -41,7 +40,6 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
       email: '',
       code: '',
       password: '',
-      link: undefined,
     },
   });
 

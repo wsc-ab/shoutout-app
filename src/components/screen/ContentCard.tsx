@@ -35,7 +35,7 @@ const ContentCard = ({
 }: TProps) => {
   const [data, setData] = useState(content);
 
-  const [ids] = useState([...content.id, ...content.link.ids]);
+  const [ids] = useState<string[]>([...content.id, ...content.links.ids]);
   const [index, setIndex] = useState<number>();
   const [status, setStatus] = useState<TStatus>('loaded');
 
@@ -47,7 +47,7 @@ const ContentCard = ({
     setIndex(pre => {
       if (pre === undefined) {
         return 0;
-      } else if (index === data.link.ids.length - 1) {
+      } else if (index === data.links.ids.length - 1) {
         return 0;
       } else {
         return pre + 1;
@@ -104,8 +104,8 @@ const ContentCard = ({
             />
             <DefaultIcon
               icon={'arrow-right'}
-              onPress={data.link.ids.length >= 1 ? onNextLink : undefined}
-              color={data.link.ids.length >= 1 ? 'white' : 'gray'}
+              onPress={data.links.ids.length >= 1 ? onNextLink : undefined}
+              color={data.links.ids.length >= 1 ? 'white' : 'gray'}
               style={{
                 flex: 1,
                 paddingHorizontal: 10,
@@ -121,21 +121,20 @@ const ContentCard = ({
             <NextButton
               onSuccess={onNext}
               style={{flex: 1, alignItems: 'center'}}
-              id={data.id}
             />
             <ReplyButton
-              id={data.id}
+              linkIds={ids.slice(1)}
+              id={ids[0]}
               style={{flex: 1, alignItems: 'center'}}
-              link={data.link}
             />
             <LikeButton
-              id={data.id}
+              id={ids[0]}
               style={{flex: 1, alignItems: 'center'}}
               collection="contents"
             />
             <ReportButton
               collection="contents"
-              id={data.id}
+              id={ids[0]}
               onSuccess={onNext}
               style={{flex: 1, alignItems: 'center'}}
             />

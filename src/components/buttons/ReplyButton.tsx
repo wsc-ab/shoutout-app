@@ -12,11 +12,11 @@ import DefaultText from '../defaults/DefaultText';
 
 type TProps = {
   id: string;
+  linkIds: string[];
   style?: TStyleView;
-  link: {ids: string[]};
 };
 
-const ReplyButton = ({id, style, link: {ids: linkIds}}: TProps) => {
+const ReplyButton = ({id, linkIds, style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
   const [submitting, setSubmitting] = useState(false);
   const [progress, setProgress] = useState(0);
