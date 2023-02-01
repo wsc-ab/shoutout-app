@@ -21,7 +21,7 @@ type TProps = {
   modalVisible?: boolean;
   initPaused?: boolean;
   showNav: boolean;
-  onNext: () => void;
+  onNext?: () => void;
 };
 
 const ContentCard = ({

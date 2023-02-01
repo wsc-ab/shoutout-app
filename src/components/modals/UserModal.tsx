@@ -53,7 +53,7 @@ const UserModal = ({id, onCancel}: TProps) => {
   }, [id, status]);
 
   const [modal, setModal] = useState<'content'>();
-  const [contentId, setContentId] = useState<string>();
+  const [contentIndex, setContentIndex] = useState<number>();
 
   return (
     <DefaultModal>
@@ -62,13 +62,12 @@ const UserModal = ({id, onCancel}: TProps) => {
         <DefaultForm title={data.name} left={{onPress: onCancel}}>
           <FlatList
             data={data.contributeTo?.items ?? []}
-            renderItem={({item}) => {
+            renderItem={({item, index}) => {
               return (
                 <Pressable key={item.id}>
                   <ContentCard
                     content={item}
                     showNav={false}
-                    onNext={undefined}
                     initPaused={true}
                     style={{alignSelf: 'center'}}
                   />
@@ -77,7 +76,7 @@ const UserModal = ({id, onCancel}: TProps) => {
                     onPress={() => {
                       console.log('called');
 
-                      setContentId(item.id);
+                      setContentIndex(index);
                       setModal('content');
                     }}
                   />
@@ -96,8 +95,18 @@ const UserModal = ({id, onCancel}: TProps) => {
           />
         </DefaultForm>
       )}
-      {modal === 'content' && contentId && (
-        <ContentModal onCancel={() => setModal(undefined)} id={contentId} />
+      {modal === 'content' && data && contentIndex && (
+        <ContentModal
+          onCancel={() => setModal(undefined)}
+          id={data.contributeTo.items[contentIndex].id}
+          onNext={() => {
+            const nextContentId =
+              contentIndex !== data.contributeTo.items.length - 1
+                ? 0
+                : contentIndex + 1;
+            setContentIndex(nextContentId);
+          }}
+        />
       )}
     </DefaultModal>
   );
