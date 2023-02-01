@@ -166,16 +166,6 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
         />
         <ControllerText
           control={control}
-          name="link"
-          title="Link"
-          errors={errors.link}
-          autoCapitalize="none"
-          placeholder="https://www.airballoon.app"
-          style={styles.textInput}
-          optional
-        />
-        <ControllerText
-          control={control}
           name="code"
           title="Code"
           errors={errors.code}

@@ -1,7 +1,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import CreateButton from '../buttons/CreateButton';
-import RankButton from '../buttons/RankButton';
 import UserButton from '../buttons/UserButton';
 
 type TProps = {
@@ -12,8 +11,7 @@ const Header = ({onModal}: TProps) => {
   return (
     <View style={styles.container}>
       <UserButton style={styles.button} onModal={onModal} />
-      <RankButton style={styles.button} onModal={onModal} />
-      <CreateButton style={styles.button} onModal={onModal} />
+      <CreateButton style={styles.button} />
     </View>
   );
 };

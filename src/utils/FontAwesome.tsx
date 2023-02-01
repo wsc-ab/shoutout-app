@@ -13,6 +13,7 @@ import {
   faImage,
   faPlus,
   faRankingStar,
+  faReply,
   faShare,
   faTimes,
   faUser,
@@ -36,4 +37,5 @@ library.add(
   faArrowDown,
   faVideo,
   faCommentDollar,
+  faReply,
 );

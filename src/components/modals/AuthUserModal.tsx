@@ -1,10 +1,10 @@
+import auth from '@react-native-firebase/auth';
 import React, {useContext, useState} from 'react';
 import {RefreshControl, ScrollView, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
-import auth from '@react-native-firebase/auth';
 
 import {deleteUser} from '../../functions/User';
-import LinkButton from '../buttons/LinkButton';
+
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
@@ -102,7 +102,6 @@ const AuthUserModal = ({onCancel}: TProps) => {
               />
             )}
           </View>
-          <LinkButton links={authUserData?.links} style={{marginTop: 20}} />
           <View
             style={{borderWidth: 1, borderColor: 'gray', marginVertical: 20}}
           />

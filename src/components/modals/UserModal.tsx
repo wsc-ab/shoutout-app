@@ -5,9 +5,7 @@ import {ActivityIndicator, FlatList, View} from 'react-native';
 import {TObject} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import {getDate} from '../../utils/Date';
-import LinkButton from '../buttons/LinkButton';
 import DefaultAlert from '../defaults/DefaultAlert';
-import DefaultDivider from '../defaults/DefaultDivider';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
@@ -59,10 +57,8 @@ const UserModal = ({id, onCancel}: TProps) => {
       {status === 'loading' && !data && <ActivityIndicator style={{flex: 1}} />}
       {data && (
         <DefaultForm title={data.name} left={{onPress: onCancel}}>
-          <LinkButton links={data?.links} />
-          <DefaultDivider />
           <FlatList
-            data={data.contributeTo?.contents.items ?? []}
+            data={data.contributeTo?.items ?? []}
             renderItem={({item}) => {
               const createdAt = getDate(item.addedAt);
               return (
@@ -73,7 +69,11 @@ const UserModal = ({id, onCancel}: TProps) => {
                     }/${createdAt.getDate() + 1}`}
                     style={{marginBottom: 5, alignItems: 'center'}}
                   />
-                  <ContentCard content={item} />
+                  <ContentCard
+                    content={item}
+                    showNav={false}
+                    onNext={undefined}
+                  />
                 </View>
               );
             }}

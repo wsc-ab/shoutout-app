@@ -1,19 +1,9 @@
 import {firebaseFunctions} from '../utils/Firebase';
 
-export const createContent = async (input: {}) => {
+export const createContent = async (input: {
+  content: {id: string; path: string; type?: string; isFirst: boolean};
+}) => {
   const {data} = await firebaseFunctions.httpsCallable('createContent')(input);
-
-  return {...data};
-};
-
-export const addShoutout = async (input: {}) => {
-  const {data} = await firebaseFunctions.httpsCallable('addShoutout')(input);
-
-  return {...data};
-};
-
-export const removeShoutout = async (input: {}) => {
-  const {data} = await firebaseFunctions.httpsCallable('removeShoutout')(input);
 
   return {...data};
 };
@@ -36,24 +26,10 @@ export const addView = async (input: {}) => {
   return {...data};
 };
 
-export const getContents = async (input: {}) => {
-  const {data} = await firebaseFunctions.httpsCallable('getContents')(input);
-
-  return {...data};
-};
-
-export const replaceContent = async (input: {
-  id: string;
-  path: string;
-  type: string;
+export const getContents = async (input: {
+  pagination: {startAfterId?: string};
 }) => {
-  const {data} = await firebaseFunctions.httpsCallable('replaceContent')(input);
-
-  return {...data};
-};
-
-export const getRank = async (input: {date: string}) => {
-  const {data} = await firebaseFunctions.httpsCallable('getRank')(input);
+  const {data} = await firebaseFunctions.httpsCallable('getContents')(input);
 
   return {...data};
 };
@@ -66,16 +42,23 @@ export const createReport = async (input: {
   return {...data};
 };
 
-export const editContent = async (input: {
-  conent: {id: string; path: string; type: string};
-}) => {
-  const {data} = await firebaseFunctions.httpsCallable('editContent')(input);
+export const deleteContent = async (input: {content: {id: string}}) => {
+  const {data} = await firebaseFunctions.httpsCallable('deleteContent')(input);
 
   return {...data};
 };
 
-export const deleteContent = async (input: {content: {id: string}}) => {
-  const {data} = await firebaseFunctions.httpsCallable('deleteContent')(input);
+export const addLink = async (input: {
+  from: {id: string};
+  to: {id: string};
+}) => {
+  const {data} = await firebaseFunctions.httpsCallable('addLink')(input);
+
+  return {...data};
+};
+
+export const getContent = async (input: {content: {id: string}}) => {
+  const {data} = await firebaseFunctions.httpsCallable('getContent')(input);
 
   return {...data};
 };

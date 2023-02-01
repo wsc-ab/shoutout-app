@@ -1,24 +1,27 @@
 import {firebase} from '@react-native-firebase/auth';
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
-import {createContent} from '../../functions/Content';
+import {addLink, createContent} from '../../functions/Content';
 import {TStyleView} from '../../types/Style';
 import {selectAndUploadContent} from '../../utils/Content';
 import DefaultAlert from '../defaults/DefaultAlert';
+import {defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
 
-type TProps = {style: TStyleView};
+type TProps = {
+  id: string;
+  style?: TStyleView;
+  link: {ids: string[]};
+};
 
-const CreateButton = ({style}: TProps) => {
+const ReplyButton = ({id, style, link: {ids: linkIds}}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
-
   const [submitting, setSubmitting] = useState(false);
-
   const [progress, setProgress] = useState(0);
 
-  const onAdd = async () => {
+  const onReply = async () => {
     try {
       setSubmitting(true);
 
@@ -33,27 +36,49 @@ const CreateButton = ({style}: TProps) => {
       }
       const contentId = firebase.firestore().collection('contents').doc().id;
 
+      setIsReplyed(true);
       await createContent({
         content: {
           id: contentId,
           path: uploaded,
           type: asset.type,
-          isFirst: true,
+          isFirst: false,
         },
+      });
+      await addLink({
+        from: {id: contentId},
+        to: {id},
       });
     } catch (error) {
       DefaultAlert({
         title: 'Error',
         message: (error as {message: string}).message,
       });
+
+      setIsReplyed(false);
     } finally {
       setSubmitting(false);
     }
   };
 
+  const [isReplyed, setIsReplyed] = useState(false);
+
+  useEffect(() => {
+    setIsReplyed(
+      authUserData.contributeTo?.ids.some((elId: string) =>
+        linkIds.includes(elId),
+      ),
+    );
+  }, [authUserData.contributeTo?.ids, linkIds]);
+
   return (
     <View style={style}>
-      <DefaultIcon icon="plus" onPress={onAdd} style={styles.icon} />
+      <DefaultIcon
+        icon="reply"
+        onPress={onReply}
+        style={styles.icon}
+        color={isReplyed ? defaultRed.lv1 : 'white'}
+      />
       {submitting && progress === 0 && <ActivityIndicator style={styles.act} />}
       {submitting && progress !== 0 && (
         <DefaultText
@@ -65,10 +90,10 @@ const CreateButton = ({style}: TProps) => {
   );
 };
 
-export default CreateButton;
+export default ReplyButton;
 
 const styles = StyleSheet.create({
-  icon: {alignItems: 'flex-end'},
+  icon: {alignItems: 'center'},
   progress: {alignItems: 'flex-end', padding: 10},
   act: {alignItems: 'flex-end', paddingHorizontal: 10},
 });

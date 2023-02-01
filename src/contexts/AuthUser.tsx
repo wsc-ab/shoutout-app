@@ -4,16 +4,13 @@ import React, {createContext, useEffect, useState} from 'react';
 import DefaultAlert from '../components/defaults/DefaultAlert';
 import {signIn} from '../functions/User';
 
-import {TAuthUser, TDocData, TDocSnapshot, TObject} from '../types/Firebase';
-import {sortByTimestamp} from '../utils/Array';
-import {getSecondsGap, getSubmitDate} from '../utils/Date';
+import {TAuthUser, TDocData, TDocSnapshot} from '../types/Firebase';
 
 type TContextProps = {
   loaded: boolean;
   authUserData: TDocData;
   onReload: () => void;
   onSignOut: () => void;
-  content?: TObject;
 };
 
 const AuthUserContext = createContext({} as TContextProps);
@@ -87,24 +84,6 @@ const AuthUserProvider = ({children}: TProps) => {
     setAuthUserData(undefined);
   };
 
-  const lastContent = sortByTimestamp(
-    authUserData?.contributeTo?.contents?.items ?? [],
-    'addedAt',
-  )[0];
-
-  const submitDate = getSubmitDate();
-
-  // set is submitted to ture
-  // if last content has been updated within 24 hours till the next submit date.
-
-  const submitted = lastContent?.addedAt
-    ? getSecondsGap({
-        date: submitDate,
-        timestamp: lastContent.addedAt,
-      }) <
-      60 * 60 * 24
-    : false;
-
   return (
     <AuthUserContext.Provider
       value={{
@@ -112,7 +91,6 @@ const AuthUserProvider = ({children}: TProps) => {
         authUserData: authUserData!,
         onSignOut,
         onReload,
-        content: submitted ? lastContent : undefined,
       }}>
       {children}
     </AuthUserContext.Provider>

@@ -6,14 +6,9 @@ import {
   View,
 } from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
-import {getRank} from '../../functions/Content';
+import {getContents} from '../../functions/Content';
 import {TDocData} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
-import {shuffleArray} from '../../utils/Array';
-import {getCurrentDate} from '../../utils/Date';
-import LikeButton from '../buttons/LikeButton';
-import NextButton from '../buttons/NextButton';
-import ReportButton from '../buttons/ReportButton';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultText from '../defaults/DefaultText';
 import ContentCard from './ContentCard';
@@ -32,21 +27,21 @@ const Contents = ({style, modalVisible}: TProps) => {
 
   const {authUserData} = useContext(AuthUserContext);
   const [index, setIndex] = useState(0);
+  const [pagination, setPagination] = useState<{startAfterId: string}>();
   const {height, width} = useWindowDimensions();
 
   useEffect(() => {
     const load = async () => {
       try {
         setIndex(0);
-        const {rank} = await getRank({
-          date: getCurrentDate().toUTCString(),
+        const {contents, pagination: newPagination} = await getContents({
+          pagination: {
+            startAfterId: pagination?.startAfterId ?? undefined,
+          },
         });
 
-        const contentItems = rank?.contents?.items ?? [];
-
-        const shuffledArray = shuffleArray(contentItems);
-
-        setData(shuffledArray);
+        setData(contents);
+        setPagination(newPagination);
 
         setStatus('loaded');
       } catch (error) {
@@ -62,7 +57,7 @@ const Contents = ({style, modalVisible}: TProps) => {
     if (status === 'loading') {
       load();
     }
-  }, [authUserData.id, status]);
+  }, [authUserData.id, pagination, status]);
 
   const onNext = async () => {
     if (index === data.length - 1) {
@@ -114,21 +109,9 @@ const Contents = ({style, modalVisible}: TProps) => {
         style={styles.card}
         contentStyle={{height, width}}
         modalVisible={modalVisible}
+        onNext={onNext}
+        showNav={true}
       />
-      <View style={styles.nav}>
-        <NextButton onSuccess={onNext} id={data[index].id} style={{flex: 1}} />
-        <LikeButton
-          collection="contents"
-          id={data[index].id}
-          style={{flex: 1}}
-        />
-        <ReportButton
-          collection="contents"
-          id={data[index].id}
-          onSuccess={onNext}
-          style={{flex: 1}}
-        />
-      </View>
     </View>
   );
 };
@@ -136,13 +119,6 @@ const Contents = ({style, modalVisible}: TProps) => {
 export default Contents;
 
 const styles = StyleSheet.create({
-  nav: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    bottom: 40,
-    paddingHorizontal: 20,
-  },
   card: {flex: 1},
   noData: {flex: 1, justifyContent: 'center', alignItems: 'center'},
   refresh: {marginTop: 10},
