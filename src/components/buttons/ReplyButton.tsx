@@ -5,6 +5,7 @@ import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import {addLink, createMoment} from '../../functions/Moment';
 import {TStyleView} from '../../types/Style';
+import {getCurrentLocation} from '../../utils/Location';
 import {uploadVideo} from '../../utils/Moment';
 import DefaultAlert from '../defaults/DefaultAlert';
 import {defaultRed} from '../defaults/DefaultColors';
@@ -28,6 +29,8 @@ const ReplyButton = ({id, linkIds, style}: TProps) => {
       setSubmitting(true);
       onUpdate('reply');
 
+      const location = await getCurrentLocation();
+
       const {uploaded, asset} = await uploadVideo({
         authUserData,
         setProgress,
@@ -46,6 +49,7 @@ const ReplyButton = ({id, linkIds, style}: TProps) => {
           path: uploaded,
           type: asset.type,
           isFirst: false,
+          location,
         },
       });
       await addLink({

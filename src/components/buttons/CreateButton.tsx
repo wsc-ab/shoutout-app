@@ -5,6 +5,7 @@ import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import {createMoment} from '../../functions/Moment';
 import {TStyleView} from '../../types/Style';
+import {getCurrentLocation} from '../../utils/Location';
 import {uploadVideo} from '../../utils/Moment';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultIcon from '../defaults/DefaultIcon';
@@ -25,6 +26,8 @@ const CreateButton = ({style}: TProps) => {
       setSubmitting(true);
       onUpdate('create');
 
+      const location = await getCurrentLocation();
+
       const {uploaded, asset} = await uploadVideo({
         authUserData,
         setProgress,
@@ -42,6 +45,7 @@ const CreateButton = ({style}: TProps) => {
           path: uploaded,
           type: asset.type,
           isFirst: true,
+          location,
         },
       });
     } catch (error) {

@@ -1,7 +1,14 @@
+import {TLocation} from '../types/Firebase';
 import {firebaseFunctions} from '../utils/Firebase';
 
 export const createMoment = async (input: {
-  moment: {id: string; path: string; type?: string; isFirst: boolean};
+  moment: {
+    id: string;
+    path: string;
+    type?: string;
+    isFirst: boolean;
+    location?: TLocation;
+  };
 }) => {
   const {data} = await firebaseFunctions.httpsCallable('createMoment')(input);
 

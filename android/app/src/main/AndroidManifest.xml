@@ -2,7 +2,10 @@
   package="com.airballoon.Shoutout">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- For react-native-geolocation-service -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- For react-native-geolocation-service -->
+    
     <application
       android:name=".MainApplication"
       android:label="@string/app_name"

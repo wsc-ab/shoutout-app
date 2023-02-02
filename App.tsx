@@ -36,10 +36,6 @@ const App = () => {
     }
   }, [status]);
 
-  if (status === 'loading') {
-    return null;
-  }
-
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
