@@ -98,10 +98,8 @@ const MomentCard = ({moment, style, inView}: TProps) => {
               <View style={styles.nav}>
                 <Pressable onPress={() => setModalVisible(pre => !pre)}>
                   <DefaultText title={item.contributeFrom?.items[0].name} />
-                  {item.location && (
-                    <DefaultText
-                      title={`${item.location.lat}, ${item.location.lng}`}
-                    />
+                  {item.location.name && (
+                    <DefaultText title={item.location.name} />
                   )}
                   <DefaultText title={getTimeSinceTimestamp(item.createdAt)} />
                 </Pressable>
