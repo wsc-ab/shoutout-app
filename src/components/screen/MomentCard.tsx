@@ -93,6 +93,7 @@ const MomentCard = ({moment, style, inView}: TProps) => {
                 path={item.path}
                 style={[styles.video, {height, width}]}
                 play={elIndex === index && inView}
+                repeat
               />
               <View style={styles.nav}>
                 <Pressable onPress={() => setModalVisible(pre => !pre)}>
