@@ -135,7 +135,7 @@ export default MomentCard;
 
 const styles = StyleSheet.create({
   top: {
-    top: 80,
+    top: 50,
     position: 'absolute',
     alignItems: 'center',
     zIndex: 100,
