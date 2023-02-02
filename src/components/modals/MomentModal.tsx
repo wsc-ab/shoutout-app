@@ -6,7 +6,7 @@ import {TDocData} from '../../types/Firebase';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultModal from '../defaults/DefaultModal';
-import MomentCard from '../screen/MomentCard';
+import MomentSummaryCard from '../screen/MomentSummaryCard';
 
 type TProps = {
   onCancel: () => void;
@@ -71,7 +71,9 @@ const MomentModal = ({onCancel, id}: TProps) => {
           )}
         </View>
       )}
-      {data && <MomentCard moment={data} style={styles.moment} inView={true} />}
+      {data && (
+        <MomentSummaryCard moment={data} style={styles.moment} inView={true} />
+      )}
     </DefaultModal>
   );
 };
@@ -79,7 +81,7 @@ const MomentModal = ({onCancel, id}: TProps) => {
 export default MomentModal;
 
 const styles = StyleSheet.create({
-  container: {paddingHorizontal: 0},
+  container: {flex: 1},
   moment: {position: 'absolute', top: 0, left: 0},
   act: {paddingHorizontal: 10},
 

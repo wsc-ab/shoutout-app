@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
-  ActivityIndicator,
   FlatList,
+  RefreshControl,
   StyleSheet,
   useWindowDimensions,
   View,
@@ -14,6 +14,7 @@ import {TDocData} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
 import DefaultAlert from '../defaults/DefaultAlert';
+import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultText from '../defaults/DefaultText';
 import MomentCard from './MomentCard';
 
@@ -53,7 +54,12 @@ const Moments = ({style}: TProps) => {
       try {
         const {moments} = await getMoments({pagination: {number: 10}});
 
-        setData(moments);
+        setData(pre => {
+          if (status === 'loadMore') {
+            return [...pre, ...moments];
+          }
+          return moments;
+        });
 
         setStatus('loaded');
       } catch (error) {
@@ -66,16 +72,12 @@ const Moments = ({style}: TProps) => {
       }
     };
 
-    if (status === 'loading') {
+    if (status === 'loading' || status === 'loadMore') {
       load();
     }
   }, [status]);
 
-  if (status === 'loading') {
-    return <ActivityIndicator style={styles.noData} />;
-  }
-
-  if (status === 'error' || data.length === 0) {
+  if (status === 'error') {
     return (
       <View style={styles.noData}>
         <DefaultText title="Error. Please retry." />
@@ -96,8 +98,17 @@ const Moments = ({style}: TProps) => {
         snapToInterval={height}
         snapToAlignment={'start'}
         decelerationRate="fast"
+        keyExtractor={(item, elIndex) => item.id + elIndex}
+        refreshControl={
+          <RefreshControl
+            refreshing={status === 'loading'}
+            onRefresh={() => setStatus('loading')}
+            tintColor={defaultBlack.lv2}
+          />
+        }
         disableIntervalMomentum
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+        onEndReached={() => setStatus('loadMore')}
         renderItem={({item, index: elIndex}) => {
           return (
             <MomentCard

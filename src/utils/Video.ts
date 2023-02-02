@@ -1,4 +1,8 @@
-import {CameraOptions, launchCamera} from 'react-native-image-picker';
+import {
+  CameraOptions,
+  launchCamera,
+  launchImageLibrary,
+} from 'react-native-image-picker';
 import DefaultAlert from '../components/defaults/DefaultAlert';
 import {TDocData} from '../types/Firebase';
 import {uploadFile} from './Storage';
@@ -16,7 +20,9 @@ const takeVideo = async () => {
   let asset;
 
   try {
-    const {assets} = await launchCamera(options);
+    const {assets} = __DEV__
+      ? await launchImageLibrary(options)
+      : await launchCamera(options);
     asset = assets?.[0];
   } catch (error) {
     DefaultAlert({

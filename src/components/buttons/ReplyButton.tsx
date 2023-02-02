@@ -6,7 +6,7 @@ import ModalContext from '../../contexts/Modal';
 import {addLink, createMoment} from '../../functions/Moment';
 import {TStyleView} from '../../types/Style';
 import {getCurrentLocation} from '../../utils/Location';
-import {uploadVideo} from '../../utils/Moment';
+import {uploadVideo} from '../../utils/Video';
 import DefaultAlert from '../defaults/DefaultAlert';
 import {defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';

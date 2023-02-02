@@ -1,1 +1,1 @@
-export type TStatus = 'loading' | 'loaded' | 'error';
+export type TStatus = 'loading' | 'loaded' | 'error' | 'loadMore';

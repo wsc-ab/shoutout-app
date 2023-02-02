@@ -1,35 +1,36 @@
 import {Alert, PermissionsAndroid, Platform} from 'react-native';
 import GeoLocation from 'react-native-geolocation-service';
 import DefaultAlert from '../components/defaults/DefaultAlert';
+import {TLocation} from '../types/Firebase';
 
-export const getCurrentLocation = async () => {
+export const getCurrentLocation: () => Promise<
+  TLocation | undefined
+> = async () => {
   const isPermitted = await checkLocationPermission();
 
   if (!isPermitted) {
     throw new Error('no location permission');
   }
 
-  let location;
-
   if (isPermitted) {
-    GeoLocation.getCurrentPosition(
-      async ({coords: {latitude: lat, longitude: lng}}) => {
-        location = {lat, lng};
-      },
-      error => {
-        DefaultAlert({
-          title: 'Failed  to get location',
-          message: error.message,
-        });
-      },
-      {
-        accuracy: {android: 'high', ios: 'bestForNavigation'},
-        enableHighAccuracy: true,
-      },
-    );
+    return new Promise(res => {
+      GeoLocation.getCurrentPosition(
+        ({coords: {latitude: lat, longitude: lng}}) => {
+          res({lat, lng});
+        },
+        error => {
+          DefaultAlert({
+            title: 'Failed  to get location',
+            message: error.message,
+          });
+        },
+        {
+          accuracy: {android: 'high', ios: 'bestForNavigation'},
+          enableHighAccuracy: true,
+        },
+      );
+    });
   }
-
-  return location;
 };
 
 export const checkLocationPermission = async () => {

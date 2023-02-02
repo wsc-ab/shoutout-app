@@ -12,7 +12,7 @@ import {getMoment} from '../../functions/Moment';
 import {TDocData} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
-import CreatorButton from '../buttons/CreatorButton';
+import ContributorsButton from '../buttons/ContributorsButton';
 import LikeButton from '../buttons/LikeButton';
 import ReplyButton from '../buttons/ReplyButton';
 import ReportButton from '../buttons/ReportButton';
@@ -66,6 +66,20 @@ const MomentCard = ({moment, style, inView}: TProps) => {
     }
   }, [moment.id, status]);
 
+  const allContributors = data.map(
+    ({
+      createdAt,
+      location,
+      contributeFrom: {
+        items: [user],
+      },
+    }) => ({
+      ...user,
+      location,
+      createdAt,
+    }),
+  );
+
   return (
     <View style={style}>
       <FlatList
@@ -93,7 +107,7 @@ const MomentCard = ({moment, style, inView}: TProps) => {
                 repeat
               />
               <View style={styles.nav}>
-                <CreatorButton moment={item} />
+                <ContributorsButton index={elIndex} users={allContributors} />
                 <View style={styles.buttons}>
                   <ReplyButton
                     linkIds={data.map(({id}) => id)}

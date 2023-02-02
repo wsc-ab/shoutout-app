@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {TStyleView} from '../../types/Style';
+import {defaultBlack} from './DefaultColors';
 
 type TProps = {
   style?: TStyleView;
@@ -15,7 +16,7 @@ export default DefaultDivider;
 const styles = StyleSheet.create({
   container: {
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: defaultBlack.lv2,
     marginVertical: 20,
   },
 });

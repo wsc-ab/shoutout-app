@@ -39,11 +39,11 @@ const App = () => {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
-      <AuthUserProvider>
-        <ModalProvider>
+      <ModalProvider>
+        <AuthUserProvider>
           <Home />
-        </ModalProvider>
-      </AuthUserProvider>
+        </AuthUserProvider>
+      </ModalProvider>
     </View>
   );
 };

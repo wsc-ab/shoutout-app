@@ -1,27 +1,55 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   FlatList,
-  Pressable,
   StyleSheet,
   useWindowDimensions,
   View,
+  ViewabilityConfigCallbackPairs,
+  ViewToken,
 } from 'react-native';
 import {getMoment} from '../../functions/Moment';
 
 import {TDocData} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
-import DefaultIcon from '../defaults/DefaultIcon';
+import LikeButton from '../buttons/LikeButton';
+import ContributorButton from '../buttons/ContributorButton';
+import ReplyButton from '../buttons/ReplyButton';
+import ReportButton from '../buttons/ReportButton';
 import DefaultText from '../defaults/DefaultText';
 import DefaultVideo from '../defaults/DefaultVideo';
 
-type TProps = {moment: TDocData; style?: TStyleView; onPress?: () => void};
+type TProps = {
+  moment: TDocData;
+  style?: TStyleView;
+  inView: boolean;
+};
 
-const MomentSummaryCard = ({moment, style, onPress}: TProps) => {
+const MomentSummaryCard = ({moment, style, inView}: TProps) => {
   const [data, setData] = useState<TDocData[]>([]);
-  const {width} = useWindowDimensions();
+  const {height, width} = useWindowDimensions();
 
   const [status, setStatus] = useState<TStatus>('loading');
+  const [index, setIndex] = useState(0);
+
+  const onViewableItemsChanged = ({
+    viewableItems,
+  }: {
+    viewableItems: ViewToken[];
+  }) => {
+    if (viewableItems && viewableItems.length > 0) {
+      setIndex(viewableItems[0].index ?? 0);
+    }
+  };
+
+  const viewabilityConfigCallbackPairs = useRef<ViewabilityConfigCallbackPairs>(
+    [
+      {
+        onViewableItemsChanged,
+        viewabilityConfig: {itemVisiblePercentThreshold: 100},
+      },
+    ],
+  );
 
   useEffect(() => {
     const load = async () => {
@@ -38,62 +66,53 @@ const MomentSummaryCard = ({moment, style, onPress}: TProps) => {
     }
   }, [moment.id, status]);
 
-  const videoWidth = width / 3;
-
   return (
     <View style={style}>
       <FlatList
         data={data}
         initialNumToRender={1}
         horizontal
-        snapToInterval={videoWidth}
+        snapToInterval={width}
         snapToAlignment={'start'}
         decelerationRate="fast"
-        renderItem={({item}) => {
+        disableIntervalMomentum
+        viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+        renderItem={({item, index: elIndex}) => {
           return (
-            <Pressable onPress={onPress} disabled={!onPress}>
+            <View>
+              <View style={styles.top}>
+                <DefaultText
+                  title={`${index + 1}/${data.length}`}
+                  style={styles.index}
+                />
+              </View>
               <DefaultVideo
                 path={item.path}
-                style={[
-                  {height: (videoWidth * 4) / 3, width: videoWidth},
-                  styles.video,
-                ]}
-                onPress={undefined}
-                disabled={true}
-                play={false}
+                style={[{height, width}]}
+                play={elIndex === index && inView}
+                repeat
               />
-              <View
-                style={{
-                  flexDirection: 'row',
-                  marginTop: 5,
-                  alignItems: 'center',
-                  width: 300,
-                }}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                  }}>
-                  <DefaultIcon icon="heart" />
-                  <DefaultText
-                    title={item.likeFrom.number.toString()}
-                    style={{marginLeft: 5}}
+              <View style={styles.nav}>
+                <ContributorButton moment={item} />
+                <View style={styles.buttons}>
+                  <ReplyButton
+                    linkIds={data.map(({id}) => id)}
+                    id={item.id}
+                    style={styles.button}
                   />
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    marginLeft: 10,
-                  }}>
-                  <DefaultIcon icon="reply" />
-                  <DefaultText
-                    title={item.linkFrom.number.toString()}
-                    style={{marginLeft: 5}}
+                  <LikeButton
+                    id={item.id}
+                    style={styles.button}
+                    collection={item.collection}
+                  />
+                  <ReportButton
+                    collection={item.collection}
+                    id={item.id}
+                    style={styles.button}
                   />
                 </View>
               </View>
-            </Pressable>
+            </View>
           );
         }}
       />
@@ -103,4 +122,31 @@ const MomentSummaryCard = ({moment, style, onPress}: TProps) => {
 
 export default MomentSummaryCard;
 
-const styles = StyleSheet.create({video: {borderRadius: 10}});
+const styles = StyleSheet.create({
+  top: {
+    top: 50,
+    position: 'absolute',
+    alignItems: 'center',
+    zIndex: 100,
+    left: 0,
+    right: 0,
+  },
+  nav: {
+    bottom: 40,
+    paddingHorizontal: 10,
+    position: 'absolute',
+    zIndex: 100,
+    left: 0,
+    right: 0,
+  },
+  index: {
+    flex: 1,
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  buttons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  button: {flex: 1, alignItems: 'center'},
+});

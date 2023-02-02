@@ -13,6 +13,7 @@ import {TObject} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import {groupByLength} from '../../utils/Array';
 import DefaultAlert from '../defaults/DefaultAlert';
+import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultModal from '../defaults/DefaultModal';
@@ -85,6 +86,11 @@ const UserModal = ({id, onCancel}: TProps) => {
                   {item.map(moment => (
                     <Pressable
                       key={moment.id}
+                      style={{
+                        height: (videoWidth * 4) / 3,
+                        width: videoWidth,
+                        backgroundColor: defaultBlack.lv3,
+                      }}
                       onPress={() => {
                         setMomentId(moment.id);
                         setModal('moment');
@@ -120,7 +126,7 @@ const UserModal = ({id, onCancel}: TProps) => {
           />
         </DefaultForm>
       )}
-      {modal === 'moment' && data && momentId && (
+      {modal === 'moment' && momentId && (
         <MomentModal onCancel={() => setModal(undefined)} id={momentId} />
       )}
     </DefaultModal>
