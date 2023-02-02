@@ -1,5 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  FlatList,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+  ViewabilityConfigCallbackPairs,
+  ViewToken,
+} from 'react-native';
 import {getMoment} from '../../functions/Moment';
 
 import {TDocData} from '../../types/Firebase';
@@ -7,174 +14,112 @@ import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
 import {getTimeSinceTimestamp} from '../../utils/Date';
 import LikeButton from '../buttons/LikeButton';
-import NextButton from '../buttons/NextButton';
 import ReplyButton from '../buttons/ReplyButton';
 import ReportButton from '../buttons/ReportButton';
-import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
 import DefaultVideo from '../defaults/DefaultVideo';
 
 type TProps = {
   moment: TDocData;
   style?: TStyleView;
-  momentStyle?: {height: number; width: number};
-  modalVisible?: boolean;
-  initPaused?: boolean;
-  showNav: boolean;
-  onNext?: () => void;
-  disabled?: boolean;
+  inView: boolean;
+  changeModalVisible: (visible: boolean) => void;
 };
 
-const MomentCard = ({
-  moment,
-  style,
-  momentStyle = {height: 400, width: 300},
-  modalVisible,
-  initPaused,
-  disabled,
-  onNext,
-  showNav,
-}: TProps) => {
-  const [data, setData] = useState<TDocData>();
+const MomentCard = ({moment, style, inView, changeModalVisible}: TProps) => {
+  const [data, setData] = useState<TDocData[]>([]);
+  const {height, width} = useWindowDimensions();
 
-  const [ids, setIds] = useState<string[]>([]);
-  const [index, setIndex] = useState<number>(0);
-  const [status, setStatus] = useState<TStatus>('loaded');
+  const [status, setStatus] = useState<TStatus>('loading');
+  const [index, setIndex] = useState(0);
 
-  useEffect(() => {
-    setData(moment);
-    setIds([moment.id, ...moment.linkFrom.ids]);
-    setIndex(0);
-  }, [moment]);
-
-  const onNextLink = async () => {
-    setIndex(pre => {
-      if (index === ids.length - 1) {
-        return 0;
-      } else {
-        return pre + 1;
-      }
-    });
+  const onViewableItemsChanged = ({
+    viewableItems,
+  }: {
+    viewableItems: ViewToken[];
+  }) => {
+    if (viewableItems && viewableItems.length > 0) {
+      setIndex(viewableItems[0].index ?? 0);
+    }
   };
 
-  const onPreLink = () => {
-    setIndex(pre => {
-      if (index === 0) {
-        return ids.length - 1;
-      } else {
-        return pre - 1;
-      }
-    });
-  };
+  const viewabilityConfigCallbackPairs = useRef<ViewabilityConfigCallbackPairs>(
+    [
+      {
+        onViewableItemsChanged,
+        viewabilityConfig: {itemVisiblePercentThreshold: 100},
+      },
+    ],
+  );
 
   useEffect(() => {
     const load = async () => {
-      setStatus('loading');
-      const {moment: linkedmoment} = await getMoment({
-        moment: {id: ids[index]},
+      const {moment: newMoment} = await getMoment({
+        moment: {id: moment.id},
       });
 
-      setData(linkedmoment);
+      setData([newMoment, ...newMoment.linkFrom.items]);
       setStatus('loaded');
     };
 
-    if (ids.length >= 1) {
+    if (status === 'loading') {
       load();
     }
-  }, [ids, index]);
-
-  if (status === 'loading' || !data) {
-    return null;
-  }
+  }, [moment.id, status]);
 
   return (
     <View style={style}>
-      <View style={styles.top}>
-        {showNav && (
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <DefaultIcon
-              icon={'arrow-left'}
-              onPress={ids.length >= 2 ? onPreLink : undefined}
-              color={ids.length >= 2 ? 'white' : 'gray'}
-              style={{
-                flex: 1,
-                paddingHorizontal: 10,
-                alignItems: 'center',
-              }}
-            />
-            <DefaultText
-              title={`${index + 1}/${ids.length}`}
-              style={{flex: 1, alignItems: 'center'}}
-            />
-            <ReplyButton
-              linkIds={ids.slice(1)}
-              id={ids[0]}
-              style={{flex: 1, alignItems: 'center'}}
-            />
-            <DefaultIcon
-              icon={'arrow-right'}
-              onPress={ids.length >= 2 ? onNextLink : undefined}
-              color={ids.length >= 2 ? 'white' : 'gray'}
-              style={{
-                flex: 1,
-                paddingHorizontal: 10,
-                alignItems: 'center',
-              }}
-            />
-          </View>
-        )}
-      </View>
-      <View>
-        <DefaultVideo
-          path={data.path}
-          style={{...momentStyle, borderRadius: 10}}
-          modalVisible={!!modalVisible}
-          initPaused={initPaused}
-          disabled={disabled}
-        />
-      </View>
-      {showNav && (
-        <View style={styles.nav}>
-          <View>
-            <DefaultText title={data.contributeFrom?.items[0].name} />
-            <DefaultText title={getTimeSinceTimestamp(data.createdAt)} />
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            {onNext && (
-              <NextButton
-                onSuccess={() => {
-                  setIds([]);
-                  setIndex(0);
-                  onNext();
-                }}
-                style={{flex: 1, alignItems: 'center'}}
+      <FlatList
+        data={data}
+        initialNumToRender={1}
+        horizontal
+        snapToInterval={width}
+        snapToAlignment={'start'}
+        decelerationRate="fast"
+        disableIntervalMomentum
+        viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+        renderItem={({item, index: elIndex}) => {
+          return (
+            <View>
+              <View style={styles.top}>
+                <DefaultText
+                  title={`${index + 1}/${data.length}`}
+                  style={styles.index}
+                />
+              </View>
+              <DefaultVideo
+                path={item.path}
+                style={[styles.video, {height, width}]}
+                play={elIndex === index && inView}
               />
-            )}
-
-            <LikeButton
-              id={ids[0]}
-              style={{flex: 1, alignItems: 'center'}}
-              collection="moments"
-            />
-            {onNext && (
-              <ReportButton
-                collection="moments"
-                id={ids[0]}
-                onSuccess={onNext}
-                style={{flex: 1, alignItems: 'center'}}
-              />
-            )}
-          </View>
-        </View>
-      )}
+              <View style={styles.nav}>
+                <View>
+                  <DefaultText title={item.contributeFrom?.items[0].name} />
+                  <DefaultText title={getTimeSinceTimestamp(item.createdAt)} />
+                </View>
+                <View style={styles.buttons}>
+                  <ReplyButton
+                    linkIds={data.map(({id}) => id)}
+                    id={item.id}
+                    style={styles.button}
+                    changeModalVisible={changeModalVisible}
+                  />
+                  <LikeButton
+                    id={item.id}
+                    style={styles.button}
+                    collection={item.collection}
+                  />
+                  <ReportButton
+                    collection={item.collection}
+                    id={item.id}
+                    style={styles.button}
+                  />
+                </View>
+              </View>
+            </View>
+          );
+        }}
+      />
     </View>
   );
 };
@@ -185,6 +130,7 @@ const styles = StyleSheet.create({
   top: {
     top: 80,
     position: 'absolute',
+    alignItems: 'center',
     zIndex: 100,
     left: 0,
     right: 0,
@@ -197,4 +143,15 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
   },
+  index: {
+    flex: 1,
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  video: {borderRadius: 10},
+  buttons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  button: {flex: 1, alignItems: 'center'},
 });

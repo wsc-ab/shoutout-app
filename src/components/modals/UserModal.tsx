@@ -1,23 +1,32 @@
 import firebase from '@react-native-firebase/app';
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, FlatList, Pressable, View} from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  Pressable,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 
 import {TObject} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
+import {groupByLength} from '../../utils/Array';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
-import MomentCard from '../screen/MomentCard';
+import DefaultVideo from '../defaults/DefaultVideo';
 import MomentModal from './MomentModal';
 
 type TProps = {
   id: string;
   onCancel: () => void;
+  changeModalVisible: () => void;
 };
 
-const UserModal = ({id, onCancel}: TProps) => {
+const UserModal = ({id, onCancel, changeModalVisible}: TProps) => {
   const [data, setData] = useState<TObject>();
   const [status, setStatus] = useState<TStatus>('loading');
 
@@ -54,96 +63,68 @@ const UserModal = ({id, onCancel}: TProps) => {
   }, [id, status]);
 
   const [modal, setModal] = useState<'moment'>();
-  const [momentIndex, setMomentIndex] = useState<number>();
+  const [momentId, setMomentId] = useState<'string'>();
+
+  const {width} = useWindowDimensions();
+  const videoWidth = (width - 20) / 3;
 
   return (
     <DefaultModal>
-      {status === 'loading' && !data && <ActivityIndicator style={{flex: 1}} />}
+      {status === 'loading' && !data && (
+        <ActivityIndicator style={styles.act} />
+      )}
       {data && (
         <DefaultForm title={data.name} left={{onPress: onCancel}}>
           <FlatList
-            data={data.contributeTo?.items ?? []}
+            data={groupByLength(data.contributeTo?.items ?? [], 3)}
             ListEmptyComponent={<DefaultText title="No moments found" />}
-            contentContainerStyle={{paddingBottom: 100}}
-            renderItem={({item, index}) => {
+            contentContainerStyle={styles.container}
+            renderItem={({item}) => {
               return (
-                <Pressable
-                  key={item.id}
-                  style={{justifyContent: 'center', alignItems: 'center'}}
-                  onPress={() => {
-                    setMomentIndex(index);
-                    setModal('moment');
-                  }}>
-                  <MomentCard
-                    moment={item}
-                    showNav={false}
-                    initPaused={true}
-                    style={{alignSelf: 'center'}}
-                    disabled={true}
-                  />
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      marginTop: 5,
-                      alignItems: 'center',
-                      width: 300,
-                    }}>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
+                <View style={styles.moments}>
+                  {item.map(moment => (
+                    <Pressable
+                      onPress={() => {
+                        setMomentId(moment.id);
+                        setModal('moment');
                       }}>
-                      <DefaultIcon icon="heart" />
-                      <DefaultText
-                        title={item.likeFrom.number.toString()}
-                        style={{marginLeft: 5}}
-                        onPress={() => {
-                          setMomentIndex(index);
-                          setModal('moment');
-                        }}
+                      <DefaultVideo
+                        key={moment.id}
+                        path={moment.path}
+                        style={[
+                          {height: (videoWidth * 4) / 3, width: videoWidth},
+                        ]}
+                        disabled={true}
+                        play={false}
                       />
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        marginLeft: 10,
-                      }}>
-                      <DefaultIcon icon="reply" />
-                      <DefaultText
-                        title={item.linkFrom.number.toString()}
-                        style={{marginLeft: 5}}
-                        onPress={() => {
-                          setMomentIndex(index);
-                          setModal('moment');
-                        }}
-                      />
-                    </View>
-                  </View>
-                </Pressable>
+                      <View style={styles.icons}>
+                        <View style={styles.icon}>
+                          <DefaultIcon icon="reply" />
+                          <DefaultText
+                            title={moment.linkFrom.number.toString()}
+                          />
+                        </View>
+                        <View style={styles.icon}>
+                          <DefaultIcon icon="heart" />
+                          <DefaultText
+                            title={moment.likeFrom.number.toString()}
+                          />
+                        </View>
+                      </View>
+                    </Pressable>
+                  ))}
+                </View>
               );
             }}
-            ItemSeparatorComponent={() => (
-              <View
-                style={{
-                  marginVertical: 10,
-                }}
-              />
-            )}
+            ItemSeparatorComponent={() => <View style={styles.seperator} />}
           />
         </DefaultForm>
       )}
-      {modal === 'moment' && data && momentIndex !== undefined && (
+      {modal === 'moment' && data && momentId && (
         <MomentModal
           onCancel={() => setModal(undefined)}
-          id={data.contributeTo.items[momentIndex].id}
-          onNext={() => {
-            const nextmomentId =
-              momentIndex !== data.contributeTo.items.length - 1
-                ? 0
-                : momentIndex + 1;
-            setMomentIndex(nextmomentId);
-          }}
+          id={momentId}
+          changeModalVisible={changeModalVisible}
         />
       )}
     </DefaultModal>
@@ -151,3 +132,25 @@ const UserModal = ({id, onCancel}: TProps) => {
 };
 
 export default UserModal;
+
+const styles = StyleSheet.create({
+  container: {paddingBottom: 100},
+  act: {flex: 1},
+  moments: {flexDirection: 'row'},
+  icons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    justifyContent: 'center',
+  },
+  icon: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  seperator: {
+    marginBottom: 5,
+  },
+});

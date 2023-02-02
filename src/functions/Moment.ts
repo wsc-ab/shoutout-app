@@ -26,9 +26,7 @@ export const addView = async (input: {}) => {
   return {...data};
 };
 
-export const getMoments = async (input: {
-  pagination: {startAfterId?: string};
-}) => {
+export const getMoments = async (input: {pagination: {number: number}}) => {
   const {data} = await firebaseFunctions.httpsCallable('getMoments')(input);
 
   return {...data};

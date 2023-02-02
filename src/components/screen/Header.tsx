@@ -4,13 +4,16 @@ import CreateButton from '../buttons/CreateButton';
 import UserButton from '../buttons/UserButton';
 
 type TProps = {
-  onModal: (visible: boolean) => void;
+  changeModalVisible: (visible: boolean) => void;
 };
 
-const Header = ({onModal}: TProps) => {
+const Header = ({changeModalVisible}: TProps) => {
   return (
     <View style={styles.container}>
-      <UserButton style={styles.button} onModal={onModal} />
+      <UserButton
+        style={styles.button}
+        changeModalVisible={changeModalVisible}
+      />
       <CreateButton style={styles.button} />
     </View>
   );

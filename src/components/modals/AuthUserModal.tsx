@@ -43,6 +43,8 @@ const AuthUserModal = ({onCancel}: TProps) => {
 
   const currentUser = auth().currentUser;
 
+  const changeModalVisible = (visible: boolean) => setModal(visible);
+
   return (
     <DefaultModal>
       <DefaultForm title={authUserData.name} left={{onPress: onCancel}}>
@@ -132,7 +134,11 @@ const AuthUserModal = ({onCancel}: TProps) => {
         </ScrollView>
       </DefaultForm>
       {modal === 'profile' && (
-        <UserModal id={authUserData.id} onCancel={() => setModal(undefined)} />
+        <UserModal
+          id={authUserData.id}
+          onCancel={() => setModal(undefined)}
+          changeModalVisible={changeModalVisible}
+        />
       )}
     </DefaultModal>
   );

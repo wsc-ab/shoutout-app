@@ -1,13 +1,5 @@
 import {TObject} from '../types/Firebase';
 
-export const shuffleArray = <A extends TObject>(array: A[]) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-};
-
 export const sortByTimestamp = <A extends TObject>(
   items: A[],
   field: string,
@@ -15,4 +7,22 @@ export const sortByTimestamp = <A extends TObject>(
   return items.sort(
     (a: TObject, b: TObject) => b[field].seconds - a[field].seconds,
   );
+};
+
+export const groupByLength = <A extends TObject>(
+  items: A[],
+  number: number,
+) => {
+  const group: [A[]] = [[]];
+
+  items.forEach((item, elIndex) => {
+    const groupIndex = Math.floor(elIndex / number);
+
+    if (!group[groupIndex]) {
+      group[groupIndex] = [];
+    }
+    group[groupIndex].push(item);
+  });
+
+  return group;
 };

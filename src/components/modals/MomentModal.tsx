@@ -1,27 +1,24 @@
-import React, {useEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  StyleSheet,
-  useWindowDimensions,
-  View,
-} from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import AuthUserContext from '../../contexts/AuthUser';
 import {deleteMoment, getMoment} from '../../functions/Moment';
 import {TDocData} from '../../types/Firebase';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultModal from '../defaults/DefaultModal';
-import DefaultText from '../defaults/DefaultText';
 import MomentCard from '../screen/MomentCard';
 
 type TProps = {
   onCancel: () => void;
   id: string;
-  onNext: () => void;
+  changeModalVisible: () => void;
 };
 
-const MomentModal = ({onCancel, onNext, id}: TProps) => {
+const MomentModal = ({onCancel, changeModalVisible, id}: TProps) => {
   const [submitting, setSubmitting] = useState(false);
-  const {height, width} = useWindowDimensions();
+  const {authUserData} = useContext(AuthUserContext);
+
+  const isContributedByUser = authUserData.contributeTo.ids.includes(id);
 
   const [data, setData] = useState<TDocData>();
 
@@ -67,23 +64,20 @@ const MomentModal = ({onCancel, onNext, id}: TProps) => {
           <View style={styles.left}>
             <DefaultIcon icon="angle-left" onPress={onCancel} />
           </View>
-          <DefaultText title={'Moment'} textStyle={styles.centerText} />
-          <View style={styles.right}>
-            {!submitting && <DefaultIcon icon="times" onPress={onDelete} />}
-            {submitting && <ActivityIndicator style={styles.act} />}
-          </View>
+          {!isContributedByUser && (
+            <View style={styles.right}>
+              {!submitting && <DefaultIcon icon="times" onPress={onDelete} />}
+              {submitting && <ActivityIndicator style={styles.act} />}
+            </View>
+          )}
         </View>
       )}
       {data && (
         <MomentCard
           moment={data}
           style={styles.moment}
-          momentStyle={{
-            width,
-            height,
-          }}
-          showNav={true}
-          onNext={onNext}
+          inView={false}
+          changeModalVisible={changeModalVisible}
         />
       )}
     </DefaultModal>
@@ -106,10 +100,5 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
   left: {flex: 1, alignItems: 'flex-start'},
-  centerText: {
-    fontSize: 20,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
   right: {flex: 1, alignItems: 'flex-end'},
 });

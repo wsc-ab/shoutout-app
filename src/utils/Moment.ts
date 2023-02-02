@@ -15,8 +15,6 @@ const takeVideo = async () => {
 
   let asset;
 
-  console.log('launch called');
-
   try {
     const {assets} = await launchCamera(options);
     asset = assets?.[0];

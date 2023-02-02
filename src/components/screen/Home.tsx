@@ -10,7 +10,7 @@ const Home = () => {
   const {authUserData, loaded} = useContext(AuthUserContext);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const onModal = (visible: boolean) => setModalVisible(visible);
+  const changeModalVisible = (visible: boolean) => setModalVisible(visible);
 
   if (!loaded) {
     return null;
@@ -22,8 +22,12 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
-      <Header onModal={onModal} />
-      <Moments style={styles.moments} modalVisible={modalVisible} />
+      <Header changeModalVisible={changeModalVisible} />
+      <Moments
+        style={styles.moments}
+        modalVisible={modalVisible}
+        changeModalVisible={changeModalVisible}
+      />
     </View>
   );
 };

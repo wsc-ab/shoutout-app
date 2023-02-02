@@ -14,9 +14,10 @@ type TProps = {
   id: string;
   linkIds: string[];
   style?: TStyleView;
+  changeModalVisible: (visible: boolean) => void;
 };
 
-const ReplyButton = ({id, linkIds, style}: TProps) => {
+const ReplyButton = ({id, linkIds, style, changeModalVisible}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
   const [submitting, setSubmitting] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -24,7 +25,7 @@ const ReplyButton = ({id, linkIds, style}: TProps) => {
   const onReply = async () => {
     try {
       setSubmitting(true);
-      console.log(id, 'toId');
+      changeModalVisible(true);
 
       const {uploaded, asset} = await uploadVideo({
         authUserData,
@@ -58,6 +59,7 @@ const ReplyButton = ({id, linkIds, style}: TProps) => {
 
       setIsReplyed(false);
     } finally {
+      changeModalVisible(false);
       setSubmitting(false);
     }
   };

@@ -1,13 +1,16 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   ActivityIndicator,
+  FlatList,
   StyleSheet,
   useWindowDimensions,
   View,
+  ViewabilityConfigCallbackPairs,
+  ViewToken,
 } from 'react-native';
-import AuthUserContext from '../../contexts/AuthUser';
 import {getMoments} from '../../functions/Moment';
 import {TDocData} from '../../types/Firebase';
+import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultText from '../defaults/DefaultText';
@@ -16,44 +19,44 @@ import MomentCard from './MomentCard';
 type TProps = {
   style: TStyleView;
   modalVisible: boolean;
+  changeModalVisible: (visible: boolean) => void;
 };
 
-const Moments = ({style, modalVisible}: TProps) => {
+const Moments = ({style, changeModalVisible}: TProps) => {
   const [data, setData] = useState<TDocData[]>([]);
 
-  const [status, setStatus] = useState<'loading' | 'loaded' | 'error'>(
-    'loading',
-  );
+  const [status, setStatus] = useState<TStatus>('loading');
 
-  const {authUserData} = useContext(AuthUserContext);
+  const {height} = useWindowDimensions();
   const [index, setIndex] = useState(0);
-  const [pagination, setPagination] = useState<{
-    isLast: boolean;
-    startAfterId?: string;
-  }>({
-    isLast: true,
-    startAfterId: undefined,
-  });
-  const {height, width} = useWindowDimensions();
+
+  const onViewableItemsChanged = ({
+    viewableItems,
+  }: {
+    viewableItems: ViewToken[];
+  }) => {
+    if (viewableItems && viewableItems.length > 0) {
+      setIndex(viewableItems[0].index ?? 0);
+    }
+  };
+
+  const viewabilityConfigCallbackPairs = useRef<ViewabilityConfigCallbackPairs>(
+    [
+      {
+        onViewableItemsChanged,
+        viewabilityConfig: {itemVisiblePercentThreshold: 100},
+      },
+    ],
+  );
 
   useEffect(() => {
     const load = async () => {
       try {
-        const {moments, pagination: newPagination} = await getMoments({
-          pagination: {
-            startAfterId: pagination?.startAfterId ?? undefined,
-          },
-        });
+        const {moments} = await getMoments({pagination: {number: 10}});
 
-        const filter = moments.filter(
-          ({linkTo: {number}}: {linkTo: {number: number}}) => number === 0,
-        );
+        setData(moments);
 
-        setData(filter);
         setStatus('loaded');
-        setPagination(newPagination);
-
-        setIndex(0);
       } catch (error) {
         DefaultAlert({
           title: 'Error',
@@ -67,16 +70,7 @@ const Moments = ({style, modalVisible}: TProps) => {
     if (status === 'loading') {
       load();
     }
-  }, [authUserData.id, pagination, status]);
-
-  const onNext = () => {
-    if (index === data.length - 1) {
-      setPagination({isLast: true, startAfterId: undefined});
-      return setStatus('loading');
-    }
-
-    setIndex(pre => pre + 1);
-  };
+  }, [status]);
 
   if (status === 'loading') {
     return <ActivityIndicator style={styles.noData} />;
@@ -97,16 +91,25 @@ const Moments = ({style, modalVisible}: TProps) => {
 
   return (
     <View style={style}>
-      {data[index] && (
-        <MomentCard
-          moment={data[index]}
-          style={styles.card}
-          momentStyle={{height, width}}
-          modalVisible={modalVisible}
-          onNext={onNext}
-          showNav={true}
-        />
-      )}
+      <FlatList
+        data={data}
+        initialNumToRender={1}
+        snapToInterval={height}
+        snapToAlignment={'start'}
+        decelerationRate="fast"
+        disableIntervalMomentum
+        viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+        renderItem={({item, index: elIndex}) => {
+          return (
+            <MomentCard
+              moment={item}
+              style={styles.card}
+              changeModalVisible={changeModalVisible}
+              inView={elIndex === index}
+            />
+          );
+        }}
+      />
     </View>
   );
 };

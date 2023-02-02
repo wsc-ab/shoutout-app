@@ -8,7 +8,7 @@ import DefaultIcon from '../defaults/DefaultIcon';
 type TProps = {
   collection: string;
   id: string;
-  onSuccess: () => void;
+  onSuccess?: () => void;
   style?: TStyleView;
 };
 
@@ -26,7 +26,7 @@ const ReportButton = ({id, collection, onSuccess, style}: TProps) => {
           title: 'Reported',
         });
 
-        onSuccess();
+        onSuccess && onSuccess();
       } catch (error) {
         if ((error as {message: string}).message === "target doesn't exist") {
           DefaultAlert({
