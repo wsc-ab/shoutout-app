@@ -2,6 +2,7 @@ import {firebase} from '@react-native-firebase/auth';
 import React, {useContext, useEffect, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
+import ModalContext from '../../contexts/Modal';
 import {addLink, createMoment} from '../../functions/Moment';
 import {TStyleView} from '../../types/Style';
 import {uploadVideo} from '../../utils/Moment';
@@ -14,18 +15,18 @@ type TProps = {
   id: string;
   linkIds: string[];
   style?: TStyleView;
-  changeModalVisible: (visible: boolean) => void;
 };
 
-const ReplyButton = ({id, linkIds, style, changeModalVisible}: TProps) => {
+const ReplyButton = ({id, linkIds, style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
+  const {onUpdate} = useContext(ModalContext);
   const [submitting, setSubmitting] = useState(false);
   const [progress, setProgress] = useState(0);
 
   const onReply = async () => {
     try {
       setSubmitting(true);
-      changeModalVisible(true);
+      onUpdate('reply');
 
       const {uploaded, asset} = await uploadVideo({
         authUserData,
@@ -59,7 +60,7 @@ const ReplyButton = ({id, linkIds, style, changeModalVisible}: TProps) => {
 
       setIsReplyed(false);
     } finally {
-      changeModalVisible(false);
+      onUpdate(undefined);
       setSubmitting(false);
     }
   };

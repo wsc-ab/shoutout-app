@@ -1,32 +1,30 @@
-import React, {useState} from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, View} from 'react-native';
+import ModalContext from '../../contexts/Modal';
 import {TStyleView} from '../../types/Style';
 import DefaultIcon from '../defaults/DefaultIcon';
 import UserModal from '../modals/AuthUserModal';
 
 type TProps = {
   style: TStyleView;
-  changeModalVisible: (visible: boolean) => void;
 };
 
-const UserButton = ({style, changeModalVisible}: TProps) => {
-  const [modal, setModal] = useState<'me'>();
+const UserButton = ({style}: TProps) => {
+  const {onUpdate, modal} = useContext(ModalContext);
 
   return (
     <View style={style}>
       <DefaultIcon
         icon="user"
         onPress={() => {
-          changeModalVisible(true);
-          setModal('me');
+          onUpdate('me');
         }}
         style={styles.icon}
       />
       {modal === 'me' && (
         <UserModal
           onCancel={() => {
-            changeModalVisible(false);
-            setModal(undefined);
+            onUpdate(undefined);
           }}
         />
       )}

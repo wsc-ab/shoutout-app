@@ -11,10 +11,9 @@ import MomentCard from '../screen/MomentCard';
 type TProps = {
   onCancel: () => void;
   id: string;
-  changeModalVisible: () => void;
 };
 
-const MomentModal = ({onCancel, changeModalVisible, id}: TProps) => {
+const MomentModal = ({onCancel, id}: TProps) => {
   const [submitting, setSubmitting] = useState(false);
   const {authUserData} = useContext(AuthUserContext);
 
@@ -64,7 +63,7 @@ const MomentModal = ({onCancel, changeModalVisible, id}: TProps) => {
           <View style={styles.left}>
             <DefaultIcon icon="angle-left" onPress={onCancel} />
           </View>
-          {!isContributedByUser && (
+          {isContributedByUser && (
             <View style={styles.right}>
               {!submitting && <DefaultIcon icon="times" onPress={onDelete} />}
               {submitting && <ActivityIndicator style={styles.act} />}
@@ -73,12 +72,7 @@ const MomentModal = ({onCancel, changeModalVisible, id}: TProps) => {
         </View>
       )}
       {data && (
-        <MomentCard
-          moment={data}
-          style={styles.moment}
-          inView={false}
-          changeModalVisible={changeModalVisible}
-        />
+        <MomentCard moment={data} style={styles.moment} inView={false} />
       )}
     </DefaultModal>
   );

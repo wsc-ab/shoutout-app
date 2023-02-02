@@ -2,6 +2,7 @@ import {firebase} from '@react-native-firebase/auth';
 import React, {useContext, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
+import ModalContext from '../../contexts/Modal';
 import {createMoment} from '../../functions/Moment';
 import {TStyleView} from '../../types/Style';
 import {uploadVideo} from '../../utils/Moment';
@@ -13,6 +14,7 @@ type TProps = {style: TStyleView};
 
 const CreateButton = ({style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
+  const {onUpdate} = useContext(ModalContext);
 
   const [submitting, setSubmitting] = useState(false);
 
@@ -21,6 +23,7 @@ const CreateButton = ({style}: TProps) => {
   const onAdd = async () => {
     try {
       setSubmitting(true);
+      onUpdate('create');
 
       const {uploaded, asset} = await uploadVideo({
         authUserData,
@@ -48,6 +51,7 @@ const CreateButton = ({style}: TProps) => {
       });
     } finally {
       setSubmitting(false);
+      onUpdate(undefined);
     }
   };
 

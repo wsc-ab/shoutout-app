@@ -23,10 +23,9 @@ import MomentModal from './MomentModal';
 type TProps = {
   id: string;
   onCancel: () => void;
-  changeModalVisible: () => void;
 };
 
-const UserModal = ({id, onCancel, changeModalVisible}: TProps) => {
+const UserModal = ({id, onCancel}: TProps) => {
   const [data, setData] = useState<TObject>();
   const [status, setStatus] = useState<TStatus>('loading');
 
@@ -63,6 +62,7 @@ const UserModal = ({id, onCancel, changeModalVisible}: TProps) => {
   }, [id, status]);
 
   const [modal, setModal] = useState<'moment'>();
+
   const [momentId, setMomentId] = useState<'string'>();
 
   const {width} = useWindowDimensions();
@@ -121,11 +121,7 @@ const UserModal = ({id, onCancel, changeModalVisible}: TProps) => {
         </DefaultForm>
       )}
       {modal === 'moment' && data && momentId && (
-        <MomentModal
-          onCancel={() => setModal(undefined)}
-          id={momentId}
-          changeModalVisible={changeModalVisible}
-        />
+        <MomentModal onCancel={() => setModal(undefined)} id={momentId} />
       )}
     </DefaultModal>
   );

@@ -18,11 +18,9 @@ import MomentCard from './MomentCard';
 
 type TProps = {
   style: TStyleView;
-  modalVisible: boolean;
-  changeModalVisible: (visible: boolean) => void;
 };
 
-const Moments = ({style, changeModalVisible}: TProps) => {
+const Moments = ({style}: TProps) => {
   const [data, setData] = useState<TDocData[]>([]);
 
   const [status, setStatus] = useState<TStatus>('loading');
@@ -104,7 +102,6 @@ const Moments = ({style, changeModalVisible}: TProps) => {
             <MomentCard
               moment={item}
               style={styles.card}
-              changeModalVisible={changeModalVisible}
               inView={elIndex === index}
             />
           );

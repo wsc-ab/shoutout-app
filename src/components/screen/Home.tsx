@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, View} from 'react-native';
 import Moments from './Moments';
 
@@ -8,9 +8,6 @@ import Welcome from './Welcome';
 
 const Home = () => {
   const {authUserData, loaded} = useContext(AuthUserContext);
-  const [modalVisible, setModalVisible] = useState(false);
-
-  const changeModalVisible = (visible: boolean) => setModalVisible(visible);
 
   if (!loaded) {
     return null;
@@ -22,12 +19,8 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
-      <Header changeModalVisible={changeModalVisible} />
-      <Moments
-        style={styles.moments}
-        modalVisible={modalVisible}
-        changeModalVisible={changeModalVisible}
-      />
+      <Header />
+      <Moments style={styles.moments} />
     </View>
   );
 };

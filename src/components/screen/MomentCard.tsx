@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {
   FlatList,
+  Pressable,
   StyleSheet,
   useWindowDimensions,
   View,
@@ -18,19 +19,20 @@ import ReplyButton from '../buttons/ReplyButton';
 import ReportButton from '../buttons/ReportButton';
 import DefaultText from '../defaults/DefaultText';
 import DefaultVideo from '../defaults/DefaultVideo';
+import UserModal from '../modals/UserModal';
 
 type TProps = {
   moment: TDocData;
   style?: TStyleView;
   inView: boolean;
-  changeModalVisible: (visible: boolean) => void;
 };
 
-const MomentCard = ({moment, style, inView, changeModalVisible}: TProps) => {
+const MomentCard = ({moment, style, inView}: TProps) => {
   const [data, setData] = useState<TDocData[]>([]);
   const {height, width} = useWindowDimensions();
 
   const [status, setStatus] = useState<TStatus>('loading');
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [index, setIndex] = useState(0);
 
   const onViewableItemsChanged = ({
@@ -93,16 +95,15 @@ const MomentCard = ({moment, style, inView, changeModalVisible}: TProps) => {
                 play={elIndex === index && inView}
               />
               <View style={styles.nav}>
-                <View>
+                <Pressable onPress={() => setModalVisible(pre => !pre)}>
                   <DefaultText title={item.contributeFrom?.items[0].name} />
                   <DefaultText title={getTimeSinceTimestamp(item.createdAt)} />
-                </View>
+                </Pressable>
                 <View style={styles.buttons}>
                   <ReplyButton
                     linkIds={data.map(({id}) => id)}
                     id={item.id}
                     style={styles.button}
-                    changeModalVisible={changeModalVisible}
                   />
                   <LikeButton
                     id={item.id}
@@ -116,6 +117,12 @@ const MomentCard = ({moment, style, inView, changeModalVisible}: TProps) => {
                   />
                 </View>
               </View>
+              {modalVisible && (
+                <UserModal
+                  id={item.contributeFrom?.items[0].id}
+                  onCancel={() => setModalVisible(false)}
+                />
+              )}
             </View>
           );
         }}

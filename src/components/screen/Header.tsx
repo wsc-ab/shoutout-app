@@ -3,17 +3,12 @@ import {StyleSheet, View} from 'react-native';
 import CreateButton from '../buttons/CreateButton';
 import UserButton from '../buttons/UserButton';
 
-type TProps = {
-  changeModalVisible: (visible: boolean) => void;
-};
+type TProps = {};
 
-const Header = ({changeModalVisible}: TProps) => {
+const Header = ({}: TProps) => {
   return (
     <View style={styles.container}>
-      <UserButton
-        style={styles.button}
-        changeModalVisible={changeModalVisible}
-      />
+      <UserButton style={styles.button} />
       <CreateButton style={styles.button} />
     </View>
   );
