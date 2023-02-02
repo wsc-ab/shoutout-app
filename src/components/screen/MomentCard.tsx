@@ -1,7 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {
   FlatList,
-  Pressable,
   StyleSheet,
   useWindowDimensions,
   View,
@@ -13,13 +12,12 @@ import {getMoment} from '../../functions/Moment';
 import {TDocData} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
-import {getTimeSinceTimestamp} from '../../utils/Date';
+import CreatorButton from '../buttons/CreatorButton';
 import LikeButton from '../buttons/LikeButton';
 import ReplyButton from '../buttons/ReplyButton';
 import ReportButton from '../buttons/ReportButton';
 import DefaultText from '../defaults/DefaultText';
 import DefaultVideo from '../defaults/DefaultVideo';
-import UserModal from '../modals/UserModal';
 
 type TProps = {
   moment: TDocData;
@@ -32,7 +30,6 @@ const MomentCard = ({moment, style, inView}: TProps) => {
   const {height, width} = useWindowDimensions();
 
   const [status, setStatus] = useState<TStatus>('loading');
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [index, setIndex] = useState(0);
 
   const onViewableItemsChanged = ({
@@ -81,7 +78,6 @@ const MomentCard = ({moment, style, inView}: TProps) => {
         disableIntervalMomentum
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         renderItem={({item, index: elIndex}) => {
-          console.log(item.location);
           return (
             <View>
               <View style={styles.top}>
@@ -97,13 +93,7 @@ const MomentCard = ({moment, style, inView}: TProps) => {
                 repeat
               />
               <View style={styles.nav}>
-                <Pressable onPress={() => setModalVisible(pre => !pre)}>
-                  <DefaultText title={item.contributeFrom?.items[0].name} />
-                  {item.location?.name && (
-                    <DefaultText title={item.location.name} />
-                  )}
-                  <DefaultText title={getTimeSinceTimestamp(item.createdAt)} />
-                </Pressable>
+                <CreatorButton moment={item} />
                 <View style={styles.buttons}>
                   <ReplyButton
                     linkIds={data.map(({id}) => id)}
@@ -122,12 +112,6 @@ const MomentCard = ({moment, style, inView}: TProps) => {
                   />
                 </View>
               </View>
-              {modalVisible && (
-                <UserModal
-                  id={item.contributeFrom?.items[0].id}
-                  onCancel={() => setModalVisible(false)}
-                />
-              )}
             </View>
           );
         }}
