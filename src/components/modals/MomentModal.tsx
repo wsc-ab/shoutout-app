@@ -71,9 +71,7 @@ const MomentModal = ({onCancel, id}: TProps) => {
           )}
         </View>
       )}
-      {data && (
-        <MomentCard moment={data} style={styles.moment} inView={false} />
-      )}
+      {data && <MomentCard moment={data} style={styles.moment} inView={true} />}
     </DefaultModal>
   );
 };

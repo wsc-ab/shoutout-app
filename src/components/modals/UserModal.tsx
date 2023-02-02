@@ -84,12 +84,12 @@ const UserModal = ({id, onCancel}: TProps) => {
                 <View style={styles.moments}>
                   {item.map(moment => (
                     <Pressable
+                      key={moment.id}
                       onPress={() => {
                         setMomentId(moment.id);
                         setModal('moment');
                       }}>
                       <DefaultVideo
-                        key={moment.id}
                         path={moment.path}
                         style={[
                           {height: (videoWidth * 4) / 3, width: videoWidth},

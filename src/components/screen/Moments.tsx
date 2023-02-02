@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -8,6 +8,7 @@ import {
   ViewabilityConfigCallbackPairs,
   ViewToken,
 } from 'react-native';
+import ModalContext from '../../contexts/Modal';
 import {getMoments} from '../../functions/Moment';
 import {TDocData} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
@@ -24,7 +25,7 @@ const Moments = ({style}: TProps) => {
   const [data, setData] = useState<TDocData[]>([]);
 
   const [status, setStatus] = useState<TStatus>('loading');
-
+  const {modal} = useContext(ModalContext);
   const {height} = useWindowDimensions();
   const [index, setIndex] = useState(0);
 
@@ -102,7 +103,7 @@ const Moments = ({style}: TProps) => {
             <MomentCard
               moment={item}
               style={styles.card}
-              inView={elIndex === index}
+              inView={modal ? false : elIndex === index}
             />
           );
         }}

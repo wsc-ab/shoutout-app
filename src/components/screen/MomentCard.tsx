@@ -81,6 +81,7 @@ const MomentCard = ({moment, style, inView}: TProps) => {
         disableIntervalMomentum
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         renderItem={({item, index: elIndex}) => {
+          console.log(item.location);
           return (
             <View>
               <View style={styles.top}>
@@ -91,14 +92,14 @@ const MomentCard = ({moment, style, inView}: TProps) => {
               </View>
               <DefaultVideo
                 path={item.path}
-                style={[styles.video, {height, width}]}
+                style={[{height, width}]}
                 play={elIndex === index && inView}
                 repeat
               />
               <View style={styles.nav}>
                 <Pressable onPress={() => setModalVisible(pre => !pre)}>
                   <DefaultText title={item.contributeFrom?.items[0].name} />
-                  {item.location.name && (
+                  {item.location?.name && (
                     <DefaultText title={item.location.name} />
                   )}
                   <DefaultText title={getTimeSinceTimestamp(item.createdAt)} />
@@ -159,7 +160,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
   },
-  video: {borderRadius: 10},
   buttons: {
     flexDirection: 'row',
     alignItems: 'center',
