@@ -31,7 +31,7 @@ export const createStoragePath = (id: string, type: 'image' | 'video') => {
     today.getMilliseconds();
   const dateTime = date + '_' + time;
 
-  const folder = type;
+  const folder = `${type}s`;
 
   const fileName = dateTime + '_' + createMockId();
   const filePath = id + '/' + folder + '/' + fileName;
