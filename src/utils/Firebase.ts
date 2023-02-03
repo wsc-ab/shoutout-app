@@ -26,3 +26,4 @@ export const initFirebase = () => {
 
   firebaseFunctions = firebase.app().functions(region);
 };
+

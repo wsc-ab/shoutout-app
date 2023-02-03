@@ -97,12 +97,11 @@ const UserModal = ({id, onCancel}: TProps) => {
                 path: string;
                 addedAt: TTimestamp;
                 location?: TLocation;
-                user: {id: string};
               };
             }) => {
               return (
                 <ContentCard
-                  content={item}
+                  content={{...item, user: {id}}}
                   onDelete={() => setStatus('loading')}
                   contentStyle={{
                     width: videoWidth,

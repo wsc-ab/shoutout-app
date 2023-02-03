@@ -85,3 +85,13 @@ export const uploadFile = async ({
     throw new Error('upload file failed');
   }
 };
+
+export const getThumbnailPath = (path: string, type: 'video' | 'image') => {
+  switch (type) {
+    case 'video':
+      return `${path}_thumb`;
+
+    case 'image':
+      return `${path}_200x200`;
+  }
+};

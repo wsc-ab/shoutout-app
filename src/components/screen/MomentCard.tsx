@@ -134,7 +134,7 @@ const MomentCard = ({moment, style, inView}: TProps) => {
 
               <DefaultVideo
                 path={item.path}
-                style={[{height, width}]}
+                videoStyle={{height, width}}
                 play={elIndex === index && inView}
                 repeat
               />

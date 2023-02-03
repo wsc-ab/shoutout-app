@@ -62,7 +62,7 @@ const CreateButton = ({style}: TProps) => {
     <View style={style}>
       {!submitting && (
         <DefaultIcon
-          icon="video"
+          icon="plus"
           onPress={onAdd}
           style={styles.icon}
           size={20}

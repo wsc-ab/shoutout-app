@@ -4,21 +4,17 @@ import {
   faAngleLeft,
   faAngleRight,
   faCheck,
-  faCommentDollar,
   faFlag,
   faHeart,
-  faImage,
   faPlus,
+  faReplyAll,
   faShare,
-  faSquarePlus,
   faTimes,
   faUser,
-  faVideo,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
   faUser,
-  faSquarePlus,
   faShare,
   faFlag,
   faAngleLeft,
@@ -26,9 +22,7 @@ library.add(
   faTimes,
   faCheck,
   faHeart,
-  faImage,
-  faVideo,
+  faReplyAll,
   faPlus,
   faCheck,
-  faCommentDollar,
 );

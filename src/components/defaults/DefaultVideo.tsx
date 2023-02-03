@@ -1,13 +1,16 @@
 import storage from '@react-native-firebase/storage';
 import React, {useEffect, useState} from 'react';
-import {Pressable, StyleSheet, View} from 'react-native';
+import {Pressable} from 'react-native';
 import Video from 'react-native-video';
 
 import {TStyleView} from '../../types/Style';
+import {getThumbnailPath} from '../../utils/Storage';
+import DefaultImage from './DefaultImage';
 
 type TProps = {
   path: string;
   style?: TStyleView;
+  videoStyle: {width: number; height: number};
   play?: boolean;
   onLoaded?: () => void;
   onEnd?: () => void;
@@ -26,8 +29,10 @@ const DefaultVideo = React.memo(
     style,
     disabled,
     onLoaded,
+    videoStyle,
   }: TProps) => {
     const [uri, setUri] = useState<string>();
+    const [thumbnailUri, setThumbnailUri] = useState<string>();
     const [loading, setLoading] = useState(true);
     const [paused, setPaused] = useState(true);
 
@@ -37,10 +42,15 @@ const DefaultVideo = React.memo(
 
     useEffect(() => {
       const load = async () => {
-        const storageRef = storage().ref(path);
-        const downloadUrl = await storageRef.getDownloadURL();
+        const thumbRef = storage().ref(getThumbnailPath(path, 'video'));
 
-        setUri(downloadUrl);
+        const thumbUrl = await thumbRef.getDownloadURL();
+
+        setThumbnailUri(thumbUrl);
+
+        const videoRef = storage().ref(path);
+        const videoUrl = await videoRef.getDownloadURL();
+        setUri(videoUrl);
       };
 
       load();
@@ -55,10 +65,12 @@ const DefaultVideo = React.memo(
         style={style}
         disabled={disabled}
         onPress={onPress ? onPress : () => setPaused(pre => !pre)}>
-        {loading && <View style={[styles.empty, style]} />}
+        {thumbnailUri && loading && (
+          <DefaultImage image={thumbnailUri} imageStyle={videoStyle} />
+        )}
         <Video
           source={{uri}}
-          style={style}
+          style={videoStyle}
           resizeMode="cover"
           paused={paused}
           onLoad={() => {
@@ -74,5 +86,3 @@ const DefaultVideo = React.memo(
 );
 
 export default DefaultVideo;
-
-const styles = StyleSheet.create({empty: {backgroundColor: 'gray'}});

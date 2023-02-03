@@ -1,15 +1,15 @@
 import React, {useContext} from 'react';
-import {Pressable, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 
 import {TLocation, TTimestamp} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
 import {getTimeSinceTimestamp} from '../../utils/Date';
+import {getThumbnailPath} from '../../utils/Storage';
 import DeleteButton from '../buttons/DeleteButton';
 import LocationButton from '../buttons/LocationButton';
-import {defaultBlack} from '../defaults/DefaultColors';
+import DefaultImage from '../defaults/DefaultImage';
 import DefaultText from '../defaults/DefaultText';
-import DefaultVideo from '../defaults/DefaultVideo';
 
 type TProps = {
   content: {
@@ -36,26 +36,18 @@ const ContentCard = ({
 
   return (
     <View style={[styles.container, style]}>
-      <Pressable
-        key={content.path}
-        style={{
-          height: contentStyle.height,
-          width: contentStyle.width,
-          backgroundColor: defaultBlack.lv3,
-        }}
-        disabled={!onPress}
-        onPress={onPress}>
-        <DefaultVideo
-          path={content.path}
-          style={contentStyle}
-          disabled={true}
-          play={false}
-        />
-      </Pressable>
+      <DefaultImage
+        onPress={onPress}
+        image={getThumbnailPath(content.path, 'video')}
+        imageStyle={contentStyle}
+      />
       <View style={styles.text}>
         <View>
           <LocationButton location={content.location} />
-          <DefaultText title={getTimeSinceTimestamp(content.addedAt)} />
+          <DefaultText
+            title={getTimeSinceTimestamp(content.addedAt)}
+            style={style}
+          />
         </View>
         {content.user.id === authUserData.id && (
           <DeleteButton

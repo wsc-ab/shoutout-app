@@ -1,8 +1,14 @@
 import storage from '@react-native-firebase/storage';
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, Image, StyleSheet, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Image,
+  Pressable,
+  StyleSheet,
+  View,
+} from 'react-native';
 import {TStatus} from '../../types/Screen';
-import {TStyleImage} from '../../types/Style';
+import {TStyleImage, TStyleView} from '../../types/Style';
 
 import DefaultText from './DefaultText';
 
@@ -11,51 +17,28 @@ export const getThumnailPath = (url: string) => url + '_200x200';
 export type Props = {
   image?: string;
   type?: string;
-  style?: TStyleImage;
+  style?: TStyleView;
+  imageStyle: {height: number; width: number};
+  showThumbnail?: boolean;
   onLoaded?: () => void;
+  onPress?: () => void;
 };
 
-const DefaultImage = ({image, type, style, onLoaded}: Props) => {
+const DefaultImage = ({
+  image,
+  style,
+  showThumbnail,
+  imageStyle,
+  onLoaded,
+  onPress,
+}: Props) => {
   let design: TStyleImage = {
     overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
     resizeMode: 'cover',
+    ...imageStyle,
   };
-
-  let showThumbnail = false;
-
-  if (type) {
-    switch (type) {
-      case 'extraSmall':
-        design.width = 25;
-        design.height = 25;
-        showThumbnail = true;
-        break;
-
-      case 'small':
-        design.width = 50;
-        design.height = 50;
-        showThumbnail = true;
-        break;
-
-      case 'medium':
-        design.width = 70;
-        design.height = 70;
-        showThumbnail = true;
-        break;
-
-      case 'large':
-        design.width = 150;
-        design.height = 150;
-        break;
-
-      case 'extraLarge':
-        design.width = 300;
-        design.height = 300;
-        break;
-    }
-  }
 
   const styles = StyleSheet.create({
     image: design,
@@ -111,11 +94,13 @@ const DefaultImage = ({image, type, style, onLoaded}: Props) => {
     };
   }, [image, showThumbnail]);
 
+  console.log(imageUrl);
+
   return (
-    <>
+    <Pressable style={style} onPress={onPress} disabled={!onPress}>
       {status === 'loaded' && image && (
         <Image
-          style={[styles.image, style]}
+          style={styles.image}
           source={{
             uri: imageUrl,
             cache: 'force-cache',
@@ -139,7 +124,7 @@ const DefaultImage = ({image, type, style, onLoaded}: Props) => {
           <DefaultText title="Error" />
         </View>
       )}
-    </>
+    </Pressable>
   );
 };
 

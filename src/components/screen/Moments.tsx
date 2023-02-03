@@ -51,6 +51,9 @@ const Moments = ({style}: TProps) => {
   useEffect(() => {
     const load = async () => {
       try {
+        if (status === 'loading') {
+          setData([]);
+        }
         const {moments} = await getMoments({pagination: {number: 10}});
 
         setData(pre => {
@@ -116,6 +119,7 @@ const Moments = ({style}: TProps) => {
             refreshing={status === 'loading'}
             onRefresh={() => setStatus('loading')}
             tintColor={'gray'}
+            progressViewOffset={40}
           />
         }
         disableIntervalMomentum
