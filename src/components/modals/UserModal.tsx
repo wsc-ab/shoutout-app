@@ -1,25 +1,21 @@
 import firebase from '@react-native-firebase/app';
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   FlatList,
-  Pressable,
+  RefreshControl,
   StyleSheet,
   useWindowDimensions,
   View,
 } from 'react-native';
-import AuthUserContext from '../../contexts/AuthUser';
 
 import {TLocation, TObject, TTimestamp} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
-import {getTimeSinceTimestamp} from '../../utils/Date';
-import DeleteButton from '../buttons/DeleteButton';
 import DefaultAlert from '../defaults/DefaultAlert';
-import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
-import DefaultVideo from '../defaults/DefaultVideo';
+import ContentCard from '../screen/ContentCard';
 
 type TProps = {
   id: string;
@@ -29,7 +25,6 @@ type TProps = {
 const UserModal = ({id, onCancel}: TProps) => {
   const [data, setData] = useState<TObject>();
   const [status, setStatus] = useState<TStatus>('loading');
-  const {authUserData} = useContext(AuthUserContext);
 
   useEffect(() => {
     let isMounted = true;
@@ -65,6 +60,7 @@ const UserModal = ({id, onCancel}: TProps) => {
 
   const {width} = useWindowDimensions();
   const videoWidth = (width - 20) / 3;
+  const videoHeight = (videoWidth * 4) / 3;
 
   if (!data) {
     return null;
@@ -86,6 +82,13 @@ const UserModal = ({id, onCancel}: TProps) => {
             ListEmptyComponent={<DefaultText title="No moments found" />}
             contentContainerStyle={styles.container}
             keyExtractor={(item, index) => item.id + index}
+            refreshControl={
+              <RefreshControl
+                refreshing={status === 'loading'}
+                onRefresh={() => setStatus('loading')}
+                tintColor={'gray'}
+              />
+            }
             renderItem={({
               item,
             }: {
@@ -98,49 +101,14 @@ const UserModal = ({id, onCancel}: TProps) => {
               };
             }) => {
               return (
-                <View style={{flexDirection: 'row'}}>
-                  <Pressable
-                    key={item.path}
-                    style={{
-                      height: (videoWidth * 4) / 3,
-                      width: videoWidth,
-                      backgroundColor: defaultBlack.lv3,
-                    }}
-                    disabled={true}>
-                    <DefaultVideo
-                      path={item.path}
-                      style={[
-                        {height: (videoWidth * 4) / 3, width: videoWidth},
-                      ]}
-                      disabled={true}
-                      play={false}
-                    />
-                  </Pressable>
-                  <View
-                    style={{
-                      marginLeft: 10,
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      flex: 1,
-                    }}>
-                    <View>
-                      {item.location && (
-                        <DefaultText title={item.location.name} />
-                      )}
-                      <DefaultText
-                        title={getTimeSinceTimestamp(item.addedAt)}
-                      />
-                      <DefaultText title="" />
-                    </View>
-                    {item.user.id === authUserData.id && (
-                      <DeleteButton
-                        item={item}
-                        style={styles.delete}
-                        onSuccess={() => setStatus('loading')}
-                      />
-                    )}
-                  </View>
-                </View>
+                <ContentCard
+                  content={item}
+                  onDelete={() => setStatus('loading')}
+                  contentStyle={{
+                    width: videoWidth,
+                    height: videoHeight,
+                  }}
+                />
               );
             }}
             ItemSeparatorComponent={() => <View style={styles.seperator} />}
@@ -159,5 +127,4 @@ const styles = StyleSheet.create({
   seperator: {
     marginBottom: 20,
   },
-  delete: {paddingTop: 0},
 });

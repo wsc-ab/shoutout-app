@@ -55,7 +55,7 @@ const ContributorsButton = ({users, onPress, index, style}: TProps) => {
               user={{
                 id: item.id,
               }}
-              style={{marginLeft: 10}}
+              style={styles.follow}
             />
           </Pressable>
         );
@@ -91,4 +91,5 @@ const styles = StyleSheet.create({
   },
   current: {backgroundColor: defaultBlack.lv2},
   nameText: {fontWeight: 'bold'},
+  follow: {marginLeft: 10},
 });

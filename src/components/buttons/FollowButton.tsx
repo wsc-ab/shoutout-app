@@ -65,7 +65,7 @@ const FollowButton = ({user, style}: TProps) => {
         <DefaultIcon
           icon={followed ? 'check' : 'plus'}
           onPress={followed ? onUnfollow : onFollow}
-          style={{padding: 0}}
+          style={styles.icon}
         />
       )}
     </View>
@@ -80,4 +80,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  icon: {padding: 0},
 });
