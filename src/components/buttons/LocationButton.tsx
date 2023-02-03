@@ -14,7 +14,7 @@ const AddressButtion = ({location, style}: TProps) => {
   const country = getCountry(location);
   return (
     <View style={style}>
-      <DefaultText title={`${name} ${country}`} />
+      <DefaultText title={`${name}, ${country}`} />
     </View>
   );
 };
@@ -22,8 +22,9 @@ const AddressButtion = ({location, style}: TProps) => {
 export default AddressButtion;
 
 const getCity = (location: TLocation) => {
-  const types: string[] = ['policital', 'locality'];
-  const city = location.address_components?.filter(item =>
+  const types: string[] = ['political', 'locality'];
+
+  const city = location.address?.filter(item =>
     item.types.some(type => types.includes(type)),
   )[0].long_name;
 
@@ -32,7 +33,7 @@ const getCity = (location: TLocation) => {
 
 const getCountry = (location: TLocation) => {
   const types: string[] = ['country'];
-  const country = location.address_components?.filter(item =>
+  const country = location.address?.filter(item =>
     item.types.some(type => types.includes(type)),
   )[0].long_name;
 

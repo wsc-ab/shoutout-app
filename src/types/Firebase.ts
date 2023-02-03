@@ -12,7 +12,7 @@ export type TTimestamp = {seconds: number; nanoseconds: number};
 export type TLocation = {
   lat: number;
   lng: number;
-  address_components?: AddressComponent[];
+  address?: AddressComponent[];
 };
 
 export type AddressComponent = {
