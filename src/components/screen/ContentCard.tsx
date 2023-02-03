@@ -6,6 +6,7 @@ import {TLocation, TTimestamp} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
 import {getTimeSinceTimestamp} from '../../utils/Date';
 import DeleteButton from '../buttons/DeleteButton';
+import LocationButton from '../buttons/LocationButton';
 import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultText from '../defaults/DefaultText';
 import DefaultVideo from '../defaults/DefaultVideo';
@@ -53,7 +54,7 @@ const ContentCard = ({
       </Pressable>
       <View style={styles.text}>
         <View>
-          {content.location && <DefaultText title={content.location.name} />}
+          <LocationButton location={content.location} />
           <DefaultText title={getTimeSinceTimestamp(content.addedAt)} />
         </View>
         {content.user.id === authUserData.id && (

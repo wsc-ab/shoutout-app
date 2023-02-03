@@ -1,6 +1,6 @@
 import messaging from '@react-native-firebase/messaging';
 import React, {useContext, useEffect, useState} from 'react';
-import {LogBox} from 'react-native';
+
 import AuthUserContext from '../../contexts/AuthUser';
 import {signIn} from '../../functions/User';
 

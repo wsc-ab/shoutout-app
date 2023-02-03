@@ -5,7 +5,6 @@ import {addFollow, removeFollow} from '../../functions/Moment';
 import {TStyleView} from '../../types/Style';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultIcon from '../defaults/DefaultIcon';
-import DefaultText from '../defaults/DefaultText';
 
 type TProps = {
   user: {
@@ -57,7 +56,9 @@ const FollowButton = ({user, style}: TProps) => {
 
   return (
     <View style={[styles.container, style]}>
-      {user.id === authUserData.id && <DefaultText title="Me" />}
+      {user.id === authUserData.id && (
+        <DefaultIcon icon={'check'} style={styles.icon} />
+      )}
       {user.id !== authUserData.id && (
         <DefaultIcon
           icon={followed ? 'check' : 'plus'}

@@ -9,4 +9,14 @@ export type TDocSnapshot = FirebaseFirestoreTypes.DocumentSnapshot;
 
 export type TTimestampClient = {_seconds: number; _nanoseconds: number};
 export type TTimestamp = {seconds: number; nanoseconds: number};
-export type TLocation = {lat: number; lng: number; name: string};
+export type TLocation = {
+  lat: number;
+  lng: number;
+  address_components?: AddressComponent[];
+};
+
+export type AddressComponent = {
+  types: string[];
+  long_name: string;
+  short_name: string;
+};

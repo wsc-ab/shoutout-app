@@ -6,6 +6,7 @@ import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
 import FollowButton from './FollowButton';
+import LocationButton from './LocationButton';
 
 type TProps = {
   users: {
@@ -49,7 +50,7 @@ const ContributorsButton = ({users, onPress, index, style}: TProps) => {
             <View>
               <DefaultText title={item.name} textStyle={styles.nameText} />
               <DefaultText title={getTimeSinceTimestamp(item.addedAt)} />
-              {item.location && <DefaultText title={item.location.name} />}
+              <LocationButton location={item.location} />
             </View>
             <FollowButton
               user={{

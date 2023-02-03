@@ -5,6 +5,7 @@ import {getTimeSinceTimestamp} from '../../utils/Date';
 import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
+import LocationButton from './LocationButton';
 
 type TProps = {
   item: {
@@ -24,7 +25,7 @@ const ContributorButton = ({item, style}: TProps) => {
         <DefaultIcon icon="user" style={styles.icon} />
         <View>
           <DefaultText title={item.user.name} textStyle={styles.nameText} />
-          {item.location?.name && <DefaultText title={item.location.name} />}
+          <LocationButton location={item.location} />
           <DefaultText title={getTimeSinceTimestamp(item.addedAt)} />
         </View>
       </View>
