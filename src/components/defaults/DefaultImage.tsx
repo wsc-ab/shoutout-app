@@ -94,8 +94,6 @@ const DefaultImage = ({
     };
   }, [image, showThumbnail]);
 
-  console.log(imageUrl);
-
   return (
     <Pressable style={style} onPress={onPress} disabled={!onPress}>
       {status === 'loaded' && image && (
