@@ -93,7 +93,6 @@ const MomentCard = ({moment, style, inView}: TProps) => {
   );
 
   const onContributor = (newIndex: number) => {
-    console.log('new', newIndex);
     ref.current?.scrollToIndex({index: newIndex, animated: true});
   };
 
@@ -151,6 +150,7 @@ const MomentCard = ({moment, style, inView}: TProps) => {
                     style={styles.button}
                   />
                   <AddButton id={item.id} style={styles.button} />
+
                   <ReportButton
                     moment={{
                       id: item.id,

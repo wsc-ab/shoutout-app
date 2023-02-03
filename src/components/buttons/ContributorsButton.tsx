@@ -1,5 +1,12 @@
 import React, {useEffect, useRef} from 'react';
-import {FlatList, Pressable, StyleSheet, View, ViewStyle} from 'react-native';
+import {
+  FlatList,
+  Pressable,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+  ViewStyle,
+} from 'react-native';
 import {TTimestamp} from '../../types/Firebase';
 import {getTimeSinceTimestamp} from '../../utils/Date';
 import {defaultBlack} from '../defaults/DefaultColors';
@@ -22,6 +29,8 @@ type TProps = {
 };
 
 const ContributorsButton = ({users, onPress, index, style}: TProps) => {
+  const {width} = useWindowDimensions();
+
   const ref = useRef<FlatList>(null);
 
   useEffect(() => {
@@ -42,7 +51,11 @@ const ContributorsButton = ({users, onPress, index, style}: TProps) => {
         return (
           <Pressable
             onPress={() => onPress(elIndex)}
-            style={[styles.container, isCurrent && styles.current]}
+            style={[
+              styles.container,
+              {width: (width - 20) / 2},
+              isCurrent && styles.current,
+            ]}
             key={item.id + elIndex}>
             <View>
               <DefaultIcon icon="user" style={styles.icon} />
@@ -79,6 +92,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
+
     flex: 1,
   },
   contentContainer: {paddingHorizontal: 10},

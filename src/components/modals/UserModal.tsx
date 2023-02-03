@@ -59,7 +59,7 @@ const UserModal = ({id, onCancel}: TProps) => {
   }, [id, status]);
 
   const {width} = useWindowDimensions();
-  const videoWidth = (width - 20) / 3;
+  const videoWidth = (width - 10) / 3;
   const videoHeight = (videoWidth * 4) / 3;
 
   if (!data) {
