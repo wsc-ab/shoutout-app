@@ -5,6 +5,7 @@ import {getTimeSinceTimestamp} from '../../utils/Date';
 import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
+import FollowButton from './FollowButton';
 
 type TProps = {
   users: {
@@ -42,12 +43,20 @@ const ContributorsButton = ({users, onPress, index, style}: TProps) => {
             onPress={() => onPress(elIndex)}
             style={[styles.container, isCurrent && styles.current]}
             key={item.id + elIndex}>
-            <DefaultIcon icon="user" style={styles.icon} />
+            <View>
+              <DefaultIcon icon="user" style={styles.icon} />
+            </View>
             <View>
               <DefaultText title={item.name} textStyle={styles.nameText} />
               <DefaultText title={getTimeSinceTimestamp(item.addedAt)} />
               {item.location && <DefaultText title={item.location.name} />}
             </View>
+            <FollowButton
+              user={{
+                id: item.id,
+              }}
+              style={{marginLeft: 10}}
+            />
           </Pressable>
         );
       }}
@@ -61,13 +70,14 @@ export default ContributorsButton;
 
 const styles = StyleSheet.create({
   container: {
-    width: 150,
     marginTop: 5,
     marginRight: 10,
     padding: 10,
     backgroundColor: defaultBlack.lv5,
     borderRadius: 10,
     flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
   },
   contentContainer: {paddingHorizontal: 10},
   icon: {

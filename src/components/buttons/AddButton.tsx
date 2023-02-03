@@ -39,7 +39,7 @@ const AddButton = ({id, style}: TProps) => {
         return;
       }
 
-      setIsAdded(true);
+      setAdded(true);
       await addMoment({
         moment: {id, path: uploaded, location},
       });
@@ -49,17 +49,17 @@ const AddButton = ({id, style}: TProps) => {
         message: (error as {message: string}).message,
       });
 
-      setIsAdded(false);
+      setAdded(false);
     } finally {
       onUpdate(undefined);
       setSubmitting(false);
     }
   };
 
-  const [isAdded, setIsAdded] = useState(false);
+  const [added, setAdded] = useState(false);
 
   useEffect(() => {
-    setIsAdded(authUserData.contributeTo.ids.includes(id));
+    setAdded(authUserData.contributeTo.ids.includes(id));
   }, [authUserData.contributeTo.ids, id]);
 
   return (
@@ -69,7 +69,7 @@ const AddButton = ({id, style}: TProps) => {
           icon="plus-square"
           onPress={onAdd}
           size={25}
-          color={isAdded ? defaultRed.lv1 : 'white'}
+          color={added ? defaultRed.lv1 : 'white'}
         />
       )}
       {submitting && progress === 0 && <ActivityIndicator style={styles.act} />}

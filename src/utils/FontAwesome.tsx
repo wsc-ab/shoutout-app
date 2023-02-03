@@ -8,6 +8,7 @@ import {
   faFlag,
   faHeart,
   faImage,
+  faPlus,
   faShare,
   faSquarePlus,
   faTimes,
@@ -27,5 +28,7 @@ library.add(
   faHeart,
   faImage,
   faVideo,
+  faPlus,
+  faCheck,
   faCommentDollar,
 );

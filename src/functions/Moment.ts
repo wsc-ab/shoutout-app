@@ -27,6 +27,18 @@ export const removeLike = async (input: {
   return {...data};
 };
 
+export const addFollow = async (input: {user: {id: string}}) => {
+  const {data} = await firebaseFunctions.httpsCallable('addFollow')(input);
+
+  return {...data};
+};
+
+export const removeFollow = async (input: {user: {id: string}}) => {
+  const {data} = await firebaseFunctions.httpsCallable('removeFollow')(input);
+
+  return {...data};
+};
+
 export const addView = async (input: {
   moment: {id: string; path: string; user: {id: string}};
 }) => {

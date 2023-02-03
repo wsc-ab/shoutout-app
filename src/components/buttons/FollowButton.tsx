@@ -1,34 +1,30 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
-import {addLike, removeLike} from '../../functions/Moment';
+import {addFollow, removeFollow} from '../../functions/Moment';
 import {TStyleView} from '../../types/Style';
 import DefaultAlert from '../defaults/DefaultAlert';
-import {defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
 
 type TProps = {
-  moment: {
+  user: {
     id: string;
-    path: string;
-    user: {id: string};
-    likeFrom: {number: number};
   };
   style?: TStyleView;
 };
 
-const LikeButton = ({moment, style}: TProps) => {
+const FollowButton = ({user, style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
 
-  const onLike = async () => {
+  const onFollow = async () => {
     try {
-      setLiked(true);
-      await addLike({moment});
+      setFollowed(true);
+      await addFollow({user});
     } catch (error) {
-      if ((error as {message: string}).message === "moment doesn't exist") {
+      if ((error as {message: string}).message === "user doesn't exist") {
         DefaultAlert({
-          title: 'Deleted moment',
+          title: 'Deleted user',
         });
       } else {
         DefaultAlert({
@@ -36,18 +32,17 @@ const LikeButton = ({moment, style}: TProps) => {
           message: (error as {message: string}).message,
         });
       }
-      setLiked(false);
+      console.log('called');
+      setFollowed(false);
     }
   };
 
-  const onUnlike = async () => {
+  const onUnfollow = async () => {
     try {
-      setLiked(false);
-      await removeLike({
-        moment,
-      });
+      setFollowed(false);
+      await removeFollow({user});
     } catch (error) {
-      setLiked(true);
+      setFollowed(true);
       DefaultAlert({
         title: 'Error',
         message: (error as {message: string}).message,
@@ -55,30 +50,29 @@ const LikeButton = ({moment, style}: TProps) => {
     }
   };
 
-  const [liked, setLiked] = useState(false);
+  const [followed, setFollowed] = useState(false);
 
   useEffect(() => {
-    setLiked(
-      authUserData.likeTo?.items.some(
-        ({path}: {path: string}) => path === moment.path,
-      ),
-    );
-  }, [authUserData.likeTo?.items, moment.path]);
+    setFollowed(authUserData.followTo.ids.includes(user.id));
+  }, [authUserData.followTo.ids, user.id]);
+
+  console.log(followed, 'f');
 
   return (
     <View style={[styles.container, style]}>
-      <DefaultIcon
-        icon="heart"
-        onPress={liked ? onUnlike : onLike}
-        color={liked ? defaultRed.lv1 : 'white'}
-        size={25}
-      />
-      <DefaultText title={moment.likeFrom.number.toString()} />
+      {user.id === authUserData.id && <DefaultText title="Me" />}
+      {user.id !== authUserData.id && (
+        <DefaultIcon
+          icon={followed ? 'check' : 'plus'}
+          onPress={followed ? onUnfollow : onFollow}
+          style={{padding: 0}}
+        />
+      )}
     </View>
   );
 };
 
-export default LikeButton;
+export default FollowButton;
 
 const styles = StyleSheet.create({
   container: {
