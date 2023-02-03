@@ -2,7 +2,6 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import CreateButton from '../buttons/CreateButton';
 import UserButton from '../buttons/UserButton';
-import DefaultIcon from '../defaults/DefaultIcon';
 
 type TProps = {};
 
@@ -10,7 +9,6 @@ const Header = ({}: TProps) => {
   return (
     <View style={styles.container}>
       <UserButton style={styles.button} />
-      <DefaultIcon icon="globe" />
       <CreateButton style={styles.button} />
     </View>
   );

@@ -13,6 +13,7 @@ import {
   faShare,
   faTimes,
   faUser,
+  faUserGroup,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -29,4 +30,5 @@ library.add(
   faCheck,
   faExclamation,
   faGlobe,
+  faUserGroup,
 );
