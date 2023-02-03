@@ -81,7 +81,7 @@ const ReportButton = ({moment, onSuccess, style}: TProps) => {
         icon="flag"
         size={25}
         onPress={isReported ? onUnreport : onReport}
-        color={isReported ? defaultRed.lv1 : 'white'}
+        color={isReported ? defaultRed.lv2 : 'white'}
       />
     </View>
   );

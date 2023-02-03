@@ -69,7 +69,7 @@ const AddButton = ({id, style}: TProps) => {
           icon="reply-all"
           onPress={onAdd}
           size={25}
-          color={added ? defaultRed.lv1 : 'white'}
+          color={added ? defaultRed.lv2 : 'white'}
         />
       )}
       {submitting && progress === 0 && <ActivityIndicator style={styles.act} />}

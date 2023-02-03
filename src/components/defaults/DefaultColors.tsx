@@ -1,6 +1,6 @@
 export const defaultBlue = '#3785fa';
 
-export const defaultRed = {lv1: 'red', lv2: '#eb4d6d'};
+export const defaultRed = {lv1: 'red', lv2: 'tomato'};
 
 export const defaultOrange = '#e98c59';
 

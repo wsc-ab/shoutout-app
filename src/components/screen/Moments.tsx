@@ -119,7 +119,7 @@ const Moments = ({style}: TProps) => {
             refreshing={status === 'loading'}
             onRefresh={() => setStatus('loading')}
             tintColor={'gray'}
-            progressViewOffset={40}
+            progressViewOffset={80}
           />
         }
         disableIntervalMomentum

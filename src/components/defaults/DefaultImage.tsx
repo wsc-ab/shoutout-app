@@ -1,14 +1,10 @@
 import storage from '@react-native-firebase/storage';
 import React, {useEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  Image,
-  Pressable,
-  StyleSheet,
-  View,
-} from 'react-native';
+import {Image, Pressable, StyleSheet, View} from 'react-native';
 import {TStatus} from '../../types/Screen';
-import {TStyleImage, TStyleView} from '../../types/Style';
+import {TStyleView} from '../../types/Style';
+import {defaultBlack} from './DefaultColors';
+import DefaultIcon from './DefaultIcon';
 
 import DefaultText from './DefaultText';
 
@@ -32,18 +28,6 @@ const DefaultImage = ({
   onLoaded,
   onPress,
 }: Props) => {
-  let design: TStyleImage = {
-    overflow: 'hidden',
-    justifyContent: 'center',
-    alignItems: 'center',
-    resizeMode: 'cover',
-    ...imageStyle,
-  };
-
-  const styles = StyleSheet.create({
-    image: design,
-  });
-
   const [imageUrl, setImageUrl] = useState<string>();
   const [status, setStatus] = useState<TStatus>('loading');
 
@@ -98,7 +82,7 @@ const DefaultImage = ({
     <Pressable style={style} onPress={onPress} disabled={!onPress}>
       {status === 'loaded' && image && (
         <Image
-          style={styles.image}
+          style={[styles.image, imageStyle]}
           source={{
             uri: imageUrl,
             cache: 'force-cache',
@@ -108,18 +92,16 @@ const DefaultImage = ({
         />
       )}
       {status === 'loaded' && !image && (
-        <View style={[styles.image, style]}>
+        <View style={[styles.image, imageStyle]}>
           <DefaultText title="No image" />
         </View>
       )}
       {status === 'loading' && (
-        <View style={[styles.image, style]}>
-          <ActivityIndicator />
-        </View>
+        <View style={[styles.image, imageStyle, styles.loading]} />
       )}
       {status === 'error' && (
-        <View style={[styles.image, style]}>
-          <DefaultText title="Error" />
+        <View style={[styles.image, imageStyle, styles.loading]}>
+          <DefaultIcon icon="exclamation" />
         </View>
       )}
     </Pressable>
@@ -127,3 +109,13 @@ const DefaultImage = ({
 };
 
 export default DefaultImage;
+
+const styles = StyleSheet.create({
+  image: {
+    overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'center',
+    resizeMode: 'cover',
+  },
+  loading: {backgroundColor: defaultBlack.lv3},
+});

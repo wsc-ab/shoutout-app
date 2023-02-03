@@ -18,7 +18,7 @@ const getTimeGap = (timestamp: TTimestampClient) => {
   }
   interval = seconds / 2592000;
   if (interval > 1) {
-    return Math.floor(interval) + 'm';
+    return Math.floor(interval) + 'mo';
   }
   interval = seconds / 86400;
   if (interval > 1) {
@@ -30,7 +30,7 @@ const getTimeGap = (timestamp: TTimestampClient) => {
   }
   interval = seconds / 60;
   if (interval > 1) {
-    return Math.floor(interval) + 'min';
+    return Math.floor(interval) + 'm';
   }
   return Math.floor(seconds) + 's';
 };

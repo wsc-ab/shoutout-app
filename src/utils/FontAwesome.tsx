@@ -4,7 +4,9 @@ import {
   faAngleLeft,
   faAngleRight,
   faCheck,
+  faExclamation,
   faFlag,
+  faGlobe,
   faHeart,
   faPlus,
   faReplyAll,
@@ -25,4 +27,6 @@ library.add(
   faReplyAll,
   faPlus,
   faCheck,
+  faExclamation,
+  faGlobe,
 );
