@@ -16,7 +16,7 @@ export default DefaultDivider;
 const styles = StyleSheet.create({
   container: {
     borderWidth: 1,
-    borderColor: defaultBlack.lv2,
+    borderColor: 'gray',
     marginVertical: 20,
   },
 });

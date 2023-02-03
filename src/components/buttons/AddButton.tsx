@@ -1,9 +1,8 @@
-import {firebase} from '@react-native-firebase/auth';
 import React, {useContext, useEffect, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
-import {addLink, createMoment} from '../../functions/Moment';
+import {addMoment} from '../../functions/Moment';
 import {TStyleView} from '../../types/Style';
 import {getCurrentLocation} from '../../utils/Location';
 import {uploadVideo} from '../../utils/Video';
@@ -14,24 +13,23 @@ import DefaultText from '../defaults/DefaultText';
 
 type TProps = {
   id: string;
-  linkIds: string[];
   style?: TStyleView;
 };
 
-const ReplyButton = ({id, linkIds, style}: TProps) => {
+const AddButton = ({id, style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
   const {onUpdate} = useContext(ModalContext);
   const [submitting, setSubmitting] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  const onReply = async () => {
+  const onAdd = async () => {
     try {
       setSubmitting(true);
       onUpdate('reply');
 
       const location = await getCurrentLocation();
 
-      const {uploaded, asset} = await uploadVideo({
+      const {uploaded} = await uploadVideo({
         authUserData,
         setProgress,
         setSubmitting,
@@ -40,21 +38,10 @@ const ReplyButton = ({id, linkIds, style}: TProps) => {
       if (!uploaded) {
         return;
       }
-      const momentId = firebase.firestore().collection('moments').doc().id;
 
-      setIsReplyed(true);
-      await createMoment({
-        moment: {
-          id: momentId,
-          path: uploaded,
-          type: asset.type,
-          isFirst: false,
-          location,
-        },
-      });
-      await addLink({
-        from: {id: momentId},
-        to: {id},
+      setIsAdded(true);
+      await addMoment({
+        moment: {id, path: uploaded, location},
       });
     } catch (error) {
       DefaultAlert({
@@ -62,29 +49,27 @@ const ReplyButton = ({id, linkIds, style}: TProps) => {
         message: (error as {message: string}).message,
       });
 
-      setIsReplyed(false);
+      setIsAdded(false);
     } finally {
       onUpdate(undefined);
       setSubmitting(false);
     }
   };
 
-  const [isReplyed, setIsReplyed] = useState(false);
+  const [isAdded, setIsAdded] = useState(false);
 
   useEffect(() => {
-    setIsReplyed(false);
-    // authUserData.contributeTo?.ids.some((elId: string) =>
-    //   linkIds.includes(elId),
-    // ),
-  }, [authUserData.contributeTo?.ids, linkIds]);
+    setIsAdded(authUserData.contributeTo.ids.includes(id));
+  }, [authUserData.contributeTo.ids, id]);
 
   return (
     <View style={style}>
       {!submitting && (
         <DefaultIcon
-          icon="reply"
-          onPress={onReply}
-          color={isReplyed ? defaultRed.lv1 : 'white'}
+          icon="plus-square"
+          onPress={onAdd}
+          size={25}
+          color={isAdded ? defaultRed.lv1 : 'white'}
         />
       )}
       {submitting && progress === 0 && <ActivityIndicator style={styles.act} />}
@@ -98,7 +83,7 @@ const ReplyButton = ({id, linkIds, style}: TProps) => {
   );
 };
 
-export default ReplyButton;
+export default AddButton;
 
 const styles = StyleSheet.create({
   progress: {padding: 10},

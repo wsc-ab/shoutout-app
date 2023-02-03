@@ -1,6 +1,18 @@
 import storage from '@react-native-firebase/storage';
 import {Asset} from 'react-native-image-picker';
 
+export const createMockId = () => {
+  // Alphanumeric characters
+  const chars =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let mockId = '';
+  for (let i = 0; i < 10; i++) {
+    mockId += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+
+  return mockId;
+};
+
 export const createStoragePath = (id: string, type: string) => {
   const today = new Date();
 
@@ -21,7 +33,7 @@ export const createStoragePath = (id: string, type: string) => {
 
   const folder = type.split('/')[0];
 
-  const fileName = dateTime;
+  const fileName = dateTime + '_' + createMockId();
   const filePath = id + '/' + folder + '/' + fileName;
 
   return filePath;

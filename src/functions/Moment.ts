@@ -5,8 +5,6 @@ export const createMoment = async (input: {
   moment: {
     id: string;
     path: string;
-    type?: string;
-    isFirst: boolean;
     location?: TLocation;
   };
 }) => {
@@ -15,19 +13,23 @@ export const createMoment = async (input: {
   return {...data};
 };
 
-export const addLike = async (input: {}) => {
+export const addLike = async (input: {moment: {id: string; path: string}}) => {
   const {data} = await firebaseFunctions.httpsCallable('addLike')(input);
 
   return {...data};
 };
 
-export const removeLike = async (input: {}) => {
+export const removeLike = async (input: {
+  moment: {id: string; path: string};
+}) => {
   const {data} = await firebaseFunctions.httpsCallable('removeLike')(input);
 
   return {...data};
 };
 
-export const addView = async (input: {}) => {
+export const addView = async (input: {
+  moment: {id: string; path: string; user: {id: string}};
+}) => {
   const {data} = await firebaseFunctions.httpsCallable('addView')(input);
 
   return {...data};
@@ -40,30 +42,40 @@ export const getMoments = async (input: {pagination: {number: number}}) => {
 };
 
 export const createReport = async (input: {
-  target: {collection: string; id: string};
+  moment: {id: string; path: string; user: {id: string}};
 }) => {
   const {data} = await firebaseFunctions.httpsCallable('createReport')(input);
 
   return {...data};
 };
 
-export const deleteMoment = async (input: {moment: {id: string}}) => {
-  const {data} = await firebaseFunctions.httpsCallable('deleteMoment')(input);
-
-  return {...data};
-};
-
-export const addLink = async (input: {
-  from: {id: string};
-  to: {id: string};
+export const deleteReport = async (input: {
+  moment: {id: string; path: string; user: {id: string}};
 }) => {
-  const {data} = await firebaseFunctions.httpsCallable('addLink')(input);
+  const {data} = await firebaseFunctions.httpsCallable('deleteReport')(input);
 
   return {...data};
 };
 
-export const getMoment = async (input: {moment: {id: string}}) => {
-  const {data} = await firebaseFunctions.httpsCallable('getMoment')(input);
+export const addMoment = async (input: {
+  moment: {
+    id: string;
+    path: string;
+    location?: TLocation;
+  };
+}) => {
+  const {data} = await firebaseFunctions.httpsCallable('addMoment')(input);
+
+  return {...data};
+};
+
+export const removeMoment = async (input: {
+  moment: {
+    id: string;
+    path: string;
+  };
+}) => {
+  const {data} = await firebaseFunctions.httpsCallable('removeMoment')(input);
 
   return {...data};
 };

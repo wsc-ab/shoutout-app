@@ -9,15 +9,22 @@ type TProps = {
   onPress?: (icon?: IconProp) => void;
   style?: TStyleView;
   color?: string;
+  size?: number;
 };
 
-const DefaultIcon = ({icon, style, color = 'white', onPress}: TProps) => {
+const DefaultIcon = ({
+  icon,
+  style,
+  color = 'white',
+  size = 16,
+  onPress,
+}: TProps) => {
   return (
     <Pressable
       onPress={onPress ? () => onPress(icon) : undefined}
       disabled={!onPress}
       style={[styles.container, style]}>
-      <FontAwesomeIcon icon={icon} color={color} />
+      <FontAwesomeIcon icon={icon} color={color} size={size} />
     </Pressable>
   );
 };

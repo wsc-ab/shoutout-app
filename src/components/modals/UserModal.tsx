@@ -1,25 +1,25 @@
 import firebase from '@react-native-firebase/app';
-import React, {useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
   Pressable,
   StyleSheet,
   useWindowDimensions,
-  View,
+  View
 } from 'react-native';
+import AuthUserContext from '../../contexts/AuthUser';
 
-import {TObject} from '../../types/Firebase';
-import {TStatus} from '../../types/Screen';
-import {groupByLength} from '../../utils/Array';
+import { TLocation, TObject, TTimestamp } from '../../types/Firebase';
+import { TStatus } from '../../types/Screen';
+import { getTimeSinceTimestamp } from '../../utils/Date';
+import DeleteButton from '../buttons/DeleteButton';
 import DefaultAlert from '../defaults/DefaultAlert';
-import {defaultBlack} from '../defaults/DefaultColors';
+import { defaultBlack } from '../defaults/DefaultColors';
 import DefaultForm from '../defaults/DefaultForm';
-import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
 import DefaultVideo from '../defaults/DefaultVideo';
-import MomentModal from './MomentModal';
 
 type TProps = {
   id: string;
@@ -29,6 +29,7 @@ type TProps = {
 const UserModal = ({id, onCancel}: TProps) => {
   const [data, setData] = useState<TObject>();
   const [status, setStatus] = useState<TStatus>('loading');
+  const {authUserData} = useContext(AuthUserContext);
 
   useEffect(() => {
     let isMounted = true;
@@ -62,12 +63,12 @@ const UserModal = ({id, onCancel}: TProps) => {
     };
   }, [id, status]);
 
-  const [modal, setModal] = useState<'moment'>();
-
-  const [momentId, setMomentId] = useState<'string'>();
-
   const {width} = useWindowDimensions();
   const videoWidth = (width - 20) / 3;
+
+  if (!data) {
+    return null;
+  }
 
   return (
     <DefaultModal>
@@ -75,59 +76,75 @@ const UserModal = ({id, onCancel}: TProps) => {
         <ActivityIndicator style={styles.act} />
       )}
       {data && (
-        <DefaultForm title={data.name} left={{onPress: onCancel}}>
+        <DefaultForm
+          title={data.name}
+          left={{
+            onPress: onCancel,
+          }}>
           <FlatList
-            data={groupByLength(data.contributeTo?.items ?? [], 3)}
+            data={data.contributeTo?.items}
             ListEmptyComponent={<DefaultText title="No moments found" />}
             contentContainerStyle={styles.container}
-            renderItem={({item}) => {
+            renderItem={({
+              item,
+            }: {
+              item: {
+                id: string;
+                path: string;
+                addedAt: TTimestamp;
+                location?: TLocation;
+                user: {id: string};
+              };
+            }) => {
               return (
-                <View style={styles.moments}>
-                  {item.map(moment => (
-                    <Pressable
-                      key={moment.id}
-                      style={{
-                        height: (videoWidth * 4) / 3,
-                        width: videoWidth,
-                        backgroundColor: defaultBlack.lv3,
-                      }}
-                      onPress={() => {
-                        setMomentId(moment.id);
-                        setModal('moment');
-                      }}>
-                      <DefaultVideo
-                        path={moment.path}
-                        style={[
-                          {height: (videoWidth * 4) / 3, width: videoWidth},
-                        ]}
-                        disabled={true}
-                        play={false}
+                <View style={{flexDirection: 'row'}}>
+                  <Pressable
+                    key={item.path}
+                    style={{
+                      height: (videoWidth * 4) / 3,
+                      width: videoWidth,
+                      backgroundColor: defaultBlack.lv3,
+                    }}
+                    disabled={true}>
+                    <DefaultVideo
+                      path={item.path}
+                      style={[
+                        {height: (videoWidth * 4) / 3, width: videoWidth},
+                      ]}
+                      disabled={true}
+                      play={false}
+                    />
+                  </Pressable>
+                  <View
+                    style={{
+                      marginLeft: 10,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      flex: 1,
+                    }}>
+                    <View>
+                      {item.location && (
+                        <DefaultText title={item.location.name} />
+                      )}
+                      <DefaultText
+                        title={getTimeSinceTimestamp(item.addedAt)}
                       />
-                      <View style={styles.icons}>
-                        <View style={styles.icon}>
-                          <DefaultIcon icon="reply" />
-                          <DefaultText
-                            title={moment.linkFrom.number.toString()}
-                          />
-                        </View>
-                        <View style={styles.icon}>
-                          <DefaultIcon icon="heart" />
-                          <DefaultText
-                            title={moment.likeFrom.number.toString()}
-                          />
-                        </View>
-                      </View>
-                    </Pressable>
-                  ))}
+                      <DefaultText title="" />
+                    </View>
+                    {item.user.id === authUserData.id && (
+                      <DeleteButton
+                        item={item}
+                        style={styles.delete}
+                        onSuccess={() => setStatus('loading')}
+                      />
+                    )}
+                  </View>
                 </View>
               );
             }}
             ItemSeparatorComponent={() => <View style={styles.seperator} />}
           />
         </DefaultForm>
-      )}
-      {modal === 'moment' && momentId && (
-        <MomentModal onCancel={() => setModal(undefined)} id={momentId} />
       )}
     </DefaultModal>
   );
@@ -138,21 +155,8 @@ export default UserModal;
 const styles = StyleSheet.create({
   container: {paddingBottom: 100},
   act: {flex: 1},
-  moments: {flexDirection: 'row'},
-  icons: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    justifyContent: 'center',
-  },
-  icon: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   seperator: {
-    marginBottom: 5,
+    marginBottom: 20,
   },
+  delete: {paddingTop: 0},
 });

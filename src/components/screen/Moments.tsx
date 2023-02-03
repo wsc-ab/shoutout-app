@@ -14,7 +14,6 @@ import {TDocData} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
 import DefaultAlert from '../defaults/DefaultAlert';
-import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultText from '../defaults/DefaultText';
 import MomentCard from './MomentCard';
 
@@ -56,7 +55,7 @@ const Moments = ({style}: TProps) => {
 
         setData(pre => {
           if (status === 'loadMore') {
-            return [...pre, ...moments];
+            return [...pre.splice(5, pre.length - 1), ...moments];
           }
           return moments;
         });
@@ -90,6 +89,19 @@ const Moments = ({style}: TProps) => {
     );
   }
 
+  if (data.length === 0) {
+    return (
+      <View style={styles.noData}>
+        <DefaultText title="No moment found." />
+        <DefaultText
+          title="Reload"
+          onPress={() => setStatus('loading')}
+          style={styles.refresh}
+        />
+      </View>
+    );
+  }
+
   return (
     <View style={style}>
       <FlatList
@@ -103,7 +115,7 @@ const Moments = ({style}: TProps) => {
           <RefreshControl
             refreshing={status === 'loading'}
             onRefresh={() => setStatus('loading')}
-            tintColor={defaultBlack.lv2}
+            tintColor={'gray'}
           />
         }
         disableIntervalMomentum

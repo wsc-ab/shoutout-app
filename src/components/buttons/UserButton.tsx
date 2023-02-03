@@ -24,6 +24,8 @@ const UserButton = ({style}: TProps) => {
       {modal === 'me' && (
         <UserModal
           onCancel={() => {
+            console.log('called');
+
             onUpdate(undefined);
           }}
         />

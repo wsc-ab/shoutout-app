@@ -27,7 +27,12 @@ const AuthUserProvider = ({children}: TProps) => {
     const unsubscribe = auth().onAuthStateChanged(async user => {
       if (user) {
         setAuthUser(user);
-        await signIn({user: {id: user.uid}});
+
+        try {
+          await signIn({user: {id: user.uid}});
+        } catch (error) {
+          await onSignOut();
+        }
       } else {
         setLoaded(true);
       }

@@ -1,26 +1,27 @@
-import React, {useState} from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
-import {createReport} from '../../functions/Moment';
+import React, {useContext, useEffect, useState} from 'react';
+import {View} from 'react-native';
+import AuthUserContext from '../../contexts/AuthUser';
+import {createReport, deleteReport} from '../../functions/Moment';
 import {TStyleView} from '../../types/Style';
 import DefaultAlert from '../defaults/DefaultAlert';
+import {defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 
 type TProps = {
-  collection: string;
-  id: string;
+  moment: {id: string; path: string; user: {id: string}};
   onSuccess?: () => void;
   style?: TStyleView;
 };
 
-const ReportButton = ({id, collection, onSuccess, style}: TProps) => {
-  const [isLoading, setIsLoading] = useState(false);
+const ReportButton = ({moment, onSuccess, style}: TProps) => {
+  const {authUserData} = useContext(AuthUserContext);
 
   const onReport = () => {
     const onPress = async () => {
       try {
-        setIsLoading(true);
+        setIsReported(true);
 
-        await createReport({target: {collection, id}});
+        await createReport({moment});
 
         DefaultAlert({
           title: 'Reported',
@@ -28,6 +29,7 @@ const ReportButton = ({id, collection, onSuccess, style}: TProps) => {
 
         onSuccess && onSuccess();
       } catch (error) {
+        setIsReported(false);
         if ((error as {message: string}).message === "target doesn't exist") {
           DefaultAlert({
             title: 'Deleted moment',
@@ -38,8 +40,6 @@ const ReportButton = ({id, collection, onSuccess, style}: TProps) => {
             message: (error as {message: string}).message,
           });
         }
-      } finally {
-        setIsLoading(false);
       }
     };
 
@@ -50,16 +50,41 @@ const ReportButton = ({id, collection, onSuccess, style}: TProps) => {
     });
   };
 
+  const onUnreport = async () => {
+    try {
+      setIsReported(false);
+      await deleteReport({
+        moment,
+      });
+    } catch (error) {
+      setIsReported(true);
+      DefaultAlert({
+        title: 'Error',
+        message: (error as {message: string}).message,
+      });
+    }
+  };
+
+  const [isReported, setIsReported] = useState(false);
+
+  useEffect(() => {
+    setIsReported(
+      authUserData.reported.items
+        .map(({path}: {path: string}) => path)
+        .includes(moment.path),
+    );
+  }, [authUserData.reported.items, moment.path]);
+
   return (
     <View style={style}>
-      {!isLoading && <DefaultIcon icon="flag" onPress={onReport} />}
-      {isLoading && <ActivityIndicator style={styles.act} />}
+      <DefaultIcon
+        icon="flag"
+        size={25}
+        onPress={isReported ? onUnreport : onReport}
+        color={isReported ? defaultRed.lv1 : 'white'}
+      />
     </View>
   );
 };
 
 export default ReportButton;
-
-const styles = StyleSheet.create({
-  act: {paddingHorizontal: 10},
-});

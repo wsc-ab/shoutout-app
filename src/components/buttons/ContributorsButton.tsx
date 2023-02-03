@@ -1,12 +1,10 @@
-import React, {useContext} from 'react';
-import {Pressable, ScrollView, StyleSheet, View, ViewStyle} from 'react-native';
-import ModalContext from '../../contexts/Modal';
+import React from 'react';
+import {ScrollView, StyleSheet, View, ViewStyle} from 'react-native';
 import {TTimestamp} from '../../types/Firebase';
 import {getTimeSinceTimestamp} from '../../utils/Date';
 import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
-import UserModal from '../modals/UserModal';
 
 type TProps = {
   users: {
@@ -14,34 +12,29 @@ type TProps = {
     id: string;
     thumbnail?: string;
     location?: {name: string};
-    createdAt: TTimestamp;
+    addedAt: TTimestamp;
   }[];
   index: number;
   style?: ViewStyle;
 };
 
 const ContributorsButton = ({users, index, style}: TProps) => {
-  const {onUpdate, modal} = useContext(ModalContext);
-
   return (
     <ScrollView style={style} horizontal showsHorizontalScrollIndicator={false}>
       {users.map((user, elIndex) => {
+        const isCurrent = elIndex === index;
         return (
-          <View style={styles.container} key={user.id + elIndex}>
-            <Pressable
-              onPress={() => onUpdate('user')}
-              style={[styles.user, elIndex === index && styles.current]}>
-              <DefaultIcon icon="user" style={styles.icon} />
-              <View>
-                <DefaultText title={user.name} textStyle={styles.nameText} />
-                {user.location && <DefaultText title={user.location.name} />}
-                <DefaultText title={getTimeSinceTimestamp(user.createdAt)} />
-              </View>
-            </Pressable>
-            {elIndex !== users.length - 1 && <DefaultIcon icon="angle-right" />}
-            {modal === 'user' && (
-              <UserModal id={user.id} onCancel={() => onUpdate(undefined)} />
-            )}
+          <View
+            style={[styles.container, isCurrent && styles.current]}
+            key={user.id + elIndex}>
+            {isCurrent && <DefaultIcon icon="user" style={styles.icon} />}
+            <View>
+              <DefaultText title={user.name} textStyle={styles.nameText} />
+              {user.location && <DefaultText title={user.location.name} />}
+              {isCurrent && (
+                <DefaultText title={getTimeSinceTimestamp(user.addedAt)} />
+              )}
+            </View>
           </View>
         );
       })}
@@ -52,13 +45,12 @@ const ContributorsButton = ({users, index, style}: TProps) => {
 export default ContributorsButton;
 
 const styles = StyleSheet.create({
-  container: {alignItems: 'center', flexDirection: 'row'},
-  user: {flexDirection: 'row', marginRight: 10, alignItems: 'center'},
-  current: {
-    borderWidth: 1,
+  container: {
+    marginRight: 10,
+    padding: 10,
+    backgroundColor: defaultBlack.lv5,
     borderRadius: 10,
-    borderColor: defaultBlack.lv2,
-    padding: 5,
+    flexDirection: 'row',
   },
   icon: {
     width: 50,
@@ -69,5 +61,6 @@ const styles = StyleSheet.create({
     marginRight: 5,
     backgroundColor: defaultBlack.lv3,
   },
+  current: {backgroundColor: defaultBlack.lv2},
   nameText: {fontWeight: 'bold'},
 });

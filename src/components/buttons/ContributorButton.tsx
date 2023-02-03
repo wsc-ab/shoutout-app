@@ -1,30 +1,31 @@
 import React from 'react';
 import {StyleSheet, View, ViewStyle} from 'react-native';
-import {TDocData} from '../../types/Firebase';
+import {TLocation, TTimestamp} from '../../types/Firebase';
 import {getTimeSinceTimestamp} from '../../utils/Date';
 import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
 
 type TProps = {
-  moment: TDocData;
+  item: {
+    id: string;
+    path: string;
+    user: {id: string; name: string};
+    location?: TLocation;
+    addedAt: TTimestamp;
+  };
   style?: ViewStyle;
 };
 
-const ContributorButton = ({moment, style}: TProps) => {
+const ContributorButton = ({item, style}: TProps) => {
   return (
     <View style={style}>
       <View style={styles.container}>
         <DefaultIcon icon="user" style={styles.icon} />
         <View>
-          <DefaultText
-            title={moment.contributeFrom?.items[0].name}
-            textStyle={styles.nameText}
-          />
-          {moment.location?.name && (
-            <DefaultText title={moment.location.name} />
-          )}
-          <DefaultText title={getTimeSinceTimestamp(moment.createdAt)} />
+          <DefaultText title={item.user.name} textStyle={styles.nameText} />
+          {item.location?.name && <DefaultText title={item.location.name} />}
+          <DefaultText title={getTimeSinceTimestamp(item.addedAt)} />
         </View>
       </View>
     </View>

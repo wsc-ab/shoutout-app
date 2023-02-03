@@ -1,24 +1,30 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import {addLike, removeLike} from '../../functions/Moment';
 import {TStyleView} from '../../types/Style';
 import DefaultAlert from '../defaults/DefaultAlert';
 import {defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
+import DefaultText from '../defaults/DefaultText';
 
-type TProps = {collection: string; id: string; style?: TStyleView};
+type TProps = {
+  moment: {
+    id: string;
+    path: string;
+    user: {id: string};
+    likeFrom: {number: number};
+  };
+  style?: TStyleView;
+};
 
-const LikeButton = ({collection, id, style}: TProps) => {
+const LikeButton = ({moment, style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
-  const [isLoading, setIsLoading] = useState(false);
 
   const onLike = async () => {
     try {
-      setIsLoading(true);
-
       setIsLiked(true);
-      await addLike({moment: {id}});
+      await addLike({moment});
     } catch (error) {
       if ((error as {message: string}).message === "moment doesn't exist") {
         DefaultAlert({
@@ -31,46 +37,43 @@ const LikeButton = ({collection, id, style}: TProps) => {
         });
       }
       setIsLiked(false);
-    } finally {
-      setIsLoading(false);
     }
   };
 
   const onUnlike = async () => {
     try {
-      setIsLoading(true);
-
       setIsLiked(false);
       await removeLike({
-        moment: {id},
+        moment,
       });
     } catch (error) {
-      setIsLiked(false);
+      setIsLiked(true);
       DefaultAlert({
         title: 'Error',
         message: (error as {message: string}).message,
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
   const [isLiked, setIsLiked] = useState(false);
 
   useEffect(() => {
-    setIsLiked(authUserData.likeTo?.[collection]?.ids.includes(id));
-  }, [authUserData.likeTo, collection, id]);
+    setIsLiked(
+      authUserData.likeTo?.items.some(
+        ({path}: {path: string}) => path === moment.path,
+      ),
+    );
+  }, [authUserData.likeTo?.items, moment.path]);
 
   return (
-    <View style={style}>
-      {!isLoading && (
-        <DefaultIcon
-          icon="heart"
-          onPress={isLiked ? onUnlike : onLike}
-          color={isLiked ? defaultRed.lv1 : 'white'}
-        />
-      )}
-      {isLoading && <ActivityIndicator style={styles.act} />}
+    <View style={[styles.container, style]}>
+      <DefaultIcon
+        icon="heart"
+        onPress={isLiked ? onUnlike : onLike}
+        color={isLiked ? defaultRed.lv1 : 'white'}
+        size={25}
+      />
+      <DefaultText title={moment.likeFrom.number.toString()} />
     </View>
   );
 };
@@ -78,5 +81,9 @@ const LikeButton = ({collection, id, style}: TProps) => {
 export default LikeButton;
 
 const styles = StyleSheet.create({
-  act: {paddingHorizontal: 10},
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });

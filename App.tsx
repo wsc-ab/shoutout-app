@@ -27,6 +27,8 @@ const App = () => {
 
         setStatus('loaded');
       } catch (error) {
+        console.log(error, 'e');
+
         setStatus('error');
       }
     };

@@ -28,7 +28,7 @@ const CreateButton = ({style}: TProps) => {
 
       const location = await getCurrentLocation();
 
-      const {uploaded, asset} = await uploadVideo({
+      const {uploaded} = await uploadVideo({
         authUserData,
         setProgress,
         setSubmitting,
@@ -43,8 +43,6 @@ const CreateButton = ({style}: TProps) => {
         moment: {
           id: momentId,
           path: uploaded,
-          type: asset.type,
-          isFirst: true,
           location,
         },
       });
@@ -55,6 +53,7 @@ const CreateButton = ({style}: TProps) => {
       });
     } finally {
       setSubmitting(false);
+      setProgress(0);
       onUpdate(undefined);
     }
   };
