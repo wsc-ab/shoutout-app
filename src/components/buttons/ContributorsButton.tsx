@@ -47,7 +47,7 @@ const ContributorsButton = ({users, onPress, index, style}: TProps) => {
             <View>
               <DefaultIcon icon="user" style={styles.icon} />
             </View>
-            <View>
+            <View style={styles.texts}>
               <DefaultText title={item.name} textStyle={styles.nameText} />
               <DefaultText title={getTimeSinceTimestamp(item.addedAt)} />
               <LocationButton location={item.location} />
@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
+    flex: 1,
   },
   contentContainer: {paddingHorizontal: 10},
   icon: {
@@ -90,7 +91,12 @@ const styles = StyleSheet.create({
     marginRight: 5,
     backgroundColor: defaultBlack.lv3,
   },
+  texts: {flex: 1},
   current: {backgroundColor: defaultBlack.lv2},
   nameText: {fontWeight: 'bold'},
-  follow: {marginLeft: 10},
+  follow: {
+    marginLeft: 10,
+    padding: 0,
+    alignItems: 'flex-end',
+  },
 });

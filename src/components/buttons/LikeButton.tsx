@@ -20,11 +20,19 @@ type TProps = {
 
 const LikeButton = ({moment, style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
+  const [number, setNumber] = useState(moment.likeFrom.number);
+  const [liked, setLiked] = useState(false);
 
   const onLike = async () => {
     try {
       setLiked(true);
-      await addLike({moment});
+      setNumber(pre => pre + 1);
+      const {
+        moment: {
+          likeFrom: {number: newNumber},
+        },
+      } = await addLike({moment});
+      setNumber(newNumber);
     } catch (error) {
       if ((error as {message: string}).message === "moment doesn't exist") {
         DefaultAlert({
@@ -37,25 +45,31 @@ const LikeButton = ({moment, style}: TProps) => {
         });
       }
       setLiked(false);
+      setNumber(moment.likeFrom.number);
     }
   };
 
   const onUnlike = async () => {
     try {
       setLiked(false);
-      await removeLike({
+      setNumber(pre => pre - 1);
+      const {
+        moment: {
+          likeFrom: {number: newNumber},
+        },
+      } = await removeLike({
         moment,
       });
+      setNumber(newNumber);
     } catch (error) {
       setLiked(true);
       DefaultAlert({
         title: 'Error',
         message: (error as {message: string}).message,
       });
+      setNumber(moment.likeFrom.number);
     }
   };
-
-  const [liked, setLiked] = useState(false);
 
   useEffect(() => {
     setLiked(
@@ -73,7 +87,7 @@ const LikeButton = ({moment, style}: TProps) => {
         color={liked ? defaultRed.lv1 : 'white'}
         size={25}
       />
-      <DefaultText title={moment.likeFrom.number.toString()} />
+      <DefaultText title={number.toString()} />
     </View>
   );
 };

@@ -33,12 +33,7 @@ const Permission = () => {
             if (authUserData?.token !== newToken) {
               await signIn({user: {token: newToken, id: authUserData.id}});
             }
-          } catch (error) {
-            console.log(error, 'error');
-          }
-
-          const apns = await messaging().getAPNSToken();
-          console.log(apns, 'apns');
+          } catch {}
         }
       };
       await getPermission();

@@ -55,7 +55,7 @@ const Moments = ({style}: TProps) => {
 
         setData(pre => {
           if (status === 'loadMore') {
-            return [...pre.splice(5, pre.length - 1), ...moments];
+            return [...pre.splice(0, Math.floor(pre.length / 2)), ...moments];
           }
           return moments;
         });
@@ -89,7 +89,7 @@ const Moments = ({style}: TProps) => {
     );
   }
 
-  if (data.length === 0) {
+  if (status === 'loaded' && data.length === 0) {
     return (
       <View style={styles.noData}>
         <DefaultText title="No moment found." />

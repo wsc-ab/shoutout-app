@@ -24,7 +24,9 @@ const DefaultText = <A extends string>({
       style={style}
       onPress={onPress ? () => onPress(title) : undefined}
       disabled={!onPress}>
-      <Text style={[styles.text, textStyle]}>{title}</Text>
+      <Text style={[styles.text, textStyle]} numberOfLines={1}>
+        {title}
+      </Text>
     </Pressable>
   );
 };
