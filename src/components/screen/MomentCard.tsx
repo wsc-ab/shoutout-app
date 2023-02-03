@@ -33,6 +33,7 @@ type TProps = {
 const MomentCard = ({moment, style, inView}: TProps) => {
   const {height, width} = useWindowDimensions();
   const [data, setData] = useState<TDocData>(moment);
+  const ref = useRef<FlatList>(null);
 
   const [index, setIndex] = useState(0);
 
@@ -91,9 +92,14 @@ const MomentCard = ({moment, style, inView}: TProps) => {
     }) => ({...user, addedAt, location}),
   );
 
+  const onContributor = (newIndex: number) => {
+    ref.current?.scrollToIndex({index: newIndex, animated: true});
+  };
+
   return (
     <View style={style}>
       <FlatList
+        ref={ref}
         data={data.contents.items}
         initialNumToRender={1}
         horizontal
@@ -133,7 +139,6 @@ const MomentCard = ({moment, style, inView}: TProps) => {
                 repeat
               />
               <View style={styles.nav}>
-                <ContributorsButton index={elIndex} users={allContributors} />
                 <View style={styles.buttons}>
                   <AddButton id={item.id} style={styles.button} />
                   <LikeButton
@@ -158,6 +163,12 @@ const MomentCard = ({moment, style, inView}: TProps) => {
             </View>
           );
         }}
+      />
+      <ContributorsButton
+        users={allContributors}
+        index={index}
+        onPress={onContributor}
+        style={styles.contributors}
       />
     </View>
   );
@@ -193,4 +204,5 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   button: {flex: 1, alignItems: 'center'},
+  contributors: {position: 'absolute', bottom: 100},
 });

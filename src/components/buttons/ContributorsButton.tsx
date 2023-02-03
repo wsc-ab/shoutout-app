@@ -1,5 +1,5 @@
-import React from 'react';
-import {ScrollView, StyleSheet, View, ViewStyle} from 'react-native';
+import React, {useEffect, useRef} from 'react';
+import {FlatList, Pressable, StyleSheet, View, ViewStyle} from 'react-native';
 import {TTimestamp} from '../../types/Firebase';
 import {getTimeSinceTimestamp} from '../../utils/Date';
 import {defaultBlack} from '../defaults/DefaultColors';
@@ -16,29 +16,44 @@ type TProps = {
   }[];
   index: number;
   style?: ViewStyle;
+  onPress: (index: number) => void;
 };
 
-const ContributorsButton = ({users, index, style}: TProps) => {
+const ContributorsButton = ({users, onPress, index, style}: TProps) => {
+  const ref = useRef<FlatList>(null);
+
+  useEffect(() => {
+    if (ref) {
+      ref.current?.scrollToIndex({index, animated: true, viewOffset: 50});
+    }
+  }, [index, ref]);
+
   return (
-    <ScrollView style={style} horizontal showsHorizontalScrollIndicator={false}>
-      {users.map((user, elIndex) => {
+    <FlatList
+      data={users}
+      style={style}
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={styles.contentContainer}
+      renderItem={({item, index: elIndex}) => {
         const isCurrent = elIndex === index;
         return (
-          <View
+          <Pressable
+            onPress={() => onPress(elIndex)}
             style={[styles.container, isCurrent && styles.current]}
-            key={user.id + elIndex}>
-            {isCurrent && <DefaultIcon icon="user" style={styles.icon} />}
+            key={item.id + elIndex}>
+            <DefaultIcon icon="user" style={styles.icon} />
             <View>
-              <DefaultText title={user.name} textStyle={styles.nameText} />
-              {user.location && <DefaultText title={user.location.name} />}
-              {isCurrent && (
-                <DefaultText title={getTimeSinceTimestamp(user.addedAt)} />
-              )}
+              <DefaultText title={item.name} textStyle={styles.nameText} />
+              <DefaultText title={getTimeSinceTimestamp(item.addedAt)} />
+              {item.location && <DefaultText title={item.location.name} />}
             </View>
-          </View>
+          </Pressable>
         );
-      })}
-    </ScrollView>
+      }}
+      keyExtractor={(item, elIndex) => item.id + elIndex}
+      ref={ref}
+    />
   );
 };
 
@@ -46,12 +61,15 @@ export default ContributorsButton;
 
 const styles = StyleSheet.create({
   container: {
+    width: 150,
+    marginTop: 5,
     marginRight: 10,
     padding: 10,
     backgroundColor: defaultBlack.lv5,
     borderRadius: 10,
     flexDirection: 'row',
   },
+  contentContainer: {paddingHorizontal: 10},
   icon: {
     width: 50,
     height: 50,
