@@ -22,15 +22,7 @@ const UserButton = ({style}: TProps) => {
         }}
         style={styles.icon}
       />
-      {modal === 'me' && (
-        <UserModal
-          onCancel={() => {
-            console.log('called');
-
-            onUpdate(undefined);
-          }}
-        />
-      )}
+      {modal === 'me' && <UserModal onCancel={() => onUpdate(undefined)} />}
     </View>
   );
 };

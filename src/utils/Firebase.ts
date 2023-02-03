@@ -23,7 +23,6 @@ export const initFirebase = () => {
 
     firebase.app().functions(region).useEmulator(ip, 5001);
   }
-  console.log('called');
 
   firebaseFunctions = firebase.app().functions(region);
 };

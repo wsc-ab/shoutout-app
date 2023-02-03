@@ -32,7 +32,6 @@ const FollowButton = ({user, style}: TProps) => {
           message: (error as {message: string}).message,
         });
       }
-      console.log('called');
       setFollowed(false);
     }
   };
@@ -55,8 +54,6 @@ const FollowButton = ({user, style}: TProps) => {
   useEffect(() => {
     setFollowed(authUserData.followTo.ids.includes(user.id));
   }, [authUserData.followTo.ids, user.id]);
-
-  console.log(followed, 'f');
 
   return (
     <View style={[styles.container, style]}>

@@ -1,5 +1,6 @@
 import messaging from '@react-native-firebase/messaging';
 import React, {useContext, useEffect, useState} from 'react';
+import {LogBox} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import {signIn} from '../../functions/User';
 
@@ -26,13 +27,18 @@ const Permission = () => {
         setIsPermitted(enabled);
 
         if (enabled) {
-          const newToken = await messaging().getToken();
+          try {
+            const newToken = await messaging().getToken();
 
-          if (authUserData?.token !== newToken) {
-            try {
+            if (authUserData?.token !== newToken) {
               await signIn({user: {token: newToken, id: authUserData.id}});
-            } catch (error) {}
+            }
+          } catch (error) {
+            console.log(error, 'error');
           }
+
+          const apns = await messaging().getAPNSToken();
+          console.log(apns, 'apns');
         }
       };
       await getPermission();
