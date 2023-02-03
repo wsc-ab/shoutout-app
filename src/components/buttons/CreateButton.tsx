@@ -61,7 +61,12 @@ const CreateButton = ({style}: TProps) => {
   return (
     <View style={style}>
       {!submitting && (
-        <DefaultIcon icon="video" onPress={onAdd} style={styles.icon} />
+        <DefaultIcon
+          icon="video"
+          onPress={onAdd}
+          style={styles.icon}
+          size={20}
+        />
       )}
       {submitting && progress === 0 && <ActivityIndicator style={styles.act} />}
       {submitting && progress !== 0 && (

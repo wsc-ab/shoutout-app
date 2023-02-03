@@ -1,21 +1,21 @@
 import firebase from '@react-native-firebase/app';
-import React, { useContext, useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   FlatList,
   Pressable,
   StyleSheet,
   useWindowDimensions,
-  View
+  View,
 } from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 
-import { TLocation, TObject, TTimestamp } from '../../types/Firebase';
-import { TStatus } from '../../types/Screen';
-import { getTimeSinceTimestamp } from '../../utils/Date';
+import {TLocation, TObject, TTimestamp} from '../../types/Firebase';
+import {TStatus} from '../../types/Screen';
+import {getTimeSinceTimestamp} from '../../utils/Date';
 import DeleteButton from '../buttons/DeleteButton';
 import DefaultAlert from '../defaults/DefaultAlert';
-import { defaultBlack } from '../defaults/DefaultColors';
+import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
@@ -85,6 +85,7 @@ const UserModal = ({id, onCancel}: TProps) => {
             data={data.contributeTo?.items}
             ListEmptyComponent={<DefaultText title="No moments found" />}
             contentContainerStyle={styles.container}
+            keyExtractor={(item, index) => item.id + index}
             renderItem={({
               item,
             }: {
