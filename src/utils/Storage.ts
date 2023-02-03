@@ -13,7 +13,7 @@ export const createMockId = () => {
   return mockId;
 };
 
-export const createStoragePath = (id: string, type: string) => {
+export const createStoragePath = (id: string, type: 'image' | 'video') => {
   const today = new Date();
 
   const date =
@@ -31,7 +31,7 @@ export const createStoragePath = (id: string, type: string) => {
     today.getMilliseconds();
   const dateTime = date + '_' + time;
 
-  const folder = type.split('/')[0];
+  const folder = type;
 
   const fileName = dateTime + '_' + createMockId();
   const filePath = id + '/' + folder + '/' + fileName;
@@ -43,9 +43,11 @@ export const uploadFile = async ({
   asset,
   id,
   onProgress,
+  type,
 }: {
   asset: Asset;
   id: string;
+  type: 'image' | 'video';
   onProgress: (progress: number) => void;
 }): Promise<string | undefined> => {
   const uri = asset.uri;
@@ -57,7 +59,7 @@ export const uploadFile = async ({
     return uri;
   }
 
-  const path = createStoragePath(id, asset.type ?? 'file');
+  const path = createStoragePath(id, type);
   const ref = storage().ref(path);
 
   const uploadTask = ref.putFile(uri);

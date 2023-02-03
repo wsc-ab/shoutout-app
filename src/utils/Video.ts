@@ -65,6 +65,7 @@ export const uploadVideo = async ({
       asset,
       id: authUserData.id,
       onProgress: setProgress,
+      type: 'video',
     });
   } catch (error) {
     DefaultAlert({
