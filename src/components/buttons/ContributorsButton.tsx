@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
   FlatList,
   Pressable,
@@ -7,11 +7,13 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
+import ModalContext from '../../contexts/Modal';
 import {TTimestamp} from '../../types/Firebase';
 import {getTimeSinceTimestamp} from '../../utils/Date';
 import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
+import UserModal from '../modals/UserModal';
 import FollowButton from './FollowButton';
 import LocationButton from './LocationButton';
 
@@ -39,44 +41,65 @@ const ContributorsButton = ({users, onPress, index, style}: TProps) => {
     }
   }, [index, ref]);
 
+  const {modal, onUpdate} = useContext(ModalContext);
+  const [userId, setUserId] = useState<string>();
+
   return (
-    <FlatList
-      data={users}
-      style={style}
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={styles.contentContainer}
-      renderItem={({item, index: elIndex}) => {
-        const isCurrent = elIndex === index;
-        return (
-          <Pressable
-            onPress={() => onPress(elIndex)}
-            style={[
-              styles.container,
-              {width: (width - 20) / 2},
-              isCurrent && styles.current,
-            ]}
-            key={item.id + elIndex}>
-            <View>
-              <DefaultIcon icon="user" style={styles.icon} />
-            </View>
-            <View style={styles.texts}>
-              <DefaultText title={item.name} textStyle={styles.nameText} />
-              <DefaultText title={getTimeSinceTimestamp(item.addedAt)} />
-              <LocationButton location={item.location} />
-            </View>
-            <FollowButton
-              user={{
-                id: item.id,
+    <View>
+      <FlatList
+        data={users}
+        style={style}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.contentContainer}
+        renderItem={({item, index: elIndex}) => {
+          const isCurrent = elIndex === index;
+          return (
+            <Pressable
+              onPress={() => {
+                if (isCurrent) {
+                  setUserId(item.id);
+                  onUpdate('contributor');
+                } else {
+                  onPress(elIndex);
+                }
               }}
-              style={styles.follow}
-            />
-          </Pressable>
-        );
-      }}
-      keyExtractor={(item, elIndex) => item.id + elIndex}
-      ref={ref}
-    />
+              style={[
+                styles.container,
+                {width: (width - 20) / 2},
+                isCurrent && styles.current,
+              ]}
+              key={item.id + elIndex}>
+              <View>
+                <DefaultIcon icon="user" style={styles.icon} />
+              </View>
+              <View style={styles.texts}>
+                <DefaultText title={item.name} textStyle={styles.nameText} />
+                <DefaultText title={getTimeSinceTimestamp(item.addedAt)} />
+                <LocationButton location={item.location} />
+              </View>
+              <FollowButton
+                user={{
+                  id: item.id,
+                }}
+                style={styles.follow}
+              />
+            </Pressable>
+          );
+        }}
+        keyExtractor={(item, elIndex) => item.id + elIndex}
+        ref={ref}
+      />
+      {modal === 'contributor' && userId && (
+        <UserModal
+          id={userId}
+          onCancel={() => {
+            onUpdate(undefined);
+            setUserId(undefined);
+          }}
+        />
+      )}
+    </View>
   );
 };
 
