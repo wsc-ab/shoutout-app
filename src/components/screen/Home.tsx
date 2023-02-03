@@ -3,6 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import Moments from './Moments';
 
 import AuthUserContext from '../../contexts/AuthUser';
+import Permission from '../notification/Permission';
 import Header from './Header';
 import Welcome from './Welcome';
 
@@ -21,6 +22,7 @@ const Home = () => {
     <View style={styles.container}>
       <Header />
       <Moments style={styles.moments} />
+      <Permission />
     </View>
   );
 };
