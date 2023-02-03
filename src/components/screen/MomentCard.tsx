@@ -204,5 +204,5 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   button: {flex: 1, alignItems: 'center'},
-  contributors: {position: 'absolute', bottom: 100},
+  contributors: {position: 'absolute', bottom: 90},
 });
