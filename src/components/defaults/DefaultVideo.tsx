@@ -39,11 +39,13 @@ const DefaultVideo = ({
 
   useEffect(() => {
     const load = async () => {
-      const thumbRef = storage().ref(getThumbnailPath(path, 'video'));
+      try {
+        const thumbRef = storage().ref(getThumbnailPath(path, 'video'));
 
-      const thumbUrl = await thumbRef.getDownloadURL();
+        const thumbUrl = await thumbRef.getDownloadURL();
 
-      setThumbnailUri(thumbUrl);
+        setThumbnailUri(thumbUrl);
+      } catch {}
 
       const videoRef = storage().ref(path);
       const videoUrl = await videoRef.getDownloadURL();
