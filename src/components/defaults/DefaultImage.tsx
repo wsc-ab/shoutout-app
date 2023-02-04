@@ -15,6 +15,7 @@ export type Props = {
   type?: string;
   style?: TStyleView;
   imageStyle: {height: number; width: number};
+  blurRadius?: number;
   showThumbnail?: boolean;
   onLoaded?: () => void;
   onPress?: () => void;
@@ -25,6 +26,7 @@ const DefaultImage = ({
   style,
   showThumbnail,
   imageStyle,
+  blurRadius,
   onLoaded,
   onPress,
 }: Props) => {
@@ -87,22 +89,26 @@ const DefaultImage = ({
             uri: imageUrl,
             cache: 'force-cache',
           }}
+          resizeMode="cover"
           onLoadEnd={onLoaded}
           onError={() => setStatus('error')}
+          blurRadius={blurRadius}
         />
       )}
       {status === 'loaded' && !image && (
-        <View style={[styles.image, imageStyle]}>
-          <DefaultText title="No image" />
-        </View>
+        <DefaultText
+          title="No image found"
+          style={[styles.image, imageStyle]}
+        />
       )}
       {status === 'loading' && (
         <View style={[styles.image, imageStyle, styles.loading]} />
       )}
       {status === 'error' && (
-        <View style={[styles.image, imageStyle, styles.loading]}>
-          <DefaultIcon icon="exclamation" />
-        </View>
+        <DefaultIcon
+          icon="exclamation"
+          style={[styles.image, imageStyle, styles.loading]}
+        />
       )}
     </Pressable>
   );

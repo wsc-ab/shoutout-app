@@ -15,21 +15,19 @@ type TProps = {
 
 const ReportButton = ({moment, onSuccess, style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
+  const {addReportContent, removeReportContent} = useContext(AuthUserContext);
 
   const onReport = () => {
     const onPress = async () => {
       try {
         setIsReported(true);
-
+        addReportContent(moment.path);
         await createReport({moment});
-
-        DefaultAlert({
-          title: 'Reported',
-        });
 
         onSuccess && onSuccess();
       } catch (error) {
         setIsReported(false);
+        removeReportContent(moment.path);
         if ((error as {message: string}).message === "target doesn't exist") {
           DefaultAlert({
             title: 'Deleted moment',

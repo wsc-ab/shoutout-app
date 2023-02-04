@@ -9,6 +9,9 @@ import {TAuthUser, TDocData, TDocSnapshot} from '../types/Firebase';
 type TContextProps = {
   loaded: boolean;
   authUserData: TDocData;
+  reportedContents: string[];
+  addReportContent: (path: string) => void;
+  removeReportContent: (path: string) => void;
   onReload: () => void;
   onSignOut: () => void;
 };
@@ -21,6 +24,7 @@ export type TProps = {
 
 const AuthUserProvider = ({children}: TProps) => {
   const [authUser, setAuthUser] = useState<TAuthUser | null>();
+  const [reportedContents, setReportedContents] = useState<string[]>([]);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -83,11 +87,24 @@ const AuthUserProvider = ({children}: TProps) => {
     }
   }, [authUser?.uid]);
 
+  useEffect(() => {
+    const newReportedContents = authUserData?.reported.items.map(
+      ({path}: {path: string}) => path,
+    );
+
+    setReportedContents(newReportedContents);
+  }, [authUserData?.reported.items]);
+
   const onSignOut = async () => {
     await firebase.auth().signOut();
     setAuthUser(undefined);
     setAuthUserData(undefined);
   };
+
+  const addReportContent = (path: string) =>
+    setReportedContents(pre => [...pre, path]);
+  const removeReportContent = (path: string) =>
+    setReportedContents(pre => pre.filter(el => el !== path));
 
   return (
     <AuthUserContext.Provider
@@ -96,6 +113,9 @@ const AuthUserProvider = ({children}: TProps) => {
         authUserData: authUserData!,
         onSignOut,
         onReload,
+        addReportContent,
+        removeReportContent,
+        reportedContents,
       }}>
       {children}
     </AuthUserContext.Provider>
