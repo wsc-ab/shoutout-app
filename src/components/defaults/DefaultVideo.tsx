@@ -89,6 +89,7 @@ const DefaultVideo = ({
           style={videoStyle}
           resizeMode="cover"
           posterResizeMode="cover"
+          ignoreSilentSwitch="ignore"
           paused={paused}
           onLoad={() => {
             onLoaded && onLoaded();
