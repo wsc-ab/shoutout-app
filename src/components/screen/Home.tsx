@@ -11,15 +11,15 @@ import Welcome from './Welcome';
 
 const Home = () => {
   const {authUserData, loaded} = useContext(AuthUserContext);
-  const [showTip, setShowTip] = useState(true);
+  const [welcome, setWelcome] = useState(true);
 
   useEffect(() => {
-    const welcomeViewed = authUserData?.logs?.some(
+    const isWelcomeViewed = authUserData?.logs?.some(
       ({name}: {name: string}) => name === 'viewedWelcome',
     );
 
-    setShowTip(!welcomeViewed);
-  }, [authUserData]);
+    setWelcome(pre => (pre ? isWelcomeViewed : false));
+  }, [authUserData?.logs]);
 
   if (!loaded) {
     return null;
@@ -30,7 +30,7 @@ const Home = () => {
   }
 
   const onWelcomeDone = async () => {
-    setShowTip(false);
+    setWelcome(false);
 
     await addLog({
       id: authUserData.id,
@@ -39,7 +39,7 @@ const Home = () => {
     });
   };
 
-  if (showTip) {
+  if (welcome) {
     return <Welcome onDone={onWelcomeDone} />;
   }
 
