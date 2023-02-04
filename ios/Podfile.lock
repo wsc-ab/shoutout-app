@@ -1116,7 +1116,7 @@ PODS:
     - Firebase/Storage (= 10.4.0)
     - React-Core
     - RNFBApp
-  - RNSVG (13.7.0):
+  - RNSVG (13.8.0):
     - React-Core
   - Yoga (1.14.0)
 
@@ -1366,7 +1366,7 @@ SPEC CHECKSUMS:
   RNFBFunctions: ee407c4f3bd3406a51fb7ea4b755d50816098729
   RNFBMessaging: c983bb0a37a7a2570236ea6de7ca4442944a43af
   RNFBStorage: d0494ec4981c39f12e72719499a7717dfefd86eb
-  RNSVG: d787d64ca06b9158e763ad2638a8c4edce00782a
+  RNSVG: c1e76b81c76cdcd34b4e1188852892dc280eb902
   Yoga: 99caf8d5ab45e9d637ee6e0174ec16fbbb01bcfc
 
 PODFILE CHECKSUM: 48c6e5234bd59074c64249a51f28252ded63e06b
