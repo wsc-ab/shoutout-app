@@ -19,7 +19,7 @@ import LocationButton from './LocationButton';
 
 type TProps = {
   users: {
-    name: string;
+    displayName: string;
     id: string;
     thumbnail?: string;
     location?: {name: string};
@@ -74,7 +74,10 @@ const ContributorsButton = ({users, onPress, index, style}: TProps) => {
                 <DefaultIcon icon="user" style={styles.icon} />
               </View>
               <View style={styles.texts}>
-                <DefaultText title={item.name} textStyle={styles.nameText} />
+                <DefaultText
+                  title={item.displayName}
+                  textStyle={styles.nameText}
+                />
                 <DefaultText title={getTimeSinceTimestamp(item.addedAt)} />
                 <LocationButton location={item.location} />
               </View>

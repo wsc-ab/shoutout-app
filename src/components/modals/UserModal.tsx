@@ -73,7 +73,7 @@ const UserModal = ({id, onCancel}: TProps) => {
       )}
       {data && (
         <DefaultForm
-          title={data.name}
+          title={data.displayName}
           left={{
             onPress: onCancel,
           }}>

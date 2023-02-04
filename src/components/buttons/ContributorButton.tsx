@@ -11,7 +11,7 @@ type TProps = {
   item: {
     id: string;
     path: string;
-    user: {id: string; name: string};
+    user: {id: string; displayName: string};
     location?: TLocation;
     addedAt: TTimestamp;
   };
@@ -24,7 +24,10 @@ const ContributorButton = ({item, style}: TProps) => {
       <View style={styles.container}>
         <DefaultIcon icon="user" style={styles.icon} />
         <View>
-          <DefaultText title={item.user.name} textStyle={styles.nameText} />
+          <DefaultText
+            title={item.user.displayName}
+            textStyle={styles.nameText}
+          />
           <LocationButton location={item.location} />
           <DefaultText title={getTimeSinceTimestamp(item.addedAt)} />
         </View>
