@@ -8,7 +8,7 @@ import storage from '@react-native-firebase/storage';
 export let firebaseFunctions: FirebaseFunctionsTypes.Module;
 
 export const initFirebase = () => {
-  const useEmulator = !!__DEV__;
+  const useEmulator = !__DEV__;
   const region = 'us-central1';
   // firestore setting that works for both ios and android simulators
   if (useEmulator) {
