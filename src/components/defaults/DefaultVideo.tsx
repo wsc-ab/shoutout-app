@@ -68,6 +68,7 @@ const DefaultVideo = ({
         source={{uri}}
         style={videoStyle}
         resizeMode="cover"
+        posterResizeMode="cover"
         paused={paused}
         onLoad={() => {
           onLoaded && onLoaded();
