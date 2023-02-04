@@ -2,6 +2,7 @@ import auth from '@react-native-firebase/auth';
 import React, {useContext, useState} from 'react';
 import {RefreshControl, ScrollView, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
+import ModalContext from '../../contexts/Modal';
 
 import {deleteUser} from '../../functions/User';
 
@@ -17,11 +18,13 @@ type TProps = {
 
 const AuthUserModal = ({onCancel}: TProps) => {
   const {onSignOut, authUserData, onReload} = useContext(AuthUserContext);
+  const {onUpdate} = useContext(ModalContext);
 
   const onDelete = async () => {
     const onPress = async () => {
       try {
         await deleteUser({user: {id: authUserData.id}});
+        onUpdate(undefined);
         onSignOut();
       } catch (error) {
         DefaultAlert({
@@ -121,7 +124,10 @@ const AuthUserModal = ({onCancel}: TProps) => {
           />
           <DefaultText
             title="Sign out"
-            onPress={onSignOut}
+            onPress={() => {
+              onUpdate(undefined);
+              onSignOut();
+            }}
             style={{marginTop: 20}}
           />
           <DefaultText

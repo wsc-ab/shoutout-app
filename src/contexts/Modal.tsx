@@ -16,6 +16,8 @@ const ModalProvider = ({children}: TProps) => {
 
   const onUpdate = (newModal?: string) => setModal(newModal);
 
+  console.log(modal, 'm');
+
   return (
     <ModalContext.Provider
       value={{
