@@ -18,8 +18,6 @@ const Home = () => {
       ({name}: {name: string}) => name === 'viewedWelcome',
     );
 
-    console.log(welcomeViewed, 'welcomeViewed');
-
     setShowTip(!welcomeViewed);
   }, [authUserData]);
 
