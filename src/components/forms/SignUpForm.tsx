@@ -23,7 +23,7 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
   const {text, email} = defaultSchema();
 
   const schema = object({
-    id: text({min: 4, max: 20, required: true}),
+    displayName: text({min: 4, max: 20, required: true}),
     email: email({required: true}),
     code: text({min: 6, max: 6, required: true}),
     password: text({min: 8, required: true}),
@@ -36,7 +36,7 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      id: '',
+      displayName: '',
       email: '',
       code: '',
       password: '',
@@ -60,13 +60,13 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
   }, [phoneNumber]);
 
   const onSubmit = async ({
-    id: name,
+    displayName,
     email: inputEmail,
     password,
     code,
     link,
   }: {
-    id: string;
+    displayName: string;
     email: string;
     password: string;
     code: string;
@@ -77,7 +77,7 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
     try {
       await createUser({
         user: {
-          name,
+          displayName,
           id: userId,
           phoneNumber,
           email: inputEmail,
@@ -154,9 +154,9 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
         />
         <ControllerText
           control={control}
-          name="id"
+          name="displayName"
           title="ID"
-          errors={errors.id}
+          errors={errors.displayName}
           autoCapitalize="none"
           autoComplete="username"
           placeholder="airballoon"
