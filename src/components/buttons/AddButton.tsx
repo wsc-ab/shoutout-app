@@ -4,7 +4,7 @@ import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import {addMoment} from '../../functions/Moment';
 import {TStyleView} from '../../types/Style';
-import {getCurrentLocation} from '../../utils/Location';
+import {getLatLng} from '../../utils/Location';
 import {uploadVideo} from '../../utils/Video';
 import DefaultAlert from '../defaults/DefaultAlert';
 import {defaultRed} from '../defaults/DefaultColors';
@@ -27,7 +27,7 @@ const AddButton = ({id, style}: TProps) => {
       setSubmitting(true);
       onUpdate('reply');
 
-      const location = await getCurrentLocation();
+      const latlng = await getLatLng();
 
       const {uploaded} = await uploadVideo({
         authUserData,
@@ -41,7 +41,7 @@ const AddButton = ({id, style}: TProps) => {
 
       setAdded(true);
       await addMoment({
-        moment: {id, path: uploaded, location},
+        moment: {id, path: uploaded, latlng},
       });
     } catch (error) {
       DefaultAlert({

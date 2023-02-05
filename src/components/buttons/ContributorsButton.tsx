@@ -56,6 +56,7 @@ const ContributorsButton = ({users, onPress, index, style}: TProps) => {
           const isCurrent = elIndex === index;
           return (
             <Pressable
+              key={item.id + elIndex}
               onPress={() => {
                 if (isCurrent) {
                   setUserId(item.id);
@@ -68,25 +69,24 @@ const ContributorsButton = ({users, onPress, index, style}: TProps) => {
                 styles.container,
                 {width: (width - 20) / 2},
                 isCurrent && styles.current,
-              ]}
-              key={item.id + elIndex}>
-              <View>
+              ]}>
+              <LocationButton location={item.location} />
+              <View style={styles.body}>
                 <DefaultIcon icon="user" style={styles.icon} />
-              </View>
-              <View style={styles.texts}>
-                <DefaultText
-                  title={item.displayName}
-                  textStyle={styles.nameText}
+                <View style={styles.texts}>
+                  <DefaultText
+                    title={item.displayName}
+                    textStyle={styles.nameText}
+                  />
+                  <DefaultText title={getTimeSinceTimestamp(item.addedAt)} />
+                </View>
+                <FollowButton
+                  user={{
+                    id: item.id,
+                  }}
+                  style={styles.follow}
                 />
-                <DefaultText title={getTimeSinceTimestamp(item.addedAt)} />
-                <LocationButton location={item.location} />
               </View>
-              <FollowButton
-                user={{
-                  id: item.id,
-                }}
-                style={styles.follow}
-              />
             </Pressable>
           );
         }}
@@ -110,16 +110,18 @@ export default ContributorsButton;
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 5,
     marginRight: 10,
     padding: 10,
     backgroundColor: defaultBlack.lv5,
     borderRadius: 10,
-    flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-
     flex: 1,
+  },
+  body: {
+    flexDirection: 'row',
+    marginTop: 5,
+    alignItems: 'flex-start',
   },
   contentContainer: {paddingHorizontal: 10},
   icon: {

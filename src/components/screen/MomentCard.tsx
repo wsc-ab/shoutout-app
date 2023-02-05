@@ -88,7 +88,7 @@ const MomentCard = ({moment, style, inView}: TProps) => {
     }: {
       user: {id: string; name: string; thumbnail?: string};
       addedAt: TTimestamp;
-      location: TLocation;
+      location?: TLocation;
     }) => ({...user, addedAt, location}),
   );
 
@@ -116,7 +116,6 @@ const MomentCard = ({moment, style, inView}: TProps) => {
           item: {
             id: string;
             path: string;
-            location: TLocation;
             user: {id: string; name: string};
             likeFrom: {ids: string[]; number: number};
             addedAt: TTimestamp;
@@ -131,7 +130,6 @@ const MomentCard = ({moment, style, inView}: TProps) => {
                   style={styles.index}
                 />
               </View>
-
               <DefaultVideo
                 path={item.path}
                 videoStyle={{height, width}}
@@ -150,7 +148,6 @@ const MomentCard = ({moment, style, inView}: TProps) => {
                     style={styles.button}
                   />
                   <AddButton id={item.id} style={styles.button} />
-
                   <ReportButton
                     moment={{
                       id: item.id,

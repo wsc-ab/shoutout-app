@@ -12,10 +12,7 @@ const Landing = ({style}: TProps) => {
     <View style={style}>
       <View style={styles.texts}>
         <DefaultText title="bâton" textStyle={styles.titleText} />
-        <DefaultText
-          title="connect live moments"
-          textStyle={styles.sloganText}
-        />
+        <DefaultText title="share live moments" textStyle={styles.sloganText} />
         <DefaultText
           title="Enter"
           onPress={() => setModal('enter')}

@@ -1,11 +1,9 @@
 import {Alert, PermissionsAndroid, Platform} from 'react-native';
 import GeoLocation from 'react-native-geolocation-service';
 import DefaultAlert from '../components/defaults/DefaultAlert';
-import {TLocation} from '../types/Firebase';
+import {TLatLng} from '../types/Firebase';
 
-export const getCurrentLocation: () => Promise<
-  TLocation | undefined
-> = async () => {
+export const getLatLng: () => Promise<TLatLng | undefined> = async () => {
   const isPermitted = await checkLocationPermission();
 
   if (!isPermitted) {

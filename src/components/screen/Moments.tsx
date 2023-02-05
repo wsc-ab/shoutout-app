@@ -57,8 +57,10 @@ const Moments = ({style}: TProps) => {
         const {moments} = await getMoments({pagination: {number: 10}});
 
         setData(pre => {
+          const copy = [...pre];
           if (status === 'loadMore') {
-            return [...pre.splice(0, Math.floor(pre.length / 2)), ...moments];
+            copy.splice(0, Math.floor(pre.length / 2) - 1);
+            return [...copy, ...moments];
           }
           return moments;
         });

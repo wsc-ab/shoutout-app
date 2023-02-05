@@ -1,11 +1,11 @@
-import {TLocation} from '../types/Firebase';
+import {TLatLng} from '../types/Firebase';
 import {firebaseFunctions} from '../utils/Firebase';
 
 export const createMoment = async (input: {
   moment: {
     id: string;
     path: string;
-    location?: TLocation;
+    latlng?: TLatLng;
   };
 }) => {
   const {data} = await firebaseFunctions.httpsCallable('createMoment')(input);
@@ -73,7 +73,7 @@ export const addMoment = async (input: {
   moment: {
     id: string;
     path: string;
-    location?: TLocation;
+    latlng?: TLatLng;
   };
 }) => {
   const {data} = await firebaseFunctions.httpsCallable('addMoment')(input);
