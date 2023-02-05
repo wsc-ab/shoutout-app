@@ -96,9 +96,13 @@ const AuthUserProvider = ({children}: TProps) => {
   }, [authUserData?.reported.items]);
 
   const onSignOut = async () => {
-    await firebase.auth().signOut();
-    setAuthUser(undefined);
-    setAuthUserData(undefined);
+    try {
+      await firebase.auth().signOut();
+      setAuthUser(undefined);
+      setAuthUserData(undefined);
+    } catch (error) {
+      DefaultAlert({title: 'Failed to sign out'});
+    }
   };
 
   const addReportContent = (path: string) =>

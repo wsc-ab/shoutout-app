@@ -131,7 +131,6 @@ const Moments = ({style}: TProps) => {
           return (
             <MomentCard
               moment={item}
-              style={styles.card}
               inView={modal ? false : elIndex === index}
             />
           );
@@ -144,7 +143,6 @@ const Moments = ({style}: TProps) => {
 export default Moments;
 
 const styles = StyleSheet.create({
-  card: {flex: 1},
   noData: {flex: 1, justifyContent: 'center', alignItems: 'center'},
   refresh: {marginTop: 10},
 });

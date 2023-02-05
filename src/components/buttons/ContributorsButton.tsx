@@ -11,7 +11,6 @@ import ModalContext from '../../contexts/Modal';
 import {TTimestamp} from '../../types/Firebase';
 import {getTimeSinceTimestamp} from '../../utils/Date';
 import {defaultBlack} from '../defaults/DefaultColors';
-import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
 import UserModal from '../modals/UserModal';
 import FollowButton from './FollowButton';
@@ -67,26 +66,23 @@ const ContributorsButton = ({users, onPress, index, style}: TProps) => {
               }}
               style={[
                 styles.container,
-                {width: (width - 20) / 2},
+                {width: (width - 30) / 2},
                 isCurrent && styles.current,
               ]}>
-              <LocationButton location={item.location} />
               <View style={styles.body}>
-                <DefaultIcon icon="user" style={styles.icon} />
-                <View style={styles.texts}>
-                  <DefaultText
-                    title={item.displayName}
-                    textStyle={styles.nameText}
-                  />
-                  <DefaultText title={getTimeSinceTimestamp(item.addedAt)} />
-                </View>
-                <FollowButton
-                  user={{
-                    id: item.id,
-                  }}
-                  style={styles.follow}
+                <DefaultText
+                  title={item.displayName}
+                  textStyle={styles.nameText}
                 />
+                <LocationButton location={item.location} />
+                <DefaultText title={getTimeSinceTimestamp(item.addedAt)} />
               </View>
+              <FollowButton
+                user={{
+                  id: item.id,
+                }}
+                style={styles.follow}
+              />
             </Pressable>
           );
         }}
@@ -114,28 +110,18 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: defaultBlack.lv5,
     borderRadius: 10,
+    flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    flex: 1,
   },
   body: {
-    flexDirection: 'row',
-    marginTop: 5,
+    flex: 1,
     alignItems: 'flex-start',
   },
   contentContainer: {paddingHorizontal: 10},
-  icon: {
-    width: 50,
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 50,
-    marginRight: 5,
-    backgroundColor: defaultBlack.lv3,
-  },
-  texts: {flex: 1},
+
   current: {backgroundColor: defaultBlack.lv2},
-  nameText: {fontWeight: 'bold'},
+  nameText: {fontWeight: 'bold', fontSize: 16},
   follow: {
     marginLeft: 10,
     padding: 0,

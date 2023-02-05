@@ -6,11 +6,7 @@ import DefaultText from '../defaults/DefaultText';
 type TProps = {location?: TLocation; style?: TStyleView};
 
 const LocationButton = ({location, style}: TProps) => {
-  if (!location?.formatted) {
-    return null;
-  }
-
-  return <DefaultText title={location.formatted} style={style} />;
+  return <DefaultText title={location?.formatted ?? 'Earth'} style={style} />;
 };
 
 export default LocationButton;

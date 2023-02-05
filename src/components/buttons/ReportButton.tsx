@@ -51,11 +51,13 @@ const ReportButton = ({moment, onSuccess, style}: TProps) => {
   const onUnreport = async () => {
     try {
       setIsReported(false);
+      removeReportContent(moment.path);
       await deleteReport({
         moment,
       });
     } catch (error) {
       setIsReported(true);
+      addReportContent(moment.path);
       DefaultAlert({
         title: 'Error',
         message: (error as {message: string}).message,

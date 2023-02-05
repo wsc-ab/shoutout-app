@@ -32,7 +32,7 @@ type TProps = {
 
 const MomentCard = ({moment, style, inView}: TProps) => {
   const {height, width} = useWindowDimensions();
-  const [data, setData] = useState<TDocData>(moment);
+  const [data, setData] = useState<TDocData>();
   const ref = useRef<FlatList>(null);
 
   const [index, setIndex] = useState(0);
@@ -80,7 +80,15 @@ const MomentCard = ({moment, style, inView}: TProps) => {
     ],
   );
 
-  const allContributors = data.contents.items.map(
+  const onContributor = (newIndex: number) => {
+    ref.current?.scrollToIndex({index: newIndex, animated: true});
+  };
+
+  if (!data) {
+    return null;
+  }
+
+  const users = data.contents.items.map(
     ({
       user,
       addedAt,
@@ -91,10 +99,6 @@ const MomentCard = ({moment, style, inView}: TProps) => {
       location?: TLocation;
     }) => ({...user, addedAt, location}),
   );
-
-  const onContributor = (newIndex: number) => {
-    ref.current?.scrollToIndex({index: newIndex, animated: true});
-  };
 
   return (
     <View style={style}>
@@ -123,7 +127,7 @@ const MomentCard = ({moment, style, inView}: TProps) => {
           index: number;
         }) => {
           return (
-            <View>
+            <View style={{height, width}}>
               <View style={styles.top}>
                 <DefaultText
                   title={`${index + 1}/${data.contents.number}`}
@@ -162,11 +166,12 @@ const MomentCard = ({moment, style, inView}: TProps) => {
           );
         }}
       />
+
       <ContributorsButton
-        users={allContributors}
+        users={users}
         index={index}
         onPress={onContributor}
-        style={styles.contributors}
+        style={styles.users}
       />
     </View>
   );
@@ -202,5 +207,5 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   button: {flex: 1, alignItems: 'center'},
-  contributors: {position: 'absolute', bottom: 90},
+  users: {position: 'absolute', bottom: 90},
 });

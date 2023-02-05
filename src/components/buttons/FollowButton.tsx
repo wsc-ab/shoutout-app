@@ -52,14 +52,14 @@ const FollowButton = ({user, style}: TProps) => {
 
   useEffect(() => {
     setFollowed(authUserData.followTo.ids.includes(user.id));
-  }, [authUserData.followTo.ids, user.id]);
+  }, [authUserData.followTo.ids, authUserData.id, user.id]);
 
   return (
     <View style={[styles.container, style]}>
-      {user.id !== authUserData.id && (
+      {user.id === authUserData.id && (
         <DefaultIcon icon={'check'} style={styles.icon} />
       )}
-      {user.id === authUserData.id && (
+      {user.id !== authUserData.id && (
         <DefaultIcon
           icon={followed ? 'check' : 'plus'}
           onPress={followed ? onUnfollow : onFollow}
