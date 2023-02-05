@@ -13,10 +13,11 @@ import DefaultText from '../defaults/DefaultText';
 
 type TProps = {
   id: string;
+  number: number;
   style?: TStyleView;
 };
 
-const AddButton = ({id, style}: TProps) => {
+const AddButton = ({id, number, style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
   const {onUpdate} = useContext(ModalContext);
   const [submitting, setSubmitting] = useState(false);
@@ -63,14 +64,17 @@ const AddButton = ({id, style}: TProps) => {
   }, [authUserData.contributeTo.ids, id]);
 
   return (
-    <View style={style}>
+    <View style={[styles.container, style]}>
       {!submitting && (
-        <DefaultIcon
-          icon="reply-all"
-          onPress={onAdd}
-          size={25}
-          color={added ? defaultRed.lv2 : 'white'}
-        />
+        <View style={[styles.container, style]}>
+          <DefaultIcon
+            icon="reply-all"
+            onPress={onAdd}
+            size={25}
+            color={added ? defaultRed.lv2 : 'white'}
+          />
+          <DefaultText title={number.toString()} />
+        </View>
       )}
       {submitting && progress === 0 && <ActivityIndicator style={styles.act} />}
       {submitting && progress !== 0 && (
@@ -88,4 +92,9 @@ export default AddButton;
 const styles = StyleSheet.create({
   progress: {padding: 10},
   act: {paddingHorizontal: 10},
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });

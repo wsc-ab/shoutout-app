@@ -15,7 +15,6 @@ type TProps = {
 
 const FollowButton = ({user, style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
-
   const onFollow = async () => {
     try {
       setFollowed(true);

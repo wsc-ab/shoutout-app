@@ -12,4 +12,6 @@ export const defaultBlack = {
   lv5: '#6e6e75',
 };
 
+export const defaultTransparentGray = 'rgba(52, 52, 52, 0.8)';
+
 export const placeholderTextColor = 'gray';

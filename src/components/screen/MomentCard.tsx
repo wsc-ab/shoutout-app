@@ -21,7 +21,7 @@ import ContributorsButton from '../buttons/ContributorsButton';
 import LikeButton from '../buttons/LikeButton';
 import ReportButton from '../buttons/ReportButton';
 import DefaultAlert from '../defaults/DefaultAlert';
-import DefaultText from '../defaults/DefaultText';
+
 import DefaultVideo from '../defaults/DefaultVideo';
 
 type TProps = {
@@ -128,45 +128,40 @@ const MomentCard = ({moment, style, inView}: TProps) => {
         }) => {
           return (
             <View style={{height, width}}>
-              <View style={styles.top}>
-                <DefaultText
-                  title={`${index + 1}/${data.contents.number}`}
-                  style={styles.index}
-                />
-              </View>
               <DefaultVideo
                 path={item.path}
                 videoStyle={{height, width}}
                 play={elIndex === index && inView}
                 repeat
               />
-              <View style={styles.nav}>
-                <View style={styles.buttons}>
-                  <LikeButton
-                    moment={{
-                      id: item.id,
-                      path: item.path,
-                      user: {id: item.user.id},
-                      likeFrom: item.likeFrom,
-                    }}
-                    style={styles.button}
-                  />
-                  <AddButton id={item.id} style={styles.button} />
-                  <ReportButton
-                    moment={{
-                      id: item.id,
-                      path: item.path,
-                      user: {id: item.user.id},
-                    }}
-                    style={styles.button}
-                  />
-                </View>
+              <View style={styles.buttons}>
+                <LikeButton
+                  moment={{
+                    id: item.id,
+                    path: item.path,
+                    user: {id: item.user.id},
+                    likeFrom: item.likeFrom,
+                  }}
+                  style={styles.button}
+                />
+                <AddButton
+                  id={item.id}
+                  number={data.contents.number}
+                  style={styles.button}
+                />
+                <ReportButton
+                  moment={{
+                    id: item.id,
+                    path: item.path,
+                    user: {id: item.user.id},
+                  }}
+                  style={styles.button}
+                />
               </View>
             </View>
           );
         }}
       />
-
       <ContributorsButton
         users={users}
         index={index}
@@ -180,31 +175,16 @@ const MomentCard = ({moment, style, inView}: TProps) => {
 export default MomentCard;
 
 const styles = StyleSheet.create({
-  top: {
-    top: 80,
-    position: 'absolute',
+  buttons: {
+    flexDirection: 'row',
     alignItems: 'center',
-    zIndex: 100,
-    left: 0,
-    right: 0,
-  },
-  nav: {
+    marginTop: 10,
     bottom: 40,
     paddingHorizontal: 10,
     position: 'absolute',
     zIndex: 100,
     left: 0,
     right: 0,
-  },
-  index: {
-    flex: 1,
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  buttons: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 10,
   },
   button: {flex: 1, alignItems: 'center'},
   users: {position: 'absolute', bottom: 90},
