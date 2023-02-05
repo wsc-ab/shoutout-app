@@ -23,16 +23,15 @@ const LikeButton = ({moment, style}: TProps) => {
   const [number, setNumber] = useState(moment.likeFrom.number);
   const [liked, setLiked] = useState(false);
 
+  useEffect(() => {
+    setNumber(moment.likeFrom.number);
+  }, [moment.likeFrom.number]);
+
   const onLike = async () => {
     try {
       setLiked(true);
       setNumber(pre => pre + 1);
-      const {
-        moment: {
-          likeFrom: {number: newNumber},
-        },
-      } = await addLike({moment});
-      setNumber(newNumber);
+      await addLike({moment});
     } catch (error) {
       if ((error as {message: string}).message === "moment doesn't exist") {
         DefaultAlert({
@@ -45,7 +44,7 @@ const LikeButton = ({moment, style}: TProps) => {
         });
       }
       setLiked(false);
-      setNumber(moment.likeFrom.number);
+      setNumber(pre => pre - 1);
     }
   };
 
@@ -53,21 +52,16 @@ const LikeButton = ({moment, style}: TProps) => {
     try {
       setLiked(false);
       setNumber(pre => pre - 1);
-      const {
-        moment: {
-          likeFrom: {number: newNumber},
-        },
-      } = await removeLike({
+      await removeLike({
         moment,
       });
-      setNumber(newNumber);
     } catch (error) {
       setLiked(true);
       DefaultAlert({
         title: 'Error',
         message: (error as {message: string}).message,
       });
-      setNumber(moment.likeFrom.number);
+      setNumber(pre => pre + 1);
     }
   };
 

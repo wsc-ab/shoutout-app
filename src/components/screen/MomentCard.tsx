@@ -147,7 +147,7 @@ const MomentCard = ({moment, style, inView}: TProps) => {
                       id: item.id,
                       path: item.path,
                       user: {id: item.user.id},
-                      likeFrom: {number: item.likeFrom.number},
+                      likeFrom: item.likeFrom,
                     }}
                     style={styles.button}
                   />
