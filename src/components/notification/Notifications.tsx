@@ -129,7 +129,7 @@ export default Notifications;
 const styles = StyleSheet.create({
   popup: {
     padding: 20,
-    backgroundColor: defaultBlack.lv5,
+    backgroundColor: defaultBlack.lv5(1),
     borderRadius: 10,
     flexDirection: 'row',
     zIndex: 100,
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     padding: 20,
     borderRadius: 10,
-    backgroundColor: defaultBlack.lv5,
+    backgroundColor: defaultBlack.lv5(1),
     flexDirection: 'row',
     zIndex: 1,
     margin: 15,

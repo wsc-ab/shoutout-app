@@ -10,7 +10,7 @@ import {
 import ModalContext from '../../contexts/Modal';
 import {TTimestamp} from '../../types/Firebase';
 import {getTimeSinceTimestamp} from '../../utils/Date';
-import {defaultBlack, defaultTransparentGray} from '../defaults/DefaultColors';
+import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultText from '../defaults/DefaultText';
 import UserModal from '../modals/UserModal';
 import FollowButton from './FollowButton';
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   container: {
     marginRight: 10,
     padding: 10,
-    backgroundColor: defaultTransparentGray,
+    backgroundColor: defaultBlack.lv2(0.5),
     borderRadius: 10,
     flexDirection: 'row',
     justifyContent: 'flex-start',
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {paddingHorizontal: 10},
 
-  current: {backgroundColor: defaultBlack.lv2},
+  current: {backgroundColor: defaultBlack.lv2(0.9)},
   nameText: {fontWeight: 'bold', fontSize: 16},
   follow: {
     marginLeft: 10,

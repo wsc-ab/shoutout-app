@@ -20,7 +20,7 @@ export default DefaultModal;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: defaultBlack.lv2,
+    backgroundColor: defaultBlack.lv2(1),
     paddingHorizontal: 10,
     flex: 1,
   },

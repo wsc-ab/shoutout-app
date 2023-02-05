@@ -123,5 +123,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     resizeMode: 'cover',
   },
-  loading: {backgroundColor: defaultBlack.lv3},
+  loading: {backgroundColor: defaultBlack.lv3(1)},
 });

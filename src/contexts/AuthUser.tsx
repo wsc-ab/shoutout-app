@@ -101,7 +101,7 @@ const AuthUserProvider = ({children}: TProps) => {
       setAuthUser(undefined);
       setAuthUserData(undefined);
     } catch (error) {
-      DefaultAlert({title: 'Failed to sign out'});
+      !__DEV__ && DefaultAlert({title: 'Failed to sign out'});
     }
   };
 

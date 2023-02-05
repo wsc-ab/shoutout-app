@@ -1,7 +1,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {TStyleView} from '../../types/Style';
-import {defaultBlack} from './DefaultColors';
 
 type TProps = {
   style?: TStyleView;
