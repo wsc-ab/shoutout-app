@@ -13,6 +13,7 @@ import {
   TDocData,
   TDocSnapshot,
   TLocation,
+  TObject,
   TTimestamp,
 } from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
@@ -105,17 +106,17 @@ const MomentCard = ({moment, style, inView}: TProps) => {
     return null;
   }
 
-  const getItemLayout = (_, index) => ({
+  const getItemLayout = (_: any[] | null | undefined, itemIndex: number) => ({
     length: width,
-    offset: width * index,
-    index,
+    offset: width * itemIndex,
+    index: itemIndex,
   });
 
   return (
     <View style={style}>
       <FlatList
         ref={ref}
-        data={data.contents.items}
+        data={data.contents.items as TObject[]}
         initialNumToRender={1}
         windowSize={3}
         maxToRenderPerBatch={1}

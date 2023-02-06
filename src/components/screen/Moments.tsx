@@ -34,6 +34,7 @@ const Moments = ({style}: TProps) => {
   }: {
     viewableItems: ViewToken[];
   }) => {
+    console.log(status, 's');
     if (viewableItems && viewableItems.length > 0) {
       setIndex(viewableItems[0].index ?? 0);
     }
@@ -48,21 +49,40 @@ const Moments = ({style}: TProps) => {
     ],
   );
 
+  console.log(data.length, index, status, 'sss');
+
   useEffect(() => {
     const load = async () => {
       try {
-        if (status === 'loading') {
-          setData([]);
-        }
+        const {moments} = await getMoments({pagination: {number: 5}});
 
-        const {moments} = await getMoments({pagination: {number: 10}});
+        setData(moments);
+        console.log('set data called');
+
+        setStatus('loaded');
+      } catch (error) {
+        DefaultAlert({
+          title: 'Error',
+          message: (error as {message: string}).message,
+        });
+
+        setStatus('error');
+      }
+    };
+
+    if (status === 'loading') {
+      load();
+    }
+  }, [status]);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const {moments} = await getMoments({pagination: {number: 5}});
 
         setData(pre => {
           const copy = [...pre];
-          if (status === 'loadMore') {
-            return [...copy, ...moments];
-          }
-          return moments;
+          return [...copy, ...moments];
         });
 
         setStatus('loaded');
@@ -78,12 +98,10 @@ const Moments = ({style}: TProps) => {
       }
     };
 
-    if (status === 'loading' || status === 'loadMore') {
+    if (status === 'loadMore') {
       load();
     }
   }, [status]);
-
-  console.log(data.length, index, 'data length');
 
   if (status === 'error') {
     return (
@@ -123,8 +141,9 @@ const Moments = ({style}: TProps) => {
     );
   };
 
-  const onEndReached = () =>
+  const onEndReached = () => {
     setStatus(data.length >= 50 ? 'loading' : 'loadMore');
+  };
 
   const keyExtractor = (item, elIndex) => item.id + elIndex;
 
@@ -139,6 +158,7 @@ const Moments = ({style}: TProps) => {
         snapToInterval={height}
         snapToAlignment={'start'}
         showsVerticalScrollIndicator={false}
+        onEndReachedThreshold={0.2}
         decelerationRate="fast"
         keyExtractor={keyExtractor}
         refreshControl={
