@@ -54,13 +54,13 @@ const Moments = ({style}: TProps) => {
         if (status === 'loading') {
           setData([]);
         }
+
         const {moments} = await getMoments({pagination: {number: 10}});
 
         setData(pre => {
           const copy = [...pre];
           if (status === 'loadMore') {
             copy.splice(0, Math.floor(pre.length / 2) - 1);
-            console.log(pre.length, copy.length, status, 'len');
 
             return [...copy, ...moments];
           }
@@ -69,6 +69,8 @@ const Moments = ({style}: TProps) => {
 
         setStatus('loaded');
       } catch (error) {
+        console.log(error, 'e');
+
         DefaultAlert({
           title: 'Error',
           message: (error as {message: string}).message,
