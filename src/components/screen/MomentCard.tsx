@@ -100,12 +100,23 @@ const MomentCard = ({moment, style, inView}: TProps) => {
     }) => ({...user, addedAt, location}),
   );
 
+  const onEnd = (curIndex: number) => {
+    ref.current?.scrollToIndex({
+      index: (curIndex + 1) % data.contents.items.length,
+      animated: true,
+    });
+  };
+
+  if (!data) {
+    return null;
+  }
+
   return (
     <View style={style}>
       <FlatList
         ref={ref}
         data={data.contents.items}
-        initialNumToRender={1}
+        initialNumToRender={5}
         horizontal
         snapToInterval={width}
         showsHorizontalScrollIndicator={false}
@@ -133,7 +144,8 @@ const MomentCard = ({moment, style, inView}: TProps) => {
                 path={item.path}
                 videoStyle={{height, width}}
                 play={elIndex === index && inView}
-                repeat
+                onEnd={() => onEnd(elIndex)}
+                repeat={data.contents.items.length === 1}
               />
               <View style={styles.buttons}>
                 <LikeButton
