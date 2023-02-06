@@ -9,13 +9,14 @@ import {
   View,
 } from 'react-native';
 
-import {TLocation, TObject, TTimestamp} from '../../types/Firebase';
+import {TDocData, TLocation, TTimestamp} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
 import ContentCard from '../screen/ContentCard';
+import RollModal from './RollModal';
 
 type TProps = {
   id: string;
@@ -23,8 +24,10 @@ type TProps = {
 };
 
 const UserModal = ({id, onCancel}: TProps) => {
-  const [data, setData] = useState<TObject>();
+  const [data, setData] = useState<TDocData>();
   const [status, setStatus] = useState<TStatus>('loading');
+  const [rollId, setRollId] = useState<string>();
+  const [modal, setModal] = useState<'roll'>();
 
   useEffect(() => {
     let isMounted = true;
@@ -103,6 +106,10 @@ const UserModal = ({id, onCancel}: TProps) => {
                 <ContentCard
                   content={{...item, user: {id}}}
                   onDelete={() => setStatus('loading')}
+                  onPress={() => {
+                    setRollId(item.id);
+                    setModal('roll');
+                  }}
                   contentStyle={{
                     width: videoWidth,
                     height: videoHeight,
@@ -113,6 +120,17 @@ const UserModal = ({id, onCancel}: TProps) => {
             ItemSeparatorComponent={() => <View style={styles.seperator} />}
           />
         </DefaultForm>
+      )}
+      {modal === 'roll' && rollId && (
+        <RollModal
+          roll={{
+            id: rollId,
+          }}
+          onCancel={() => {
+            setModal(undefined);
+            setRollId(undefined);
+          }}
+        />
       )}
     </DefaultModal>
   );

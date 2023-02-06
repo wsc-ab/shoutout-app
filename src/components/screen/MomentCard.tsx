@@ -25,12 +25,13 @@ import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultVideo from '../defaults/DefaultVideo';
 
 type TProps = {
-  moment: TDocData;
+  moment: {id: string};
   style?: TStyleView;
   inView: boolean;
+  play?: boolean;
 };
 
-const MomentCard = ({moment, style, inView}: TProps) => {
+const MomentCard = ({moment, play, style, inView}: TProps) => {
   const {height, width} = useWindowDimensions();
   const [data, setData] = useState<TDocData>();
   const ref = useRef<FlatList>(null);
@@ -131,7 +132,7 @@ const MomentCard = ({moment, style, inView}: TProps) => {
               <DefaultVideo
                 path={item.path}
                 videoStyle={{height, width}}
-                play={elIndex === index && inView}
+                play={play ? play : elIndex === index && inView}
                 repeat
               />
               <View style={styles.buttons}>
