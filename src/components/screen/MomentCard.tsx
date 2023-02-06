@@ -33,6 +33,7 @@ type TProps = {
 const MomentCard = ({moment, style, inView}: TProps) => {
   const {height, width} = useWindowDimensions();
   const [data, setData] = useState<TDocData>();
+
   const ref = useRef<FlatList>(null);
 
   const [index, setIndex] = useState(0);
@@ -100,13 +101,6 @@ const MomentCard = ({moment, style, inView}: TProps) => {
     }) => ({...user, addedAt, location}),
   );
 
-  const onEnd = (curIndex: number) => {
-    ref.current?.scrollToIndex({
-      index: (curIndex + 1) % data.contents.items.length,
-      animated: true,
-    });
-  };
-
   if (!data) {
     return null;
   }
@@ -144,8 +138,6 @@ const MomentCard = ({moment, style, inView}: TProps) => {
                 path={item.path}
                 videoStyle={{height, width}}
                 play={elIndex === index && inView}
-                onEnd={() => onEnd(elIndex)}
-                repeat={data.contents.items.length === 1}
               />
               <View style={styles.buttons}>
                 <LikeButton
