@@ -13,6 +13,7 @@ import {StatusBar, StyleSheet, View} from 'react-native';
 import Home from './src/components/screen/Home';
 import {AuthUserProvider} from './src/contexts/AuthUser';
 import {ModalProvider} from './src/contexts/Modal';
+import {UserModalProvider} from './src/contexts/UserModal';
 import {TStatus} from './src/types/Screen';
 import {initFirebase} from './src/utils/Firebase';
 import './src/utils/FontAwesome';
@@ -35,11 +36,13 @@ const App = () => {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
-      <ModalProvider>
-        <AuthUserProvider>
-          <Home />
-        </AuthUserProvider>
-      </ModalProvider>
+      <AuthUserProvider>
+        <ModalProvider>
+          <UserModalProvider>
+            <Home />
+          </UserModalProvider>
+        </ModalProvider>
+      </AuthUserProvider>
     </View>
   );
 };

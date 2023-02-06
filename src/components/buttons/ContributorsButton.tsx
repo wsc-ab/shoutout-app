@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef} from 'react';
 import {
   FlatList,
   Pressable,
@@ -8,11 +8,11 @@ import {
   ViewStyle,
 } from 'react-native';
 import ModalContext from '../../contexts/Modal';
+import UserModalContext from '../../contexts/UserModal';
 import {TTimestamp} from '../../types/Firebase';
 import {getTimeSinceTimestamp} from '../../utils/Date';
 import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultText from '../defaults/DefaultText';
-import UserModal from '../modals/UserModal';
 import FollowButton from './FollowButton';
 import LocationButton from './LocationButton';
 
@@ -40,8 +40,8 @@ const ContributorsButton = ({users, onPress, index, style}: TProps) => {
     }
   }, [index, ref]);
 
-  const {modal, onUpdate} = useContext(ModalContext);
-  const [userId, setUserId] = useState<string>();
+  const {onUpdate} = useContext(ModalContext);
+  const {onUpdate: onUpdateUser} = useContext(UserModalContext);
 
   return (
     <View>
@@ -58,7 +58,7 @@ const ContributorsButton = ({users, onPress, index, style}: TProps) => {
               key={item.id + elIndex}
               onPress={() => {
                 if (isCurrent) {
-                  setUserId(item.id);
+                  onUpdateUser({id: item.id});
                   onUpdate('contributor');
                 } else {
                   onPress(elIndex);
@@ -89,15 +89,6 @@ const ContributorsButton = ({users, onPress, index, style}: TProps) => {
         keyExtractor={(item, elIndex) => item.id + elIndex}
         ref={ref}
       />
-      {modal === 'contributor' && userId && (
-        <UserModal
-          id={userId}
-          onCancel={() => {
-            onUpdate(undefined);
-            setUserId(undefined);
-          }}
-        />
-      )}
     </View>
   );
 };
