@@ -117,6 +117,8 @@ const MomentCard = ({moment, style, inView}: TProps) => {
         ref={ref}
         data={data.contents.items}
         initialNumToRender={1}
+        windowSize={3}
+        maxToRenderPerBatch={1}
         horizontal
         snapToInterval={width}
         showsHorizontalScrollIndicator={false}
