@@ -110,7 +110,7 @@ const MomentCard = ({moment, style, inView}: TProps) => {
       <FlatList
         ref={ref}
         data={data.contents.items}
-        initialNumToRender={5}
+        initialNumToRender={1}
         horizontal
         snapToInterval={width}
         showsHorizontalScrollIndicator={false}
