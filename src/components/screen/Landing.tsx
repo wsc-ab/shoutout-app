@@ -13,7 +13,7 @@ const Landing = ({style}: TProps) => {
       <View style={styles.texts}>
         <DefaultText title="ROLL" textStyle={styles.titleText} />
         <DefaultText
-          title="keep our moments rolling"
+          title="keep moments roll together"
           textStyle={styles.sloganText}
         />
         <DefaultText
