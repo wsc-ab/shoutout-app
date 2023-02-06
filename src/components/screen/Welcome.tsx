@@ -1,14 +1,33 @@
 import {IconProp} from '@fortawesome/fontawesome-svg-core';
-import React from 'react';
-import {FlatList, StyleSheet, useWindowDimensions, View} from 'react-native';
+import React, {useContext, useState} from 'react';
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+} from 'react-native';
+import AuthUserContext from '../../contexts/AuthUser';
+import {addLog} from '../../functions/Log';
 import {TStyleView} from '../../types/Style';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
 
-type TProps = {style?: TStyleView; onDone: () => void};
+type TProps = {style?: TStyleView};
 
-const Welcome = ({style, onDone}: TProps) => {
+const Welcome = ({style}: TProps) => {
   const {height, width} = useWindowDimensions();
+  const [submitting, setSubmitting] = useState(false);
+  const {authUserData} = useContext(AuthUserContext);
+
+  const onDone = async () => {
+    setSubmitting(true);
+    await addLog({
+      id: authUserData.id,
+      collection: 'users',
+      log: {name: 'viewedWelcome', detail: 'user viewed the welcome screen'},
+    });
+  };
 
   const data = [
     {
@@ -69,7 +88,7 @@ const Welcome = ({style, onDone}: TProps) => {
                 />
               )}
 
-              {isLast && (
+              {isLast && !submitting && (
                 <DefaultText
                   title={'OK'}
                   style={{bottom: 100, position: 'absolute'}}
@@ -77,6 +96,7 @@ const Welcome = ({style, onDone}: TProps) => {
                   onPress={item.onPress}
                 />
               )}
+              {isLast && submitting && <ActivityIndicator />}
             </View>
           );
         }}

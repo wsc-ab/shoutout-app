@@ -3,7 +3,6 @@ import {StyleSheet, View} from 'react-native';
 import Moments from './Moments';
 
 import AuthUserContext from '../../contexts/AuthUser';
-import {addLog} from '../../functions/Log';
 import Permission from '../notification/Permission';
 import Header from './Header';
 import Landing from './Landing';
@@ -20,20 +19,12 @@ const Home = () => {
     return <Landing style={styles.container} />;
   }
 
-  const onWelcomeDone = async () => {
-    await addLog({
-      id: authUserData.id,
-      collection: 'users',
-      log: {name: 'viewedWelcome', detail: 'user viewed the welcome screen'},
-    });
-  };
-
   const isWelcomeViewed = authUserData?.logs?.some(
     ({name}: {name: string}) => name === 'viewedWelcome',
   );
 
   if (!isWelcomeViewed) {
-    return <Welcome onDone={onWelcomeDone} />;
+    return <Welcome />;
   }
 
   return (
