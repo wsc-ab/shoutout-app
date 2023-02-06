@@ -12,20 +12,15 @@ type TProps = {
 const RollModal = ({roll: {id}, onCancel}: TProps) => {
   return (
     <DefaultModal>
-      <DefaultIcon
-        icon="angle-left"
-        style={{top: 40, zIndex: 100}}
-        onPress={onCancel}
-      />
-      <MomentCard
-        moment={{id}}
-        inView={true}
-        style={{top: 0, left: 0, right: 0, position: 'absolute'}}
-      />
+      <DefaultIcon icon="angle-left" style={styles.icon} onPress={onCancel} />
+      <MomentCard moment={{id}} inView={true} style={styles.card} />
     </DefaultModal>
   );
 };
 
 export default RollModal;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  icon: {top: 40, zIndex: 100},
+  card: {top: 0, left: 0, right: 0, position: 'absolute'},
+});
