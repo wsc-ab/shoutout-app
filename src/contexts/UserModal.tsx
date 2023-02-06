@@ -52,7 +52,6 @@ const UserModalProvider = ({children}: TProps) => {
         const userData = (
           await firebase.firestore().collection('users').doc(user.id).get()
         ).data();
-        console.log(userData, 'userData');
 
         if (isMounted) {
           setData(userData);
