@@ -109,6 +109,7 @@ const MomentCard = ({moment, play, style, inView}: TProps) => {
         initialNumToRender={1}
         horizontal
         snapToInterval={width}
+        showsHorizontalScrollIndicator={false}
         snapToAlignment={'start'}
         decelerationRate="fast"
         disableIntervalMomentum

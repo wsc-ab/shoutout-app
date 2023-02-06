@@ -60,6 +60,8 @@ const Moments = ({style}: TProps) => {
           const copy = [...pre];
           if (status === 'loadMore') {
             copy.splice(0, Math.floor(pre.length / 2) - 1);
+            console.log(pre.length, copy.length, status, 'len');
+
             return [...copy, ...moments];
           }
           return moments;
@@ -114,6 +116,7 @@ const Moments = ({style}: TProps) => {
         initialNumToRender={1}
         snapToInterval={height}
         snapToAlignment={'start'}
+        showsVerticalScrollIndicator={false}
         decelerationRate="fast"
         keyExtractor={(item, elIndex) => item.id + elIndex}
         refreshControl={
