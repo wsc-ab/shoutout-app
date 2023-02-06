@@ -42,12 +42,9 @@ const ContentCard = ({
         imageStyle={contentStyle}
       />
       <View style={styles.text}>
-        <View>
+        <View style={{flex: 1}}>
           <LocationButton location={content.location} />
-          <DefaultText
-            title={getTimeSinceTimestamp(content.addedAt)}
-            style={style}
-          />
+          <DefaultText title={getTimeSinceTimestamp(content.addedAt)} />
         </View>
         {content.user.id === authUserData.id && (
           <DeleteButton
