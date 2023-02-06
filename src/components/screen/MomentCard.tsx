@@ -26,7 +26,7 @@ import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultVideo from '../defaults/DefaultVideo';
 
 type TProps = {
-  moment: {id: string};
+  moment: TDocData;
   style?: TStyleView;
   inView: boolean;
 };

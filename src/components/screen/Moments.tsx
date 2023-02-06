@@ -26,7 +26,7 @@ const Moments = ({style}: TProps) => {
 
   const [status, setStatus] = useState<TStatus>('loading');
   const {modal} = useContext(ModalContext);
-  const {height} = useWindowDimensions();
+  const {height, width} = useWindowDimensions();
   const [index, setIndex] = useState(0);
 
   const onViewableItemsChanged = ({
@@ -34,7 +34,6 @@ const Moments = ({style}: TProps) => {
   }: {
     viewableItems: ViewToken[];
   }) => {
-    console.log(status, 's');
     if (viewableItems && viewableItems.length > 0) {
       setIndex(viewableItems[0].index ?? 0);
     }
@@ -44,20 +43,19 @@ const Moments = ({style}: TProps) => {
     [
       {
         onViewableItemsChanged,
-        viewabilityConfig: {itemVisiblePercentThreshold: 100},
+        viewabilityConfig: {
+          itemVisiblePercentThreshold: 100,
+        },
       },
     ],
   );
 
-  console.log(data.length, index, status, 'sss');
-
   useEffect(() => {
     const load = async () => {
       try {
-        const {moments} = await getMoments({pagination: {number: 5}});
+        const {moments} = await getMoments({pagination: {number: 10}});
 
         setData(moments);
-        console.log('set data called');
 
         setStatus('loaded');
       } catch (error) {
@@ -78,7 +76,7 @@ const Moments = ({style}: TProps) => {
   useEffect(() => {
     const load = async () => {
       try {
-        const {moments} = await getMoments({pagination: {number: 5}});
+        const {moments} = await getMoments({pagination: {number: 10}});
 
         setData(pre => {
           const copy = [...pre];
@@ -119,7 +117,7 @@ const Moments = ({style}: TProps) => {
   if (status === 'loaded' && data.length === 0) {
     return (
       <View style={styles.noData}>
-        <DefaultText title="No moment found." />
+        <DefaultText title="No roll found." />
         <DefaultText
           title="Reload"
           onPress={() => setStatus('loading')}
@@ -129,38 +127,41 @@ const Moments = ({style}: TProps) => {
     );
   }
 
-  const getItemLayout = (_, itemIndex) => ({
-    length: height,
-    offset: height * itemIndex,
-    index: itemIndex,
-  });
-
-  const renderItem = ({item, index: elIndex}) => {
+  const renderItem = ({
+    item,
+    index: elIndex,
+  }: {
+    item: TDocData;
+    index: number;
+  }) => {
     return (
-      <MomentCard moment={item} inView={modal ? false : elIndex === index} />
+      <View style={{height, width}}>
+        <MomentCard moment={item} inView={modal ? false : elIndex === index} />
+      </View>
     );
   };
 
   const onEndReached = () => {
-    setStatus(data.length >= 50 ? 'loading' : 'loadMore');
+    if (data.length >= 50) {
+      setData([]);
+      setStatus('loading');
+    } else {
+      setStatus('loadMore');
+    }
   };
-
-  const keyExtractor = (item, elIndex) => item.id + elIndex;
 
   return (
     <View style={style}>
       <FlatList
-        data={data.slice(-10)}
+        data={data}
         initialNumToRender={1}
         windowSize={3}
         maxToRenderPerBatch={1}
-        getItemLayout={getItemLayout}
         snapToInterval={height}
         snapToAlignment={'start'}
         showsVerticalScrollIndicator={false}
-        onEndReachedThreshold={0.2}
         decelerationRate="fast"
-        keyExtractor={keyExtractor}
+        keyExtractor={(item, elIndex) => item.id + elIndex}
         refreshControl={
           <RefreshControl
             refreshing={status === 'loading'}
