@@ -20,7 +20,6 @@ const RollModal = ({roll: {id}, onCancel}: TProps) => {
       <MomentCard
         moment={{id}}
         inView={true}
-        play={true}
         style={{top: 0, left: 0, right: 0, position: 'absolute'}}
       />
     </DefaultModal>

@@ -1,5 +1,5 @@
 import {firebase} from '@react-native-firebase/firestore';
-import React, {createContext, useEffect, useState} from 'react';
+import React, {createContext, useContext, useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -17,6 +17,7 @@ import ContentCard from '../components/screen/ContentCard';
 
 import {TDocData, TLocation, TTimestamp} from '../types/Firebase';
 import {TStatus} from '../types/Screen';
+import ModalContext from './Modal';
 
 type TContextProps = {
   onUpdate: (user: {id: string}) => void;
@@ -35,6 +36,7 @@ const UserModalProvider = ({children}: TProps) => {
   const [status, setStatus] = useState<TStatus>('loading');
   const [modal, setModal] = useState<'roll'>();
   const [rollId, setRollId] = useState<string>();
+  const {onUpdate: onUpdateModal} = useContext(ModalContext);
 
   const {width} = useWindowDimensions();
   const videoWidth = (width - 10) / 3;
@@ -50,6 +52,7 @@ const UserModalProvider = ({children}: TProps) => {
         const userData = (
           await firebase.firestore().collection('users').doc(user.id).get()
         ).data();
+        console.log(userData, 'userData');
 
         if (isMounted) {
           setData(userData);
@@ -76,9 +79,12 @@ const UserModalProvider = ({children}: TProps) => {
   }, [status, user]);
 
   const onUpdate = (newUser: {id: string}) => {
-    setUser(newUser);
     setModal(undefined);
     setRollId(undefined);
+
+    setUser(newUser);
+    onUpdateModal('user');
+
     setStatus('loading');
   };
 
@@ -90,7 +96,7 @@ const UserModalProvider = ({children}: TProps) => {
       }}>
       {children}
       {data && (
-        <DefaultModal>
+        <DefaultModal style={{zIndex: 200}}>
           {status === 'loading' && !data && (
             <ActivityIndicator style={styles.act} />
           )}

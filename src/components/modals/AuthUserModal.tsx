@@ -1,8 +1,9 @@
 import auth from '@react-native-firebase/auth';
-import React, {useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import {RefreshControl, ScrollView, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
+import UserModalContext from '../../contexts/UserModal';
 
 import {deleteUser} from '../../functions/User';
 
@@ -10,7 +11,6 @@ import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
-import UserModal from './UserModal';
 
 type TProps = {
   onCancel: () => void;
@@ -19,6 +19,7 @@ type TProps = {
 const AuthUserModal = ({onCancel}: TProps) => {
   const {onSignOut, authUserData, onReload} = useContext(AuthUserContext);
   const {onUpdate} = useContext(ModalContext);
+  const {onUpdate: onUpdateUser} = useContext(UserModalContext);
 
   const onDelete = async () => {
     const onPress = async () => {
@@ -36,13 +37,10 @@ const AuthUserModal = ({onCancel}: TProps) => {
 
     DefaultAlert({
       title: 'Delete user?',
-      message:
-        "Your data will be removed, and you can't restore data once you delete your account",
+      message: "Your data will be removed, and you can't restore data.",
       buttons: [{text: 'Delete', onPress, style: 'destructive'}, {text: 'No'}],
     });
   };
-
-  const [modal, setModal] = useState<'profile' | 'setting'>();
 
   const currentUser = auth().currentUser;
 
@@ -110,7 +108,10 @@ const AuthUserModal = ({onCancel}: TProps) => {
           />
           <DefaultText
             title="View profile"
-            onPress={() => setModal('profile')}
+            onPress={() => {
+              onCancel();
+              onUpdateUser({id: authUserData.id});
+            }}
           />
           <DefaultText
             title="Edit profile"
@@ -137,9 +138,6 @@ const AuthUserModal = ({onCancel}: TProps) => {
           />
         </ScrollView>
       </DefaultForm>
-      {modal === 'profile' && (
-        <UserModal id={authUserData.id} onCancel={() => setModal(undefined)} />
-      )}
     </DefaultModal>
   );
 };
