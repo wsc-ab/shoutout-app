@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, View} from 'react-native';
 import Moments from './Moments';
 
@@ -11,15 +11,6 @@ import Welcome from './Welcome';
 
 const Home = () => {
   const {authUserData, loaded} = useContext(AuthUserContext);
-  const [welcome, setWelcome] = useState(true);
-
-  useEffect(() => {
-    const isWelcomeViewed = authUserData?.logs?.some(
-      ({name}: {name: string}) => name === 'viewedWelcome',
-    );
-
-    setWelcome(pre => (pre ? isWelcomeViewed : false));
-  }, [authUserData?.logs]);
 
   if (!loaded) {
     return null;
@@ -30,8 +21,6 @@ const Home = () => {
   }
 
   const onWelcomeDone = async () => {
-    setWelcome(false);
-
     await addLog({
       id: authUserData.id,
       collection: 'users',
@@ -39,7 +28,11 @@ const Home = () => {
     });
   };
 
-  if (welcome) {
+  const isWelcomeViewed = authUserData?.logs?.some(
+    ({name}: {name: string}) => name === 'viewedWelcome',
+  );
+
+  if (!isWelcomeViewed) {
     return <Welcome onDone={onWelcomeDone} />;
   }
 
