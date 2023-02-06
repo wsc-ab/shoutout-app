@@ -60,8 +60,6 @@ const Moments = ({style}: TProps) => {
         setData(pre => {
           const copy = [...pre];
           if (status === 'loadMore') {
-            copy.splice(0, Math.floor(pre.length / 2) - 1);
-
             return [...copy, ...moments];
           }
           return moments;
@@ -84,6 +82,8 @@ const Moments = ({style}: TProps) => {
       load();
     }
   }, [status]);
+
+  console.log(data.length, index, 'data length');
 
   if (status === 'error') {
     return (
@@ -111,16 +111,36 @@ const Moments = ({style}: TProps) => {
     );
   }
 
+  const getItemLayout = (_, itemIndex) => ({
+    length: height,
+    offset: height * itemIndex,
+    index: itemIndex,
+  });
+
+  const renderItem = ({item, index: elIndex}) => {
+    return (
+      <MomentCard moment={item} inView={modal ? false : elIndex === index} />
+    );
+  };
+
+  const onEndReached = () =>
+    setStatus(data.length >= 50 ? 'loading' : 'loadMore');
+
+  const keyExtractor = (item, elIndex) => item.id + elIndex;
+
   return (
     <View style={style}>
       <FlatList
-        data={data}
+        data={data.slice(-10)}
         initialNumToRender={1}
+        windowSize={3}
+        maxToRenderPerBatch={1}
+        getItemLayout={getItemLayout}
         snapToInterval={height}
         snapToAlignment={'start'}
         showsVerticalScrollIndicator={false}
         decelerationRate="fast"
-        keyExtractor={(item, elIndex) => item.id + elIndex}
+        keyExtractor={keyExtractor}
         refreshControl={
           <RefreshControl
             refreshing={status === 'loading'}
@@ -131,15 +151,8 @@ const Moments = ({style}: TProps) => {
         }
         disableIntervalMomentum
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
-        onEndReached={() => setStatus('loadMore')}
-        renderItem={({item, index: elIndex}) => {
-          return (
-            <MomentCard
-              moment={item}
-              inView={modal ? false : elIndex === index}
-            />
-          );
-        }}
+        onEndReached={onEndReached}
+        renderItem={renderItem}
       />
     </View>
   );

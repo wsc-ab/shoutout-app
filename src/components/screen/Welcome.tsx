@@ -1,5 +1,5 @@
 import {IconProp} from '@fortawesome/fontawesome-svg-core';
-import React, {useContext, useState} from 'react';
+import {useContext, useState} from 'react';
 import {
   ActivityIndicator,
   FlatList,

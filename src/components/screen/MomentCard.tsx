@@ -105,6 +105,12 @@ const MomentCard = ({moment, style, inView}: TProps) => {
     return null;
   }
 
+  const getItemLayout = (_, index) => ({
+    length: width,
+    offset: width * index,
+    index,
+  });
+
   return (
     <View style={style}>
       <FlatList
@@ -116,6 +122,7 @@ const MomentCard = ({moment, style, inView}: TProps) => {
         showsHorizontalScrollIndicator={false}
         snapToAlignment={'start'}
         decelerationRate="fast"
+        getItemLayout={getItemLayout}
         disableIntervalMomentum
         keyExtractor={item => item.path}
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
