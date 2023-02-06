@@ -138,6 +138,7 @@ const MomentCard = ({moment, style, inView}: TProps) => {
                 path={item.path}
                 videoStyle={{height, width}}
                 play={elIndex === index && inView}
+                repeat
               />
               <View style={styles.buttons}>
                 <LikeButton
