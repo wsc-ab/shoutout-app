@@ -3,7 +3,7 @@ import React, {createContext, useEffect, useState} from 'react';
 import AuthUserModal from '../components/modals/AuthUserModal';
 import RollModal from '../components/modals/RollModal';
 import UserModal from '../components/modals/UserModal';
-import {getLinkData} from '../utils/Link';
+import {getLinkData} from '../utils/Share';
 
 type TModal = {
   target: string;

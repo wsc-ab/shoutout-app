@@ -12,7 +12,7 @@ type TProps = {
     title: string;
     param: string;
     value: string;
-    imageUrl?: string;
+    image?: {path: string; type: 'video' | 'image'};
   };
   style?: TStyleView;
 };

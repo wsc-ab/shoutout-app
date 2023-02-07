@@ -1,15 +1,19 @@
-import dynamicLinks from '@react-native-firebase/dynamic-links';
+import dynamicLinks, {
+  FirebaseDynamicLinksTypes,
+} from '@react-native-firebase/dynamic-links';
+import {getThumbnailPath} from './Storage';
+import storage from '@react-native-firebase/storage';
 
 export const createShareLink = async ({
   target,
   param,
   value,
-  imageUrl,
+  image,
 }: {
   target: 'development' | 'production';
   param?: string;
   value?: string;
-  imageUrl?: string;
+  image?: {path: string; type: 'video' | 'image'};
 }) => {
   let link = defaultConfigs[target].domainUriPrefix;
 
@@ -17,11 +21,19 @@ export const createShareLink = async ({
     link = link + `/roll?${param}=${value}`;
   }
 
+  let imageUrl;
+
+  if (image) {
+    const thumbRef = storage().ref(getThumbnailPath(image.path, image.type));
+
+    imageUrl = await thumbRef.getDownloadURL();
+  }
+
   const shortLink = await dynamicLinks().buildShortLink({
     ...defaultConfigs[target],
     link,
     social: {
-      title: 'Roll',
+      title: 'Roll Mobile',
       descriptionText: 'Check this Roll out!',
       imageUrl,
     },
@@ -51,4 +63,14 @@ const defaultConfigs = {
     },
     domainUriPrefix: 'https://airballoon.app',
   },
+};
+
+export const getLinkData = ({url}: FirebaseDynamicLinksTypes.DynamicLink) => {
+  const prefix = 'airballoon.app/roll?';
+
+  const data = url.split(prefix)[1];
+  const collection = data.split('=')[0];
+  const id = data.split('=')[1];
+
+  return {collection, id};
 };

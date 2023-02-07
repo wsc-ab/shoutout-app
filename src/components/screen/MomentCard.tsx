@@ -188,7 +188,7 @@ const MomentCard = ({moment, path, style, inView}: TProps) => {
                       'Hey! Check this roll out! You can also add your moment to it!',
                     param: 'moments',
                     value: moment.id,
-                    imageUrl: `${item.path}_thumb`,
+                    image: {path: item.path, type: 'video'},
                   }}
                   style={styles.button}
                 />
