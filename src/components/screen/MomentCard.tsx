@@ -29,15 +29,30 @@ type TProps = {
   moment: TDocData;
   style?: TStyleView;
   inView: boolean;
+  path?: string;
 };
 
-const MomentCard = ({moment, style, inView}: TProps) => {
+const MomentCard = ({moment, path, style, inView}: TProps) => {
   const {height, width} = useWindowDimensions();
   const [data, setData] = useState<TDocData>();
 
   const ref = useRef<FlatList>(null);
 
   const [index, setIndex] = useState(0);
+  const [pathUsed, setPathUsed] = useState(false);
+
+  useEffect(() => {
+    if (!pathUsed) {
+      const pathIndex = data?.contents.items.findIndex(
+        ({path: elPath}: {path: string}) => elPath === path,
+      );
+
+      if (pathIndex !== -1) {
+        ref.current?.scrollToIndex({index: pathIndex, animated: true});
+        setPathUsed(true);
+      }
+    }
+  }, [data?.contents.items, path, pathUsed]);
 
   useEffect(() => {
     const onNext = async (doc: TDocSnapshot) => {

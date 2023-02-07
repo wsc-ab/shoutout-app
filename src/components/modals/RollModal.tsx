@@ -7,9 +7,10 @@ import MomentCard from '../screen/MomentCard';
 
 type TProps = {
   id: string;
+  path?: string;
 };
 
-const RollModal = ({id}: TProps) => {
+const RollModal = ({id, path}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
 
   return (
@@ -19,7 +20,7 @@ const RollModal = ({id}: TProps) => {
         style={styles.icon}
         onPress={() => onUpdate(undefined)}
       />
-      <MomentCard moment={{id}} inView={true} style={styles.card} />
+      <MomentCard moment={{id}} inView={true} style={styles.card} path={path} />
     </DefaultModal>
   );
 };
