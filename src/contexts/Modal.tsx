@@ -4,7 +4,7 @@ import RollModal from '../components/modals/RollModal';
 import UserModal from '../components/modals/UserModal';
 
 type TModal = {
-  target: 'moments' | 'users' | 'auth' | 'video';
+  target: string;
   id?: string;
 };
 

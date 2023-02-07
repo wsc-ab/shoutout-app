@@ -11,14 +11,12 @@ type TProps = {
     collection?: 'moments' | 'users';
     id?: string;
   };
-  onPress?: (collection?: string, id?: string) => void;
   onCancel: () => void;
   style?: StyleProp<ViewStyle>;
 };
 
 const Popup = ({
   notification: {title, body, collection, id},
-  onPress,
   onCancel,
   style,
 }: TProps) => {
@@ -27,20 +25,19 @@ const Popup = ({
   return (
     <Pressable
       style={style}
-      disabled={!onPress}
-      onPress={
-        onPress
-          ? () => {
-              if (collection) {
-                onUpdate({target: collection, id});
-              }
+      onPress={() => {
+        if (collection) {
+          onUpdate({target: collection, id});
+        }
 
-              onCancel();
-            }
-          : undefined
-      }>
+        onCancel();
+      }}>
       <View style={styles.texts}>
-        <DefaultText title={title} style={styles.text} />
+        <DefaultText
+          title={title}
+          style={styles.text}
+          textStyle={styles.textStyle}
+        />
         <DefaultText title={body} style={styles.text} />
       </View>
       {onCancel && <DefaultIcon icon={'times'} onPress={onCancel} />}
@@ -52,5 +49,6 @@ export default Popup;
 
 const styles = StyleSheet.create({
   texts: {flex: 1, marginRight: 10},
+  textStyle: {fontWeight: 'bold'},
   text: {alignSelf: 'flex-start'},
 });

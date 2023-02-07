@@ -12,11 +12,16 @@ type TProps = {isPermitted: boolean};
 
 const Notifications = ({isPermitted}: TProps) => {
   const [notifications, setNotifications] = useState<
-    {title: string; body: string; collection?: string; id?: string}[]
+    {
+      title: string;
+      body: string;
+      collection?: string;
+      id?: string;
+    }[]
   >([
-    {title: '1', body: '1', collection: 'users', id: 'id'},
-    {title: '2', body: '1', collection: 'users', id: 'id'},
-    {title: '3', body: '1', collection: 'users', id: 'id'},
+    {title: '1', body: '1', collection: 'users', id: 'PR9vDY5582lyGuEHNK15'},
+    {title: '2', body: '1', collection: 'users', id: 'PR9vDY5582lyGuEHNK15'},
+    {title: '3', body: '1', collection: 'users', id: 'PR9vDY5582lyGuEHNK15'},
   ]);
 
   const displaySeconds = 10;
@@ -110,17 +115,19 @@ const Notifications = ({isPermitted}: TProps) => {
     setSeconds(displaySeconds);
   };
 
-  const onPressPopup = (collection: string, id: string) => {};
-
   return (
-    <View style={{position: 'absolute', left: 0, right: 0, top: 100}}>
+    <View
+      style={{
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 100,
+        marginHorizontal: 10,
+      }}>
       <Popup
         style={styles.popup}
         notification={notifications[0]}
         onCancel={onCancel}
-        onPress={() =>
-          onPressPopup(notifications[0].collection, notifications[0].id)
-        }
       />
       {notifications[1] && (
         <Popup
