@@ -1,5 +1,5 @@
 import {IconProp} from '@fortawesome/fontawesome-svg-core';
-import {useContext, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -69,34 +69,36 @@ const Welcome = ({style}: TProps) => {
           const isLast = index === data.length - 1;
           return (
             <View style={[styles.card, {width, height}]}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={styles.detail}>
                 {item.detail && <DefaultText title={item.detail} />}
                 <DefaultIcon icon={item.icon as IconProp} />
               </View>
 
               <DefaultText
                 title={item.title}
-                style={{marginTop: 20}}
-                textStyle={{fontWeight: 'bold'}}
+                style={styles.title}
+                textStyle={styles.titleText}
                 onPress={item.onPress}
               />
 
               {!isLast && (
                 <DefaultText
                   title={`${index + 1}/${data.length}`}
-                  style={{bottom: 100, position: 'absolute'}}
+                  style={styles.button}
                 />
               )}
 
               {isLast && !submitting && (
                 <DefaultText
                   title={'OK'}
-                  style={{bottom: 100, position: 'absolute'}}
-                  textStyle={{fontWeight: 'bold'}}
+                  style={styles.button}
+                  textStyle={styles.buttonText}
                   onPress={item.onPress}
                 />
               )}
-              {isLast && submitting && <ActivityIndicator />}
+              {isLast && submitting && (
+                <ActivityIndicator style={styles.button} />
+              )}
             </View>
           );
         }}
@@ -114,4 +116,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
   },
+  detail: {flexDirection: 'row', alignItems: 'center'},
+  title: {marginTop: 20},
+  titleText: {fontWeight: 'bold'},
+  button: {bottom: 100, position: 'absolute'},
+  buttonText: {fontWeight: 'bold'},
 });
