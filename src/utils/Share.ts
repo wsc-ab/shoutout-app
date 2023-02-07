@@ -5,17 +5,16 @@ import {getThumbnailPath} from './Storage';
 import storage from '@react-native-firebase/storage';
 
 export const createShareLink = async ({
+  target,
   param,
   value,
   image,
 }: {
+  target: 'production' | 'development';
   param?: string;
   value?: string;
   image?: {path: string; type: 'video' | 'image'};
 }) => {
-  const target =
-    process.env.NODE_ENV === 'production' ? 'production' : 'development';
-
   let link = defaultConfigs[target].domainUriPrefix;
 
   if (param && value) {
@@ -62,7 +61,7 @@ const defaultConfigs = {
     android: {
       packageName: 'com.airballoon.Shoutout',
     },
-    domainUriPrefix: 'https://airballoon.app',
+    domainUriPrefix: 'https://links.roll.airballoon.app',
   },
 };
 

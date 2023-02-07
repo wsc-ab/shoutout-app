@@ -3,6 +3,7 @@ import firestore, {firebase} from '@react-native-firebase/firestore';
 import React, {createContext, useEffect, useState} from 'react';
 import DefaultAlert from '../components/defaults/DefaultAlert';
 import {signIn} from '../functions/User';
+import {TBundleId} from '../types/Data';
 
 import {TAuthUser, TDocData, TDocSnapshot} from '../types/Firebase';
 
@@ -14,16 +15,19 @@ type TContextProps = {
   removeReportContent: (path: string) => void;
   onReload: () => void;
   onSignOut: () => void;
+  bundleId: TBundleId;
 };
 
 const AuthUserContext = createContext({} as TContextProps);
 
 export type TProps = {
+  bundleId: string;
   children: React.ReactNode;
 };
 
-const AuthUserProvider = ({children}: TProps) => {
+const AuthUserProvider = ({children, bundleId}: TProps) => {
   const [authUser, setAuthUser] = useState<TAuthUser | null>();
+
   const [reportedContents, setReportedContents] = useState<string[]>([]);
   const [loaded, setLoaded] = useState(false);
 
@@ -114,6 +118,7 @@ const AuthUserProvider = ({children}: TProps) => {
     <AuthUserContext.Provider
       value={{
         loaded,
+        bundleId,
         authUserData: authUserData!,
         onSignOut,
         onReload,

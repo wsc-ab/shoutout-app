@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import AuthUserContext from '../../contexts/AuthUser';
 import {TStyleView} from '../../types/Style';
 import {createShareLink} from '../../utils/Share';
 import DefaultAlert from '../defaults/DefaultAlert';
@@ -17,16 +18,23 @@ type TProps = {
 };
 
 const ShareButton = ({input, style}: TProps) => {
+  const {bundleId} = useContext(AuthUserContext);
   const [submitting, setSubmitting] = useState(false);
 
   const onShare = async () => {
     try {
       setSubmitting(true);
 
-      const shareLink = await createShareLink(input);
+      const target =
+        bundleId === 'app.airballoon.Shoutout' ? 'development' : 'production';
+
+      const shareLink = await createShareLink({...input, target});
       await openShareModal({title: input.title, url: shareLink});
     } catch (error) {
-      DefaultAlert({title: 'Failed to open share modal'});
+      DefaultAlert({
+        title: 'Failed to open share modal',
+        message: (error as {message: string}).message,
+      });
     } finally {
       setSubmitting(false);
     }
