@@ -18,7 +18,7 @@ export const createShareLink = async ({
   let link = defaultConfigs[target].domainUriPrefix;
 
   if (param && value) {
-    link = link + `/roll?${param}=${value}`;
+    link = link + `/share?${param}=${value}`;
   }
 
   let imageUrl;
@@ -51,7 +51,7 @@ const defaultConfigs = {
     android: {
       packageName: 'app.airballoon.Shoutout',
     },
-    domainUriPrefix: 'https://dev.airballoon.app',
+    domainUriPrefix: 'https://links.dev.shoutout.airballoon.app',
   },
   production: {
     ios: {

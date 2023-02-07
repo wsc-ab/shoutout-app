@@ -24,7 +24,6 @@ type TProps = {
 
 const App = ({bundleId}: TProps) => {
   const [status, setStatus] = useState<TStatus>('loading');
-  console.log(bundleId, 'b');
 
   useEffect(() => {
     const load = async () => {
@@ -41,7 +40,7 @@ const App = ({bundleId}: TProps) => {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
-      <AuthUserProvider bundleId={'com.airballoon.Shoutout'}>
+      <AuthUserProvider bundleId={bundleId}>
         <ModalProvider>
           <Home />
         </ModalProvider>

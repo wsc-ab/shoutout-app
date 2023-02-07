@@ -38,8 +38,8 @@
 	<string>1</string>
 	<key>FirebaseDynamicLinksCustomDomains</key>
 	<array>
-		<string>https://airballoon.app</string>
-		<string>https://dev.airballoon.app</string>
+		<string>https://links.roll.airballoon.app</string>
+		<string>https://links.dev.shoutout.airballoon.app</string>
 	</array>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
