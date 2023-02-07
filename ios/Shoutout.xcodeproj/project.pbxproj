@@ -172,18 +172,18 @@
 		87552EDE297254E500FFB3C3 /* Configs */ = {
 			isa = PBXGroup;
 			children = (
-				87C2D76329727FCE00F4D4C1 /* Shoutout */,
+				87C2D76329727FCE00F4D4C1 /* Production */,
 				87C2D76429727FDA00F4D4C1 /* Development */,
 			);
 			path = Configs;
 			sourceTree = "<group>";
 		};
-		87C2D76329727FCE00F4D4C1 /* Shoutout */ = {
+		87C2D76329727FCE00F4D4C1 /* Production */ = {
 			isa = PBXGroup;
 			children = (
 				87552EE62972591900FFB3C3 /* GoogleService-Info.plist */,
 			);
-			path = Shoutout;
+			path = Production;
 			sourceTree = "<group>";
 		};
 		87C2D76429727FDA00F4D4C1 /* Development */ = {

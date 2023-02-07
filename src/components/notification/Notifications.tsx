@@ -18,11 +18,7 @@ const Notifications = ({isPermitted}: TProps) => {
       collection?: string;
       id?: string;
     }[]
-  >([
-    {title: '1', body: '1', collection: 'users', id: 'PR9vDY5582lyGuEHNK15'},
-    {title: '2', body: '1', collection: 'users', id: 'PR9vDY5582lyGuEHNK15'},
-    {title: '3', body: '1', collection: 'users', id: 'PR9vDY5582lyGuEHNK15'},
-  ]);
+  >([]);
 
   // listen to push noficiations
   useEffect(() => {

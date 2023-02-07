@@ -39,6 +39,7 @@ const ModalProvider = ({children}: TProps) => {
       {modal?.target === 'users' && modal.id && <UserModal id={modal.id} />}
       {modal?.target === 'moments' && modal.id && <RollModal id={modal.id} />}
       {modal?.target === 'auth' && <AuthUserModal />}
+      {modal?.target === 'contacts' && <AuthUserModal />}
     </ModalContext.Provider>
   );
 };

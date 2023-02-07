@@ -29,11 +29,18 @@
 			<array>
 				<string>com.googleusercontent.apps.315556622122-e9oge30rpb3k1cdicpqj1v4dtlhrobva</string>
 				<string>com.googleusercontent.apps.872579886710-rh4eoep8ef4veqarjdfhe59u45t3fr9e</string>
+				<string>com.airballoon.Shoutout</string>
+				<string>app.airballoon.Shoutout</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>FirebaseDynamicLinksCustomDomains</key>
+	<array>
+		<string>https://airballoon.app</string>
+		<string>https://dev.airballoon.app</string>
+	</array>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
@@ -57,8 +64,6 @@
 	<string>This lets you record videos using your camera.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This lets you upload images and videos from your library.</string>
-	<key>NSContactsUsageDescription</key>
-	<string>This lets you share your rolls with friends.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

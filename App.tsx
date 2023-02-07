@@ -12,6 +12,7 @@ import React, {useEffect, useState} from 'react';
 import {StatusBar, StyleSheet, View} from 'react-native';
 import Home from './src/components/screen/Home';
 import {AuthUserProvider} from './src/contexts/AuthUser';
+import {LinkProvider} from './src/contexts/Link';
 import {ModalProvider} from './src/contexts/Modal';
 import {TStatus} from './src/types/Screen';
 import {initFirebase} from './src/utils/Firebase';
@@ -36,9 +37,11 @@ const App = () => {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
       <AuthUserProvider>
-        <ModalProvider>
-          <Home />
-        </ModalProvider>
+        <LinkProvider>
+          <ModalProvider>
+            <Home />
+          </ModalProvider>
+        </LinkProvider>
       </AuthUserProvider>
     </View>
   );

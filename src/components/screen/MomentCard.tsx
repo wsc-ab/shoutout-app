@@ -21,6 +21,7 @@ import AddButton from '../buttons/AddButton';
 import ContributorsButton from '../buttons/ContributorsButton';
 import LikeButton from '../buttons/LikeButton';
 import ReportButton from '../buttons/ReportButton';
+import ShareButton from '../buttons/ShareButton';
 import DefaultAlert from '../defaults/DefaultAlert';
 
 import DefaultVideo from '../defaults/DefaultVideo';
@@ -179,6 +180,16 @@ const MomentCard = ({moment, path, style, inView}: TProps) => {
                   id={item.id}
                   number={data.contents.number}
                   style={styles.button}
+                />
+                <ShareButton
+                  input={{
+                    target: 'development',
+                    title:
+                      'Hey! Would you like to add your moment to this roll?',
+                    param: 'moments',
+                    value: moment.id,
+                    imageUrl: `${item.path}_thumb`,
+                  }}
                 />
                 <ReportButton
                   moment={{
