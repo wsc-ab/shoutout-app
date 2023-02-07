@@ -24,8 +24,6 @@ const Notifications = ({isPermitted}: TProps) => {
     {title: '3', body: '1', collection: 'users', id: 'PR9vDY5582lyGuEHNK15'},
   ]);
 
-  const displaySeconds = 10;
-
   // listen to push noficiations
   useEffect(() => {
     const alertNotification = (
@@ -79,27 +77,7 @@ const Notifications = ({isPermitted}: TProps) => {
     }
   }, [isPermitted]);
 
-  const [, setSeconds] = useState(3);
-
-  useEffect(() => {
-    if (notifications.length >= 1) {
-      const interval = setInterval(() => {
-        setSeconds(pre => {
-          if (pre === 0) {
-            setNotifications(preNoti => {
-              const copyPre = [...preNoti];
-              copyPre.shift();
-              return copyPre;
-            });
-            return displaySeconds;
-          } else {
-            return pre - 1;
-          }
-        });
-      }, 1000);
-      return () => clearInterval(interval);
-    }
-  }, [notifications.length]);
+  // manage push notification arrays
 
   if (!notifications[0]) {
     return null;
@@ -112,7 +90,6 @@ const Notifications = ({isPermitted}: TProps) => {
 
       return copyPre;
     });
-    setSeconds(displaySeconds);
   };
 
   return (

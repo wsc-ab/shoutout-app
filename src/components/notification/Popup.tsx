@@ -8,7 +8,7 @@ type TProps = {
   notification: {
     title: string;
     body: string;
-    collection?: 'moments' | 'users';
+    collection?: string;
     id?: string;
   };
   onCancel: () => void;
