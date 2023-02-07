@@ -8,7 +8,6 @@ import openShareModal from '../modals/ShareModal';
 
 type TProps = {
   input: {
-    target: 'development' | 'production';
     title: string;
     param: string;
     value: string;
@@ -23,6 +22,7 @@ const ShareButton = ({input, style}: TProps) => {
   const onShare = async () => {
     try {
       setSubmitting(true);
+
       const shareLink = await createShareLink(input);
       await openShareModal({title: input.title, url: shareLink});
     } catch (error) {

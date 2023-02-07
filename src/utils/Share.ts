@@ -5,16 +5,17 @@ import {getThumbnailPath} from './Storage';
 import storage from '@react-native-firebase/storage';
 
 export const createShareLink = async ({
-  target,
   param,
   value,
   image,
 }: {
-  target: 'development' | 'production';
   param?: string;
   value?: string;
   image?: {path: string; type: 'video' | 'image'};
 }) => {
+  const target =
+    process.env.NODE_ENV === 'production' ? 'production' : 'development';
+
   let link = defaultConfigs[target].domainUriPrefix;
 
   if (param && value) {

@@ -183,7 +183,6 @@ const MomentCard = ({moment, path, style, inView}: TProps) => {
                 />
                 <ShareButton
                   input={{
-                    target: 'development',
                     title:
                       'Hey! Check this roll out! You can also add your moment to it!',
                     param: 'moments',
