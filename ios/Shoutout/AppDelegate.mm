@@ -77,8 +77,11 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 - (NSDictionary *)prepareInitialProps
 {
   NSMutableDictionary *initProps = [NSMutableDictionary new];
+  //  Pass bundleId to react-native as initProps
+  NSString *bundleId = [[NSBundle mainBundle] bundleIdentifier];
+  [initProps setValue:bundleId forKey:@"bundleId"];
 
-#ifdef RCT_NEW_ARCH_ENABLED
+#ifdef RCT_NEW_ARCH_ENABLE
   initProps[kRNConcurrentRoot] = @([self concurrentRootEnabled]);
 #endif
 

@@ -1,5 +1,7 @@
 package com.airballoon.Shoutout;
 
+import android.os.Bundle;
+
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
@@ -22,7 +24,14 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected ReactActivityDelegate createReactActivityDelegate() {
-    return new MainActivityDelegate(this, getMainComponentName());
+    return new ReactActivityDelegate(this, getMainComponentName()) {
+      @Override
+      protected Bundle getLaunchOptions() {
+        Bundle initialProperties = new Bundle();
+        initialProperties.putString("bundleId", BuildConfig.APPLICATION_ID);
+        return initialProperties;
+      }
+    };
   }
 
   public static class MainActivityDelegate extends ReactActivityDelegate {
