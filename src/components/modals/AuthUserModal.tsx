@@ -3,7 +3,6 @@ import React, {useContext} from 'react';
 import {RefreshControl, ScrollView, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
-import UserModalContext from '../../contexts/UserModal';
 
 import {deleteUser} from '../../functions/User';
 
@@ -12,14 +11,11 @@ import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
 
-type TProps = {
-  onCancel: () => void;
-};
+type TProps = {};
 
-const AuthUserModal = ({onCancel}: TProps) => {
+const AuthUserModal = ({}: TProps) => {
   const {onSignOut, authUserData, onReload} = useContext(AuthUserContext);
   const {onUpdate} = useContext(ModalContext);
-  const {onUpdate: onUpdateUser} = useContext(UserModalContext);
 
   const onDelete = async () => {
     const onPress = async () => {
@@ -46,7 +42,9 @@ const AuthUserModal = ({onCancel}: TProps) => {
 
   return (
     <DefaultModal>
-      <DefaultForm title={authUserData.displayName} left={{onPress: onCancel}}>
+      <DefaultForm
+        title={authUserData.displayName}
+        left={{onPress: () => onUpdate(undefined)}}>
         <ScrollView
           contentContainerStyle={{flex: 1}}
           refreshControl={
@@ -109,8 +107,7 @@ const AuthUserModal = ({onCancel}: TProps) => {
           <DefaultText
             title="View profile"
             onPress={() => {
-              onCancel();
-              onUpdateUser({id: authUserData.id});
+              onUpdate({target: 'users', id: authUserData.id});
             }}
           />
           <DefaultText

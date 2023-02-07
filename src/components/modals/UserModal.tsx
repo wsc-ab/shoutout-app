@@ -1,5 +1,5 @@
-import firebase from '@react-native-firebase/app';
-import React, {useEffect, useState} from 'react';
+import {firebase} from '@react-native-firebase/firestore';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -8,26 +8,28 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-
-import {TDocData, TLocation, TTimestamp} from '../../types/Firebase';
-import {TStatus} from '../../types/Screen';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
 import ContentCard from '../screen/ContentCard';
-import RollModal from './RollModal';
+
+import {TDocData, TLocation, TTimestamp} from '../../types/Firebase';
+import {TStatus} from '../../types/Screen';
+import ModalContext from '../../contexts/Modal';
 
 type TProps = {
   id: string;
-  onCancel: () => void;
 };
 
-const UserModal = ({id, onCancel}: TProps) => {
+const UserModal = ({id}: TProps) => {
   const [data, setData] = useState<TDocData>();
   const [status, setStatus] = useState<TStatus>('loading');
-  const [rollId, setRollId] = useState<string>();
-  const [modal, setModal] = useState<'roll'>();
+  const {onUpdate} = useContext(ModalContext);
+
+  const {width} = useWindowDimensions();
+  const videoWidth = (width - 10) / 3;
+  const videoHeight = (videoWidth * 4) / 3;
 
   useEffect(() => {
     let isMounted = true;
@@ -61,16 +63,8 @@ const UserModal = ({id, onCancel}: TProps) => {
     };
   }, [id, status]);
 
-  const {width} = useWindowDimensions();
-  const videoWidth = (width - 10) / 3;
-  const videoHeight = (videoWidth * 4) / 3;
-
-  if (!data) {
-    return null;
-  }
-
   return (
-    <DefaultModal>
+    <DefaultModal style={{zIndex: 200}}>
       {status === 'loading' && !data && (
         <ActivityIndicator style={styles.act} />
       )}
@@ -78,7 +72,7 @@ const UserModal = ({id, onCancel}: TProps) => {
         <DefaultForm
           title={data.displayName}
           left={{
-            onPress: onCancel,
+            onPress: () => onUpdate(undefined),
           }}>
           <FlatList
             data={data.contributeTo?.items}
@@ -104,11 +98,10 @@ const UserModal = ({id, onCancel}: TProps) => {
             }) => {
               return (
                 <ContentCard
-                  content={{...item, user: {id}}}
+                  content={{...item, user: {id: data.id}}}
                   onDelete={() => setStatus('loading')}
                   onPress={() => {
-                    setRollId(item.id);
-                    setModal('roll');
+                    onUpdate({target: 'moments', id: item.id});
                   }}
                   contentStyle={{
                     width: videoWidth,
@@ -120,17 +113,6 @@ const UserModal = ({id, onCancel}: TProps) => {
             ItemSeparatorComponent={() => <View style={styles.seperator} />}
           />
         </DefaultForm>
-      )}
-      {modal === 'roll' && rollId && (
-        <RollModal
-          roll={{
-            id: rollId,
-          }}
-          onCancel={() => {
-            setModal(undefined);
-            setRollId(undefined);
-          }}
-        />
       )}
     </DefaultModal>
   );

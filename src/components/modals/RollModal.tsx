@@ -1,18 +1,24 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet} from 'react-native';
+import ModalContext from '../../contexts/Modal';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultModal from '../defaults/DefaultModal';
 import MomentCard from '../screen/MomentCard';
 
 type TProps = {
-  roll: {id: string};
-  onCancel: () => void;
+  id: string;
 };
 
-const RollModal = ({roll: {id}, onCancel}: TProps) => {
+const RollModal = ({id}: TProps) => {
+  const {onUpdate} = useContext(ModalContext);
+
   return (
     <DefaultModal>
-      <DefaultIcon icon="angle-left" style={styles.icon} onPress={onCancel} />
+      <DefaultIcon
+        icon="angle-left"
+        style={styles.icon}
+        onPress={() => onUpdate(undefined)}
+      />
       <MomentCard moment={{id}} inView={true} style={styles.card} />
     </DefaultModal>
   );

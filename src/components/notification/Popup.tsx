@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import {Pressable, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 import ModalContext from '../../contexts/Modal';
 import DefaultIcon from '../defaults/DefaultIcon';
@@ -8,7 +8,7 @@ type TProps = {
   notification: {
     title: string;
     body: string;
-    collection?: string;
+    collection?: 'moments' | 'users';
     id?: string;
   };
   onPress?: (collection?: string, id?: string) => void;
@@ -22,8 +22,7 @@ const Popup = ({
   onCancel,
   style,
 }: TProps) => {
-  const {modal, onUpdate} = useContext(ModalContext);
-  const [target, setTarget] = useState<{collection?: string; id?: string}>();
+  const {onUpdate} = useContext(ModalContext);
 
   return (
     <Pressable
@@ -32,8 +31,10 @@ const Popup = ({
       onPress={
         onPress
           ? () => {
-              onUpdate('notification');
-              setTarget({collection, id});
+              if (collection) {
+                onUpdate({target: collection, id});
+              }
+
               onCancel();
             }
           : undefined

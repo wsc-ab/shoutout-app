@@ -3,14 +3,13 @@ import {StyleSheet, View} from 'react-native';
 import ModalContext from '../../contexts/Modal';
 import {TStyleView} from '../../types/Style';
 import DefaultIcon from '../defaults/DefaultIcon';
-import UserModal from '../modals/AuthUserModal';
 
 type TProps = {
   style: TStyleView;
 };
 
 const UserButton = ({style}: TProps) => {
-  const {onUpdate, modal} = useContext(ModalContext);
+  const {onUpdate} = useContext(ModalContext);
 
   return (
     <View style={style}>
@@ -18,11 +17,10 @@ const UserButton = ({style}: TProps) => {
         icon="user"
         size={20}
         onPress={() => {
-          onUpdate('me');
+          onUpdate({target: 'auth'});
         }}
         style={styles.icon}
       />
-      {modal === 'me' && <UserModal onCancel={() => onUpdate(undefined)} />}
     </View>
   );
 };

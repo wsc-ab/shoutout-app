@@ -1,8 +1,16 @@
 import React, {createContext, useState} from 'react';
+import AuthUserModal from '../components/modals/AuthUserModal';
+import RollModal from '../components/modals/RollModal';
+import UserModal from '../components/modals/UserModal';
+
+type TModal = {
+  target: 'moments' | 'users' | 'auth' | 'video';
+  id?: string;
+};
 
 type TContextProps = {
-  modal?: string;
-  onUpdate: (name?: string) => void;
+  onUpdate: (modal?: TModal) => void;
+  modal?: TModal;
 };
 
 const ModalContext = createContext({} as TContextProps);
@@ -12,9 +20,14 @@ export type TProps = {
 };
 
 const ModalProvider = ({children}: TProps) => {
-  const [modal, setModal] = useState<string>();
+  const [modal, setModal] = useState<TModal>();
 
-  const onUpdate = (newModal?: string) => setModal(newModal);
+  const onUpdate = (newModal?: TModal) => {
+    setModal(undefined);
+    if (newModal) {
+      setModal(newModal);
+    }
+  };
 
   return (
     <ModalContext.Provider
@@ -23,6 +36,9 @@ const ModalProvider = ({children}: TProps) => {
         onUpdate,
       }}>
       {children}
+      {modal?.target === 'users' && modal.id && <UserModal id={modal.id} />}
+      {modal?.target === 'moments' && modal.id && <RollModal id={modal.id} />}
+      {modal?.target === 'auth' && <AuthUserModal />}
     </ModalContext.Provider>
   );
 };

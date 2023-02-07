@@ -8,7 +8,6 @@ import {
   ViewStyle,
 } from 'react-native';
 import ModalContext from '../../contexts/Modal';
-import UserModalContext from '../../contexts/UserModal';
 import {TTimestamp} from '../../types/Firebase';
 import {getTimeSinceTimestamp} from '../../utils/Date';
 import {defaultBlack} from '../defaults/DefaultColors';
@@ -41,7 +40,6 @@ const ContributorsButton = ({users, onPress, index, style}: TProps) => {
   }, [index, ref]);
 
   const {onUpdate} = useContext(ModalContext);
-  const {onUpdate: onUpdateUser} = useContext(UserModalContext);
 
   return (
     <View>
@@ -58,8 +56,7 @@ const ContributorsButton = ({users, onPress, index, style}: TProps) => {
               key={item.id + elIndex}
               onPress={() => {
                 if (isCurrent) {
-                  onUpdateUser({id: item.id});
-                  onUpdate('contributor');
+                  onUpdate({target: 'users', id: item.id});
                 } else {
                   onPress(elIndex);
                 }

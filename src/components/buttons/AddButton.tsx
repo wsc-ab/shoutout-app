@@ -26,7 +26,7 @@ const AddButton = ({id, number, style}: TProps) => {
   const onAdd = async () => {
     try {
       setSubmitting(true);
-      onUpdate('reply');
+      onUpdate({target: 'video'});
 
       const latlng = await getLatLng();
 
