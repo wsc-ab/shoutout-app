@@ -1,8 +1,8 @@
 import dynamicLinks, {
   FirebaseDynamicLinksTypes,
 } from '@react-native-firebase/dynamic-links';
-import {getThumbnailPath} from './Storage';
 import storage from '@react-native-firebase/storage';
+import {getThumbnailPath} from './Storage';
 
 export const createShareLink = async ({
   target,
@@ -17,6 +17,8 @@ export const createShareLink = async ({
 }) => {
   let link = defaultConfigs[target].domainUriPrefix;
 
+  console.log(target, link, 'target');
+
   if (param && value) {
     link = link + `/share?${param}=${value}`;
   }
@@ -29,11 +31,13 @@ export const createShareLink = async ({
     imageUrl = await thumbRef.getDownloadURL();
   }
 
+  console.log(defaultConfigs[target], 'defaultConfigs[target]');
+
   const shortLink = await dynamicLinks().buildShortLink({
     ...defaultConfigs[target],
     link,
     social: {
-      title: 'Roll Mobile',
+      title: target === 'production' ? 'Roll Mobile' : 'ROLL Development',
       descriptionText: 'Check this Roll out!',
       imageUrl,
     },
@@ -66,7 +70,7 @@ const defaultConfigs = {
 };
 
 export const getLinkData = ({url}: FirebaseDynamicLinksTypes.DynamicLink) => {
-  const prefix = 'airballoon.app/roll?';
+  const prefix = 'airballoon.app/share?';
 
   const data = url.split(prefix)[1];
   const collection = data.split('=')[0];
