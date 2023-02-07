@@ -5,7 +5,7 @@ export const getLinkData = ({url}: FirebaseDynamicLinksTypes.DynamicLink) => {
 
   const data = url.split(prefix)[1];
   const collection = data.split('=')[0];
-  const id = data.split('=')[0];
+  const id = data.split('=')[1];
 
   return {collection, id};
 };

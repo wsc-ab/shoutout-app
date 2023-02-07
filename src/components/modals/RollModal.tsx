@@ -18,7 +18,11 @@ const RollModal = ({id, path}: TProps) => {
       <DefaultIcon
         icon="angle-left"
         style={styles.icon}
-        onPress={() => onUpdate(undefined)}
+        onPress={() => {
+          console.log('pressed');
+
+          onUpdate(undefined);
+        }}
       />
       <MomentCard moment={{id}} inView={true} style={styles.card} path={path} />
     </DefaultModal>
@@ -28,6 +32,6 @@ const RollModal = ({id, path}: TProps) => {
 export default RollModal;
 
 const styles = StyleSheet.create({
-  icon: {top: 40, zIndex: 100},
+  icon: {top: 40, zIndex: 200},
   card: {top: 0, left: 0, right: 0, position: 'absolute'},
 });

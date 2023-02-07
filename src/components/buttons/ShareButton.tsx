@@ -26,9 +26,7 @@ const ShareButton = ({input, style}: TProps) => {
       const shareLink = await createShareLink(input);
       await openShareModal({title: input.title, url: shareLink});
     } catch (error) {
-      console.log(error, 'e');
-
-      DefaultAlert({title: 'Failed to open Share modal'});
+      DefaultAlert({title: 'Failed to open share modal'});
     } finally {
       setSubmitting(false);
     }

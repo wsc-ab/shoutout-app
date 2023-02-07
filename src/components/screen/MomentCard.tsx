@@ -185,11 +185,12 @@ const MomentCard = ({moment, path, style, inView}: TProps) => {
                   input={{
                     target: 'development',
                     title:
-                      'Hey! Would you like to add your moment to this roll?',
+                      'Hey! Check this roll out! You can also add your moment to it!',
                     param: 'moments',
                     value: moment.id,
                     imageUrl: `${item.path}_thumb`,
                   }}
+                  style={styles.button}
                 />
                 <ReportButton
                   moment={{
