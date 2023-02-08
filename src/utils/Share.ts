@@ -17,8 +17,6 @@ export const createShareLink = async ({
 }) => {
   let link = defaultConfigs[target].domainUriPrefix;
 
-  console.log(target, link, 'target');
-
   if (param && value) {
     link = link + `/share?${param}=${value}`;
   }
