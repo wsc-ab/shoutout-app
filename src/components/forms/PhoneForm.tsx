@@ -1,17 +1,17 @@
 import {yupResolver} from '@hookform/resolvers/yup';
 import {CountryCode, parsePhoneNumber} from 'libphonenumber-js/mobile';
 import React, {useState} from 'react';
-import {Controller, useForm} from 'react-hook-form';
-import {ScrollView} from 'react-native';
+import {useForm} from 'react-hook-form';
 import {object} from 'yup';
+import {countryData} from '../../utils/CountryData';
 import {defaultSchema} from '../../utils/Schema';
 import ControllerText from '../controllers/ControllerText';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultDivider from '../defaults/DefaultDivider';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultKeyboardAwareScrollView from '../defaults/DefaultKeyboardAwareScrollView';
-import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
+import SelectModal from '../modals/SelectModal';
 
 type TProps = {
   onSuccess: (phoneNumber: string) => void;
@@ -114,66 +114,17 @@ const PhoneForm = ({onCancel, onSuccess, submitting}: TProps) => {
         />
       </DefaultKeyboardAwareScrollView>
       {modal === 'code' && (
-        <DefaultModal>
-          <DefaultForm
-            title={'Country'}
-            left={{onPress: () => setModal(undefined)}}>
-            <ScrollView>
-              <Controller
-                control={control}
-                name="countryCode"
-                render={({field: {onChange, onBlur}}) => (
-                  <>
-                    <DefaultText
-                      title="US +1"
-                      onPress={() => {
-                        onBlur();
-                        onChange('US');
-                        setModal(undefined);
-                      }}
-                      style={{
-                        padding: 20,
-                        borderWidth: 1,
-                        borderColor: 'gray',
-                        borderRadius: 10,
-                      }}
-                    />
-                    <DefaultText
-                      title="FR +33"
-                      onPress={() => {
-                        onBlur();
-                        onChange('FR');
-                        setModal(undefined);
-                      }}
-                      style={{
-                        padding: 20,
-                        marginTop: 10,
-                        borderWidth: 1,
-                        borderColor: 'gray',
-                        borderRadius: 10,
-                      }}
-                    />
-                    <DefaultText
-                      title="KR +82"
-                      onPress={() => {
-                        onChange('KR');
-                        onBlur();
-                        setModal(undefined);
-                      }}
-                      style={{
-                        marginTop: 10,
-                        padding: 20,
-                        borderWidth: 1,
-                        borderColor: 'gray',
-                        borderRadius: 10,
-                      }}
-                    />
-                  </>
-                )}
-              />
-            </ScrollView>
-          </DefaultForm>
-        </DefaultModal>
+        <SelectModal
+          title={'Country'}
+          items={countryData.map(({countryNameEn, countryCode: code}) => ({
+            title: countryNameEn,
+            name: code,
+          }))}
+          onCancel={() => setModal(undefined)}
+          onPress={() => setModal(undefined)}
+          control={control}
+          name={'countryCode'}
+        />
       )}
     </DefaultForm>
   );

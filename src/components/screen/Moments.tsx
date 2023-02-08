@@ -53,7 +53,7 @@ const Moments = ({style}: TProps) => {
   useEffect(() => {
     const load = async () => {
       try {
-        const {moments} = await getMoments({pagination: {number: 10}});
+        const {moments} = await getMoments({pagination: {number: 5}});
 
         setData(moments);
 
