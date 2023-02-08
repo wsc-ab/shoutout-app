@@ -45,8 +45,14 @@ post_install do |installer|
                                   config.build_settings['CODE_SIGNING_ALLOWED'] = 'NO'
                                 end
                               end
+                              # [START] fix sharedApplication build error
+                              # https://stackoverflow.com/questions/48122769/facebook-cocoapods-sharedapplication-is-unavailable-not-available-on-ios-app
+                                target.build_configurations.each do |config|
+                                  config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'No'
+                                end
+                              # [END] fix build xcode build issue 
                             end
-                            # [END] fix build xcode build issue
+                            
 end
 # [END] shared config
 
@@ -58,4 +64,8 @@ target 'Production' do
 end
 
 target 'Development' do
+end
+
+target 'ImageNotification-Dev' do
+  pod 'Firebase/Messaging', '~> 10.4.0'
 end
