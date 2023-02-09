@@ -38,7 +38,8 @@
 	<string>1</string>
 	<key>FirebaseDynamicLinksCustomDomains</key>
 	<array>
-		<string>https://links.roll.airballoon.app</string>
+		<!-- TODO change url to shoutout -->
+		<string>https://links.roll.airballoon.app</string> 
 		<string>https://links.dev.shoutout.airballoon.app</string>
 	</array>
 	<key>ITSAppUsesNonExemptEncryption</key>

@@ -63,7 +63,7 @@ const defaultConfigs = {
     android: {
       packageName: 'com.airballoon.Shoutout',
     },
-    domainUriPrefix: 'https://links.roll.airballoon.app',
+    domainUriPrefix: 'https://links.roll.airballoon.app', // TODO change url to shoutout
   },
 };
 
