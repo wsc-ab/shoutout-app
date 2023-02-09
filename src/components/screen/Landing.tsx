@@ -11,7 +11,7 @@ const Landing = ({style}: TProps) => {
   return (
     <View style={style}>
       <View style={styles.texts}>
-        <DefaultText title="SO" textStyle={styles.titleText} />
+        <DefaultText title="Shoutout" textStyle={styles.titleText} />
         <DefaultText
           title="Connect live moments"
           textStyle={styles.sloganText}
