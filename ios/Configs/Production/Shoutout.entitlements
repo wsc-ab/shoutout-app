@@ -6,6 +6,7 @@
 	<string>development</string>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
+		<!-- TODO change url to shoutout -->
 		<string>applinks:links.roll.airballoon.app</string>
 	</array>
 </dict>

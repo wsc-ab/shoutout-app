@@ -117,7 +117,7 @@ const Moments = ({style}: TProps) => {
   if (status === 'loaded' && data.length === 0) {
     return (
       <View style={styles.noData}>
-        <DefaultText title="No roll found." />
+        <DefaultText title="No moment found." />
         <DefaultText
           title="Reload"
           onPress={() => setStatus('loading')}
