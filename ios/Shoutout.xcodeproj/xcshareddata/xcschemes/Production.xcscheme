@@ -22,6 +22,13 @@
                </EnvironmentBuildable>
             </ActionContent>
          </ExecutionAction>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Set Extension BundleId"
+               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;/usr/libexec/PlistBuddy -c &quot;Set :CFBundleIdentifier app.airballoon.Shoutout.ImageNotification&quot; $PROJECT_DIR/ImageNotification/Info.plist&#10;">
+            </ActionContent>
+         </ExecutionAction>
       </PreActions>
       <BuildActionEntries>
          <BuildActionEntry
