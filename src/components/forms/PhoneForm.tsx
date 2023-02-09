@@ -116,10 +116,12 @@ const PhoneForm = ({onCancel, onSuccess, submitting}: TProps) => {
       {modal === 'code' && (
         <SelectModal
           title={'Country'}
-          items={countryData.map(({countryNameEn, countryCode: code}) => ({
-            title: countryNameEn,
-            name: code,
-          }))}
+          items={countryData
+            .map(({countryNameEn, countryCode: code}) => ({
+              title: countryNameEn,
+              name: code,
+            }))
+            .sort((a, b) => a.title.localeCompare(b.title))}
           onCancel={() => setModal(undefined)}
           onPress={() => setModal(undefined)}
           control={control}
