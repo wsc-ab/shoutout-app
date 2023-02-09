@@ -63,7 +63,7 @@
 		00E356F21AD99517003FC87E /* ShoutoutTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShoutoutTests.m; sourceTree = "<group>"; };
 		04F7EB9FEB3EE71DCEF7A16E /* Pods-Production.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Production.release.xcconfig"; path = "Target Support Files/Pods-Production/Pods-Production.release.xcconfig"; sourceTree = "<group>"; };
 		1277BDF84EF883235CA87511 /* Pods-Development.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Development.release.xcconfig"; path = "Target Support Files/Pods-Development/Pods-Development.release.xcconfig"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* Shoutout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shoutout.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* Production.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Production.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Shoutout/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = Shoutout/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Shoutout/Images.xcassets; sourceTree = "<group>"; };
@@ -203,7 +203,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* Shoutout.app */,
+				13B07F961A680F5B00A75B9A /* Production.app */,
 				00E356EE1AD99517003FC87E /* ShoutoutTests.xctest */,
 				87552EFC29725B8100FFB3C3 /* Development.app */,
 				8701C29E299498C300A476EB /* ImageNotification.appex */,
@@ -310,7 +310,7 @@
 			);
 			name = Production;
 			productName = Shoutout;
-			productReference = 13B07F961A680F5B00A75B9A /* Shoutout.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* Production.app */;
 			productType = "com.apple.product-type.application";
 		};
 		8701C29D299498C300A476EB /* ImageNotification */ = {
@@ -838,7 +838,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.airballoon.Shoutout;
-				PRODUCT_NAME = Shoutout;
+				PRODUCT_NAME = Production;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -866,7 +866,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.airballoon.Shoutout;
-				PRODUCT_NAME = Shoutout;
+				PRODUCT_NAME = Production;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
