@@ -12,7 +12,6 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		2E4BA7BB38DD5F8AF9905D39 /* Pods_ImageNotification_Dev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 951ACC48B30710D396FA6CF9 /* Pods_ImageNotification_Dev.framework */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8701C2A2299498C300A476EB /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 8701C2A1299498C300A476EB /* NotificationService.m */; };
 		8701C2A6299498C300A476EB /* ImageNotification.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8701C29E299498C300A476EB /* ImageNotification.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -80,10 +79,6 @@
 		8701C2A1299498C300A476EB /* NotificationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationService.m; sourceTree = "<group>"; };
 		8701C2A3299498C300A476EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8702CF0029928C1700704A03 /* Shoutout.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Shoutout.entitlements; sourceTree = "<group>"; };
-		870B43042993B6DF00BEC7DE /* ImageNotification-Dev.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "ImageNotification-Dev.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
-		870B43062993B6DF00BEC7DE /* NotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationService.h; sourceTree = "<group>"; };
-		870B43072993B6DF00BEC7DE /* NotificationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationService.m; sourceTree = "<group>"; };
-		870B43092993B6DF00BEC7DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		870B632429723BAF006B30C0 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		87419BEE29726D4A009F530C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = Shoutout/Info.plist; sourceTree = "<group>"; };
 		87552EE62972591900FFB3C3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -91,8 +86,6 @@
 		87B8BBC92967B85D00B04A2D /* Shoutout.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Shoutout.entitlements; sourceTree = "<group>"; };
 		87C2D76529727FE300F4D4C1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-Shoutout-ShoutoutTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shoutout-ShoutoutTests.release.xcconfig"; path = "Target Support Files/Pods-Shoutout-ShoutoutTests/Pods-Shoutout-ShoutoutTests.release.xcconfig"; sourceTree = "<group>"; };
-		9272529B09D45660B90F7C5B /* Pods-ImageNotification-Dev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImageNotification-Dev.debug.xcconfig"; path = "Target Support Files/Pods-ImageNotification-Dev/Pods-ImageNotification-Dev.debug.xcconfig"; sourceTree = "<group>"; };
-		951ACC48B30710D396FA6CF9 /* Pods_ImageNotification_Dev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ImageNotification_Dev.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AD45EFB4556C084422D1204 /* Pods_Production.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Production.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA200A4269980A2CB07C2C38 /* Pods-Production.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Production.debug.xcconfig"; path = "Target Support Files/Pods-Production/Pods-Production.debug.xcconfig"; sourceTree = "<group>"; };
 		BEDC90872F10254E37C3E2A5 /* Pods-Shoutout.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shoutout.debug.xcconfig"; path = "Target Support Files/Pods-Shoutout/Pods-Shoutout.debug.xcconfig"; sourceTree = "<group>"; };
@@ -514,23 +507,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Development/Pods-Development-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		47ECD31387EFEA12CEFDE336 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ImageNotification-Dev/Pods-ImageNotification-Dev-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ImageNotification-Dev/Pods-ImageNotification-Dev-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ImageNotification-Dev/Pods-ImageNotification-Dev-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		87552EEA29725B8100FFB3C3 /* Start Packager */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -664,28 +640,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Production-ShoutoutTests/Pods-Production-ShoutoutTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D28A1356836CE05B38BB5495 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ImageNotification-Dev-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
@@ -873,7 +827,7 @@
 				DEVELOPMENT_TEAM = TV833LJATG;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Shoutout/Info.plist;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -901,7 +855,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = TV833LJATG;
 				INFOPLIST_FILE = Shoutout/Info.plist;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1140,7 +1094,7 @@
 				DEVELOPMENT_TEAM = TV833LJATG;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Shoutout/Info.plist;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1168,7 +1122,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = TV833LJATG;
 				INFOPLIST_FILE = Shoutout/Info.plist;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

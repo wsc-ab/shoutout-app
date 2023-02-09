@@ -26,7 +26,16 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Set Extension BundleId"
-               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;/usr/libexec/PlistBuddy -c &quot;Set :CFBundleIdentifier app.airballoon.Shoutout.ImageNotification&quot; $PROJECT_DIR/ImageNotification/Info.plist&#10;">
+               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;/usr/libexec/PlistBuddy -c &quot;Set :CFBundleIdentifier app.airballoon.Shoutout.ImageNotification&quot; ${SRCROOT}/ImageNotification/Info.plist&#10;">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "87552EE829725B8100FFB3C3"
+                     BuildableName = "Development.app"
+                     BlueprintName = "Development"
+                     ReferencedContainer = "container:Shoutout.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
             </ActionContent>
          </ExecutionAction>
       </PreActions>
