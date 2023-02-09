@@ -57,7 +57,7 @@ const Notifications = ({isPermitted}: TProps) => {
 
       // handle notification to open app
       messaging().onNotificationOpenedApp(message => {
-        message.data;
+        alertNotification(message);
       });
 
       // handle notification from killed app
@@ -65,7 +65,7 @@ const Notifications = ({isPermitted}: TProps) => {
         .getInitialNotification()
         .then(message => {
           if (message) {
-            message.data;
+            alertNotification(message);
           }
         });
 
