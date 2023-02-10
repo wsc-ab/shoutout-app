@@ -6,6 +6,7 @@ import AuthUserContext from '../../contexts/AuthUser';
 
 import {TStyleView} from '../../types/Style';
 import {getThumbnailPath} from '../../utils/Storage';
+import DefaultIcon from './DefaultIcon';
 import DefaultImage from './DefaultImage';
 import DefaultText from './DefaultText';
 
@@ -84,20 +85,23 @@ const DefaultVideo = ({
         </View>
       )}
       {!isReported && (
-        <Video
-          source={{uri}}
-          style={videoStyle}
-          resizeMode="cover"
-          posterResizeMode="cover"
-          ignoreSilentSwitch="ignore"
-          paused={paused}
-          onLoad={() => {
-            onLoaded && onLoaded();
-          }}
-          poster={thumbnailUri}
-          repeat={repeat}
-          onEnd={onEnd}
-        />
+        <View style={videoStyle}>
+          <Video
+            source={{uri}}
+            style={videoStyle}
+            resizeMode="cover"
+            posterResizeMode="cover"
+            ignoreSilentSwitch="ignore"
+            paused={paused}
+            onLoad={() => {
+              onLoaded && onLoaded();
+            }}
+            poster={thumbnailUri}
+            repeat={repeat}
+            onEnd={onEnd}
+          />
+          {paused && <DefaultIcon icon="play" style={styles.play} size={25} />}
+        </View>
       )}
     </Pressable>
   );
@@ -107,6 +111,15 @@ export default DefaultVideo;
 
 const styles = StyleSheet.create({
   reported: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  play: {
     position: 'absolute',
     top: 0,
     bottom: 0,

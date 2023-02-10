@@ -11,6 +11,7 @@ import {
   faHandPointLeft,
   faHandPointUp,
   faHeart,
+  faPlay,
   faPlus,
   faReplyAll,
   faShare,
@@ -37,4 +38,5 @@ library.add(
   faHandPointLeft,
   faHandPointUp,
   faFaceSmile,
+  faPlay,
 );
