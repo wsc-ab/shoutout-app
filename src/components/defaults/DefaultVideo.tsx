@@ -1,6 +1,6 @@
 import storage from '@react-native-firebase/storage';
 import React, {useContext, useEffect, useState} from 'react';
-import {Pressable, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, Pressable, StyleSheet, View} from 'react-native';
 import Video from 'react-native-video';
 import AuthUserContext from '../../contexts/AuthUser';
 
@@ -36,6 +36,7 @@ const DefaultVideo = ({
   const [uri, setUri] = useState<string>();
   const [thumbnailUri, setThumbnailUri] = useState<string>();
   const [paused, setPaused] = useState(true);
+  const [buffer, setBuffer] = useState(true);
   const {reportedContents} = useContext(AuthUserContext);
 
   useEffect(() => {
@@ -97,10 +98,14 @@ const DefaultVideo = ({
               onLoaded && onLoaded();
             }}
             poster={thumbnailUri}
+            onBuffer={({isBuffering}) => setBuffer(isBuffering)}
             repeat={repeat}
             onEnd={onEnd}
           />
           {paused && <DefaultIcon icon="play" style={styles.play} size={25} />}
+          {!paused && buffer && (
+            <ActivityIndicator style={styles.play} color="white" />
+          )}
         </View>
       )}
     </Pressable>

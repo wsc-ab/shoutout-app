@@ -65,7 +65,7 @@ const CreateButton = ({style}: TProps) => {
           icon="plus"
           onPress={onAdd}
           style={styles.icon}
-          size={20}
+          size={25}
         />
       )}
       {submitting && progress === 0 && <ActivityIndicator style={styles.act} />}

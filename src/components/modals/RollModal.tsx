@@ -19,8 +19,6 @@ const RollModal = ({id, path}: TProps) => {
         icon="angle-left"
         style={styles.icon}
         onPress={() => {
-          console.log('pressed');
-
           onUpdate(undefined);
         }}
       />

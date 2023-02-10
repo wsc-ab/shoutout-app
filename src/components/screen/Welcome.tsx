@@ -71,7 +71,7 @@ const Welcome = ({style}: TProps) => {
             <View style={[styles.card, {width, height}]}>
               <View style={styles.detail}>
                 {item.detail && <DefaultText title={item.detail} />}
-                <DefaultIcon icon={item.icon as IconProp} />
+                <DefaultIcon icon={item.icon as IconProp} size={25} />
               </View>
 
               <DefaultText
