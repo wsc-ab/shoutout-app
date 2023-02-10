@@ -23,6 +23,7 @@ type TProps = {
   index: string;
   mount: boolean;
   pauseOnModal?: boolean;
+  inView: boolean;
 };
 
 const DefaultVideo = ({
@@ -36,6 +37,7 @@ const DefaultVideo = ({
   mount,
   videoStyle,
   pauseOnModal = true,
+  inView,
 }: TProps) => {
   const [uri, setUri] = useState<string>();
   const [thumbnailUri, setThumbnailUri] = useState<string>();
@@ -49,6 +51,10 @@ const DefaultVideo = ({
       setPaused(!!modal);
     }
   }, [modal, pauseOnModal]);
+
+  useEffect(() => {
+    setPaused(!inView);
+  }, [inView]);
 
   useEffect(() => {
     const load = async () => {

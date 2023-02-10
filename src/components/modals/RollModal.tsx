@@ -27,7 +27,8 @@ const RollModal = ({id, path}: TProps) => {
         pauseOnModal={false}
         style={styles.card}
         path={path}
-        mount={true}
+        mount
+        inView
       />
     </DefaultModal>
   );

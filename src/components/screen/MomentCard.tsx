@@ -32,6 +32,7 @@ type TProps = {
   mount: boolean;
   path?: string;
   pauseOnModal?: boolean;
+  inView: boolean;
 };
 
 const MomentCard = ({
@@ -40,6 +41,7 @@ const MomentCard = ({
   style,
   pauseOnModal = true,
   mount,
+  inView,
 }: TProps) => {
   const {height, width} = useWindowDimensions();
   const [data, setData] = useState<TDocData>();
@@ -174,6 +176,7 @@ const MomentCard = ({
                 mount={index - 2 <= elIndex && elIndex <= index + 2 && mount}
                 pauseOnModal={pauseOnModal}
                 repeat
+                inView={inView && index === elIndex}
               />
               <View style={styles.buttons}>
                 <LikeButton
