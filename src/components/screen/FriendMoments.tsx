@@ -1,7 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {
   FlatList,
-  Pressable,
   RefreshControl,
   StyleSheet,
   useWindowDimensions,
@@ -16,7 +15,6 @@ import InviteCard from '../cards/InviteCard';
 import SmallUserCard from '../cards/SmallUserCard';
 import DefaultAlert from '../defaults/DefaultAlert';
 import {defaultBlack} from '../defaults/DefaultColors';
-import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
 import ContentCard from './ContentCard';
 
@@ -79,18 +77,22 @@ const FriendMoments = ({style}: TProps) => {
           />
         }
         ListEmptyComponent={
-          <DefaultText
-            title="No moment found. Add more friends!"
-            style={{
-              position: 'absolute',
-              top: 0,
-              bottom: 0,
-              left: 0,
-              right: 0,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          />
+          <>
+            {status === 'loaded' ? (
+              <DefaultText
+                title="No moment found. Add more friends!"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              />
+            ) : null}
+          </>
         }
         contentContainerStyle={styles.container}
         keyExtractor={item => item.id + item.content.path}

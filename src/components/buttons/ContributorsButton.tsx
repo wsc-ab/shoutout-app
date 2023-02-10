@@ -66,14 +66,12 @@ const ContributorsButton = ({users, onPress, index, style}: TProps) => {
                 {width: (width - 30) / 2},
                 isCurrent && styles.current,
               ]}>
-              <View style={styles.body}>
-                <DefaultText
-                  title={item.displayName}
-                  textStyle={styles.nameText}
-                />
-                <LocationButton location={item.location} />
-                <DefaultText title={getTimeSinceTimestamp(item.addedAt)} />
-              </View>
+              <DefaultText
+                title={item.displayName}
+                textStyle={styles.nameText}
+              />
+              <LocationButton location={item.location} />
+              <DefaultText title={getTimeSinceTimestamp(item.addedAt)} />
               <FollowButton
                 user={{
                   id: item.id,
@@ -98,21 +96,15 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: defaultBlack.lv2(0.5),
     borderRadius: 10,
-    flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
-  body: {
-    flex: 1,
-    alignItems: 'flex-start',
-  },
+
   contentContainer: {paddingHorizontal: 10},
 
   current: {backgroundColor: defaultBlack.lv2(0.9)},
   nameText: {fontWeight: 'bold', fontSize: 16},
   follow: {
-    marginLeft: 10,
-    padding: 0,
-    alignItems: 'flex-end',
+    marginTop: 5,
   },
 });
