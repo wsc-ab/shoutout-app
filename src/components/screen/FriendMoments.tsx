@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import ModalContext from '../../contexts/Modal';
 import {getFriendMoments} from '../../functions/Moment';
-import {TLocation, TObject, TTimestamp} from '../../types/Firebase';
+import {TLocation, TTimestamp} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
 import InviteCard from '../cards/InviteCard';
@@ -23,7 +23,21 @@ type TProps = {
 };
 
 const FriendMoments = ({style}: TProps) => {
-  const [data, setData] = useState<TObject>([]);
+  const [data, setData] = useState<
+    {
+      id: string;
+      content: {
+        path: string;
+        location?: TLocation;
+        id: string;
+        addedAt: TTimestamp;
+        user: {id: string};
+      };
+      displayName: string;
+      thumbnail?: string;
+      addedAt: TTimestamp;
+    }[]
+  >([]);
   const [status, setStatus] = useState<TStatus>('loading');
   const {onUpdate} = useContext(ModalContext);
 
@@ -37,7 +51,6 @@ const FriendMoments = ({style}: TProps) => {
         const {contents} = await getFriendMoments({});
 
         setData(contents);
-
         setStatus('loaded');
       } catch (error) {
         DefaultAlert({
@@ -67,65 +80,41 @@ const FriendMoments = ({style}: TProps) => {
     );
   }
 
+  const ListEmptyComponent = (
+    <>
+      {status === 'loaded' ? (
+        <DefaultText
+          title="No moment found. Add more friends!"
+          style={styles.noMoment}
+        />
+      ) : null}
+    </>
+  );
+
   return (
-    <View style={[style, {top: 100}]}>
+    <View style={[styles.container, style]}>
       <FlatList
         data={data}
-        ListHeaderComponent={
-          <InviteCard
-            style={{marginBottom: 10, backgroundColor: defaultBlack.lv2(1)}}
-          />
-        }
-        ListEmptyComponent={
-          <>
-            {status === 'loaded' ? (
-              <DefaultText
-                title="No moment found. Add more friends!"
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              />
-            ) : null}
-          </>
-        }
-        contentContainerStyle={styles.container}
+        ListHeaderComponent={<InviteCard style={styles.invite} />}
+        ListEmptyComponent={ListEmptyComponent}
+        contentContainerStyle={styles.contentContainer}
         keyExtractor={item => item.id + item.content.path}
         refreshControl={
           <RefreshControl
             refreshing={status === 'loading'}
             onRefresh={() => setStatus('loading')}
             tintColor={'gray'}
+            progressViewOffset={100}
           />
         }
-        renderItem={({
-          item,
-        }: {
-          item: {
-            id: string;
-            content: {
-              path: string;
-              location?: TLocation;
-              id: string;
-              addedAt: TTimestamp;
-              user: {id: string};
-            };
-            displayName: string;
-            thumbnail?: string;
-            addedAt: TTimestamp;
-          };
-        }) => {
+        renderItem={({item}) => {
           return (
             <View>
               <SmallUserCard
                 id={item.id}
                 displayName={item.displayName}
                 thumbnail={item.thumbnail}
+                style={styles.userCard}
               />
               <ContentCard
                 content={{...item.content, user: {id: item.id}}}
@@ -149,10 +138,24 @@ const FriendMoments = ({style}: TProps) => {
 export default FriendMoments;
 
 const styles = StyleSheet.create({
-  container: {paddingBottom: 150},
+  container: {
+    paddingHorizontal: 10,
+  },
+  contentContainer: {paddingTop: 100, paddingBottom: 150},
   seperator: {
     marginBottom: 20,
   },
   noData: {flex: 1, justifyContent: 'center', alignItems: 'center'},
   refresh: {marginTop: 10},
+  invite: {marginBottom: 10, backgroundColor: defaultBlack.lv2(1)},
+  userCard: {marginBottom: 5},
+  noMoment: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });

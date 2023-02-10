@@ -26,12 +26,15 @@ const DefaultForm = ({title, left, right, children, style}: TProps) => {
         <View style={styles.left}>
           {left && <DefaultIcon icon="angle-left" onPress={left.onPress} />}
         </View>
-        <DefaultText title={title} textStyle={styles.centerText} />
+        <DefaultText
+          title={title}
+          style={styles.center}
+          textStyle={styles.centerText}
+        />
         <View style={styles.right}>
           {right && !right.submitting && (
             <DefaultIcon
               icon={right.icon ?? 'angle-right'}
-              // style={{borderWidth: 1, borderColor: 'white'}}
               onPress={right.onPress}
             />
           )}
@@ -50,6 +53,7 @@ const styles = StyleSheet.create({
     flex: 1,
     top: 40,
     paddingBottom: 50,
+    justifyContent: 'center',
   },
   header: {
     flexDirection: 'row',
@@ -57,11 +61,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
     zIndex: 100,
+    paddingHorizontal: 20,
   },
   left: {flex: 1, alignItems: 'flex-start'},
+  center: {
+    flex: 1,
+    alignItems: 'center',
+  },
   centerText: {
     fontSize: 20,
-    textAlign: 'center',
     fontWeight: 'bold',
   },
   right: {flex: 1, alignItems: 'flex-end'},

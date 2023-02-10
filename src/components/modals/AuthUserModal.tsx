@@ -44,7 +44,13 @@ const AuthUserModal = ({}: TProps) => {
     <DefaultModal>
       <DefaultForm
         title={authUserData.displayName}
-        left={{onPress: () => onUpdate(undefined)}}>
+        left={{onPress: () => onUpdate(undefined)}}
+        right={{
+          icon: 'user',
+          onPress: () => {
+            onUpdate({target: 'users', id: authUserData.id});
+          },
+        }}>
         <ScrollView
           contentContainerStyle={{flex: 1}}
           refreshControl={
@@ -103,12 +109,6 @@ const AuthUserModal = ({}: TProps) => {
           </View>
           <View
             style={{borderWidth: 1, borderColor: 'gray', marginVertical: 20}}
-          />
-          <DefaultText
-            title="View profile"
-            onPress={() => {
-              onUpdate({target: 'users', id: authUserData.id});
-            }}
           />
           <DefaultText
             title="Edit profile"

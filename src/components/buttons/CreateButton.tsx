@@ -1,6 +1,6 @@
 import {firebase} from '@react-native-firebase/auth';
 import React, {useContext, useState} from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import {createMoment} from '../../functions/Moment';
@@ -88,5 +88,3 @@ const CreateButton = ({style}: TProps) => {
 };
 
 export default CreateButton;
-
-const styles = StyleSheet.create({});

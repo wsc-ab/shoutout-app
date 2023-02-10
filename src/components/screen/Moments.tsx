@@ -110,18 +110,16 @@ const Moments = ({style}: TProps) => {
     );
   }
 
-  if (status === 'loaded' && data.length === 0) {
-    return (
-      <View style={styles.noData}>
-        <DefaultText title="No moment found." />
+  const ListEmptyComponent = (
+    <>
+      {status === 'loaded' ? (
         <DefaultText
-          title="Reload"
-          onPress={() => setStatus('loading')}
-          style={styles.refresh}
+          title="No moment found. Please reload."
+          style={styles.noMoment}
         />
-      </View>
-    );
-  }
+      ) : null}
+    </>
+  );
 
   const renderItem = ({
     item,
@@ -158,6 +156,7 @@ const Moments = ({style}: TProps) => {
         initialNumToRender={1}
         windowSize={3}
         maxToRenderPerBatch={1}
+        ListEmptyComponent={ListEmptyComponent}
         snapToInterval={height}
         snapToAlignment={'start'}
         showsVerticalScrollIndicator={false}
@@ -168,7 +167,7 @@ const Moments = ({style}: TProps) => {
             refreshing={status === 'loading'}
             onRefresh={() => setStatus('loading')}
             tintColor={'gray'}
-            progressViewOffset={80}
+            progressViewOffset={100}
           />
         }
         disableIntervalMomentum
@@ -185,4 +184,13 @@ export default Moments;
 const styles = StyleSheet.create({
   noData: {flex: 1, justifyContent: 'center', alignItems: 'center'},
   refresh: {marginTop: 10},
+  noMoment: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
