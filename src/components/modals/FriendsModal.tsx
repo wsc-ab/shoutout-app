@@ -1,24 +1,22 @@
 import React, {useContext, useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import {THitItem} from '../../types/Algolia';
 import {getSameIds} from '../../utils/Array';
-import {createShareLink} from '../../utils/Share';
-import ActionCard from '../cards/ActionCard';
+import InviteCard from '../cards/InviteCard';
+
 import UserCard from '../cards/UserCard';
-import DefaultAlert from '../defaults/DefaultAlert';
 import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
 import SearchForm from './SearchForm';
-import openShareModal from './ShareModal';
 
 type TProps = {};
 
 const FriendsModal = ({}: TProps) => {
-  const {authUserData, bundleId} = useContext(AuthUserContext);
+  const {authUserData} = useContext(AuthUserContext);
   const {onUpdate} = useContext(ModalContext);
 
   const friends = getSameIds(
@@ -27,24 +25,6 @@ const FriendsModal = ({}: TProps) => {
   );
 
   const [tab, setTab] = useState<'friends' | 'search'>('friends');
-
-  const onInvite = async () => {
-    try {
-      const target =
-        bundleId === 'app.airballoon.Shoutout' ? 'development' : 'production';
-
-      const shareLink = await createShareLink({target});
-      await openShareModal({
-        title: "Let's connect our live moments on Shoutout!",
-        url: shareLink,
-      });
-    } catch (error) {
-      DefaultAlert({
-        title: 'Failed to open share modal',
-        message: (error as {message: string}).message,
-      });
-    }
-  };
 
   const renderItem = (item: THitItem) => {
     if (item.objectID === authUserData.id) {
@@ -65,12 +45,10 @@ const FriendsModal = ({}: TProps) => {
         }}>
         {tab === 'friends' && (
           <View>
-            <ActionCard
-              name={'Invite friends'}
-              detail={'Connect your live moments with more friends!'}
+            <InviteCard
               style={{marginBottom: 10, backgroundColor: defaultBlack.lv3(1)}}
-              onPress={onInvite}
             />
+
             <DefaultText
               title="Friends"
               style={{marginBottom: 5}}

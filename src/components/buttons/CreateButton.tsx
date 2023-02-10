@@ -22,51 +22,66 @@ const CreateButton = ({style}: TProps) => {
   const [progress, setProgress] = useState(0);
 
   const onAdd = async () => {
-    try {
-      setSubmitting(true);
-      onUpdate({target: 'video'});
+    const {uploaded} = await uploadVideo({
+      authUserData,
+      setProgress,
+      setSubmitting,
+    });
 
-      const latlng = await getLatLng();
-
-      const {uploaded} = await uploadVideo({
-        authUserData,
-        setProgress,
-        setSubmitting,
-      });
-
-      if (!uploaded) {
-        return;
-      }
-      const momentId = firebase.firestore().collection('moments').doc().id;
-
-      await createMoment({
-        moment: {
-          id: momentId,
-          path: uploaded,
-          latlng,
-        },
-      });
-    } catch (error) {
-      DefaultAlert({
-        title: 'Error',
-        message: (error as {message: string}).message,
-      });
-    } finally {
-      setSubmitting(false);
-      setProgress(0);
-      onUpdate(undefined);
+    if (!uploaded) {
+      return;
     }
+
+    const onPress = async (type: 'everyone' | 'friends') => {
+      try {
+        setSubmitting(true);
+        onUpdate({target: 'video'});
+
+        const latlng = await getLatLng();
+
+        const momentId = firebase.firestore().collection('moments').doc().id;
+
+        await createMoment({
+          moment: {
+            id: momentId,
+            path: uploaded,
+            latlng,
+            type,
+          },
+        });
+      } catch (error) {
+        DefaultAlert({
+          title: 'Error',
+          message: (error as {message: string}).message,
+        });
+      } finally {
+        setSubmitting(false);
+        setProgress(0);
+        onUpdate(undefined);
+      }
+    };
+
+    DefaultAlert({
+      title: 'Who should view this moment?',
+      message:
+        'Everyone option will share this moment with everyone including friends. Select Friends if you would like to share this moment only with friends.',
+      buttons: [
+        {text: 'Everyone', onPress: () => onPress('everyone')},
+        {
+          text: 'Friends',
+          onPress: () => onPress('friends'),
+        },
+      ],
+    });
   };
 
   return (
     <View style={style}>
       {!submitting && <DefaultIcon icon="plus" onPress={onAdd} size={25} />}
-      {submitting && progress === 0 && <ActivityIndicator style={styles.act} />}
+
+      {submitting && progress === 0 && <ActivityIndicator />}
       {submitting && progress !== 0 && (
-        <DefaultText
-          title={Math.round(progress).toString()}
-          style={styles.progress}
-        />
+        <DefaultText title={Math.round(progress).toString()} />
       )}
     </View>
   );
@@ -74,7 +89,4 @@ const CreateButton = ({style}: TProps) => {
 
 export default CreateButton;
 
-const styles = StyleSheet.create({
-  progress: {alignItems: 'flex-end', padding: 10},
-  act: {alignItems: 'flex-end', paddingHorizontal: 10},
-});
+const styles = StyleSheet.create({});

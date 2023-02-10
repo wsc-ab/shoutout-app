@@ -4,6 +4,7 @@ import Moments from './Moments';
 
 import AuthUserContext from '../../contexts/AuthUser';
 import Permission from '../notification/Permission';
+import FriendMoments from './FriendMoments';
 import Header from './Header';
 import Landing from './Landing';
 import Welcome from './Welcome';
@@ -11,7 +12,7 @@ import Welcome from './Welcome';
 const Home = () => {
   const {authUserData, loaded} = useContext(AuthUserContext);
 
-  const [tab, setTab] = useState<'friends' | 'globe'>('globe');
+  const [tab, setTab] = useState<'friends' | 'globe'>('friends');
 
   if (!loaded) {
     return null;
@@ -34,8 +35,10 @@ const Home = () => {
       <Header
         onFriends={() => setTab('friends')}
         onGlobal={() => setTab('globe')}
+        tab={tab}
       />
-      <Moments style={styles.moments} type="globe" />
+      {tab === 'friends' && <FriendMoments style={styles.moments} />}
+      {tab === 'globe' && <Moments style={styles.moments} />}
       <Permission />
     </View>
   );

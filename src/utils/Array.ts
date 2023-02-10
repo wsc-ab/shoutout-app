@@ -35,12 +35,6 @@ export const getSameIds = <A extends TObject>(items0: A[], items1: A[]) => {
   return filtered;
 };
 
-export const getDuplicateIds = (ids0: string[], ids1: string[]) => {
-  const filtered = ids0.filter(id => ids1.includes(id));
-
-  return filtered;
-};
-
 export const getFriendStatus = ({
   fromIds,
   toIds,

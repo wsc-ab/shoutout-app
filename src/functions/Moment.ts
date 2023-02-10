@@ -6,6 +6,7 @@ export const createMoment = async (input: {
     id: string;
     path: string;
     latlng?: TLatLng;
+    type: 'everyone' | 'friends';
   };
 }) => {
   const {data} = await firebaseFunctions.httpsCallable('createMoment')(input);
@@ -47,11 +48,16 @@ export const addView = async (input: {
   return {...data};
 };
 
-export const getMoments = async (input: {
-  pagination: {number: number};
-  type: 'friends' | 'globe';
-}) => {
+export const getMoments = async (input: {pagination: {number: number}}) => {
   const {data} = await firebaseFunctions.httpsCallable('getMoments')(input);
+
+  return {...data};
+};
+
+export const getFriendMoments = async (input: {}) => {
+  const {data} = await firebaseFunctions.httpsCallable('getFriendMoments')(
+    input,
+  );
 
   return {...data};
 };

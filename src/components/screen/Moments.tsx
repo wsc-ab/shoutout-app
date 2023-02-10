@@ -17,13 +17,11 @@ import DefaultText from '../defaults/DefaultText';
 import MomentCard from './MomentCard';
 
 type TProps = {
-  type: 'friends' | 'globe';
   style: TStyleView;
 };
 
-const Moments = ({style, type}: TProps) => {
+const Moments = ({style}: TProps) => {
   const [data, setData] = useState<TDocData[]>([]);
-  console.log('called', data.length, 'd');
 
   const [status, setStatus] = useState<TStatus>('loading');
   const {height, width} = useWindowDimensions();
@@ -53,7 +51,7 @@ const Moments = ({style, type}: TProps) => {
   useEffect(() => {
     const load = async () => {
       try {
-        const {moments} = await getMoments({pagination: {number: 5}, type});
+        const {moments} = await getMoments({pagination: {number: 5}});
 
         setData(moments);
 
@@ -71,12 +69,12 @@ const Moments = ({style, type}: TProps) => {
     if (status === 'loading') {
       load();
     }
-  }, [status, type]);
+  }, [status]);
 
   useEffect(() => {
     const load = async () => {
       try {
-        const {moments} = await getMoments({pagination: {number: 5}, type});
+        const {moments} = await getMoments({pagination: {number: 5}});
 
         setData(pre => {
           const copy = [...pre];
@@ -85,8 +83,6 @@ const Moments = ({style, type}: TProps) => {
 
         setStatus('loaded');
       } catch (error) {
-        console.log(error, 'e');
-
         DefaultAlert({
           title: 'Error',
           message: (error as {message: string}).message,
@@ -99,7 +95,7 @@ const Moments = ({style, type}: TProps) => {
     if (status === 'loadMore') {
       load();
     }
-  }, [status, type]);
+  }, [status]);
 
   if (status === 'error') {
     return (

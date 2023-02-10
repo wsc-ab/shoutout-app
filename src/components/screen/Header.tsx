@@ -5,14 +5,20 @@ import FriendsButton from '../buttons/FriendButton';
 import GlobalButton from '../buttons/GlobalButton';
 import UserButton from '../buttons/UserButton';
 
-type TProps = {onFriends: () => void; onGlobal: () => void};
+type TProps = {onFriends: () => void; onGlobal: () => void; tab: string};
 
-const Header = ({onFriends, onGlobal}: TProps) => {
+const Header = ({onFriends, onGlobal, tab}: TProps) => {
   return (
     <View style={styles.container}>
       <UserButton style={styles.button} />
-      <FriendsButton style={styles.button} onPress={onFriends} />
-      <GlobalButton style={styles.button} onPress={onGlobal} />
+      <FriendsButton
+        style={[styles.button, tab === 'friends' && styles.selected]}
+        onPress={onFriends}
+      />
+      <GlobalButton
+        style={[styles.button, tab === 'globe' && styles.selected]}
+        onPress={onGlobal}
+      />
       <CreateButton style={styles.button} />
     </View>
   );
@@ -31,4 +37,5 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
   button: {flex: 1, alignItems: 'center'},
+  selected: {borderBottomWidth: 1, borderColor: 'white'},
 });

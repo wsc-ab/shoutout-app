@@ -21,6 +21,7 @@ type TProps = {
   };
   style?: TStyleView;
   contentStyle: {width: number; height: number};
+  showUser?: boolean;
   onPress?: () => void;
   onDelete?: () => void;
 };
@@ -46,7 +47,7 @@ const ContentCard = ({
           <LocationButton location={content.location} />
           <DefaultText title={getTimeSinceTimestamp(content.addedAt)} />
         </View>
-        {content.user.id === authUserData.id && (
+        {content.user.id === authUserData.id && onDelete && (
           <DeleteButton
             item={content}
             style={styles.delete}
