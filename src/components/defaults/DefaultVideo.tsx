@@ -37,24 +37,26 @@ const DefaultVideo = ({
   mount,
   videoStyle,
   pauseOnModal = true,
-  inView,
+  inView: momentInView,
 }: TProps) => {
   const [uri, setUri] = useState<string>();
   const [thumbnailUri, setThumbnailUri] = useState<string>();
-  const [paused, setPaused] = useState(false);
+
+  const [inView, setInview] = useState(momentInView);
+  const [userPaused, setUserPaused] = useState(false);
   const [buffer, setBuffer] = useState(true);
   const {reportedContents} = useContext(AuthUserContext);
   const {modal} = useContext(ModalContext);
 
   useEffect(() => {
     if (pauseOnModal) {
-      setPaused(!!modal);
+      setInview(!modal);
     }
   }, [modal, pauseOnModal]);
 
   useEffect(() => {
-    setPaused(!inView);
-  }, [inView]);
+    setInview(momentInView);
+  }, [momentInView]);
 
   useEffect(() => {
     const load = async () => {
@@ -80,11 +82,14 @@ const DefaultVideo = ({
 
   const isReported = reportedContents.includes(path);
 
+  // pause video when not inview or user manually pauses
+  const paused = !inView || userPaused;
+
   return (
     <Pressable
       style={style}
       disabled={disabled}
-      onPress={onPress ? onPress : () => setPaused(pre => !pre)}>
+      onPress={onPress ? onPress : () => setUserPaused(pre => !pre)}>
       {isReported && (
         <View>
           <DefaultImage
@@ -115,7 +120,9 @@ const DefaultVideo = ({
             repeat={repeat}
             onEnd={onEnd}
           />
-          {paused && <DefaultIcon icon="play" style={styles.play} size={25} />}
+          {userPaused && (
+            <DefaultIcon icon="play" style={styles.play} size={25} />
+          )}
           {!paused && buffer && (
             <ActivityIndicator style={styles.play} color="white" />
           )}
