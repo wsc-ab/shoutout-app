@@ -60,14 +60,7 @@ const CreateButton = ({style}: TProps) => {
 
   return (
     <View style={style}>
-      {!submitting && (
-        <DefaultIcon
-          icon="plus"
-          onPress={onAdd}
-          style={styles.icon}
-          size={25}
-        />
-      )}
+      {!submitting && <DefaultIcon icon="plus" onPress={onAdd} size={25} />}
       {submitting && progress === 0 && <ActivityIndicator style={styles.act} />}
       {submitting && progress !== 0 && (
         <DefaultText
@@ -82,7 +75,6 @@ const CreateButton = ({style}: TProps) => {
 export default CreateButton;
 
 const styles = StyleSheet.create({
-  icon: {alignItems: 'flex-end'},
   progress: {alignItems: 'flex-end', padding: 10},
   act: {alignItems: 'flex-end', paddingHorizontal: 10},
 });

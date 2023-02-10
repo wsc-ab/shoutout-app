@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   FlatList,
   RefreshControl,
@@ -8,7 +8,6 @@ import {
   ViewabilityConfigCallbackPairs,
   ViewToken,
 } from 'react-native';
-import ModalContext from '../../contexts/Modal';
 import {getMoments} from '../../functions/Moment';
 import {TDocData} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
@@ -24,9 +23,9 @@ type TProps = {
 
 const Moments = ({style, type}: TProps) => {
   const [data, setData] = useState<TDocData[]>([]);
+  console.log('called', data.length, 'd');
 
   const [status, setStatus] = useState<TStatus>('loading');
-  const {modal} = useContext(ModalContext);
   const {height, width} = useWindowDimensions();
   const [index, setIndex] = useState(0);
 
@@ -72,12 +71,12 @@ const Moments = ({style, type}: TProps) => {
     if (status === 'loading') {
       load();
     }
-  }, [status]);
+  }, [status, type]);
 
   useEffect(() => {
     const load = async () => {
       try {
-        const {moments} = await getMoments({pagination: {number: 10}});
+        const {moments} = await getMoments({pagination: {number: 5}, type});
 
         setData(pre => {
           const copy = [...pre];
@@ -100,7 +99,7 @@ const Moments = ({style, type}: TProps) => {
     if (status === 'loadMore') {
       load();
     }
-  }, [status]);
+  }, [status, type]);
 
   if (status === 'error') {
     return (
@@ -135,9 +134,14 @@ const Moments = ({style, type}: TProps) => {
     item: TDocData;
     index: number;
   }) => {
+    console.log('moment render called', elIndex);
+
     return (
       <View style={{height, width}}>
-        <MomentCard moment={item} inView={modal ? false : elIndex === index} />
+        <MomentCard
+          moment={{...item, index: elIndex}}
+          mount={index - 2 <= elIndex && elIndex <= index + 2}
+        />
       </View>
     );
   };

@@ -11,9 +11,7 @@ import Welcome from './Welcome';
 const Home = () => {
   const {authUserData, loaded} = useContext(AuthUserContext);
 
-  const tabs = ['friends', 'globe'];
-
-  const [tab, setTab] = useState('globe');
+  const [tab, setTab] = useState<'friends' | 'globe'>('globe');
 
   if (!loaded) {
     return null;
@@ -37,8 +35,7 @@ const Home = () => {
         onFriends={() => setTab('friends')}
         onGlobal={() => setTab('globe')}
       />
-      {tab === 'friends' && <Moments style={styles.moments} type="friends" />}
-      {tab === 'globle' && <Moments style={styles.moments} type="globe" />}
+      <Moments style={styles.moments} type="globe" />
       <Permission />
     </View>
   );

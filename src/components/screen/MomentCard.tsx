@@ -29,11 +29,18 @@ import DefaultVideo from '../defaults/DefaultVideo';
 type TProps = {
   moment: TDocData;
   style?: TStyleView;
-  inView: boolean;
+  mount: boolean;
   path?: string;
+  pauseOnModal?: boolean;
 };
 
-const MomentCard = ({moment, path, style, inView}: TProps) => {
+const MomentCard = ({
+  moment,
+  path,
+  style,
+  pauseOnModal = true,
+  mount,
+}: TProps) => {
   const {height, width} = useWindowDimensions();
   const [data, setData] = useState<TDocData>();
 
@@ -161,9 +168,11 @@ const MomentCard = ({moment, path, style, inView}: TProps) => {
           return (
             <View style={{height, width}}>
               <DefaultVideo
+                index={`${moment.index} / ${index}`}
                 path={item.path}
                 videoStyle={{height, width}}
-                play={elIndex === index && inView}
+                mount={index - 2 <= elIndex && elIndex <= index + 2 && mount}
+                pauseOnModal={pauseOnModal}
                 repeat
               />
               <View style={styles.buttons}>
@@ -219,8 +228,7 @@ export default MomentCard;
 const styles = StyleSheet.create({
   buttons: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 10,
+    alignItems: 'flex-start',
     bottom: 40,
     paddingHorizontal: 10,
     position: 'absolute',
@@ -229,5 +237,5 @@ const styles = StyleSheet.create({
     right: 0,
   },
   button: {flex: 1, alignItems: 'center'},
-  users: {position: 'absolute', bottom: 90},
+  users: {position: 'absolute', bottom: 110},
 });

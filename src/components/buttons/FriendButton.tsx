@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {View} from 'react-native';
 import {TStyleView} from '../../types/Style';
 import DefaultIcon from '../defaults/DefaultIcon';
 
@@ -11,16 +11,9 @@ type TProps = {
 const FriendsButton = ({style, onPress}: TProps) => {
   return (
     <View style={style}>
-      <DefaultIcon
-        icon="user-group"
-        size={25}
-        onPress={onPress}
-        style={styles.icon}
-      />
+      <DefaultIcon icon="user-group" size={25} onPress={onPress} />
     </View>
   );
 };
 
 export default FriendsButton;
-
-const styles = StyleSheet.create({icon: {alignItems: 'flex-start'}});

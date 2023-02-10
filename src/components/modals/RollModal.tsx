@@ -22,7 +22,13 @@ const RollModal = ({id, path}: TProps) => {
           onUpdate(undefined);
         }}
       />
-      <MomentCard moment={{id}} inView={true} style={styles.card} path={path} />
+      <MomentCard
+        moment={{id}}
+        pauseOnModal={false}
+        style={styles.card}
+        path={path}
+        mount={true}
+      />
     </DefaultModal>
   );
 };

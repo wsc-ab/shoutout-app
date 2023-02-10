@@ -58,8 +58,6 @@ const ModalProvider = ({children}: TProps) => {
     }
   };
 
-  console.log(modal, 'm');
-
   return (
     <ModalContext.Provider
       value={{

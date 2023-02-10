@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {View} from 'react-native';
 import ModalContext from '../../contexts/Modal';
 import {TStyleView} from '../../types/Style';
 import DefaultIcon from '../defaults/DefaultIcon';
@@ -19,12 +19,9 @@ const UserButton = ({style}: TProps) => {
         onPress={() => {
           onUpdate({target: 'auth'});
         }}
-        style={styles.icon}
       />
     </View>
   );
 };
 
 export default UserButton;
-
-const styles = StyleSheet.create({icon: {alignItems: 'flex-start'}});

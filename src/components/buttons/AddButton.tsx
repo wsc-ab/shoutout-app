@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
   progress: {padding: 10},
   act: {paddingHorizontal: 10},
   container: {
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },

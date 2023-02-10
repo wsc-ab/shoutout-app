@@ -3,6 +3,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {ActivityIndicator, Pressable, StyleSheet, View} from 'react-native';
 import Video from 'react-native-video';
 import AuthUserContext from '../../contexts/AuthUser';
+import ModalContext from '../../contexts/Modal';
 
 import {TStyleView} from '../../types/Style';
 import {getThumbnailPath} from '../../utils/Storage';
@@ -14,34 +15,40 @@ type TProps = {
   path: string;
   style?: TStyleView;
   videoStyle: {width: number; height: number};
-  play?: boolean;
   onLoaded?: () => void;
   onEnd?: () => void;
   onPress?: () => void;
   disabled?: boolean;
   repeat?: boolean;
+  index: string;
+  mount: boolean;
+  pauseOnModal?: boolean;
 };
 
 const DefaultVideo = ({
   path,
-  play,
   onEnd,
   repeat = false,
   onPress,
   style,
   disabled,
   onLoaded,
+  mount,
   videoStyle,
+  pauseOnModal = true,
 }: TProps) => {
   const [uri, setUri] = useState<string>();
   const [thumbnailUri, setThumbnailUri] = useState<string>();
-  const [paused, setPaused] = useState(true);
+  const [paused, setPaused] = useState(false);
   const [buffer, setBuffer] = useState(true);
   const {reportedContents} = useContext(AuthUserContext);
+  const {modal} = useContext(ModalContext);
 
   useEffect(() => {
-    setPaused(!play);
-  }, [play]);
+    if (pauseOnModal) {
+      setPaused(!!modal);
+    }
+  }, [modal, pauseOnModal]);
 
   useEffect(() => {
     const load = async () => {
@@ -85,7 +92,7 @@ const DefaultVideo = ({
           />
         </View>
       )}
-      {!isReported && (
+      {!isReported && mount && (
         <View style={videoStyle}>
           <Video
             source={{uri}}
