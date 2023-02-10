@@ -123,7 +123,7 @@ const AuthUserModal = ({}: TProps) => {
           <DefaultText
             title="View friends"
             onPress={() => {
-              onUpdate({target: 'contacts'});
+              onUpdate({target: 'friends'});
             }}
             style={{marginTop: 20}}
           />

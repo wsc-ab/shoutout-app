@@ -18,10 +18,11 @@ import DefaultText from '../defaults/DefaultText';
 import MomentCard from './MomentCard';
 
 type TProps = {
+  type: 'friends' | 'globe';
   style: TStyleView;
 };
 
-const Moments = ({style}: TProps) => {
+const Moments = ({style, type}: TProps) => {
   const [data, setData] = useState<TDocData[]>([]);
 
   const [status, setStatus] = useState<TStatus>('loading');
@@ -53,7 +54,7 @@ const Moments = ({style}: TProps) => {
   useEffect(() => {
     const load = async () => {
       try {
-        const {moments} = await getMoments({pagination: {number: 5}});
+        const {moments} = await getMoments({pagination: {number: 5}, type});
 
         setData(moments);
 

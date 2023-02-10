@@ -12,10 +12,10 @@ import React, {useEffect, useState} from 'react';
 import {StatusBar, StyleSheet, View} from 'react-native';
 import Home from './src/components/screen/Home';
 import {AuthUserProvider} from './src/contexts/AuthUser';
-import {ContactsProvider} from './src/contexts/Contacts';
 import {ModalProvider} from './src/contexts/Modal';
 import {TBundleId} from './src/types/Data';
 import {TStatus} from './src/types/Screen';
+import {initAlgolia} from './src/utils/Algolia';
 import {initFirebase} from './src/utils/Firebase';
 import './src/utils/FontAwesome';
 
@@ -29,6 +29,7 @@ const App = ({bundleId}: TProps) => {
   useEffect(() => {
     const load = async () => {
       initFirebase();
+      initAlgolia(bundleId);
 
       setStatus('loaded');
     };
@@ -36,16 +37,14 @@ const App = ({bundleId}: TProps) => {
     if (status === 'loading') {
       load();
     }
-  }, [status]);
+  }, [bundleId, status]);
 
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
       <AuthUserProvider bundleId={bundleId}>
         <ModalProvider>
-          <ContactsProvider>
-            <Home />
-          </ContactsProvider>
+          <Home />
         </ModalProvider>
       </AuthUserProvider>
     </View>

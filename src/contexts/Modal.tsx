@@ -32,7 +32,9 @@ const ModalProvider = ({children}: TProps) => {
       if (initialLink) {
         const {collection, id} = getLinkData(initialLink);
 
-        onUpdate({target: collection, id});
+        if (collection) {
+          onUpdate({target: collection, id});
+        }
       }
     };
 
@@ -42,7 +44,9 @@ const ModalProvider = ({children}: TProps) => {
   useEffect(() => {
     const unsubscribe = dynamicLinks().onLink(link => {
       const {collection, id} = getLinkData(link);
-      onUpdate({target: collection, id});
+      if (collection) {
+        onUpdate({target: collection, id});
+      }
     });
     return () => unsubscribe();
   }, []);
@@ -66,7 +70,7 @@ const ModalProvider = ({children}: TProps) => {
       {modal?.target === 'users' && modal.id && <UserModal id={modal.id} />}
       {modal?.target === 'moments' && modal.id && <RollModal id={modal.id} />}
       {modal?.target === 'auth' && <AuthUserModal />}
-      {modal?.target === 'contacts' && <FriendsModal />}
+      {modal?.target === 'friends' && <FriendsModal />}
     </ModalContext.Provider>
   );
 };

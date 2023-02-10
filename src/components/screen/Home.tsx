@@ -13,7 +13,7 @@ const Home = () => {
 
   const tabs = ['friends', 'globe'];
 
-  const [tab, setTab] = useState('friends');
+  const [tab, setTab] = useState('globe');
 
   if (!loaded) {
     return null;
@@ -37,7 +37,8 @@ const Home = () => {
         onFriends={() => setTab('friends')}
         onGlobal={() => setTab('globe')}
       />
-      <Moments style={styles.moments} />
+      {tab === 'friends' && <Moments style={styles.moments} type="friends" />}
+      {tab === 'globle' && <Moments style={styles.moments} type="globe" />}
       <Permission />
     </View>
   );

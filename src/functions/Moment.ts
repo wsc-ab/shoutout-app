@@ -47,7 +47,10 @@ export const addView = async (input: {
   return {...data};
 };
 
-export const getMoments = async (input: {pagination: {number: number}}) => {
+export const getMoments = async (input: {
+  pagination: {number: number};
+  type: 'friends' | 'globe';
+}) => {
   const {data} = await firebaseFunctions.httpsCallable('getMoments')(input);
 
   return {...data};

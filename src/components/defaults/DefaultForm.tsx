@@ -31,6 +31,7 @@ const DefaultForm = ({title, left, right, children, style}: TProps) => {
           {right && !right.submitting && (
             <DefaultIcon
               icon={right.icon ?? 'angle-right'}
+              // style={{borderWidth: 1, borderColor: 'white'}}
               onPress={right.onPress}
             />
           )}

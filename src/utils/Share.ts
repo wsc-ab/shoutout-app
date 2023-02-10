@@ -35,8 +35,9 @@ export const createShareLink = async ({
     ...defaultConfigs[target],
     link,
     social: {
-      title: target === 'production' ? 'Roll Mobile' : 'ROLL Development',
-      descriptionText: 'Check this Roll out!',
+      title:
+        target === 'production' ? 'Shoutout Mobile' : 'Shoutout Development',
+      descriptionText: 'Connect live moments on Shoutout!',
       imageUrl,
     },
   });
@@ -71,8 +72,12 @@ export const getLinkData = ({url}: FirebaseDynamicLinksTypes.DynamicLink) => {
   const prefix = 'airballoon.app/share?';
 
   const data = url.split(prefix)[1];
-  const collection = data.split('=')[0];
-  const id = data.split('=')[1];
 
-  return {collection, id};
+  if (data) {
+    const collection = data.split('=')[0];
+    const id = data.split('=')[1];
+
+    return {collection, id};
+  }
+  return {collection: undefined, id: undefined};
 };
