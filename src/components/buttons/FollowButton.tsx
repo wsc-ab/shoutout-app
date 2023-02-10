@@ -1,10 +1,11 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {useContext, useState} from 'react';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import {addFollow, removeFollow} from '../../functions/Moment';
 import {TStyleView} from '../../types/Style';
+import {getFriendStatus} from '../../utils/Array';
 import DefaultAlert from '../defaults/DefaultAlert';
-import DefaultIcon from '../defaults/DefaultIcon';
+import DefaultText from '../defaults/DefaultText';
 
 type TProps = {
   user: {
@@ -15,9 +16,18 @@ type TProps = {
 
 const FollowButton = ({user, style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
+  const [submitting, setSubmitting] = useState(false);
+
+  const isAuthUser = user.id === authUserData.id;
+
+  const status = getFriendStatus({
+    fromIds: authUserData.followFrom.ids,
+    toIds: authUserData.followTo.ids,
+    id: user.id,
+  });
   const onFollow = async () => {
     try {
-      setFollowed(true);
+      setSubmitting(true);
       await addFollow({user});
     } catch (error) {
       if ((error as {message: string}).message === "user doesn't exist") {
@@ -30,41 +40,52 @@ const FollowButton = ({user, style}: TProps) => {
           message: (error as {message: string}).message,
         });
       }
-      setFollowed(false);
+    } finally {
+      setSubmitting(false);
     }
   };
 
-  const onUnfollow = async () => {
-    try {
-      setFollowed(false);
-      await removeFollow({user});
-    } catch (error) {
-      setFollowed(true);
-      DefaultAlert({
-        title: 'Error',
-        message: (error as {message: string}).message,
-      });
-    }
+  const onUnfollow = () => {
+    const onPress = async () => {
+      try {
+        setSubmitting(true);
+        await removeFollow({user});
+      } catch (error) {
+        DefaultAlert({
+          title: 'Error',
+          message: (error as {message: string}).message,
+        });
+      } finally {
+        setSubmitting(false);
+      }
+    };
+
+    DefaultAlert({
+      title: 'Unfollow?',
+      message: "You won't get updates from this user.",
+      buttons: [
+        {text: 'Unfollow', onPress, style: 'destructive'},
+        {text: 'No'},
+      ],
+    });
   };
-
-  const [followed, setFollowed] = useState(false);
-
-  useEffect(() => {
-    setFollowed(authUserData.followTo.ids.includes(user.id));
-  }, [authUserData.followTo.ids, authUserData.id, user.id]);
 
   return (
     <View style={[styles.container, style]}>
-      {user.id === authUserData.id && (
-        <DefaultIcon icon={'check'} style={styles.icon} />
+      {isAuthUser && <DefaultText title="Me" />}
+      {!isAuthUser && status === 'fromTo' && !submitting && (
+        <DefaultText title="Friend" onPress={onUnfollow} />
       )}
-      {user.id !== authUserData.id && (
-        <DefaultIcon
-          icon={followed ? 'check' : 'plus'}
-          onPress={followed ? onUnfollow : onFollow}
-          style={styles.icon}
-        />
+      {!isAuthUser && status === 'from' && !submitting && (
+        <DefaultText title="Follow back" onPress={onFollow} />
       )}
+      {!isAuthUser && status === 'to' && !submitting && (
+        <DefaultText title="Following" onPress={onUnfollow} />
+      )}
+      {!isAuthUser && status === 'none' && !submitting && (
+        <DefaultText title="Follow" onPress={onFollow} />
+      )}
+      {submitting && <ActivityIndicator />}
     </View>
   );
 };
@@ -77,5 +98,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  icon: {padding: 0},
 });

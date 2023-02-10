@@ -12,6 +12,7 @@ import React, {useEffect, useState} from 'react';
 import {StatusBar, StyleSheet, View} from 'react-native';
 import Home from './src/components/screen/Home';
 import {AuthUserProvider} from './src/contexts/AuthUser';
+import {ContactsProvider} from './src/contexts/Contacts';
 import {ModalProvider} from './src/contexts/Modal';
 import {TBundleId} from './src/types/Data';
 import {TStatus} from './src/types/Screen';
@@ -42,7 +43,9 @@ const App = ({bundleId}: TProps) => {
       <StatusBar barStyle="light-content" />
       <AuthUserProvider bundleId={bundleId}>
         <ModalProvider>
-          <Home />
+          <ContactsProvider>
+            <Home />
+          </ContactsProvider>
         </ModalProvider>
       </AuthUserProvider>
     </View>

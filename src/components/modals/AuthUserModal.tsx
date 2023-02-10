@@ -121,7 +121,7 @@ const AuthUserModal = ({}: TProps) => {
             style={{marginTop: 20}}
           />
           <DefaultText
-            title="Invite friends"
+            title="View friends"
             onPress={() => {
               onUpdate({target: 'contacts'});
             }}

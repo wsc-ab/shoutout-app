@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import Moments from './Moments';
 
@@ -10,6 +10,10 @@ import Welcome from './Welcome';
 
 const Home = () => {
   const {authUserData, loaded} = useContext(AuthUserContext);
+
+  const tabs = ['friends', 'globe'];
+
+  const [tab, setTab] = useState('friends');
 
   if (!loaded) {
     return null;
@@ -29,7 +33,10 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
-      <Header />
+      <Header
+        onFriends={() => setTab('friends')}
+        onGlobal={() => setTab('globe')}
+      />
       <Moments style={styles.moments} />
       <Permission />
     </View>

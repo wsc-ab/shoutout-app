@@ -14,10 +14,14 @@ import {
   faPlay,
   faPlus,
   faReplyAll,
+  faSearch,
   faShare,
   faTimes,
   faUser,
+  faUserCheck,
   faUserGroup,
+  faUserMinus,
+  faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -31,7 +35,6 @@ library.add(
   faHeart,
   faReplyAll,
   faPlus,
-  faCheck,
   faExclamation,
   faGlobe,
   faUserGroup,
@@ -39,4 +42,8 @@ library.add(
   faHandPointUp,
   faFaceSmile,
   faPlay,
+  faUserPlus,
+  faUserMinus,
+  faUserCheck,
+  faSearch,
 );

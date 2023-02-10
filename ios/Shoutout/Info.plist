@@ -65,8 +65,6 @@
 	<string>This lets you record videos using your camera.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This lets you upload images and videos from your library.</string>
-	<key>NSContactsUsageDescription</key>
-	<string>This lets you share rolls with friends.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

@@ -1,3 +1,4 @@
+import {IconProp} from '@fortawesome/fontawesome-svg-core';
 import React, {ReactNode} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {TStyleView} from '../../types/Style';
@@ -9,6 +10,7 @@ type TProps = {
   title: string;
   left?: {onPress: () => void};
   right?: {
+    icon?: IconProp;
     onPress: () => void;
     disabled?: boolean;
     submitting?: boolean;
@@ -27,7 +29,10 @@ const DefaultForm = ({title, left, right, children, style}: TProps) => {
         <DefaultText title={title} textStyle={styles.centerText} />
         <View style={styles.right}>
           {right && !right.submitting && (
-            <DefaultIcon icon="angle-right" onPress={right.onPress} />
+            <DefaultIcon
+              icon={right.icon ?? 'angle-right'}
+              onPress={right.onPress}
+            />
           )}
           {right?.submitting && <ActivityIndicator style={styles.act} />}
         </View>
