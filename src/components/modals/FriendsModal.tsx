@@ -44,7 +44,7 @@ const FriendsModal = ({}: TProps) => {
           onPress: () => setTab(tab === 'friends' ? 'search' : 'friends'),
         }}>
         {tab === 'friends' && (
-          <View>
+          <View style={{flex: 1}}>
             <InviteCard
               style={{marginBottom: 10, backgroundColor: defaultBlack.lv3(1)}}
             />

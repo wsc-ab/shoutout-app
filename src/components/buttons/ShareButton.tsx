@@ -47,7 +47,7 @@ const ShareButton = ({input, style}: TProps) => {
           <DefaultIcon
             icon="share"
             onPress={onShare}
-            size={25}
+            size={20}
             color={'white'}
           />
         </View>

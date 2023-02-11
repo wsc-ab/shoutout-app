@@ -32,6 +32,8 @@ const AddButton = ({id, number, style}: TProps) => {
 
       const {uploaded} = await uploadVideo({
         authUserData,
+        collection: 'moments',
+        id,
         setProgress,
         setSubmitting,
       });
@@ -70,7 +72,7 @@ const AddButton = ({id, number, style}: TProps) => {
           <DefaultIcon
             icon="reply-all"
             onPress={onAdd}
-            size={25}
+            size={20}
             color={added ? defaultRed.lv2 : 'white'}
           />
           <DefaultText title={number.toString()} />

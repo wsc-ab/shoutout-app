@@ -4,9 +4,10 @@ import {ActivityIndicator, Pressable, StyleSheet, View} from 'react-native';
 import Video from 'react-native-video';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
+import {TStatus} from '../../types/Screen';
 
 import {TStyleView} from '../../types/Style';
-import {getThumbnailPath} from '../../utils/Storage';
+import {getThumbnailPath, getVideoUrl} from '../../utils/Storage';
 import DefaultIcon from './DefaultIcon';
 import DefaultImage from './DefaultImage';
 import DefaultText from './DefaultText';
@@ -47,6 +48,7 @@ const DefaultVideo = ({
   const [buffer, setBuffer] = useState(true);
   const {reportedContents} = useContext(AuthUserContext);
   const {modal} = useContext(ModalContext);
+  const [status, setStatus] = useState<TStatus>('loading');
 
   useEffect(() => {
     if (pauseOnModal) {
@@ -68,9 +70,12 @@ const DefaultVideo = ({
         setThumbnailUri(thumbUrl);
       } catch {}
 
-      const videoRef = storage().ref(path);
-      const videoUrl = await videoRef.getDownloadURL();
-      setUri(videoUrl);
+      try {
+        const videoUrl = await getVideoUrl(path);
+        setUri(videoUrl);
+      } catch (error) {
+        setStatus('error');
+      }
     };
 
     load();
@@ -103,6 +108,9 @@ const DefaultVideo = ({
           />
         </View>
       )}
+      {status === 'error' && (
+        <DefaultIcon icon="exclamation" style={videoStyle} />
+      )}
       {!isReported && mount && (
         <View style={videoStyle}>
           <Video
@@ -121,7 +129,7 @@ const DefaultVideo = ({
             onEnd={onEnd}
           />
           {userPaused && (
-            <DefaultIcon icon="play" style={styles.play} size={25} />
+            <DefaultIcon icon="play" style={styles.play} size={20} />
           )}
           {!paused && buffer && (
             <ActivityIndicator style={styles.play} color="white" />

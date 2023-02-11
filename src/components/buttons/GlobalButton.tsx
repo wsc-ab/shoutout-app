@@ -11,7 +11,7 @@ type TProps = {
 const GlobalButton = ({style, onPress}: TProps) => {
   return (
     <View style={style}>
-      <DefaultIcon icon="globe" size={25} onPress={onPress} />
+      <DefaultIcon icon="globe" size={20} onPress={onPress} />
     </View>
   );
 };

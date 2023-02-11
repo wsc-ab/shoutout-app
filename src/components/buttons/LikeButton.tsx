@@ -79,7 +79,7 @@ const LikeButton = ({moment, style}: TProps) => {
         icon="heart"
         onPress={liked ? onUnlike : onLike}
         color={liked ? defaultRed.lv2 : 'white'}
-        size={25}
+        size={20}
       />
       <DefaultText title={number.toString()} />
     </View>

@@ -11,7 +11,7 @@ type TProps = {
 const FriendsButton = ({style, onPress}: TProps) => {
   return (
     <View style={style}>
-      <DefaultIcon icon="user-group" size={25} onPress={onPress} />
+      <DefaultIcon icon="user-group" size={20} onPress={onPress} />
     </View>
   );
 };

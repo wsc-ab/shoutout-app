@@ -22,9 +22,12 @@ const CreateButton = ({style}: TProps) => {
   const [progress, setProgress] = useState(0);
 
   const onAdd = async () => {
+    const momentId = firebase.firestore().collection('moments').doc().id;
     const {uploaded} = await uploadVideo({
       authUserData,
       setProgress,
+      id: momentId,
+      collection: 'moments',
       setSubmitting,
     });
 
@@ -38,8 +41,6 @@ const CreateButton = ({style}: TProps) => {
         onUpdate({target: 'video'});
 
         const latlng = await getLatLng();
-
-        const momentId = firebase.firestore().collection('moments').doc().id;
 
         await createMoment({
           moment: {
@@ -77,7 +78,7 @@ const CreateButton = ({style}: TProps) => {
 
   return (
     <View style={style}>
-      {!submitting && <DefaultIcon icon="plus" onPress={onAdd} size={25} />}
+      {!submitting && <DefaultIcon icon="plus" onPress={onAdd} size={20} />}
 
       {submitting && progress === 0 && <ActivityIndicator />}
       {submitting && progress !== 0 && (

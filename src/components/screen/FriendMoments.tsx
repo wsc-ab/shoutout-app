@@ -83,10 +83,7 @@ const FriendMoments = ({style}: TProps) => {
   const ListEmptyComponent = (
     <>
       {status === 'loaded' ? (
-        <DefaultText
-          title="No moment found. Add more friends!"
-          style={styles.noMoment}
-        />
+        <DefaultText title="No moment found. Add more friends!" />
       ) : null}
     </>
   );
@@ -149,13 +146,4 @@ const styles = StyleSheet.create({
   refresh: {marginTop: 10},
   invite: {marginBottom: 10, backgroundColor: defaultBlack.lv2(1)},
   userCard: {marginBottom: 5},
-  noMoment: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
 });

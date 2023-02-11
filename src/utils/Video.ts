@@ -37,9 +37,13 @@ const takeVideo = async () => {
 export const uploadVideo = async ({
   authUserData,
   setSubmitting,
+  id,
+  collection,
   setProgress,
 }: {
   authUserData: TDocData;
+  id: string;
+  collection: string;
   setSubmitting: (submitting: boolean) => void;
   setProgress: (progress: number) => void;
 }) => {
@@ -63,7 +67,9 @@ export const uploadVideo = async ({
     setSubmitting(true);
     uploaded = await uploadFile({
       asset,
-      id: authUserData.id,
+      userId: authUserData.id,
+      id,
+      collection,
       onProgress: setProgress,
       type: 'video',
     });

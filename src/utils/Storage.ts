@@ -13,39 +13,34 @@ export const createMockId = () => {
   return mockId;
 };
 
-export const createStoragePath = (id: string, type: 'image' | 'video') => {
-  const today = new Date();
-
-  const date =
-    today.getFullYear() +
-    ('0' + (today.getMonth() + 1)).slice(-2) +
-    ('0' + today.getDate()).slice(-2);
-
-  const time =
-    today.getHours() +
-    ':' +
-    today.getMinutes() +
-    ':' +
-    today.getSeconds() +
-    ':' +
-    today.getMilliseconds();
-  const dateTime = date + '_' + time;
-
-  const folder = `${type}s`;
-
-  const fileName = dateTime + '_' + createMockId();
-  const filePath = id + '/' + folder + '/' + fileName;
+export const createStoragePath = ({
+  userId,
+  collection,
+  id,
+  type,
+}: {
+  collection: string;
+  userId: string;
+  id: string;
+  type: 'image' | 'video';
+}) => {
+  const fileName = `${collection}_${id}`;
+  const filePath = userId + '/' + `${type}s` + '/' + fileName;
 
   return filePath;
 };
 
 export const uploadFile = async ({
   asset,
+  userId,
   id,
+  collection,
   onProgress,
   type,
 }: {
   asset: Asset;
+  collection: string;
+  userId: string;
   id: string;
   type: 'image' | 'video';
   onProgress: (progress: number) => void;
@@ -59,7 +54,7 @@ export const uploadFile = async ({
     return uri;
   }
 
-  const path = createStoragePath(id, type);
+  const path = createStoragePath({id, collection, userId, type});
   const ref = storage().ref(path);
 
   const uploadTask = ref.putFile(uri);
@@ -96,4 +91,32 @@ export const getThumbnailPath = (path: string, type: 'video' | 'image') => {
     case 'image':
       return `${path}_200x200`;
   }
+};
+
+export const getMp4Path = (path: string) => `${path}_mp4`;
+
+export const getVideoUrl = async (path: string) => {
+  // first try mp4 path
+
+  let url: string | undefined;
+  try {
+    const videoRef = storage().ref(getMp4Path(path));
+    url = await videoRef.getDownloadURL();
+  } catch (error) {
+    url = undefined;
+  }
+
+  if (url) {
+    return url;
+  }
+
+  // then try full path
+  try {
+    const videoRef = storage().ref(path);
+    url = await videoRef.getDownloadURL();
+  } catch (error) {
+    url = undefined;
+  }
+
+  return url;
 };

@@ -15,7 +15,7 @@ const UserButton = ({style}: TProps) => {
     <View style={style}>
       <DefaultIcon
         icon="user"
-        size={25}
+        size={20}
         onPress={() => {
           onUpdate({target: 'auth'});
         }}
