@@ -19,7 +19,7 @@ const CreateButton = ({style}: TProps) => {
 
   const [submitting, setSubmitting] = useState(false);
 
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState<number>();
 
   const onAdd = async () => {
     const momentId = firebase.firestore().collection('moments').doc().id;
@@ -80,8 +80,8 @@ const CreateButton = ({style}: TProps) => {
     <View style={style}>
       {!submitting && <DefaultIcon icon="plus" onPress={onAdd} size={20} />}
 
-      {submitting && progress === 0 && <ActivityIndicator />}
-      {submitting && progress !== 0 && (
+      {submitting && !progress && <ActivityIndicator />}
+      {submitting && progress && (
         <DefaultText title={Math.round(progress).toString()} />
       )}
     </View>

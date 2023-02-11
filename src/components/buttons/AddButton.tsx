@@ -21,7 +21,7 @@ const AddButton = ({id, number, style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
   const {onUpdate} = useContext(ModalContext);
   const [submitting, setSubmitting] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState<number>();
 
   const onAdd = async () => {
     try {
@@ -78,8 +78,8 @@ const AddButton = ({id, number, style}: TProps) => {
           <DefaultText title={number.toString()} />
         </View>
       )}
-      {submitting && progress === 0 && <ActivityIndicator style={styles.act} />}
-      {submitting && progress !== 0 && (
+      {submitting && !progress && <ActivityIndicator style={styles.act} />}
+      {submitting && progress && (
         <DefaultText
           title={Math.round(progress).toString()}
           style={styles.progress}

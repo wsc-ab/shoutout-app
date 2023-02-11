@@ -72,7 +72,7 @@ const PhoneForm = ({onCancel, onSuccess, submitting}: TProps) => {
 
   return (
     <DefaultForm
-      title={'Enter Phone'}
+      title={'Enter'}
       left={{onPress: onCancel}}
       right={{
         onPress: handleSubmit(onSubmit),

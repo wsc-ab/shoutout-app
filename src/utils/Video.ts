@@ -45,7 +45,7 @@ export const uploadVideo = async ({
   id: string;
   collection: string;
   setSubmitting: (submitting: boolean) => void;
-  setProgress: (progress: number) => void;
+  setProgress: (progress?: number) => void;
 }) => {
   const asset = await takeVideo();
 
@@ -79,7 +79,7 @@ export const uploadVideo = async ({
       message: 'This file is not supported.',
     });
   } finally {
-    setProgress(0);
+    setProgress(undefined);
     setSubmitting(false);
   }
 
