@@ -12,7 +12,7 @@ const durationLimit = 30;
 const takeVideo = async () => {
   const options: CameraOptions = {
     mediaType: 'video',
-    videoQuality: 'high',
+    videoQuality: 'low',
     durationLimit,
     presentationStyle: 'fullScreen',
   };
@@ -36,7 +36,6 @@ const takeVideo = async () => {
 
 export const uploadVideo = async ({
   authUserData,
-  setSubmitting,
   id,
   collection,
   setProgress,
@@ -44,7 +43,6 @@ export const uploadVideo = async ({
   authUserData: TDocData;
   id: string;
   collection: string;
-  setSubmitting: (submitting: boolean) => void;
   setProgress: (progress?: number) => void;
 }) => {
   const asset = await takeVideo();
@@ -64,7 +62,6 @@ export const uploadVideo = async ({
   let uploaded;
 
   try {
-    setSubmitting(true);
     uploaded = await uploadFile({
       asset,
       userId: authUserData.id,
@@ -80,7 +77,6 @@ export const uploadVideo = async ({
     });
   } finally {
     setProgress(undefined);
-    setSubmitting(false);
   }
 
   return {uploaded, asset};

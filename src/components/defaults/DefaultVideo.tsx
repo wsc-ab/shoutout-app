@@ -45,7 +45,7 @@ const DefaultVideo = ({
 
   const [inView, setInview] = useState(momentInView);
   const [userPaused, setUserPaused] = useState(false);
-  const [buffer, setBuffer] = useState(true);
+  const [buffer, setBuffer] = useState(false);
   const {reportedContents} = useContext(AuthUserContext);
   const {modal} = useContext(ModalContext);
   const [status, setStatus] = useState<TStatus>('loading');

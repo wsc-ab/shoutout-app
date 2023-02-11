@@ -24,8 +24,8 @@ const AddButton = ({id, number, style}: TProps) => {
   const [progress, setProgress] = useState<number>();
 
   const onAdd = async () => {
+    setSubmitting(true);
     try {
-      setSubmitting(true);
       onUpdate({target: 'video'});
 
       const latlng = await getLatLng();
@@ -35,7 +35,6 @@ const AddButton = ({id, number, style}: TProps) => {
         collection: 'moments',
         id,
         setProgress,
-        setSubmitting,
       });
 
       if (!uploaded) {

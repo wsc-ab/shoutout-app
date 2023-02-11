@@ -22,13 +22,13 @@ const CreateButton = ({style}: TProps) => {
   const [progress, setProgress] = useState<number>();
 
   const onAdd = async () => {
+    setSubmitting(true);
     const momentId = firebase.firestore().collection('moments').doc().id;
     const {uploaded} = await uploadVideo({
       authUserData,
       setProgress,
       id: momentId,
       collection: 'moments',
-      setSubmitting,
     });
 
     if (!uploaded) {
@@ -37,7 +37,6 @@ const CreateButton = ({style}: TProps) => {
 
     const onPress = async (type: 'everyone' | 'friends') => {
       try {
-        setSubmitting(true);
         onUpdate({target: 'video'});
 
         const latlng = await getLatLng();
@@ -57,7 +56,6 @@ const CreateButton = ({style}: TProps) => {
         });
       } finally {
         setSubmitting(false);
-        setProgress(0);
         onUpdate(undefined);
       }
     };

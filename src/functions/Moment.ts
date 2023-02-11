@@ -9,7 +9,9 @@ export const createMoment = async (input: {
     type: 'everyone' | 'friends';
   };
 }) => {
-  const {data} = await firebaseFunctions.httpsCallable('createMoment')(input);
+  const {data} = await firebaseFunctions.httpsCallable('createMoment', {
+    timeout: 540 * 1000,
+  })(input);
 
   return {...data};
 };
@@ -85,7 +87,9 @@ export const addMoment = async (input: {
     latlng?: TLatLng;
   };
 }) => {
-  const {data} = await firebaseFunctions.httpsCallable('addMoment')(input);
+  const {data} = await firebaseFunctions.httpsCallable('addMoment', {
+    timeout: 540 * 1000,
+  })(input);
 
   return {...data};
 };
