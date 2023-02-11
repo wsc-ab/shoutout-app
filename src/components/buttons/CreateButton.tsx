@@ -31,8 +31,6 @@ const CreateButton = ({style}: TProps) => {
       setSubmitting,
     });
 
-    setProgress(0);
-
     if (!uploaded) {
       return;
     }

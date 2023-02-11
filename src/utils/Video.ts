@@ -78,8 +78,8 @@ export const uploadVideo = async ({
       title: 'Error',
       message: 'This file is not supported.',
     });
+  } finally {
     setProgress(0);
-
     setSubmitting(false);
   }
 
