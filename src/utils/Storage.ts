@@ -1,12 +1,12 @@
 import storage from '@react-native-firebase/storage';
 import {Asset} from 'react-native-image-picker';
 
-export const createMockId = () => {
+export const createMockId = (length: number) => {
   // Alphanumeric characters
   const chars =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let mockId = '';
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < length; i++) {
     mockId += chars.charAt(Math.floor(Math.random() * chars.length));
   }
 
@@ -24,7 +24,7 @@ export const createStoragePath = ({
   id: string;
   type: 'image' | 'video';
 }) => {
-  const fileName = `${collection}_${id}`;
+  const fileName = `${collection}_${id}_${createMockId(5)}`;
   const filePath = userId + '/' + `${type}s` + '/' + fileName;
 
   return filePath;
