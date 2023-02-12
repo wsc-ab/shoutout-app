@@ -33,7 +33,6 @@ type TProps = {
   path?: string;
   pauseOnModal?: boolean;
   inView: boolean;
-  index: number;
 };
 
 const MomentCard = ({
@@ -41,7 +40,6 @@ const MomentCard = ({
   path,
   style,
   pauseOnModal = true,
-  index: parentIndex,
   mount,
   inView,
 }: TProps) => {
@@ -139,6 +137,69 @@ const MomentCard = ({
     index: itemIndex,
   });
 
+  const renderItem = ({
+    item,
+    index: elIndex,
+  }: {
+    item: {
+      id: string;
+      path: string;
+      user: {id: string; name: string};
+      likeFrom: {ids: string[]; number: number};
+      addedAt: TTimestamp;
+    };
+    index: number;
+  }) => {
+    return (
+      <View style={{height, width}}>
+        <DefaultVideo
+          index={index}
+          elIndex={elIndex}
+          path={item.path}
+          videoStyle={{height, width}}
+          mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
+          pauseOnModal={pauseOnModal}
+          repeat
+          inView={inView && index === elIndex}
+        />
+        <View style={styles.buttons}>
+          <LikeButton
+            moment={{
+              id: item.id,
+              path: item.path,
+              user: {id: item.user.id},
+              likeFrom: item.likeFrom,
+            }}
+            style={styles.button}
+          />
+          <AddButton
+            id={item.id}
+            number={data.contents.number}
+            style={styles.button}
+          />
+          <ShareButton
+            input={{
+              title:
+                'Hey! Check this moment out! You can also add yours to it!',
+              param: 'moments',
+              value: moment.id,
+              image: {path: item.path, type: 'video'},
+            }}
+            style={styles.button}
+          />
+          <ReportButton
+            moment={{
+              id: item.id,
+              path: item.path,
+              user: {id: item.user.id},
+            }}
+            style={styles.button}
+          />
+        </View>
+      </View>
+    );
+  };
+
   return (
     <View style={style}>
       <FlatList
@@ -156,72 +217,7 @@ const MomentCard = ({
         disableIntervalMomentum
         keyExtractor={item => item.path}
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
-        renderItem={({
-          item,
-          index: elIndex,
-        }: {
-          item: {
-            id: string;
-            path: string;
-            user: {id: string; name: string};
-            likeFrom: {ids: string[]; number: number};
-            addedAt: TTimestamp;
-          };
-          index: number;
-        }) => {
-          console.log('parent index', parentIndex);
-          console.log('parent inview', inView);
-          console.log('moment card inview', inView && index === elIndex);
-
-          return (
-            <View style={{height, width}}>
-              <DefaultVideo
-                index={index}
-                elIndex={elIndex}
-                path={item.path}
-                videoStyle={{height, width}}
-                mount={index - 2 <= elIndex && elIndex <= index + 2 && mount}
-                pauseOnModal={pauseOnModal}
-                repeat
-                inView={inView && index === elIndex}
-              />
-              <View style={styles.buttons}>
-                <LikeButton
-                  moment={{
-                    id: item.id,
-                    path: item.path,
-                    user: {id: item.user.id},
-                    likeFrom: item.likeFrom,
-                  }}
-                  style={styles.button}
-                />
-                <AddButton
-                  id={item.id}
-                  number={data.contents.number}
-                  style={styles.button}
-                />
-                <ShareButton
-                  input={{
-                    title:
-                      'Hey! Check this moment out! You can also add yours to it!',
-                    param: 'moments',
-                    value: moment.id,
-                    image: {path: item.path, type: 'video'},
-                  }}
-                  style={styles.button}
-                />
-                <ReportButton
-                  moment={{
-                    id: item.id,
-                    path: item.path,
-                    user: {id: item.user.id},
-                  }}
-                  style={styles.button}
-                />
-              </View>
-            </View>
-          );
-        }}
+        renderItem={renderItem}
       />
       <ContributorsButton
         users={users}
