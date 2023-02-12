@@ -147,7 +147,7 @@ const Moments = ({style}: TProps) => {
       setData([]);
       setStatus('loading');
     } else {
-      // setStatus('loadMore');
+      setStatus('loadMore');
     }
   };
 
