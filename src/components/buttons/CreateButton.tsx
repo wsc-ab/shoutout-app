@@ -29,15 +29,16 @@ const CreateButton = ({style}: TProps) => {
     setSubmitting(true);
 
     DefaultAlert({
-      title: 'Select one?',
+      title: 'Select one',
       message:
-        'Who would you like to share this moment with?. Everyone including friends or just friends.',
+        'Would you like to share this moment with everyone or just friends?',
       buttons: [
         {text: 'Everyone', onPress: () => onPress('everyone')},
         {
           text: 'Friends',
           onPress: () => onPress('friends'),
         },
+        {text: 'Cancel'},
       ],
     });
 
@@ -161,8 +162,8 @@ const CreateButton = ({style}: TProps) => {
     <View style={style}>
       {!submitting && <DefaultIcon icon="plus" onPress={onAdd} size={20} />}
 
-      {submitting && !progress && <ActivityIndicator />}
-      {submitting && progress && (
+      {!!(submitting && !progress) && <ActivityIndicator />}
+      {!!(submitting && progress) && (
         <DefaultText title={Math.round(progress).toString()} />
       )}
     </View>
