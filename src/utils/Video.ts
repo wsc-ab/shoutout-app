@@ -61,7 +61,7 @@ export const takeAndUploadVideo = async ({
   try {
     asset = await takeVideo({
       onCancel,
-      durationLimit: 30,
+      durationLimit: 10,
     });
   } catch (error) {
     DefaultAlert({

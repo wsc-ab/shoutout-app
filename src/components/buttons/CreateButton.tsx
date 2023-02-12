@@ -28,47 +28,6 @@ const CreateButton = ({style}: TProps) => {
     setProgress(undefined);
     setSubmitting(true);
 
-    let asset;
-    try {
-      asset = await takeVideo({
-        onCancel: () => setSubmitting(false),
-        durationLimit: 30,
-      });
-    } catch (error) {
-      DefaultAlert({
-        title: 'Error',
-        message: 'Failed to take video',
-      });
-      setSubmitting(false);
-      onUpdate(undefined);
-      return;
-    }
-
-    if (!asset) {
-      onUpdate(undefined);
-      return;
-    }
-
-    if (asset.duration && asset.duration < 3) {
-      DefaultAlert({
-        title: 'Video is too short',
-        message: 'Video should be at least 3 seconds long.',
-      });
-      setSubmitting(false);
-      return;
-    }
-
-    if (!asset.uri) {
-      DefaultAlert({
-        title: 'Error',
-        message: 'Video file path not found.',
-      });
-      setSubmitting(false);
-      return;
-    }
-
-    console.log('alert');
-
     DefaultAlert({
       title: 'Select one?',
       message:
@@ -82,60 +41,99 @@ const CreateButton = ({style}: TProps) => {
       ],
     });
 
-    // convert to mp4
-
-    let uri;
-    try {
-      uri = await encodeToH264({
-        input: asset.uri,
-      });
-    } catch (error) {
-      setSubmitting(false);
-      return;
-    }
-
-    let thumbUri;
-    try {
-      thumbUri = await generateThumb({
-        input: uri,
-      });
-    } catch (error) {
-      setSubmitting(false);
-      return;
-    }
-
-    const momentId = firebase.firestore().collection('moments').doc().id;
-    const videoPath = createStoragePath({
-      userId: authUserData.id,
-      collection: 'moments',
-      id: momentId,
-      type: 'video',
-    });
-    try {
-      await uploadFile({
-        path: videoPath,
-        uri,
-        onProgress: setProgress,
-      });
-    } catch (error) {
-      setSubmitting(false);
-      return;
-    }
-
-    try {
-      await uploadFile({
-        path: `${videoPath}_thumb`,
-        uri: thumbUri,
-        onProgress: setProgress,
-      });
-    } catch (error) {
-      setSubmitting(false);
-      return;
-    }
-
     const onPress = async (type: 'everyone' | 'friends') => {
       try {
-        setSubmitting(true);
+        let asset;
+        try {
+          asset = await takeVideo({
+            onCancel: () => setSubmitting(false),
+            durationLimit: 10,
+          });
+        } catch (error) {
+          DefaultAlert({
+            title: 'Error',
+            message: 'Failed to take video',
+          });
+          setSubmitting(false);
+          onUpdate(undefined);
+          return;
+        }
+
+        if (!asset) {
+          onUpdate(undefined);
+          return;
+        }
+
+        if (asset.duration && asset.duration < 3) {
+          DefaultAlert({
+            title: 'Video is too short',
+            message: 'Video should be at least 3 seconds long.',
+          });
+          setSubmitting(false);
+          return;
+        }
+
+        if (!asset.uri) {
+          DefaultAlert({
+            title: 'Error',
+            message: 'Video file path not found.',
+          });
+          setSubmitting(false);
+          return;
+        }
+
+        console.log('alert');
+
+        // convert to mp4
+
+        let uri;
+        try {
+          uri = await encodeToH264({
+            input: asset.uri,
+          });
+        } catch (error) {
+          setSubmitting(false);
+          return;
+        }
+
+        let thumbUri;
+        try {
+          thumbUri = await generateThumb({
+            input: uri,
+          });
+        } catch (error) {
+          setSubmitting(false);
+          return;
+        }
+
+        const momentId = firebase.firestore().collection('moments').doc().id;
+        const videoPath = createStoragePath({
+          userId: authUserData.id,
+          collection: 'moments',
+          id: momentId,
+          type: 'video',
+        });
+        try {
+          await uploadFile({
+            path: videoPath,
+            uri,
+            onProgress: setProgress,
+          });
+        } catch (error) {
+          setSubmitting(false);
+          return;
+        }
+
+        try {
+          await uploadFile({
+            path: `${videoPath}_thumb`,
+            uri: thumbUri,
+            onProgress: setProgress,
+          });
+        } catch (error) {
+          setSubmitting(false);
+          return;
+        }
 
         const latlng = await getLatLng();
 
