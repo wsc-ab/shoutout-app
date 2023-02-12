@@ -1,14 +1,12 @@
-import {firebase} from '@react-native-firebase/auth';
+import {firebase} from '@react-native-firebase/firestore';
 import React, {useContext, useState} from 'react';
 import {ActivityIndicator, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import {createMoment} from '../../functions/Moment';
 import {TStyleView} from '../../types/Style';
-import {encodeToH264, generateThumb} from '../../utils/Ffmpeg';
 import {getLatLng} from '../../utils/Location';
-import {createStoragePath, uploadFile} from '../../utils/Storage';
-import {takeVideo} from '../../utils/Video';
+import {takeAndUploadVideo} from '../../utils/Video';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
@@ -25,7 +23,7 @@ const CreateButton = ({style}: TProps) => {
 
   const onAdd = async () => {
     onUpdate({target: 'video'});
-    setProgress(undefined);
+
     setSubmitting(true);
 
     DefaultAlert({
@@ -38,121 +36,53 @@ const CreateButton = ({style}: TProps) => {
           text: 'Friends',
           onPress: () => onPress('friends'),
         },
-        {text: 'Cancel'},
+        {
+          text: 'Cancel',
+          onPress: () => {
+            setSubmitting(false);
+          },
+        },
       ],
     });
 
     const onPress = async (type: 'everyone' | 'friends') => {
       try {
-        let asset;
-        try {
-          asset = await takeVideo({
-            onCancel: () => setSubmitting(false),
-            durationLimit: 10,
-          });
-        } catch (error) {
-          DefaultAlert({
-            title: 'Error',
-            message: 'Failed to take video',
-          });
-          setSubmitting(false);
-          onUpdate(undefined);
-          return;
-        }
-
-        if (!asset) {
-          onUpdate(undefined);
-          return;
-        }
-
-        if (asset.duration && asset.duration < 3) {
-          DefaultAlert({
-            title: 'Video is too short',
-            message: 'Video should be at least 3 seconds long.',
-          });
-          setSubmitting(false);
-          return;
-        }
-
-        if (!asset.uri) {
-          DefaultAlert({
-            title: 'Error',
-            message: 'Video file path not found.',
-          });
-          setSubmitting(false);
-          return;
-        }
-
-        console.log('alert');
-
-        // convert to mp4
-
-        let uri;
-        try {
-          uri = await encodeToH264({
-            input: asset.uri,
-          });
-        } catch (error) {
-          setSubmitting(false);
-          return;
-        }
-
-        let thumbUri;
-        try {
-          thumbUri = await generateThumb({
-            input: uri,
-          });
-        } catch (error) {
-          setSubmitting(false);
-          return;
-        }
-
         const momentId = firebase.firestore().collection('moments').doc().id;
-        const videoPath = createStoragePath({
-          userId: authUserData.id,
-          collection: 'moments',
+        const path = await takeAndUploadVideo({
+          onProgress: setProgress,
           id: momentId,
-          type: 'video',
+          userId: authUserData.id,
         });
-        try {
-          await uploadFile({
-            path: videoPath,
-            uri,
-            onProgress: setProgress,
-          });
-        } catch (error) {
-          setSubmitting(false);
-          return;
-        }
-
-        try {
-          await uploadFile({
-            path: `${videoPath}_thumb`,
-            uri: thumbUri,
-            onProgress: setProgress,
-          });
-        } catch (error) {
-          setSubmitting(false);
-          return;
-        }
+        setProgress(undefined);
 
         const latlng = await getLatLng();
 
-        await createMoment({
-          moment: {
-            id: momentId,
-            path: videoPath,
-            latlng,
-            type,
-          },
-        });
+        try {
+          await createMoment({
+            moment: {
+              id: momentId,
+              path,
+              latlng,
+              type,
+            },
+          });
+        } catch (error) {
+          DefaultAlert({
+            title: 'Error',
+            message: 'Failed to create moment',
+          });
+          throw new Error('cancel');
+        }
       } catch (error) {
-        DefaultAlert({
-          title: 'Error',
-          message: (error as {message: string}).message,
-        });
+        if ((error as {message: string}).message !== 'cancel') {
+          DefaultAlert({
+            title: 'Error',
+            message: (error as {message: string}).message,
+          });
+        }
       } finally {
         onUpdate(undefined);
+        setProgress(undefined);
         setSubmitting(false);
       }
     };
@@ -162,7 +92,7 @@ const CreateButton = ({style}: TProps) => {
     <View style={style}>
       {!submitting && <DefaultIcon icon="plus" onPress={onAdd} size={20} />}
 
-      {!!(submitting && !progress) && <ActivityIndicator />}
+      {!!(submitting && !progress) && <ActivityIndicator color="white" />}
       {!!(submitting && progress) && (
         <DefaultText title={Math.round(progress).toString()} />
       )}

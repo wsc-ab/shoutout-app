@@ -1,5 +1,5 @@
-import {firebase} from '@react-native-firebase/auth';
 import {
+  Asset,
   CameraOptions,
   launchCamera,
   launchImageLibrary,
@@ -9,12 +9,10 @@ import {encodeToH264, generateThumb} from './Ffmpeg';
 import {createStoragePath, uploadFile} from './Storage';
 
 export const takeVideo = async ({
-  onCancel,
   durationLimit,
 }: {
-  onCancel: () => void;
   durationLimit: number;
-}) => {
+}): Promise<Asset> => {
   const options: CameraOptions = {
     mediaType: 'video',
     videoQuality: 'high',
@@ -23,67 +21,57 @@ export const takeVideo = async ({
   };
 
   let asset;
-  console.log('launch');
-  try {
-    const {assets, didCancel} = __DEV__
-      ? await launchImageLibrary(options)
-      : await launchCamera(options);
 
-    if (didCancel) {
-      onCancel();
-      return;
-    }
+  const {assets, didCancel} = __DEV__
+    ? await launchImageLibrary(options)
+    : await launchCamera(options);
 
-    if (!assets?.[0]) {
-      throw new Error('no asset');
-    }
-
-    asset = assets?.[0];
-  } catch (error) {
-    throw new Error('failed');
+  if (didCancel) {
+    throw new Error('cancel');
   }
-  console.log('asset');
+
+  if (!assets?.[0]) {
+    throw new Error('no asset');
+  }
+
+  asset = assets?.[0];
+
   return asset;
 };
 
 export const takeAndUploadVideo = async ({
-  onCancel,
   onProgress,
   userId,
+  id,
 }: {
   userId: string;
-  onCancel: () => void;
+  id: string;
   onProgress: (progress: number) => void;
-}) => {
+}): Promise<string> => {
   let asset;
-  console.log('1');
 
   try {
     asset = await takeVideo({
-      onCancel,
       durationLimit: 10,
     });
+    console.log('cancel called');
   } catch (error) {
-    DefaultAlert({
-      title: 'Error',
-      message: 'Failed to take video',
-    });
-    onCancel();
-    return;
+    if ((error as {message: string}).message !== 'cancel') {
+      DefaultAlert({
+        title: 'Error',
+        message: 'Failed to take video',
+      });
+    }
+
+    throw new Error('cancel');
   }
 
-  if (!asset) {
-    return;
-  }
-
-  console.log('2');
   if (asset.duration && asset.duration < 3) {
     DefaultAlert({
       title: 'Video is too short',
       message: 'Video should be at least 3 seconds long.',
     });
-    onCancel();
-    return;
+    throw new Error('cancel');
   }
 
   if (!asset.uri) {
@@ -91,8 +79,7 @@ export const takeAndUploadVideo = async ({
       title: 'Error',
       message: 'Video file path not found.',
     });
-    onCancel();
-    return;
+    throw new Error('cancel');
   }
 
   // convert to mp4
@@ -103,8 +90,11 @@ export const takeAndUploadVideo = async ({
       input: asset.uri,
     });
   } catch (error) {
-    onCancel();
-    return;
+    DefaultAlert({
+      title: 'Error',
+      message: 'Failed to encode video',
+    });
+    throw new Error('cancel');
   }
 
   let thumbUri;
@@ -113,15 +103,17 @@ export const takeAndUploadVideo = async ({
       input: uri,
     });
   } catch (error) {
-    onCancel();
-    return;
+    DefaultAlert({
+      title: 'Error',
+      message: 'Failed to generate thumbnail',
+    });
+    throw new Error('cancel');
   }
 
-  const momentId = firebase.firestore().collection('moments').doc().id;
   const videoPath = createStoragePath({
     userId,
     collection: 'moments',
-    id: momentId,
+    id,
     type: 'video',
   });
   try {
@@ -131,8 +123,11 @@ export const takeAndUploadVideo = async ({
       onProgress,
     });
   } catch (error) {
-    onCancel();
-    return;
+    DefaultAlert({
+      title: 'Error',
+      message: 'Failed to upload video',
+    });
+    throw new Error('cancel');
   }
 
   try {
@@ -142,8 +137,11 @@ export const takeAndUploadVideo = async ({
       onProgress,
     });
   } catch (error) {
-    onCancel();
-    return;
+    DefaultAlert({
+      title: 'Error',
+      message: 'Failed to upload thumbnail',
+    });
+    throw new Error('cancel');
   }
 
   return videoPath;

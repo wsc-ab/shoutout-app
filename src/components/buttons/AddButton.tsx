@@ -25,30 +25,35 @@ const AddButton = ({id, number, style}: TProps) => {
 
   const onAdd = async () => {
     onUpdate({target: 'video'});
+    setProgress(undefined);
     setSubmitting(true);
 
     try {
       const latlng = await getLatLng();
 
       const path = await takeAndUploadVideo({
-        onCancel: () => setSubmitting(false),
         onProgress: setProgress,
+        id,
         userId: authUserData.id,
       });
+      setProgress(undefined);
 
       await addMoment({
         moment: {id, path, latlng},
       });
       setAdded(true);
     } catch (error) {
-      DefaultAlert({
-        title: 'Error',
-        message: (error as {message: string}).message,
-      });
+      if ((error as {message: string}).message !== 'cancel') {
+        DefaultAlert({
+          title: 'Error',
+          message: (error as {message: string}).message,
+        });
+      }
 
       setAdded(false);
     } finally {
       setSubmitting(false);
+      setProgress(undefined);
       onUpdate(undefined);
     }
   };
@@ -72,7 +77,9 @@ const AddButton = ({id, number, style}: TProps) => {
           <DefaultText title={number.toString()} />
         </View>
       )}
-      {submitting && !progress && <ActivityIndicator style={styles.act} />}
+      {submitting && !progress && (
+        <ActivityIndicator style={styles.act} color="white" />
+      )}
       {submitting && progress && (
         <DefaultText
           title={Math.round(progress).toString()}

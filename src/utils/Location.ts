@@ -3,7 +3,7 @@ import GeoLocation from 'react-native-geolocation-service';
 import DefaultAlert from '../components/defaults/DefaultAlert';
 import {TLatLng} from '../types/Firebase';
 
-export const getLatLng: () => Promise<TLatLng | undefined> = async () => {
+export const getLatLng: () => Promise<TLatLng> = async () => {
   const isPermitted = await checkLocationPermission();
 
   if (!isPermitted) {
@@ -11,7 +11,7 @@ export const getLatLng: () => Promise<TLatLng | undefined> = async () => {
   }
 
   if (isPermitted) {
-    return new Promise(res => {
+    return new Promise((res, rej) => {
       GeoLocation.getCurrentPosition(
         ({coords: {latitude: lat, longitude: lng}}) => {
           res({lat, lng});
@@ -21,6 +21,7 @@ export const getLatLng: () => Promise<TLatLng | undefined> = async () => {
             title: 'Failed  to get location',
             message: error.message,
           });
+          rej('cancel');
         },
         {
           accuracy: {android: 'high', ios: 'bestForNavigation'},
