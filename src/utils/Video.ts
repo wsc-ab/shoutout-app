@@ -43,18 +43,20 @@ export const takeAndUploadVideo = async ({
   onProgress,
   userId,
   id,
+  onTake,
 }: {
   userId: string;
   id: string;
   onProgress: (progress: number) => void;
+  onTake: () => void;
 }): Promise<string> => {
   let asset;
 
   try {
     asset = await takeVideo({
-      durationLimit: 10,
+      durationLimit: 30,
     });
-    console.log('cancel called');
+    onTake();
   } catch (error) {
     if ((error as {message: string}).message !== 'cancel') {
       DefaultAlert({

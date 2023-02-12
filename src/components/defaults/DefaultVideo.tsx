@@ -21,7 +21,8 @@ type TProps = {
   onPress?: () => void;
   disabled?: boolean;
   repeat?: boolean;
-  index: string;
+  index: number;
+  elIndex: number;
   mount: boolean;
   pauseOnModal?: boolean;
   inView: boolean;
@@ -38,13 +39,12 @@ const DefaultVideo = ({
   mount,
   videoStyle,
   pauseOnModal = true,
-  inView: momentInView,
+  inView: parentInview,
 }: TProps) => {
   const [uri, setUri] = useState<string>();
   const [thumbnailUri, setThumbnailUri] = useState<string>();
-
-  const [inView, setInview] = useState(momentInView);
   const [userPaused, setUserPaused] = useState(false);
+  const [inView, setInView] = useState(!parentInview);
   const [buffer, setBuffer] = useState(false);
   const {reportedContents} = useContext(AuthUserContext);
   const {modal} = useContext(ModalContext);
@@ -52,13 +52,11 @@ const DefaultVideo = ({
 
   useEffect(() => {
     if (pauseOnModal) {
-      setInview(!modal);
+      setInView(modal ? false : parentInview);
+    } else {
+      setInView(parentInview);
     }
-  }, [modal, pauseOnModal]);
-
-  useEffect(() => {
-    setInview(momentInView);
-  }, [momentInView]);
+  }, [modal, pauseOnModal, parentInview]);
 
   useEffect(() => {
     const load = async () => {
@@ -87,7 +85,6 @@ const DefaultVideo = ({
 
   const isReported = reportedContents.includes(path);
 
-  // pause video when not inview or user manually pauses
   const paused = !inView || userPaused;
 
   return (

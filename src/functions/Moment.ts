@@ -1,3 +1,4 @@
+import DefaultAlert from '../components/defaults/DefaultAlert';
 import {TLatLng} from '../types/Firebase';
 import {firebaseFunctions} from '../utils/Firebase';
 
@@ -9,9 +10,17 @@ export const createMoment = async (input: {
     type: 'everyone' | 'friends';
   };
 }) => {
-  const {data} = await firebaseFunctions.httpsCallable('createMoment')(input);
+  try {
+    const {data} = await firebaseFunctions.httpsCallable('createMoment')(input);
 
-  return {...data};
+    return {...data};
+  } catch (error) {
+    DefaultAlert({
+      title: 'Error',
+      message: (error as {message: string}).message,
+    });
+    throw new Error('cancel');
+  }
 };
 
 export const addLike = async (input: {moment: {id: string; path: string}}) => {

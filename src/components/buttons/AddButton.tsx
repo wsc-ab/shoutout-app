@@ -25,7 +25,6 @@ const AddButton = ({id, number, style}: TProps) => {
 
   const onAdd = async () => {
     onUpdate({target: 'video'});
-    setProgress(undefined);
     setSubmitting(true);
 
     try {
@@ -35,13 +34,13 @@ const AddButton = ({id, number, style}: TProps) => {
         onProgress: setProgress,
         id,
         userId: authUserData.id,
+        onTake: () => onUpdate(undefined),
       });
       setProgress(undefined);
 
       await addMoment({
         moment: {id, path, latlng},
       });
-      setAdded(true);
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {
         DefaultAlert({
@@ -49,8 +48,6 @@ const AddButton = ({id, number, style}: TProps) => {
           message: (error as {message: string}).message,
         });
       }
-
-      setAdded(false);
     } finally {
       setSubmitting(false);
       setProgress(undefined);
@@ -94,7 +91,7 @@ export default AddButton;
 
 const styles = StyleSheet.create({
   progress: {padding: 10},
-  act: {paddingHorizontal: 10},
+  act: {padding: 10},
   container: {
     alignItems: 'center',
     justifyContent: 'center',

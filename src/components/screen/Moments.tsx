@@ -133,6 +133,7 @@ const Moments = ({style}: TProps) => {
     return (
       <View style={{height, width}}>
         <MomentCard
+          index={index}
           moment={{...item, index: elIndex}}
           mount={index - 2 <= elIndex && elIndex <= index + 2}
           inView={index === elIndex}
@@ -146,7 +147,7 @@ const Moments = ({style}: TProps) => {
       setData([]);
       setStatus('loading');
     } else {
-      setStatus('loadMore');
+      // setStatus('loadMore');
     }
   };
 

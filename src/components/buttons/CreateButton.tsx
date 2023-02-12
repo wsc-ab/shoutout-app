@@ -52,27 +52,20 @@ const CreateButton = ({style}: TProps) => {
           onProgress: setProgress,
           id: momentId,
           userId: authUserData.id,
+          onTake: () => onUpdate(undefined),
         });
         setProgress(undefined);
 
         const latlng = await getLatLng();
 
-        try {
-          await createMoment({
-            moment: {
-              id: momentId,
-              path,
-              latlng,
-              type,
-            },
-          });
-        } catch (error) {
-          DefaultAlert({
-            title: 'Error',
-            message: 'Failed to create moment',
-          });
-          throw new Error('cancel');
-        }
+        await createMoment({
+          moment: {
+            id: momentId,
+            path,
+            latlng,
+            type,
+          },
+        });
       } catch (error) {
         if ((error as {message: string}).message !== 'cancel') {
           DefaultAlert({

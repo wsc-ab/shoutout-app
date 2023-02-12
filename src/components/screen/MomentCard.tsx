@@ -33,6 +33,7 @@ type TProps = {
   path?: string;
   pauseOnModal?: boolean;
   inView: boolean;
+  index: number;
 };
 
 const MomentCard = ({
@@ -40,6 +41,7 @@ const MomentCard = ({
   path,
   style,
   pauseOnModal = true,
+  index: parentIndex,
   mount,
   inView,
 }: TProps) => {
@@ -167,10 +169,15 @@ const MomentCard = ({
           };
           index: number;
         }) => {
+          console.log('parent index', parentIndex);
+          console.log('parent inview', inView);
+          console.log('moment card inview', inView && index === elIndex);
+
           return (
             <View style={{height, width}}>
               <DefaultVideo
-                index={`${moment.index} / ${index}`}
+                index={index}
+                elIndex={elIndex}
                 path={item.path}
                 videoStyle={{height, width}}
                 mount={index - 2 <= elIndex && elIndex <= index + 2 && mount}

@@ -3,32 +3,42 @@ import GeoLocation from 'react-native-geolocation-service';
 import DefaultAlert from '../components/defaults/DefaultAlert';
 import {TLatLng} from '../types/Firebase';
 
-export const getLatLng: () => Promise<TLatLng> = async () => {
+export const getLatLng = async (): Promise<TLatLng> => {
   const isPermitted = await checkLocationPermission();
 
   if (!isPermitted) {
+    DefaultAlert({
+      title: 'Check permission',
+      message: "We couldn't access your location data.",
+    });
     throw new Error('no location permission');
   }
 
-  if (isPermitted) {
-    return new Promise((res, rej) => {
-      GeoLocation.getCurrentPosition(
-        ({coords: {latitude: lat, longitude: lng}}) => {
-          res({lat, lng});
-        },
-        error => {
-          DefaultAlert({
-            title: 'Failed  to get location',
-            message: error.message,
-          });
-          rej('cancel');
-        },
-        {
-          accuracy: {android: 'high', ios: 'bestForNavigation'},
-          enableHighAccuracy: true,
-        },
-      );
-    });
+  const promise = new Promise((res, rej) => {
+    GeoLocation.getCurrentPosition(
+      ({coords: {latitude: lat, longitude: lng}}) => {
+        res({lat, lng});
+      },
+      error => {
+        DefaultAlert({
+          title: 'Failed  to get location',
+          message: error.message,
+        });
+        rej('cancel');
+      },
+      {
+        accuracy: {android: 'high', ios: 'bestForNavigation'},
+        enableHighAccuracy: true,
+      },
+    );
+  });
+
+  try {
+    const location = (await promise) as TLatLng;
+
+    return location;
+  } catch (error) {
+    throw new Error('failed');
   }
 };
 

@@ -63,7 +63,7 @@ const ContributorsButton = ({users, onPress, index, style}: TProps) => {
               }}
               style={[
                 styles.container,
-                {width: (width - 30) / 2},
+                {width: (width - 80) / 2},
                 isCurrent && styles.current,
               ]}>
               <DefaultText

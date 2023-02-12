@@ -37,7 +37,7 @@ export const uploadFile = async ({
   uri: string;
   path: string;
   onProgress: (progress: number) => void;
-}): Promise<string | undefined> => {
+}): Promise<string> => {
   // if uri doesn't start from file, no need to upload file
   // return the uri
 

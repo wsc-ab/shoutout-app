@@ -23,10 +23,6 @@ const LikeButton = ({moment, style}: TProps) => {
   const [number, setNumber] = useState(moment.likeFrom.number);
   const [liked, setLiked] = useState(false);
 
-  useEffect(() => {
-    setNumber(moment.likeFrom.number);
-  }, [moment.likeFrom.number]);
-
   const onLike = async () => {
     try {
       setLiked(true);
