@@ -1,5 +1,4 @@
 import storage from '@react-native-firebase/storage';
-import {Asset} from 'react-native-image-picker';
 
 export const createMockId = (length: number) => {
   // Alphanumeric characters
@@ -31,22 +30,14 @@ export const createStoragePath = ({
 };
 
 export const uploadFile = async ({
-  asset,
-  userId,
-  id,
-  collection,
+  uri,
+  path,
   onProgress,
-  type,
 }: {
-  asset: Asset;
-  collection: string;
-  userId: string;
-  id: string;
-  type: 'image' | 'video';
+  uri: string;
+  path: string;
   onProgress: (progress: number) => void;
 }): Promise<string | undefined> => {
-  const uri = asset.uri;
-
   // if uri doesn't start from file, no need to upload file
   // return the uri
 
@@ -54,7 +45,6 @@ export const uploadFile = async ({
     return uri;
   }
 
-  const path = createStoragePath({id, collection, userId, type});
   const ref = storage().ref(path);
 
   const uploadTask = ref.putFile(uri);

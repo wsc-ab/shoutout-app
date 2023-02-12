@@ -5,8 +5,10 @@ import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import {createMoment} from '../../functions/Moment';
 import {TStyleView} from '../../types/Style';
+import {encodeToH264, generateThumb} from '../../utils/Ffmpeg';
 import {getLatLng} from '../../utils/Location';
-import {uploadVideo} from '../../utils/Video';
+import {createStoragePath, uploadFile} from '../../utils/Storage';
+import {takeVideo} from '../../utils/Video';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
@@ -22,45 +24,50 @@ const CreateButton = ({style}: TProps) => {
   const [progress, setProgress] = useState<number>();
 
   const onAdd = async () => {
+    onUpdate({target: 'video'});
+    setProgress(undefined);
     setSubmitting(true);
-    const momentId = firebase.firestore().collection('moments').doc().id;
-    const {uploaded} = await uploadVideo({
-      authUserData,
-      setProgress,
-      id: momentId,
-      collection: 'moments',
-    });
-    setSubmitting(false);
 
-    if (!uploaded) {
+    let asset;
+    try {
+      asset = await takeVideo({
+        onCancel: () => setSubmitting(false),
+        durationLimit: 30,
+      });
+    } catch (error) {
+      DefaultAlert({
+        title: 'Error',
+        message: 'Failed to take video',
+      });
+      setSubmitting(false);
+      onUpdate(undefined);
       return;
     }
 
-    const onPress = async (type: 'everyone' | 'friends') => {
-      try {
-        setSubmitting(true);
-        onUpdate({target: 'video'});
+    if (!asset) {
+      onUpdate(undefined);
+      return;
+    }
 
-        const latlng = await getLatLng();
+    if (asset.duration && asset.duration < 3) {
+      DefaultAlert({
+        title: 'Video is too short',
+        message: 'Video should be at least 3 seconds long.',
+      });
+      setSubmitting(false);
+      return;
+    }
 
-        await createMoment({
-          moment: {
-            id: momentId,
-            path: uploaded,
-            latlng,
-            type,
-          },
-        });
-      } catch (error) {
-        DefaultAlert({
-          title: 'Error',
-          message: (error as {message: string}).message,
-        });
-      } finally {
-        setSubmitting(false);
-        onUpdate(undefined);
-      }
-    };
+    if (!asset.uri) {
+      DefaultAlert({
+        title: 'Error',
+        message: 'Video file path not found.',
+      });
+      setSubmitting(false);
+      return;
+    }
+
+    console.log('alert');
 
     DefaultAlert({
       title: 'Select one?',
@@ -74,6 +81,82 @@ const CreateButton = ({style}: TProps) => {
         },
       ],
     });
+
+    // convert to mp4
+
+    let uri;
+    try {
+      uri = await encodeToH264({
+        input: asset.uri,
+      });
+    } catch (error) {
+      setSubmitting(false);
+      return;
+    }
+
+    let thumbUri;
+    try {
+      thumbUri = await generateThumb({
+        input: uri,
+      });
+    } catch (error) {
+      setSubmitting(false);
+      return;
+    }
+
+    const momentId = firebase.firestore().collection('moments').doc().id;
+    const videoPath = createStoragePath({
+      userId: authUserData.id,
+      collection: 'moments',
+      id: momentId,
+      type: 'video',
+    });
+    try {
+      await uploadFile({
+        path: videoPath,
+        uri,
+        onProgress: setProgress,
+      });
+    } catch (error) {
+      setSubmitting(false);
+      return;
+    }
+
+    try {
+      await uploadFile({
+        path: `${videoPath}_thumb`,
+        uri: thumbUri,
+        onProgress: setProgress,
+      });
+    } catch (error) {
+      setSubmitting(false);
+      return;
+    }
+
+    const onPress = async (type: 'everyone' | 'friends') => {
+      try {
+        setSubmitting(true);
+
+        const latlng = await getLatLng();
+
+        await createMoment({
+          moment: {
+            id: momentId,
+            path: videoPath,
+            latlng,
+            type,
+          },
+        });
+      } catch (error) {
+        DefaultAlert({
+          title: 'Error',
+          message: (error as {message: string}).message,
+        });
+      } finally {
+        onUpdate(undefined);
+        setSubmitting(false);
+      }
+    };
   };
 
   return (

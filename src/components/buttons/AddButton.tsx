@@ -5,7 +5,7 @@ import ModalContext from '../../contexts/Modal';
 import {addMoment} from '../../functions/Moment';
 import {TStyleView} from '../../types/Style';
 import {getLatLng} from '../../utils/Location';
-import {uploadVideo} from '../../utils/Video';
+import {takeAndUploadVideo} from '../../utils/Video';
 import DefaultAlert from '../defaults/DefaultAlert';
 import {defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
@@ -24,29 +24,22 @@ const AddButton = ({id, number, style}: TProps) => {
   const [progress, setProgress] = useState<number>();
 
   const onAdd = async () => {
+    onUpdate({target: 'video'});
     setSubmitting(true);
-    try {
-      onUpdate({target: 'video'});
 
+    try {
       const latlng = await getLatLng();
 
-      const {uploaded} = await uploadVideo({
-        authUserData,
-        collection: 'moments',
-        id,
-        setProgress,
+      const path = await takeAndUploadVideo({
+        onCancel: () => setSubmitting(false),
+        onProgress: setProgress,
+        userId: authUserData.id,
       });
-      setSubmitting(false);
 
-      if (!uploaded) {
-        return;
-      }
-
-      setSubmitting(true);
-      setAdded(true);
       await addMoment({
-        moment: {id, path: uploaded, latlng},
+        moment: {id, path, latlng},
       });
+      setAdded(true);
     } catch (error) {
       DefaultAlert({
         title: 'Error',
@@ -55,8 +48,8 @@ const AddButton = ({id, number, style}: TProps) => {
 
       setAdded(false);
     } finally {
-      onUpdate(undefined);
       setSubmitting(false);
+      onUpdate(undefined);
     }
   };
 
