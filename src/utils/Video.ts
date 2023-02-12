@@ -12,7 +12,7 @@ const durationLimit = 30;
 const takeVideo = async () => {
   const options: CameraOptions = {
     mediaType: 'video',
-    videoQuality: 'low',
+    videoQuality: 'high',
     durationLimit,
     presentationStyle: 'fullScreen',
   };

@@ -30,6 +30,7 @@ const CreateButton = ({style}: TProps) => {
       id: momentId,
       collection: 'moments',
     });
+    setSubmitting(false);
 
     if (!uploaded) {
       return;
@@ -37,6 +38,7 @@ const CreateButton = ({style}: TProps) => {
 
     const onPress = async (type: 'everyone' | 'friends') => {
       try {
+        setSubmitting(true);
         onUpdate({target: 'video'});
 
         const latlng = await getLatLng();
@@ -61,9 +63,9 @@ const CreateButton = ({style}: TProps) => {
     };
 
     DefaultAlert({
-      title: 'Who should view this moment?',
+      title: 'Select one?',
       message:
-        'Everyone option will share this moment with everyone including friends. Select Friends if you would like to share this moment only with friends.',
+        'Who would you like to share this moment with?. Everyone including friends or just friends.',
       buttons: [
         {text: 'Everyone', onPress: () => onPress('everyone')},
         {

@@ -36,11 +36,13 @@ const AddButton = ({id, number, style}: TProps) => {
         id,
         setProgress,
       });
+      setSubmitting(false);
 
       if (!uploaded) {
         return;
       }
 
+      setSubmitting(true);
       setAdded(true);
       await addMoment({
         moment: {id, path: uploaded, latlng},
