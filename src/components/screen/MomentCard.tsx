@@ -163,6 +163,11 @@ const MomentCard = ({
           inView={inView && index === elIndex}
         />
         <View style={styles.buttons}>
+          <AddButton
+            id={item.id}
+            number={data.contents.number}
+            style={styles.button}
+          />
           <LikeButton
             moment={{
               id: item.id,
@@ -172,11 +177,7 @@ const MomentCard = ({
             }}
             style={styles.button}
           />
-          <AddButton
-            id={item.id}
-            number={data.contents.number}
-            style={styles.button}
-          />
+
           <ShareButton
             input={{
               title:

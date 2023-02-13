@@ -64,6 +64,7 @@ export const takeAndUploadVideo = async ({
         message: 'Failed to take video',
       });
     }
+    console.log(error, 'etake video');
 
     throw new Error('cancel');
   }

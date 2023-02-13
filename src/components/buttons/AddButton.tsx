@@ -1,5 +1,5 @@
 import {firebase} from '@react-native-firebase/firestore';
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
@@ -8,7 +8,6 @@ import {TStyleView} from '../../types/Style';
 import {getLatLng} from '../../utils/Location';
 import {takeAndUploadVideo} from '../../utils/Video';
 import DefaultAlert from '../defaults/DefaultAlert';
-import {defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
 
@@ -59,10 +58,27 @@ const AddButton = ({id, number, style}: TProps) => {
               message:
                 'Would you like to share the new moment with everyone or just friends?',
               buttons: [
-                {text: 'Everyone', onPress: () => onCreate('everyone')},
+                {
+                  text: 'Everyone',
+                  onPress: async () => {
+                    try {
+                      await onCreate('everyone');
+                    } catch (error) {
+                      console.log('onCreate error:', error);
+                    }
+                  },
+                },
                 {
                   text: 'Friends',
-                  onPress: () => onCreate('friends'),
+                  onPress: async () => {
+                    try {
+                      await onCreate('friends');
+                    } catch (error) {
+                      console.log('onCreate error:', error);
+
+                      throw new Error('cancel');
+                    }
+                  },
                 },
                 {
                   text: 'Cancel',
@@ -133,22 +149,11 @@ const AddButton = ({id, number, style}: TProps) => {
     };
   };
 
-  const [added, setAdded] = useState(false);
-
-  useEffect(() => {
-    setAdded(authUserData.contributeTo.ids.includes(id));
-  }, [authUserData.contributeTo.ids, id]);
-
   return (
     <View style={[styles.container, style]}>
       {!submitting && (
         <View style={[styles.container, style]}>
-          <DefaultIcon
-            icon="video"
-            onPress={onAdd}
-            size={20}
-            color={added ? defaultRed.lv2 : 'white'}
-          />
+          <DefaultIcon icon="video" onPress={onAdd} size={20} color={'white'} />
           <DefaultText title={number.toString()} />
         </View>
       )}
