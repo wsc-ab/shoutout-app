@@ -37,8 +37,10 @@ const Home = () => {
         onGlobal={() => setTab('globe')}
         tab={tab}
       />
-      {tab === 'friends' && <FriendMoments style={styles.moments} />}
-      {tab === 'globe' && <Moments style={styles.moments} />}
+      <FriendMoments
+        style={[styles.moments, tab !== 'friends' && styles.hide]}
+      />
+      <Moments style={[styles.moments, tab !== 'globe' && styles.hide]} />
       <Permission />
     </View>
   );
@@ -49,4 +51,5 @@ export default Home;
 const styles = StyleSheet.create({
   container: {flex: 1},
   moments: {flex: 1},
+  hide: {display: 'none'},
 });

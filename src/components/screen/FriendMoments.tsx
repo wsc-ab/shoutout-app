@@ -11,6 +11,7 @@ import {getFriendMoments} from '../../functions/Moment';
 import {TLocation, TTimestamp} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
+import CreateButton from '../buttons/CreateButton';
 import InviteCard from '../cards/InviteCard';
 import SmallUserCard from '../cards/SmallUserCard';
 import DefaultAlert from '../defaults/DefaultAlert';
@@ -128,6 +129,12 @@ const FriendMoments = ({style}: TProps) => {
         }}
         ItemSeparatorComponent={() => <View style={styles.seperator} />}
       />
+      <View style={styles.buttons}>
+        <CreateButton style={styles.button} />
+        <View style={styles.button} />
+        <View style={styles.button} />
+        <View style={styles.button} />
+      </View>
     </View>
   );
 };
@@ -146,4 +153,15 @@ const styles = StyleSheet.create({
   refresh: {marginTop: 10},
   invite: {marginBottom: 10, backgroundColor: defaultBlack.lv2(1)},
   userCard: {marginBottom: 5},
+  buttons: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    bottom: 40,
+    paddingHorizontal: 10,
+    position: 'absolute',
+    zIndex: 100,
+    left: 0,
+    right: 0,
+  },
+  button: {flex: 1, alignItems: 'center'},
 });

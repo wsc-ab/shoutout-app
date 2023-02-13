@@ -46,11 +46,6 @@ const Welcome = ({style}: TProps) => {
       icon: 'plus',
     },
     {
-      title: 'To link a moment',
-      detail: 'Press',
-      icon: 'reply-all',
-    },
-    {
       title: "Let's go",
       icon: 'face-smile',
       onPress: onDone,

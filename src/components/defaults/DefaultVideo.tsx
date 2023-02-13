@@ -117,8 +117,16 @@ const DefaultVideo = ({
             posterResizeMode="cover"
             ignoreSilentSwitch="ignore"
             paused={paused}
-            onLoad={() => {
+            onLoadStart={() => console.log('load started for ', path)}
+            onLoad={dat => {
+              console.log(dat, 'load dat');
               onLoaded && onLoaded();
+            }}
+            bufferConfig={{
+              minBufferMs: 0,
+              maxBufferMs: 0,
+              bufferForPlaybackMs: 0,
+              bufferForPlaybackAfterRebufferMs: 0,
             }}
             poster={thumbnailUri}
             onBuffer={({isBuffering}) => setBuffer(isBuffering)}
