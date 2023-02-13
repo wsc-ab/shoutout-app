@@ -1,8 +1,9 @@
-import storage from '@react-native-firebase/storage';
 import React, {useEffect, useState} from 'react';
 import {Image, Pressable, StyleSheet, View} from 'react-native';
 import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
+import {loadFromCache} from '../../utils/Cache';
+
 import {defaultBlack} from './DefaultColors';
 import DefaultIcon from './DefaultIcon';
 
@@ -16,7 +17,6 @@ export type Props = {
   style?: TStyleView;
   imageStyle: {height: number; width: number};
   blurRadius?: number;
-  showThumbnail?: boolean;
   onLoaded?: () => void;
   onPress?: () => void;
 };
@@ -24,7 +24,6 @@ export type Props = {
 const DefaultImage = ({
   image,
   style,
-  showThumbnail,
   imageStyle,
   blurRadius,
   onLoaded,
@@ -36,49 +35,36 @@ const DefaultImage = ({
   useEffect(() => {
     let isMounted = true;
     const loadImageUrl = async () => {
-      if (!image?.startsWith('file') && !image?.startsWith('http')) {
-        setStatus('loading');
-        try {
-          if (showThumbnail && image) {
-            try {
-              const thumbnailPath = getThumnailPath(image);
-              const storageRef = storage().ref(thumbnailPath);
-              const downloadUrl = await storageRef.getDownloadURL();
-
-              isMounted && setImageUrl(downloadUrl);
-            } catch (error) {
-              const storageRef = storage().ref(image);
-              const downloadUrl = await storageRef.getDownloadURL();
-
-              isMounted && setImageUrl(downloadUrl);
-            }
-          } else {
-            const storageRef = storage().ref(image);
-
-            const downloadUrl = await storageRef.getDownloadURL();
-
-            isMounted && setImageUrl(downloadUrl);
-          }
-        } catch {
-          isMounted && setStatus('error');
-        } finally {
-          isMounted && setStatus('loaded');
-        }
-      } else {
+      if (!image) {
+        isMounted && setStatus('loaded');
+        return;
+      }
+      if (image?.startsWith('file') || image?.startsWith('http')) {
         isMounted && setImageUrl(image);
+        isMounted && setStatus('loaded');
+      }
+
+      try {
+        const localPath = await loadFromCache({remotePath: image});
+
+        isMounted && setImageUrl(localPath);
+      } catch (e) {
+        isMounted && setStatus('error');
+      } finally {
         isMounted && setStatus('loaded');
       }
     };
 
-    if (image) {
-      loadImageUrl();
-    } else {
-      isMounted && setStatus('loaded');
-    }
+    loadImageUrl();
+
     return () => {
       isMounted = false;
     };
-  }, [image, showThumbnail]);
+  }, [image]);
+
+  if (!image) {
+    return null;
+  }
 
   return (
     <Pressable style={style} onPress={onPress} disabled={!onPress}>
