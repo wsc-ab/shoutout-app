@@ -60,7 +60,7 @@ const ShareButton = ({input, style}: TProps) => {
 export default ShareButton;
 
 const styles = StyleSheet.create({
-  act: {paddingHorizontal: 10},
+  act: {padding: 10},
   container: {
     flexDirection: 'row',
     alignItems: 'center',

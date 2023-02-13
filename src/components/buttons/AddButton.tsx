@@ -74,10 +74,10 @@ const AddButton = ({id, number, style}: TProps) => {
           <DefaultText title={number.toString()} />
         </View>
       )}
-      {submitting && !progress && (
+      {!!(submitting && !progress) && (
         <ActivityIndicator style={styles.act} color="white" />
       )}
-      {submitting && progress && (
+      {!!(submitting && progress) && (
         <DefaultText
           title={Math.round(progress).toString()}
           style={styles.progress}
