@@ -29,9 +29,9 @@ const AddButton = ({id, number, style}: TProps) => {
 
     DefaultAlert({
       title: 'Select one',
-      message: 'Start a new moment or connect to the one you are viewing?',
+      message: 'Share a new moment or connect to the one you are viewing?',
       buttons: [
-        {text: 'Start', onPress: () => onPress('start')},
+        {text: 'New', onPress: () => onPress('start')},
         {
           text: 'Connect',
           onPress: () => onPress('connect'),
