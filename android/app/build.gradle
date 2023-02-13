@@ -134,6 +134,16 @@ def reactNativeArchitectures() {
 }
 
 android {
+    // [START] fix error: 2 files found with path 'lib/arm64-v8a/libc++_shared.so'
+    // https://github.com/arthenica/ffmpeg-kit/wiki/Tips
+    packagingOptions {
+        pickFirst 'lib/x86/libc++_shared.so'
+        pickFirst 'lib/x86_64/libc++_shared.so'
+        pickFirst 'lib/armeabi-v7a/libc++_shared.so'
+        pickFirst 'lib/arm64-v8a/libc++_shared.so'
+    }
+    // [END] fix error: 2 files found with path 'lib/arm64-v8a/libc++_shared.so'
+
     ndkVersion rootProject.ext.ndkVersion
 
     compileSdkVersion rootProject.ext.compileSdkVersion
