@@ -99,9 +99,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
-
   contentContainer: {paddingHorizontal: 10},
-
   current: {backgroundColor: defaultBlack.lv2(0.9)},
   nameText: {fontWeight: 'bold', fontSize: 16},
   follow: {

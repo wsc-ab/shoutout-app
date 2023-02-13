@@ -14,9 +14,12 @@ import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
 import ContentCard from '../screen/ContentCard';
 
+import AuthUserContext from '../../contexts/AuthUser';
+import ModalContext from '../../contexts/Modal';
 import {TDocData, TLocation, TTimestamp} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
-import ModalContext from '../../contexts/Modal';
+import FollowButton from '../buttons/FollowButton';
+import DefaultIcon from '../defaults/DefaultIcon';
 
 type TProps = {
   id: string;
@@ -25,6 +28,8 @@ type TProps = {
 const UserModal = ({id}: TProps) => {
   const [data, setData] = useState<TDocData>();
   const [status, setStatus] = useState<TStatus>('loading');
+  const {authUserData} = useContext(AuthUserContext);
+
   const {onUpdate} = useContext(ModalContext);
 
   const {width} = useWindowDimensions();
@@ -70,13 +75,41 @@ const UserModal = ({id}: TProps) => {
       )}
       {data && (
         <DefaultForm
-          title={data.displayName}
+          title={'User'}
           left={{
             onPress: () => onUpdate(undefined),
+          }}
+          right={{
+            icon: authUserData.id === id ? 'gear' : undefined,
+            onPress: () => onUpdate({target: 'auth'}),
           }}>
           <FlatList
             data={data.contributeTo?.items}
             ListEmptyComponent={<DefaultText title="No moments found" />}
+            ListHeaderComponent={
+              <View
+                style={{
+                  flexDirection: 'row',
+                  borderWidth: 1,
+                  borderColor: 'gray',
+                  padding: 10,
+                  borderRadius: 10,
+                  marginBottom: 10,
+                }}>
+                <DefaultIcon icon="user" />
+                <View style={{alignItems: 'flex-start', marginLeft: 5}}>
+                  <DefaultText
+                    title={data.displayName}
+                    textStyle={{fontWeight: 'bold', fontSize: 16}}
+                  />
+                  <FollowButton
+                    user={{
+                      id: data.id,
+                    }}
+                  />
+                </View>
+              </View>
+            }
             contentContainerStyle={styles.container}
             keyExtractor={(item, index) => item.id + index}
             refreshControl={

@@ -43,7 +43,7 @@ const AuthUserModal = ({}: TProps) => {
   return (
     <DefaultModal>
       <DefaultForm
-        title={authUserData.displayName}
+        title={'Settings'}
         left={{onPress: () => onUpdate(undefined)}}
         right={{
           icon: 'user',
@@ -62,7 +62,19 @@ const AuthUserModal = ({}: TProps) => {
           }>
           <View
             style={{
-              marginTop: 10,
+              flexDirection: 'row',
+            }}>
+            <DefaultText title="ID" textStyle={{fontWeight: 'bold'}} />
+            <DefaultText
+              title={authUserData.displayName}
+              style={{
+                marginLeft: 10,
+              }}
+            />
+          </View>
+          <View
+            style={{
+              marginTop: 20,
               flexDirection: 'row',
             }}>
             <DefaultText title="Phone" textStyle={{fontWeight: 'bold'}} />
@@ -118,7 +130,6 @@ const AuthUserModal = ({}: TProps) => {
                 message: "We'll launch this feature soon",
               });
             }}
-            style={{marginTop: 20}}
           />
           <DefaultText
             title="View friends"

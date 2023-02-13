@@ -21,7 +21,7 @@ type TContextProps = {
 const AuthUserContext = createContext({} as TContextProps);
 
 export type TProps = {
-  bundleId: string;
+  bundleId: TBundleId;
   children: React.ReactNode;
 };
 
