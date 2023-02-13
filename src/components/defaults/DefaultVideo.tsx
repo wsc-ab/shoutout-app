@@ -1,4 +1,3 @@
-import storage from '@react-native-firebase/storage';
 import React, {useContext, useEffect, useState} from 'react';
 import {ActivityIndicator, Pressable, StyleSheet, View} from 'react-native';
 import Video from 'react-native-video';
@@ -7,7 +6,10 @@ import ModalContext from '../../contexts/Modal';
 import {TStatus} from '../../types/Screen';
 
 import {TStyleView} from '../../types/Style';
-import {getThumbnailPath, getVideoUrl} from '../../utils/Storage';
+import {loadFromCache} from '../../utils/Cache';
+
+import {getThumbnailPath} from '../../utils/Storage';
+import DefaultAlert from './DefaultAlert';
 import DefaultIcon from './DefaultIcon';
 import DefaultImage from './DefaultImage';
 import DefaultText from './DefaultText';
@@ -61,16 +63,19 @@ const DefaultVideo = ({
   useEffect(() => {
     const load = async () => {
       try {
-        const thumbRef = storage().ref(getThumbnailPath(path, 'video'));
+        const thumbPath = await loadFromCache({
+          remotePath: getThumbnailPath(path, 'video'),
+        });
 
-        const thumbUrl = await thumbRef.getDownloadURL();
-
-        setThumbnailUri(thumbUrl);
+        setThumbnailUri(thumbPath);
       } catch {}
 
       try {
-        const videoUrl = await getVideoUrl(path);
-        setUri(videoUrl);
+        const videoPath = await loadFromCache({
+          remotePath: path,
+        });
+
+        setUri(videoPath);
       } catch (error) {
         setStatus('error');
       }
@@ -117,9 +122,13 @@ const DefaultVideo = ({
             posterResizeMode="cover"
             ignoreSilentSwitch="ignore"
             paused={paused}
-            onLoadStart={() => console.log('load started for ', path)}
-            onLoad={dat => {
-              console.log(dat, 'load dat', path);
+            onError={data =>
+              DefaultAlert({
+                title: 'Video load error',
+                message: data.error.errorString,
+              })
+            }
+            onLoad={() => {
               onLoaded && onLoaded();
             }}
             bufferConfig={{

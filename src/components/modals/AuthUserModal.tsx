@@ -5,6 +5,7 @@ import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 
 import {deleteUser} from '../../functions/User';
+import {clearCache} from '../../utils/Cache';
 
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
@@ -136,6 +137,11 @@ const AuthUserModal = ({}: TProps) => {
             onPress={() => {
               onUpdate({target: 'friends'});
             }}
+            style={{marginTop: 20}}
+          />
+          <DefaultText
+            title="Clear cache"
+            onPress={clearCache}
             style={{marginTop: 20}}
           />
           <DefaultText

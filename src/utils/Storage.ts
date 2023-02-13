@@ -82,31 +82,3 @@ export const getThumbnailPath = (path: string, type: 'video' | 'image') => {
       return `${path}_200x200`;
   }
 };
-
-export const getMp4Path = (path: string) => `${path}_mp4`;
-
-export const getVideoUrl = async (path: string) => {
-  // first try mp4 path
-
-  let url: string | undefined;
-  try {
-    const videoRef = storage().ref(getMp4Path(path));
-    url = await videoRef.getDownloadURL();
-  } catch (error) {
-    url = undefined;
-  }
-
-  if (url) {
-    return url;
-  }
-
-  // then try full path
-  try {
-    const videoRef = storage().ref(path);
-    url = await videoRef.getDownloadURL();
-  } catch (error) {
-    url = undefined;
-  }
-
-  return url;
-};
