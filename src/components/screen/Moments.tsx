@@ -131,7 +131,6 @@ const Moments = ({style}: TProps) => {
     return (
       <View style={{height, width}}>
         <MomentCard
-          type={item.type}
           moment={{...item, index: elIndex}}
           mount={index - 1 <= elIndex && elIndex <= index + 1}
           inView={index === elIndex}

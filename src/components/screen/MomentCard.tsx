@@ -33,12 +33,10 @@ type TProps = {
   path?: string;
   pauseOnModal?: boolean;
   inView: boolean;
-  type: string;
 };
 
 const MomentCard = ({
   moment,
-  type,
   path,
   style,
   pauseOnModal = true,
@@ -226,7 +224,7 @@ const MomentCard = ({
         index={index}
         onPress={onContributor}
         style={styles.users}
-        type={type}
+        type={data.type}
       />
     </View>
   );
