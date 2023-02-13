@@ -7,7 +7,7 @@ export const encodeToH264 = async ({input}: {input: string}) => {
   const path = getFilePathWithoutExt(input);
   const output = `${path}.h264`;
 
-  const command = `-y -i ${input} -vcodec libx264 -crf 28 -acodec aac -movflags faststart -preset ultrafast ${output}`;
+  const command = `-y -i ${input} -vcodec libx264 -crf 28 -acodec aac -filter:v fps=30 -preset ultrafast -movflags faststart ${output}`;
 
   const session = await FFmpegKit.execute(command);
 
