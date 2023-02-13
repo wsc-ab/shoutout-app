@@ -40,7 +40,10 @@ const Home = () => {
       <FriendMoments
         style={[styles.moments, tab !== 'friends' && styles.hide]}
       />
-      <Moments style={[styles.moments, tab !== 'globe' && styles.hide]} />
+      <Moments
+        style={[styles.moments, tab !== 'globe' && styles.hide]}
+        mount={tab === 'globe'}
+      />
       <Permission />
     </View>
   );

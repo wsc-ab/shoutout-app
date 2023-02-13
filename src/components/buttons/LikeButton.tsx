@@ -86,6 +86,7 @@ export default LikeButton;
 
 const styles = StyleSheet.create({
   container: {
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },

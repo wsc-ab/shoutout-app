@@ -25,46 +25,46 @@ const CreateButton = ({style}: TProps) => {
     onUpdate({target: 'video'});
     setSubmitting(true);
 
-    try {
-      const latlng = await getLatLng();
+    const latlng = await getLatLng();
 
-      DefaultAlert({
-        title: 'Select one',
-        message:
-          'Would you like to share the new moment with everyone or just friends?',
-        buttons: [
-          {
-            text: 'Everyone',
-            onPress: async () => {
-              try {
-                await onCreate('everyone');
-              } catch (error) {
-                console.log('onCreate error:', error);
-              }
-            },
+    DefaultAlert({
+      title: 'Select one',
+      message:
+        'Would you like to share the new moment with everyone or just friends?',
+      buttons: [
+        {
+          text: 'Everyone',
+          onPress: async () => {
+            try {
+              await onCreate('everyone');
+            } catch (error) {
+              console.log('onCreate error:', error);
+            }
           },
-          {
-            text: 'Friends',
-            onPress: async () => {
-              try {
-                await onCreate('friends');
-              } catch (error) {
-                console.log('onCreate error:', error);
+        },
+        {
+          text: 'Friends',
+          onPress: async () => {
+            try {
+              await onCreate('friends');
+            } catch (error) {
+              console.log('onCreate error:', error);
 
-                throw new Error('cancel');
-              }
-            },
+              throw new Error('cancel');
+            }
           },
-          {
-            text: 'Cancel',
-            onPress: () => {
-              setSubmitting(false);
-            },
+        },
+        {
+          text: 'Cancel',
+          onPress: () => {
+            setSubmitting(false);
           },
-        ],
-      });
+        },
+      ],
+    });
 
-      const onCreate = async (createType: 'friends' | 'everyone') => {
+    const onCreate = async (createType: 'friends' | 'everyone') => {
+      try {
         const momentId = firebase.firestore().collection('moments').doc().id;
 
         const path = await takeAndUploadVideo({
@@ -84,28 +84,25 @@ const CreateButton = ({style}: TProps) => {
             type: createType,
           },
         });
-      };
-    } catch (error) {
-      if ((error as {message: string}).message !== 'cancel') {
-        DefaultAlert({
-          title: 'Error',
-          message: (error as {message: string}).message,
-        });
+      } catch (error) {
+        if ((error as {message: string}).message !== 'cancel') {
+          DefaultAlert({
+            title: 'Error',
+            message: (error as {message: string}).message,
+          });
+        }
+      } finally {
+        setSubmitting(false);
+        setProgress(undefined);
+        onUpdate(undefined);
       }
-    } finally {
-      setSubmitting(false);
-      setProgress(undefined);
-      onUpdate(undefined);
-    }
+    };
   };
 
   return (
     <View style={[styles.container, style]}>
       {!submitting && (
-        <View style={{alignItems: 'center'}}>
-          <DefaultIcon icon="video" onPress={onAdd} size={20} color={'white'} />
-          <DefaultText title={' '} />
-        </View>
+        <DefaultIcon icon="video" onPress={onAdd} size={20} color={'white'} />
       )}
       {!!(submitting && !progress) && (
         <ActivityIndicator style={styles.act} color="white" />

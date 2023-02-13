@@ -18,9 +18,10 @@ import MomentCard from './MomentCard';
 
 type TProps = {
   style: TStyleView;
+  mount: boolean;
 };
 
-const Moments = ({style}: TProps) => {
+const Moments = ({style, mount}: TProps) => {
   const [data, setData] = useState<TDocData[]>([]);
 
   const [status, setStatus] = useState<TStatus>('loading');
@@ -132,7 +133,7 @@ const Moments = ({style}: TProps) => {
       <View style={{height, width}}>
         <MomentCard
           moment={{...item, index: elIndex}}
-          mount={index - 1 <= elIndex && elIndex <= index + 1}
+          mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
           inView={index === elIndex}
         />
       </View>

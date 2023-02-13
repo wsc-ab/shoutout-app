@@ -131,9 +131,6 @@ const FriendMoments = ({style}: TProps) => {
       />
       <View style={styles.buttons}>
         <CreateButton style={styles.button} />
-        <View style={styles.button} />
-        <View style={styles.button} />
-        <View style={styles.button} />
       </View>
     </View>
   );
@@ -154,14 +151,16 @@ const styles = StyleSheet.create({
   invite: {marginBottom: 10, backgroundColor: defaultBlack.lv2(1)},
   userCard: {marginBottom: 5},
   buttons: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
     bottom: 40,
     paddingHorizontal: 10,
     position: 'absolute',
     zIndex: 100,
     left: 0,
-    right: 0,
   },
-  button: {flex: 1, alignItems: 'center'},
+  button: {
+    width: 70,
+    marginRight: 10,
+    backgroundColor: defaultBlack.lv2(1),
+    borderRadius: 10,
+  },
 });

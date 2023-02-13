@@ -119,7 +119,7 @@ const DefaultVideo = ({
             paused={paused}
             onLoadStart={() => console.log('load started for ', path)}
             onLoad={dat => {
-              console.log(dat, 'load dat');
+              console.log(dat, 'load dat', path);
               onLoaded && onLoaded();
             }}
             bufferConfig={{
