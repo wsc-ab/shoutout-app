@@ -7,6 +7,7 @@ import {
   faExclamation,
   faFaceSmile,
   faFlag,
+  faGear,
   faGlobe,
   faHandPointLeft,
   faHandPointUp,
@@ -46,4 +47,5 @@ library.add(
   faUserMinus,
   faUserCheck,
   faSearch,
+  faGear,
 );

@@ -1,5 +1,6 @@
 import React, {useContext} from 'react';
 import {View} from 'react-native';
+import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import {TStyleView} from '../../types/Style';
 import DefaultIcon from '../defaults/DefaultIcon';
@@ -10,6 +11,7 @@ type TProps = {
 
 const UserButton = ({style}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
+  const {authUserData} = useContext(AuthUserContext);
 
   return (
     <View style={style}>
@@ -17,7 +19,7 @@ const UserButton = ({style}: TProps) => {
         icon="user"
         size={20}
         onPress={() => {
-          onUpdate({target: 'auth'});
+          onUpdate({target: 'users', id: authUserData.id});
         }}
       />
     </View>

@@ -22,7 +22,7 @@ export const takeVideo = async ({
 
   let asset;
 
-  const {assets, didCancel} = !__DEV__
+  const {assets, didCancel} = __DEV__
     ? await launchImageLibrary(options)
     : await launchCamera(options);
 
