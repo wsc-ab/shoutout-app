@@ -7,6 +7,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
+import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import {TTimestamp} from '../../types/Firebase';
 import {getTimeSinceTimestamp} from '../../utils/Date';
@@ -24,6 +25,7 @@ type TProps = {
     location?: {name: string};
     addedAt: TTimestamp;
   }[];
+
   index: number;
   style?: ViewStyle;
   onPress: (index: number) => void;
@@ -31,6 +33,7 @@ type TProps = {
 
 const ContributorsButton = ({type, users, onPress, index, style}: TProps) => {
   const {width} = useWindowDimensions();
+  const {authUserData} = useContext(AuthUserContext);
 
   const ref = useRef<FlatList>(null);
 
@@ -42,9 +45,16 @@ const ContributorsButton = ({type, users, onPress, index, style}: TProps) => {
 
   const {onUpdate} = useContext(ModalContext);
 
+  const contributed = users.map(({id}) => id).includes(authUserData.id);
+
   return (
     <View style={style}>
-      <DefaultText title={`For ${type}`} style={styles.type} />
+      <View style={styles.type}>
+        <DefaultText title={`For ${type}`} />
+        {contributed && (
+          <DefaultText title={'You are connected to this moment.'} />
+        )}
+      </View>
       <FlatList
         data={users}
         horizontal
