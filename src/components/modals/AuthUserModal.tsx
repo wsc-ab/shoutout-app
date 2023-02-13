@@ -2,10 +2,10 @@ import auth from '@react-native-firebase/auth';
 import React, {useContext} from 'react';
 import {RefreshControl, ScrollView, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
+import CacheContext from '../../contexts/Cache';
 import ModalContext from '../../contexts/Modal';
 
 import {deleteUser} from '../../functions/User';
-import {clearCache} from '../../utils/Cache';
 
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
@@ -16,6 +16,7 @@ type TProps = {};
 
 const AuthUserModal = ({}: TProps) => {
   const {onSignOut, authUserData, onReload} = useContext(AuthUserContext);
+  const {onClear, status} = useContext(CacheContext);
   const {onUpdate} = useContext(ModalContext);
 
   const onDelete = async () => {
@@ -140,8 +141,8 @@ const AuthUserModal = ({}: TProps) => {
             style={{marginTop: 20}}
           />
           <DefaultText
-            title="Clear cache"
-            onPress={clearCache}
+            title={status === 'loading' ? 'Clearing cache' : 'Clear cache'}
+            onPress={onClear}
             style={{marginTop: 20}}
           />
           <DefaultText

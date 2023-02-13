@@ -1,7 +1,7 @@
 import RNAS from '@react-native-async-storage/async-storage';
 import storage from '@react-native-firebase/storage';
 import RNFS from 'react-native-fs';
-import {readFromAS, saveToAS} from './AsyncStorage';
+import {deleteFromAS, readFromAS, saveToAS} from './AsyncStorage';
 import {createMockId} from './Storage';
 
 export const loadFromCache = async ({remotePath}: {remotePath: string}) => {
@@ -105,12 +105,48 @@ export const clearCache = async () => {
 
     for (const key of keys) {
       if (key.startsWith('cache')) {
-        await RNAS.removeItem(key);
+        await deleteFromAS({key});
       }
     }
 
     await RNFS.unlink(RNFS.CachesDirectoryPath);
+    const now = Date.now();
+    await saveToAS({
+      key: 'lastCacheClean',
+      data: JSON.stringify({cleanedAt: now}),
+    });
   } catch (error) {
     throw new Error('failed to clear cache');
   }
 };
+
+export const removeOldCache = async ({days = 7}: {days?: number}) => {
+  try {
+    const keys = await RNAS.getAllKeys();
+    const now = Date.now();
+    for (const key of keys) {
+      if (key.startsWith('cache')) {
+        const data = await readFromAS({key});
+        if (data) {
+          const cacheData = JSON.parse(data) as TCacheData;
+
+          const milliSecondsSince = now - cacheData.accessedAt;
+
+          // remove cache older than 7 days
+          if (milliSecondsSince >= days * 24 * 60 * 60 * 1000) {
+            await RNFS.unlink(cacheData.localPath);
+            await deleteFromAS({key});
+          }
+        }
+      }
+    }
+    await saveToAS({
+      key: 'lastCacheClean',
+      data: JSON.stringify({cleanedAt: now}),
+    });
+  } catch (error) {
+    throw new Error('failed to remove old cache');
+  }
+};
+
+type TCacheData = {localPath: string; accessedAt: number; size: number};

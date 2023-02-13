@@ -16,3 +16,12 @@ export const readFromAS = async ({key}: {key: string}) => {
     throw new Error('failed to read from AS');
   }
 };
+
+export const deleteFromAS = async ({key}: {key: string}) => {
+  try {
+    const data = await RNAS.removeItem(key);
+    return data;
+  } catch (error) {
+    throw new Error('failed to delete from AS');
+  }
+};
