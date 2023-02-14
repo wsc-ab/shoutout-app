@@ -32,7 +32,7 @@ const Welcome = ({style}: TProps) => {
   const data = [
     {
       title: 'To watch connected moments',
-      detail: 'Swip',
+      detail: 'Swipe',
       icon: 'hand-point-left',
     },
     {
@@ -43,7 +43,12 @@ const Welcome = ({style}: TProps) => {
     {
       title: 'To share a moment',
       detail: 'Press',
-      icon: 'plus',
+      icon: 'video',
+    },
+    {
+      title: 'To connect a moment',
+      detail: 'Press',
+      icon: 'reply-all',
     },
     {
       title: "Let's go",
