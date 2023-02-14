@@ -39,7 +39,7 @@ const DefaultImage = ({
         isMounted && setStatus('loaded');
         return;
       }
-      if (image?.startsWith('file') || image?.startsWith('http')) {
+      if (image.startsWith('file') || image.startsWith('http')) {
         isMounted && setImageUrl(image);
         isMounted && setStatus('loaded');
       }

@@ -51,9 +51,7 @@ const ContributorsButton = ({type, users, onPress, index, style}: TProps) => {
     <View style={style}>
       <View style={styles.type}>
         <DefaultText title={`For ${type}`} />
-        {contributed && (
-          <DefaultText title={'You are connected to this moment.'} />
-        )}
+        {contributed && <DefaultText title={'You engaged to this moment.'} />}
       </View>
       <FlatList
         data={users}
@@ -105,13 +103,13 @@ const styles = StyleSheet.create({
   container: {
     marginRight: 10,
     padding: 10,
-    backgroundColor: defaultBlack.lv2(0.5),
+    backgroundColor: defaultBlack.lv3(0.5),
     borderRadius: 10,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
   contentContainer: {paddingHorizontal: 10},
-  current: {backgroundColor: defaultBlack.lv2(0.9)},
+  current: {backgroundColor: defaultBlack.lv3(0.9)},
   nameText: {fontWeight: 'bold', fontSize: 16},
   follow: {
     marginTop: 5,
