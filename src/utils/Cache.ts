@@ -23,20 +23,26 @@ export const checkCache = async ({
 }: {
   remotePath: string;
 }): Promise<string | undefined> => {
-  const localPath = await readCacheData({remotePath});
+  const cacheData = await readCacheData({remotePath});
 
-  // if no cache data is found, return undefined
-
-  if (!localPath) {
+  // if no local path is found, return undefined
+  if (!cacheData?.localPath) {
     return undefined;
   }
 
   // if cache file is not found, return undefined
-  const exist = await RNFS.exists(localPath);
+  const exist = await RNFS.exists(cacheData.localPath);
   if (!exist) {
     return undefined;
   }
-  return localPath;
+
+  // if cache file size is different, return undefined
+  const size = (await RNFS.stat(cacheData.localPath)).size;
+
+  if (!(size === cacheData.size)) {
+    return undefined;
+  }
+  return cacheData.localPath;
 };
 
 export const saveCache = async ({remotePath}: {remotePath: string}) => {
@@ -84,7 +90,7 @@ export const readCacheData = async ({
   remotePath,
 }: {
   remotePath: string;
-}): Promise<string | undefined> => {
+}): Promise<TCacheData | undefined> => {
   try {
     const json = await readFromAS({
       key: remotePath,
@@ -92,7 +98,7 @@ export const readCacheData = async ({
 
     if (json) {
       const parsed = JSON.parse(json);
-      return parsed.localPath;
+      return parsed as TCacheData;
     }
   } catch (error) {
     throw new Error('failed to read from AS');
