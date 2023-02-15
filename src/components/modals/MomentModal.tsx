@@ -10,7 +10,7 @@ type TProps = {
   path?: string;
 };
 
-const RollModal = ({id, path}: TProps) => {
+const MomentModal = ({id, path}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
 
   return (
@@ -34,7 +34,7 @@ const RollModal = ({id, path}: TProps) => {
   );
 };
 
-export default RollModal;
+export default MomentModal;
 
 const styles = StyleSheet.create({
   icon: {top: 40, zIndex: 200},

@@ -5,7 +5,7 @@ import {
   useInstantSearch,
 } from 'react-instantsearch-hooks';
 
-import {StyleSheet, View} from 'react-native';
+import {ScrollView, StyleSheet} from 'react-native';
 import {THitItem} from '../../types/Algolia';
 import {searchClient} from '../../utils/Algolia';
 
@@ -22,7 +22,7 @@ const SearchForm = ({indexes, renderItem}: TProps) => {
   const [input, setInput] = useState('');
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <InstantSearch searchClient={searchClient} indexName={indexes[0].name}>
         <Refresh />
         <SearchBox style={styles.searchBox} onChange={setInput} input={input} />
@@ -32,7 +32,7 @@ const SearchForm = ({indexes, renderItem}: TProps) => {
           </Index>
         ))}
       </InstantSearch>
-    </View>
+    </ScrollView>
   );
 };
 
