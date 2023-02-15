@@ -1,8 +1,8 @@
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 import React, {createContext, useEffect, useState} from 'react';
 import AuthUserModal from '../components/modals/AuthUserModal';
-import FriendsModal from '../components/modals/FriendsModal';
-import RollModal from '../components/modals/RollModal';
+import ContactsModal from '../components/modals/ContactsModal';
+import RollModal from '../components/modals/MomentModal';
 import UserModal from '../components/modals/UserModal';
 import {getLinkData} from '../utils/Share';
 
@@ -68,7 +68,7 @@ const ModalProvider = ({children}: TProps) => {
       {modal?.target === 'users' && modal.id && <UserModal id={modal.id} />}
       {modal?.target === 'moments' && modal.id && <RollModal id={modal.id} />}
       {modal?.target === 'auth' && <AuthUserModal />}
-      {modal?.target === 'friends' && <FriendsModal />}
+      {modal?.target === 'friends' && <ContactsModal />}
     </ModalContext.Provider>
   );
 };
