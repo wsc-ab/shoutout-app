@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
+import ContactButton from '../buttons/ContactButton';
 import FriendsButton from '../buttons/FriendButton';
 import GlobalButton from '../buttons/GlobalButton';
 import UserButton from '../buttons/UserButton';
@@ -18,6 +19,7 @@ const Header = ({onFriends, onGlobal, tab}: TProps) => {
         style={[styles.button, tab === 'globe' && styles.selected]}
         onPress={onGlobal}
       />
+      <ContactButton style={styles.button} />
     </View>
   );
 };
