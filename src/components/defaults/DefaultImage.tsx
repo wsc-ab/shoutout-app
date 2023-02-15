@@ -47,9 +47,9 @@ const DefaultImage = ({
       try {
         const localPath = await loadFromCache({remotePath: image});
 
-        isMounted && setImageUrl(localPath);
+        setImageUrl(localPath);
       } catch (e) {
-        isMounted && setStatus('error');
+        setStatus('error');
       } finally {
         isMounted && setStatus('loaded');
       }
@@ -73,7 +73,6 @@ const DefaultImage = ({
           style={[styles.image, imageStyle]}
           source={{
             uri: imageUrl,
-            cache: 'force-cache',
           }}
           resizeMode="cover"
           onLoadEnd={onLoaded}

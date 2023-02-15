@@ -77,8 +77,6 @@ const DefaultVideo = ({
         setUri(videoPath);
         setStatus('loaded');
       } catch (error) {
-        console.log(error, 'r');
-
         setStatus('error');
       }
     };
@@ -91,8 +89,6 @@ const DefaultVideo = ({
   const isReported = reportedContents.includes(path);
 
   const paused = !inView || userPaused;
-
-  console.log(uri, 'uri');
 
   if (!uri) {
     return null;
