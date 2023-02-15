@@ -1,6 +1,7 @@
 import {library} from '@fortawesome/fontawesome-svg-core';
 
 import {
+  faAddressBook,
   faAngleLeft,
   faAngleRight,
   faCheck,
@@ -50,4 +51,5 @@ library.add(
   faGear,
   faVideo,
   faReplyAll,
+  faAddressBook,
 );

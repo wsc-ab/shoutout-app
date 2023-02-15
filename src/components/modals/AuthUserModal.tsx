@@ -134,13 +134,6 @@ const AuthUserModal = ({}: TProps) => {
             }}
           />
           <DefaultText
-            title="View friends"
-            onPress={() => {
-              onUpdate({target: 'friends'});
-            }}
-            style={{marginTop: 20}}
-          />
-          <DefaultText
             title={status === 'loading' ? 'Clearing cache' : 'Clear cache'}
             onPress={onClear}
             style={{marginTop: 20}}
