@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import {createReport, deleteReport} from '../../functions/Moment';
 import {TStyleView} from '../../types/Style';
@@ -76,7 +76,7 @@ const ReportButton = ({moment, onSuccess, style}: TProps) => {
   }, [authUserData.reported.items, moment.path]);
 
   return (
-    <View style={style}>
+    <View style={[styles.container, style]}>
       <DefaultIcon
         icon="flag"
         size={20}
@@ -88,3 +88,11 @@ const ReportButton = ({moment, onSuccess, style}: TProps) => {
 };
 
 export default ReportButton;
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});

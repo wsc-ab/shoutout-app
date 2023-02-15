@@ -7,6 +7,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
+import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import {TTimestamp} from '../../types/Firebase';
 import {getTimeSinceTimestamp} from '../../utils/Date';
@@ -24,6 +25,7 @@ type TProps = {
     location?: {name: string};
     addedAt: TTimestamp;
   }[];
+
   index: number;
   style?: ViewStyle;
   onPress: (index: number) => void;
@@ -31,6 +33,7 @@ type TProps = {
 
 const ContributorsButton = ({type, users, onPress, index, style}: TProps) => {
   const {width} = useWindowDimensions();
+  const {authUserData} = useContext(AuthUserContext);
 
   const ref = useRef<FlatList>(null);
 
@@ -42,9 +45,14 @@ const ContributorsButton = ({type, users, onPress, index, style}: TProps) => {
 
   const {onUpdate} = useContext(ModalContext);
 
+  const contributed = users.map(({id}) => id).includes(authUserData.id);
+
   return (
     <View style={style}>
-      <DefaultText title={`For ${type}`} style={styles.type} />
+      <View style={styles.type}>
+        <DefaultText title={`For ${type}`} />
+        {contributed && <DefaultText title={'You engaged to this moment.'} />}
+      </View>
       <FlatList
         data={users}
         horizontal
@@ -95,13 +103,13 @@ const styles = StyleSheet.create({
   container: {
     marginRight: 10,
     padding: 10,
-    backgroundColor: defaultBlack.lv2(0.5),
+    backgroundColor: defaultBlack.lv3(0.5),
     borderRadius: 10,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
   contentContainer: {paddingHorizontal: 10},
-  current: {backgroundColor: defaultBlack.lv2(0.9)},
+  current: {backgroundColor: defaultBlack.lv3(0.9)},
   nameText: {fontWeight: 'bold', fontSize: 16},
   follow: {
     marginTop: 5,

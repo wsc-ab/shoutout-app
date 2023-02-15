@@ -43,7 +43,7 @@ const ShareButton = ({input, style}: TProps) => {
   return (
     <View style={[styles.container, style]}>
       {!submitting && (
-        <View style={[styles.container, style]}>
+        <View style={[styles.container]}>
           <DefaultIcon
             icon="share"
             onPress={onShare}
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   act: {padding: 10},
   container: {
     flexDirection: 'row',
-    alignItems: 'center',
+
     justifyContent: 'center',
   },
 });

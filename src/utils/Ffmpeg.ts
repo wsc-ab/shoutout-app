@@ -3,7 +3,7 @@ import {FFmpegKit, ReturnCode} from 'ffmpeg-kit-react-native';
 export const encodeToH264 = async ({input}: {input: string}) => {
   const output = `${input}.mp4`;
 
-  const command = `-y -i ${input} -vcodec libx264 -crf 28 -acodec aac -filter:v fps=30 -movflags faststart ${output}`;
+  const command = `-y -i ${input} -vcodec libx264 -crf 28 -acodec aac -filter:v fps=30 -movflags faststart -loglevel quiet ${output}`;
 
   const session = await FFmpegKit.execute(command);
 
@@ -19,7 +19,7 @@ export const encodeToH264 = async ({input}: {input: string}) => {
 export const generateThumb = async ({input}: {input: string}) => {
   const output = `${input}.jpeg`;
 
-  const command = `-y -i ${input} -vframes 1 -an ${output}`;
+  const command = `-y -i ${input} -vframes 1 -an -loglevel quiet ${output}`;
   const session = await FFmpegKit.execute(command);
   const returnCode = await session.getReturnCode();
 

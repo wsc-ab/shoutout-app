@@ -1,4 +1,3 @@
-import storage from '@react-native-firebase/storage';
 import React, {useContext, useEffect, useState} from 'react';
 import {ActivityIndicator, Pressable, StyleSheet, View} from 'react-native';
 import Video from 'react-native-video';
@@ -7,7 +6,9 @@ import ModalContext from '../../contexts/Modal';
 import {TStatus} from '../../types/Screen';
 
 import {TStyleView} from '../../types/Style';
-import {getThumbnailPath, getVideoUrl} from '../../utils/Storage';
+import {loadFromCache} from '../../utils/Cache';
+
+import {getThumbnailPath} from '../../utils/Storage';
 import DefaultIcon from './DefaultIcon';
 import DefaultImage from './DefaultImage';
 import DefaultText from './DefaultText';
@@ -42,11 +43,12 @@ const DefaultVideo = ({
   inView: parentInview,
 }: TProps) => {
   const [uri, setUri] = useState<string>();
-  const [thumbnailUri, setThumbnailUri] = useState<string>();
+  const [thumbPath, setThumbPath] = useState<string>();
   const [userPaused, setUserPaused] = useState(false);
   const [inView, setInView] = useState(!parentInview);
   const [buffer, setBuffer] = useState(false);
   const {reportedContents} = useContext(AuthUserContext);
+
   const {modal} = useContext(ModalContext);
   const [status, setStatus] = useState<TStatus>('loading');
 
@@ -61,31 +63,40 @@ const DefaultVideo = ({
   useEffect(() => {
     const load = async () => {
       try {
-        const thumbRef = storage().ref(getThumbnailPath(path, 'video'));
+        const newThumbPath = await loadFromCache({
+          remotePath: getThumbnailPath(path, 'video'),
+        });
 
-        const thumbUrl = await thumbRef.getDownloadURL();
-
-        setThumbnailUri(thumbUrl);
-      } catch {}
-
+        setThumbPath(newThumbPath);
+      } catch (error) {}
       try {
-        const videoUrl = await getVideoUrl(path);
-        setUri(videoUrl);
+        const videoPath = await loadFromCache({
+          remotePath: path,
+        });
+
+        setUri(videoPath);
+        setStatus('loaded');
       } catch (error) {
+        console.log(error, 'r');
+
         setStatus('error');
       }
     };
 
-    load();
-  }, [path]);
-
-  if (!uri) {
-    return null;
-  }
+    if (status === 'loading') {
+      load();
+    }
+  }, [path, status]);
 
   const isReported = reportedContents.includes(path);
 
   const paused = !inView || userPaused;
+
+  console.log(uri, 'uri');
+
+  if (!uri) {
+    return null;
+  }
 
   return (
     <Pressable
@@ -97,7 +108,7 @@ const DefaultVideo = ({
           <DefaultImage
             imageStyle={videoStyle}
             blurRadius={20}
-            image={thumbnailUri}
+            image={getThumbnailPath(path, 'video')}
           />
           <DefaultText
             title="Cancel report to view this moment"
@@ -106,7 +117,10 @@ const DefaultVideo = ({
         </View>
       )}
       {status === 'error' && (
-        <DefaultIcon icon="exclamation" style={videoStyle} />
+        <Pressable style={styles.error} onPress={() => setStatus('loading')}>
+          <DefaultIcon icon="exclamation" />
+          <DefaultText title="Reload" />
+        </Pressable>
       )}
       {!isReported && mount && (
         <View style={videoStyle}>
@@ -117,10 +131,17 @@ const DefaultVideo = ({
             posterResizeMode="cover"
             ignoreSilentSwitch="ignore"
             paused={paused}
+            onError={() => setStatus('error')}
             onLoad={() => {
               onLoaded && onLoaded();
             }}
-            poster={thumbnailUri}
+            bufferConfig={{
+              minBufferMs: 0,
+              maxBufferMs: 0,
+              bufferForPlaybackMs: 0,
+              bufferForPlaybackAfterRebufferMs: 0,
+            }}
+            poster={thumbPath}
             onBuffer={({isBuffering}) => setBuffer(isBuffering)}
             repeat={repeat}
             onEnd={onEnd}
@@ -157,5 +178,15 @@ const styles = StyleSheet.create({
     right: 0,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  error: {
+    position: 'absolute',
+    zIndex: 200,
+    alignItems: 'center',
+    top: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    left: 0,
+    right: 0,
   },
 });

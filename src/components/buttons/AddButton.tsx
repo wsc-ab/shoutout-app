@@ -22,9 +22,15 @@ const AddButton = ({id, number, style}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
   const [submitting, setSubmitting] = useState(false);
   const [progress, setProgress] = useState<number>();
+  const [added, setAdded] = useState(false);
+
+  useEffect(() => {
+    setAdded(authUserData.contributeTo.ids.includes(id));
+  }, [authUserData.contributeTo.ids, id]);
 
   const onAdd = async () => {
     onUpdate({target: 'video'});
+    setProgress(undefined);
     setSubmitting(true);
 
     try {
@@ -55,34 +61,26 @@ const AddButton = ({id, number, style}: TProps) => {
     }
   };
 
-  const [added, setAdded] = useState(false);
-
-  useEffect(() => {
-    setAdded(authUserData.contributeTo.ids.includes(id));
-  }, [authUserData.contributeTo.ids, id]);
-
   return (
     <View style={[styles.container, style]}>
       {!submitting && (
-        <View style={[styles.container, style]}>
-          <DefaultIcon
-            icon="reply-all"
-            onPress={onAdd}
-            size={20}
-            color={added ? defaultRed.lv2 : 'white'}
-          />
-          <DefaultText title={number.toString()} />
-        </View>
+        <DefaultIcon
+          icon="reply-all"
+          onPress={onAdd}
+          size={20}
+          color={added ? defaultRed.lv2 : 'white'}
+        />
       )}
-      {!!(submitting && !progress) && (
+      {submitting && !progress && (
         <ActivityIndicator style={styles.act} color="white" />
       )}
-      {!!(submitting && progress) && (
+      {submitting && progress && (
         <DefaultText
           title={Math.round(progress).toString()}
           style={styles.progress}
         />
       )}
+      <DefaultText title={number.toString()} />
     </View>
   );
 };
@@ -93,6 +91,7 @@ const styles = StyleSheet.create({
   progress: {padding: 10},
   act: {padding: 10},
   container: {
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -23,6 +23,7 @@ import {
   faUserGroup,
   faUserMinus,
   faUserPlus,
+  faVideo,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -34,7 +35,6 @@ library.add(
   faTimes,
   faCheck,
   faHeart,
-  faReplyAll,
   faPlus,
   faExclamation,
   faGlobe,
@@ -48,4 +48,6 @@ library.add(
   faUserCheck,
   faSearch,
   faGear,
+  faVideo,
+  faReplyAll,
 );
