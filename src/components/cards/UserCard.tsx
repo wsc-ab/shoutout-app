@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Pressable, StyleSheet} from 'react-native';
 import FollowButton from '../buttons/FollowButton';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultImage from '../defaults/DefaultImage';
@@ -9,11 +9,12 @@ type TProps = {
   id: string;
   displayName: string;
   thumbnail?: string;
+  onPress: (id: string) => void;
 };
 
-const UserCard = ({id, displayName, thumbnail}: TProps) => {
+const UserCard = ({id, displayName, onPress, thumbnail}: TProps) => {
   return (
-    <View style={styles.container}>
+    <Pressable style={styles.container} onPress={() => onPress(id)}>
       {thumbnail && (
         <DefaultImage
           image={thumbnail}
@@ -30,7 +31,7 @@ const UserCard = ({id, displayName, thumbnail}: TProps) => {
           id,
         }}
       />
-    </View>
+    </Pressable>
   );
 };
 

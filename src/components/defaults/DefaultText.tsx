@@ -7,6 +7,7 @@ type Props<A extends string> = {
   style?: TStyleView;
   textStyle?: TStyleText;
   onPress?: (text: A) => void;
+  numberOfLines?: number;
 };
 
 const DefaultText = <A extends string>({
@@ -14,6 +15,7 @@ const DefaultText = <A extends string>({
   style,
   textStyle,
   onPress,
+  numberOfLines = 1,
 }: Props<A>) => {
   if (!title) {
     return null;
@@ -24,7 +26,7 @@ const DefaultText = <A extends string>({
       style={style}
       onPress={onPress ? () => onPress(title) : undefined}
       disabled={!onPress}>
-      <Text style={[styles.text, textStyle]} numberOfLines={1}>
+      <Text style={[styles.text, textStyle]} numberOfLines={numberOfLines}>
         {title}
       </Text>
     </Pressable>

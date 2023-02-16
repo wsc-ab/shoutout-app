@@ -13,7 +13,6 @@ import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
 import CreateButton from '../buttons/CreateButton';
 import InviteCard from '../cards/InviteCard';
-import SmallUserCard from '../cards/SmallUserCard';
 import DefaultAlert from '../defaults/DefaultAlert';
 import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultText from '../defaults/DefaultText';
@@ -107,24 +106,24 @@ const FriendMoments = ({style}: TProps) => {
         }
         renderItem={({item}) => {
           return (
-            <View>
-              <SmallUserCard
-                id={item.id}
-                displayName={item.displayName}
-                thumbnail={item.thumbnail}
-                style={styles.userCard}
-              />
-              <ContentCard
-                content={{...item.content, user: {id: item.id}}}
-                onPress={() => {
-                  onUpdate({target: 'moments', id: item.content.id});
-                }}
-                contentStyle={{
-                  width: videoWidth,
-                  height: videoHeight,
-                }}
-              />
-            </View>
+            <ContentCard
+              showUser
+              content={{
+                ...item.content,
+                user: {
+                  id: item.id,
+                  displayName: item.displayName,
+                  thumbnail: item.thumbnail,
+                },
+              }}
+              onPress={() => {
+                onUpdate({target: 'moments', id: item.content.id});
+              }}
+              contentStyle={{
+                width: videoWidth,
+                height: videoHeight,
+              }}
+            />
           );
         }}
         ItemSeparatorComponent={() => <View style={styles.seperator} />}
@@ -149,10 +148,9 @@ const styles = StyleSheet.create({
   noData: {flex: 1, justifyContent: 'center', alignItems: 'center'},
   refresh: {marginTop: 10},
   invite: {marginBottom: 10, backgroundColor: defaultBlack.lv2(1)},
-  userCard: {marginBottom: 5},
   buttons: {
     bottom: 40,
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
     position: 'absolute',
     zIndex: 100,
     left: 0,

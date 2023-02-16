@@ -1,24 +1,22 @@
+import {IconProp} from '@fortawesome/fontawesome-svg-core';
 import messaging, {
   FirebaseMessagingTypes,
 } from '@react-native-firebase/messaging';
 
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {defaultBlack} from '../defaults/DefaultColors';
+import ModalContext from '../../contexts/Modal';
+import {TNotification} from '../../types/Data';
+import {TObject} from '../../types/Firebase';
+import {defaultBlack, defaultRed} from '../defaults/DefaultColors';
 
 import Popup from './Popup';
 
 type TProps = {isPermitted: boolean};
 
 const Notifications = ({isPermitted}: TProps) => {
-  const [notifications, setNotifications] = useState<
-    {
-      title: string;
-      body: string;
-      collection?: string;
-      id?: string;
-    }[]
-  >([]);
+  const {onUpdate} = useContext(ModalContext);
+  const [notifications, setNotifications] = useState<TNotification[]>([]);
 
   // listen to push noficiations
   useEffect(() => {
@@ -26,13 +24,34 @@ const Notifications = ({isPermitted}: TProps) => {
       remoteMessage: FirebaseMessagingTypes.RemoteMessage,
     ) => {
       if (
-        remoteMessage.notification &&
         remoteMessage.notification?.title &&
         remoteMessage.notification?.body
       ) {
         const title = remoteMessage.notification?.title;
-
         const body = remoteMessage.notification?.body;
+
+        let icon: IconProp;
+
+        switch (title) {
+          case 'New like!':
+            icon = 'heart';
+            break;
+
+          case 'New moment shared!':
+            icon = 'video';
+            break;
+
+          case 'Momment connected!':
+            icon = 'plus';
+            break;
+
+          case 'New follower!':
+            icon = 'user';
+            break;
+
+          default:
+            break;
+        }
 
         setNotifications(pre => {
           const copyPre = [...pre];
@@ -42,6 +61,10 @@ const Notifications = ({isPermitted}: TProps) => {
               title,
               body,
               collection: remoteMessage.data?.collection!,
+              image: (remoteMessage.data?.fcm_options as unknown as TObject)
+                ?.image,
+              icon,
+              color: defaultRed.lv1,
               id: remoteMessage.data?.id!,
             },
           ];
@@ -55,23 +78,32 @@ const Notifications = ({isPermitted}: TProps) => {
         alertNotification(message);
       });
 
-      // handle notification to open app
-      messaging().onNotificationOpenedApp(message => {
-        alertNotification(message);
+      return unsubscribe;
+    }
+  }, [isPermitted]);
+
+  useEffect(() => {
+    const openModal = (remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
+      onUpdate({
+        target: remoteMessage.data?.collection!,
+        id: remoteMessage.data?.id!,
       });
+    };
+
+    if (isPermitted) {
+      // handle notification to open app
+      messaging().onNotificationOpenedApp(openModal);
 
       // handle notification from killed app
       messaging()
         .getInitialNotification()
         .then(message => {
           if (message) {
-            alertNotification(message);
+            openModal(message);
           }
         });
-
-      return unsubscribe;
     }
-  }, [isPermitted]);
+  }, [isPermitted, onUpdate]);
 
   // manage push notification arrays
 
@@ -89,14 +121,7 @@ const Notifications = ({isPermitted}: TProps) => {
   };
 
   return (
-    <View
-      style={{
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        top: 100,
-        marginHorizontal: 10,
-      }}>
+    <View style={styles.container}>
       <Popup
         style={styles.popup}
         notification={notifications[0]}
@@ -104,7 +129,7 @@ const Notifications = ({isPermitted}: TProps) => {
       />
       {notifications[1] && (
         <Popup
-          style={{...styles.nextPopup}}
+          style={styles.nextPopup}
           notification={notifications[1]}
           onCancel={onCancel}
         />
@@ -116,6 +141,13 @@ const Notifications = ({isPermitted}: TProps) => {
 export default Notifications;
 
 const styles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 100,
+    marginHorizontal: 5,
+  },
   popup: {
     padding: 10,
     backgroundColor: defaultBlack.lv3(1),

@@ -188,7 +188,7 @@ const MomentCard = ({
           <ShareButton
             input={{
               title:
-                'Hey! Check this moment out! You can also add yours to it!',
+                'Hey! Check this moment out! You can also connect yours to it!',
               param: 'moments',
               value: moment.id,
               image: {path: item.path, type: 'video'},
@@ -243,7 +243,7 @@ export default MomentCard;
 const styles = StyleSheet.create({
   buttons: {
     bottom: 40,
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
     position: 'absolute',
     zIndex: 100,
     left: 0,

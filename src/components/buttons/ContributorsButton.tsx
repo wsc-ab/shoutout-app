@@ -7,7 +7,6 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import {TTimestamp} from '../../types/Firebase';
 import {getTimeSinceTimestamp} from '../../utils/Date';
@@ -33,7 +32,6 @@ type TProps = {
 
 const ContributorsButton = ({type, users, onPress, index, style}: TProps) => {
   const {width} = useWindowDimensions();
-  const {authUserData} = useContext(AuthUserContext);
 
   const ref = useRef<FlatList>(null);
 
@@ -45,13 +43,10 @@ const ContributorsButton = ({type, users, onPress, index, style}: TProps) => {
 
   const {onUpdate} = useContext(ModalContext);
 
-  const contributed = users.map(({id}) => id).includes(authUserData.id);
-
   return (
     <View style={style}>
       <View style={styles.type}>
         <DefaultText title={`For ${type}`} />
-        {contributed && <DefaultText title={'You engaged to this moment.'} />}
       </View>
       <FlatList
         data={users}
@@ -108,14 +103,14 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
-  contentContainer: {paddingHorizontal: 10},
+  contentContainer: {paddingHorizontal: 5},
   current: {backgroundColor: defaultBlack.lv3(0.9)},
   nameText: {fontWeight: 'bold', fontSize: 16},
   follow: {
     marginTop: 5,
   },
   type: {
-    marginHorizontal: 10,
+    marginHorizontal: 5,
     marginBottom: 10,
   },
 });

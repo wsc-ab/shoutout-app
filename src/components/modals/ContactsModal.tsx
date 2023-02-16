@@ -31,7 +31,14 @@ const ContactsModal = ({}: TProps) => {
       return null;
     }
 
-    return <UserCard key={item.objectID} {...item} id={item.objectID} />;
+    return (
+      <UserCard
+        key={item.objectID}
+        {...item}
+        id={item.objectID}
+        onPress={(id: string) => onUpdate({target: 'users', id})}
+      />
+    );
   };
 
   return (

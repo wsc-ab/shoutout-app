@@ -65,7 +65,7 @@ const AddButton = ({id, number, style}: TProps) => {
     <View style={[styles.container, style]}>
       {!submitting && (
         <DefaultIcon
-          icon="reply-all"
+          icon="plus"
           onPress={onAdd}
           size={20}
           color={added ? defaultRed.lv2 : 'white'}

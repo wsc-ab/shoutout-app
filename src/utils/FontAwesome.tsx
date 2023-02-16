@@ -15,7 +15,6 @@ import {
   faHeart,
   faPlay,
   faPlus,
-  faReplyAll,
   faSearch,
   faShare,
   faTimes,
@@ -50,6 +49,5 @@ library.add(
   faSearch,
   faGear,
   faVideo,
-  faReplyAll,
   faAddressBook,
 );

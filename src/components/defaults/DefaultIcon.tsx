@@ -5,7 +5,7 @@ import {Pressable, StyleSheet} from 'react-native';
 import {TStyleView} from '../../types/Style';
 
 type TProps = {
-  icon: IconProp;
+  icon?: IconProp;
   onPress?: (icon?: IconProp) => void;
   style?: TStyleView;
   color?: string;
@@ -19,6 +19,9 @@ const DefaultIcon = ({
   size = 16,
   onPress,
 }: TProps) => {
+  if (!icon) {
+    return null;
+  }
   return (
     <Pressable
       onPress={onPress ? () => onPress(icon) : undefined}

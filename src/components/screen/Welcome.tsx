@@ -48,7 +48,7 @@ const Welcome = ({style}: TProps) => {
     {
       title: 'To connect a moment',
       detail: 'Press',
-      icon: 'reply-all',
+      icon: 'plus',
     },
     {
       title: "Let's go",
