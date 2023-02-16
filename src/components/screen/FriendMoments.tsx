@@ -8,9 +8,10 @@ import {
 } from 'react-native';
 import ModalContext from '../../contexts/Modal';
 import {getFriendMoments} from '../../functions/Moment';
-import {TLocation, TTimestamp} from '../../types/Firebase';
+import {TDocData} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
+import {addItemEveryIndex} from '../../utils/Array';
 import CreateButton from '../buttons/CreateButton';
 import InviteCard from '../cards/InviteCard';
 import DefaultAlert from '../defaults/DefaultAlert';
@@ -23,21 +24,7 @@ type TProps = {
 };
 
 const FriendMoments = ({style}: TProps) => {
-  const [data, setData] = useState<
-    {
-      id: string;
-      content: {
-        path: string;
-        location?: TLocation;
-        id: string;
-        addedAt: TTimestamp;
-        user: {id: string};
-      };
-      displayName: string;
-      thumbnail?: string;
-      addedAt: TTimestamp;
-    }[]
-  >([]);
+  const [data, setData] = useState<TDocData[]>([]);
   const [status, setStatus] = useState<TStatus>('loading');
   const {onUpdate} = useContext(ModalContext);
 
@@ -50,7 +37,16 @@ const FriendMoments = ({style}: TProps) => {
       try {
         const {contents} = await getFriendMoments({});
 
-        setData(contents);
+        const addNoti = [
+          {type: 'inviteFriend'},
+          ...addItemEveryIndex({
+            array: contents,
+            index: 10,
+            item: {type: 'inviteFriend'},
+          }),
+        ];
+
+        setData(addNoti);
         setStatus('loaded');
       } catch (error) {
         DefaultAlert({
@@ -92,10 +88,15 @@ const FriendMoments = ({style}: TProps) => {
     <View style={[styles.container, style]}>
       <FlatList
         data={data}
-        ListHeaderComponent={<InviteCard style={styles.invite} />}
         ListEmptyComponent={ListEmptyComponent}
         contentContainerStyle={styles.contentContainer}
-        keyExtractor={item => item.id + item.content.path}
+        keyExtractor={(item, index) => {
+          if (item.type === 'inviteFriend') {
+            return item.type + index;
+          }
+
+          return item.id + item.content?.path;
+        }}
         refreshControl={
           <RefreshControl
             refreshing={status === 'loading'}
@@ -105,6 +106,10 @@ const FriendMoments = ({style}: TProps) => {
           />
         }
         renderItem={({item}) => {
+          if (item.type === 'inviteFriend') {
+            return <InviteCard style={styles.invite} />;
+          }
+
           return (
             <ContentCard
               showUser
@@ -147,7 +152,7 @@ const styles = StyleSheet.create({
   },
   noData: {flex: 1, justifyContent: 'center', alignItems: 'center'},
   refresh: {marginTop: 10},
-  invite: {marginBottom: 10, backgroundColor: defaultBlack.lv2(1)},
+  invite: {backgroundColor: defaultBlack.lv2(1)},
   buttons: {
     bottom: 40,
     paddingHorizontal: 5,

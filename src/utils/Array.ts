@@ -57,3 +57,26 @@ export const getFriendStatus = ({
     return 'none';
   }
 };
+
+export const addItemEveryIndex = <A extends TObject, B extends TObject>({
+  array,
+  index,
+  item,
+}: {
+  array: A[];
+  index: number;
+  item: B;
+}) =>
+  array.reduce((list, elem, i) => {
+    list.push(elem);
+    if ((i + 1) % index === 0) {
+      list.push(item);
+    }
+    return list;
+  }, [] as (A | B)[]);
+
+export const pickRandomItem = <A extends TObject | string>({
+  array,
+}: {
+  array: A[];
+}) => array[Math.floor(Math.random() * array.length)];

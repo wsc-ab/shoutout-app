@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
   FlatList,
   RefreshControl,
@@ -8,11 +8,16 @@ import {
   ViewabilityConfigCallbackPairs,
   ViewToken,
 } from 'react-native';
+import AuthUserContext from '../../contexts/AuthUser';
 import {getMoments} from '../../functions/Moment';
 import {TDocData} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
+import {addItemEveryIndex} from '../../utils/Array';
+import {getSecondsGap} from '../../utils/Date';
+import CreateButton from '../buttons/CreateButton';
 import DefaultAlert from '../defaults/DefaultAlert';
+import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultText from '../defaults/DefaultText';
 import MomentCard from './MomentCard';
 
@@ -25,6 +30,7 @@ const Moments = ({style, mount}: TProps) => {
   const [data, setData] = useState<TDocData[]>([]);
 
   const [status, setStatus] = useState<TStatus>('loading');
+  const {authUserData} = useContext(AuthUserContext);
   const {height, width} = useWindowDimensions();
   const [index, setIndex] = useState(0);
 
@@ -54,7 +60,24 @@ const Moments = ({style, mount}: TProps) => {
       try {
         const {moments} = await getMoments({pagination: {number: 5}});
 
-        setData(moments);
+        let newMoments: TDocData[] = moments;
+
+        const promptToShare =
+          getSecondsGap({
+            date: new Date(),
+            timestamp: authUserData.contributeTo.items[0].addedAt,
+          }) >=
+          3 * 24 * 60 * 60;
+
+        if (promptToShare) {
+          newMoments = addItemEveryIndex({
+            array: moments,
+            index: 10,
+            item: {type: 'shareMoment'},
+          });
+        }
+
+        setData(newMoments);
 
         setStatus('loaded');
       } catch (error) {
@@ -70,7 +93,7 @@ const Moments = ({style, mount}: TProps) => {
     if (status === 'loading') {
       load();
     }
-  }, [status]);
+  }, [authUserData.contributeTo.items, status]);
 
   useEffect(() => {
     const load = async () => {
@@ -129,6 +152,42 @@ const Moments = ({style, mount}: TProps) => {
     item: TDocData;
     index: number;
   }) => {
+    if (item.type === 'shareMoment') {
+      return (
+        <View
+          style={{
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height,
+            width,
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <View
+            style={{
+              backgroundColor: defaultBlack.lv2(1),
+              padding: 20,
+              borderRadius: 10,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <DefaultText
+              title={'Share your live moment'}
+              textStyle={{fontWeight: 'bold'}}
+            />
+            <DefaultText
+              title={'and connect with others!'}
+              textStyle={{fontWeight: 'bold'}}
+              style={{marginTop: 5}}
+            />
+            <CreateButton style={{marginTop: 5}} />
+          </View>
+        </View>
+      );
+    }
     return (
       <View style={{height, width}}>
         <MomentCard
@@ -149,6 +208,13 @@ const Moments = ({style, mount}: TProps) => {
     }
   };
 
+  const keyExtractor = (item: TDocData, elIndex: number) => {
+    if (item.type === 'shareMoment') {
+      return item.type + elIndex;
+    }
+    return item.id + elIndex;
+  };
+
   return (
     <View style={style}>
       <FlatList
@@ -161,7 +227,7 @@ const Moments = ({style, mount}: TProps) => {
         snapToAlignment={'start'}
         showsVerticalScrollIndicator={false}
         decelerationRate="fast"
-        keyExtractor={(item, elIndex) => item.id + elIndex}
+        keyExtractor={keyExtractor}
         refreshControl={
           <RefreshControl
             refreshing={status === 'loading'}
