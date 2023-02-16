@@ -38,10 +38,12 @@ const Notifications = ({isPermitted}: TProps) => {
             break;
 
           case 'New moment shared!':
+          case 'My moment uploaded!':
             icon = 'video';
             break;
 
           case 'Momment connected!':
+          case 'My moment connected!':
             icon = 'plus';
             break;
 
