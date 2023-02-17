@@ -71,9 +71,9 @@ const Notifications = ({isPermitted}: TProps) => {
       // handle notification from killed app
       messaging()
         .getInitialNotification()
-        .then(message => {
-          if (message) {
-            openModal(message);
+        .then(remoteMessage => {
+          if (remoteMessage) {
+            openModal(remoteMessage);
           }
         });
     }
