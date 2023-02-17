@@ -111,3 +111,16 @@ export const removeMoment = async (input: {
 
   return {...data};
 };
+
+export const sendNotification = async (input: {
+  moment: {
+    id: string;
+  };
+  content: {path: string};
+}) => {
+  const {data} = await firebaseFunctions.httpsCallable('sendNotification')(
+    input,
+  );
+
+  return {...data};
+};

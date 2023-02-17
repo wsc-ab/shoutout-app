@@ -5,6 +5,7 @@ import {
   launchImageLibrary,
 } from 'react-native-image-picker';
 import DefaultAlert from '../components/defaults/DefaultAlert';
+import {sendNotification} from '../functions/Moment';
 import {encodeToH264, generateThumb} from './Ffmpeg';
 import {createStoragePath, uploadFile} from './Storage';
 
@@ -148,6 +149,12 @@ export const takeAndUploadVideo = async ({
       message: 'Failed to upload video',
     });
     throw new Error('cancel');
+  }
+
+  try {
+    await sendNotification({moment: {id}, content: {path: videoPath}});
+  } catch (error) {
+    console.log('failed to send notification');
   }
 
   return videoPath;
