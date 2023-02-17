@@ -19,8 +19,6 @@ const Popup = ({
 }: TProps) => {
   const {onUpdate} = useContext(ModalContext);
 
-  console.log(image, 'image');
-
   return (
     <Pressable
       style={[styles.container, style]}

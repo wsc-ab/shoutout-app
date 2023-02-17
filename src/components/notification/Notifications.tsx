@@ -1,4 +1,3 @@
-import {IconProp} from '@fortawesome/fontawesome-svg-core';
 import messaging, {
   FirebaseMessagingTypes,
 } from '@react-native-firebase/messaging';
@@ -8,7 +7,7 @@ import {StyleSheet, View} from 'react-native';
 import ModalContext from '../../contexts/Modal';
 import {TNotification} from '../../types/Data';
 import {TObject} from '../../types/Firebase';
-import {defaultBlack, defaultRed} from '../defaults/DefaultColors';
+import {defaultBlack} from '../defaults/DefaultColors';
 
 import Popup from './Popup';
 
@@ -30,31 +29,6 @@ const Notifications = ({isPermitted}: TProps) => {
         const title = remoteMessage.notification?.title;
         const body = remoteMessage.notification?.body;
 
-        let icon: IconProp;
-
-        switch (title) {
-          case 'New like!':
-            icon = 'heart';
-            break;
-
-          case 'New moment shared!':
-          case 'My moment uploaded!':
-            icon = 'video';
-            break;
-
-          case 'Momment connected!':
-          case 'My moment connected!':
-            icon = 'plus';
-            break;
-
-          case 'New follower!':
-            icon = 'user';
-            break;
-
-          default:
-            break;
-        }
-
         setNotifications(pre => {
           const copyPre = [...pre];
           return [
@@ -65,8 +39,6 @@ const Notifications = ({isPermitted}: TProps) => {
               collection: remoteMessage.data?.collection!,
               image: (remoteMessage.data?.fcm_options as unknown as TObject)
                 ?.image,
-              icon,
-              color: defaultRed.lv1,
               id: remoteMessage.data?.id!,
             },
           ];
