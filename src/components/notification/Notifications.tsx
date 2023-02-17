@@ -61,11 +61,11 @@ const Notifications = ({isPermitted}: TProps) => {
 
   useEffect(() => {
     const openModal = (remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
+      setUsed(true);
       onUpdate({
         target: remoteMessage.data?.collection!,
         id: remoteMessage.data?.id!,
       });
-      setUsed(true);
     };
 
     if (isPermitted && !used) {
