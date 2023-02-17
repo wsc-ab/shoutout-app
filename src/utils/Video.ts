@@ -124,20 +124,6 @@ export const takeAndUploadVideo = async ({
 
   try {
     await uploadFile({
-      path: videoPath,
-      uri,
-      onProgress,
-    });
-  } catch (error) {
-    DefaultAlert({
-      title: 'Error',
-      message: 'Failed to upload video',
-    });
-    throw new Error('cancel');
-  }
-
-  try {
-    await uploadFile({
       path: `${videoPath}_thumb`,
       uri: thumbUri,
       onProgress,
@@ -146,6 +132,20 @@ export const takeAndUploadVideo = async ({
     DefaultAlert({
       title: 'Error',
       message: 'Failed to upload thumbnail',
+    });
+    throw new Error('cancel');
+  }
+
+  try {
+    await uploadFile({
+      path: videoPath,
+      uri,
+      onProgress,
+    });
+  } catch (error) {
+    DefaultAlert({
+      title: 'Error',
+      message: 'Failed to upload video',
     });
     throw new Error('cancel');
   }
