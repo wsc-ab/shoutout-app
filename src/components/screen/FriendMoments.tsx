@@ -12,12 +12,12 @@ import {TDocData} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
 import {addItemEveryIndex} from '../../utils/Array';
-import CreateButton from '../buttons/CreateButton';
 import InviteCard from '../cards/InviteCard';
 import DefaultAlert from '../defaults/DefaultAlert';
 import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultText from '../defaults/DefaultText';
 import ContentCard from './ContentCard';
+import Footer from './Footer';
 
 type TProps = {
   style: TStyleView;
@@ -36,6 +36,7 @@ const FriendMoments = ({style}: TProps) => {
     const load = async () => {
       try {
         const {contents} = await getFriendMoments({});
+        console.log(contents, 'contents');
 
         const addNoti = [
           {type: 'inviteFriend'},
@@ -49,6 +50,8 @@ const FriendMoments = ({style}: TProps) => {
         setData(addNoti);
         setStatus('loaded');
       } catch (error) {
+        console.log(error, 'error');
+
         DefaultAlert({
           title: 'Error',
           message: (error as {message: string}).message,
@@ -76,19 +79,12 @@ const FriendMoments = ({style}: TProps) => {
     );
   }
 
-  const ListEmptyComponent = (
-    <>
-      {status === 'loaded' ? (
-        <DefaultText title="No moment found. Add more friends!" />
-      ) : null}
-    </>
-  );
+  console.log(data, 'data');
 
   return (
     <View style={[styles.container, style]}>
       <FlatList
         data={data}
-        ListEmptyComponent={ListEmptyComponent}
         contentContainerStyle={styles.contentContainer}
         keyExtractor={(item, index) => {
           if (item.type === 'inviteFriend') {
@@ -133,9 +129,7 @@ const FriendMoments = ({style}: TProps) => {
         }}
         ItemSeparatorComponent={() => <View style={styles.seperator} />}
       />
-      <View style={styles.buttons}>
-        <CreateButton style={styles.button} />
-      </View>
+      <Footer />
     </View>
   );
 };
@@ -153,17 +147,4 @@ const styles = StyleSheet.create({
   noData: {flex: 1, justifyContent: 'center', alignItems: 'center'},
   refresh: {marginTop: 10},
   invite: {backgroundColor: defaultBlack.lv2(1)},
-  buttons: {
-    bottom: 40,
-    paddingHorizontal: 5,
-    position: 'absolute',
-    zIndex: 100,
-    left: 0,
-  },
-  button: {
-    width: 70,
-    marginRight: 10,
-    backgroundColor: defaultBlack.lv2(1),
-    borderRadius: 10,
-  },
 });

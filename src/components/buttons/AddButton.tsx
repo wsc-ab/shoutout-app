@@ -2,7 +2,6 @@ import React, {useContext, useEffect, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
-import {addMoment} from '../../functions/Moment';
 import {TStyleView} from '../../types/Style';
 import {getLatLng} from '../../utils/Location';
 import {takeAndUploadVideo} from '../../utils/Video';
@@ -21,7 +20,7 @@ const AddButton = ({id, number, style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
   const {onUpdate} = useContext(ModalContext);
   const [submitting, setSubmitting] = useState(false);
-  const [progress, setProgress] = useState<number>();
+
   const [added, setAdded] = useState(false);
 
   useEffect(() => {
@@ -30,22 +29,20 @@ const AddButton = ({id, number, style}: TProps) => {
 
   const onAdd = async () => {
     onUpdate({target: 'video'});
-    setProgress(undefined);
+
     setSubmitting(true);
 
     try {
       const latlng = await getLatLng();
 
-      const path = await takeAndUploadVideo({
-        onProgress: setProgress,
+      await takeAndUploadVideo({
         id,
         userId: authUserData.id,
-        onTake: () => onUpdate(undefined),
-      });
-      setProgress(undefined);
-
-      await addMoment({
-        moment: {id, path, latlng},
+        onTake: (path: string) =>
+          onUpdate({
+            target: 'add',
+            data: {latlng, path, id},
+          }),
       });
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {
@@ -54,10 +51,9 @@ const AddButton = ({id, number, style}: TProps) => {
           message: (error as {message: string}).message,
         });
       }
+      onUpdate(undefined);
     } finally {
       setSubmitting(false);
-      setProgress(undefined);
-      onUpdate(undefined);
     }
   };
 
@@ -71,15 +67,7 @@ const AddButton = ({id, number, style}: TProps) => {
           color={added ? defaultRed.lv2 : 'white'}
         />
       )}
-      {submitting && !progress && (
-        <ActivityIndicator style={styles.act} color="white" />
-      )}
-      {submitting && progress && (
-        <DefaultText
-          title={Math.round(progress).toString()}
-          style={styles.progress}
-        />
-      )}
+      {submitting && <ActivityIndicator style={styles.act} color="white" />}
       <DefaultText title={number.toString()} />
     </View>
   );
@@ -88,7 +76,6 @@ const AddButton = ({id, number, style}: TProps) => {
 export default AddButton;
 
 const styles = StyleSheet.create({
-  progress: {padding: 10},
   act: {padding: 10},
   container: {
     flexDirection: 'row',

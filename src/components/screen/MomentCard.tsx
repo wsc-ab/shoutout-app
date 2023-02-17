@@ -2,7 +2,6 @@ import firestore from '@react-native-firebase/firestore';
 import React, {useEffect, useRef, useState} from 'react';
 import {
   FlatList,
-  ScrollView,
   StyleSheet,
   useWindowDimensions,
   View,
@@ -18,16 +17,12 @@ import {
   TTimestamp,
 } from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
-import AddButton from '../buttons/AddButton';
 import ContributorsButton from '../buttons/ContributorsButton';
-import CreateButton from '../buttons/CreateButton';
-import LikeButton from '../buttons/LikeButton';
-import ReportButton from '../buttons/ReportButton';
-import ShareButton from '../buttons/ShareButton';
 import DefaultAlert from '../defaults/DefaultAlert';
-import {defaultBlack} from '../defaults/DefaultColors';
+import DefaultText from '../defaults/DefaultText';
 
 import DefaultVideo from '../defaults/DefaultVideo';
+import Footer from './Footer';
 
 type TProps = {
   moment: TDocData;
@@ -150,11 +145,24 @@ const MomentCard = ({
       user: {id: string; name: string};
       likeFrom: {ids: string[]; number: number};
       addedAt: TTimestamp;
+      name?: string;
     };
     index: number;
   }) => {
+    console.log(item.name, 'item');
+
     return (
       <View style={{height, width}}>
+        <DefaultText
+          title={item.name}
+          style={{
+            position: 'absolute',
+            top: 100,
+            zIndex: 100,
+            paddingHorizontal: 10,
+          }}
+          textStyle={{fontWeight: 'bold', fontSize: 20}}
+        />
         <DefaultVideo
           index={index}
           elIndex={elIndex}
@@ -165,45 +173,7 @@ const MomentCard = ({
           repeat
           inView={inView && index === elIndex}
         />
-        <ScrollView
-          style={styles.buttons}
-          horizontal
-          showsHorizontalScrollIndicator={false}>
-          <CreateButton style={styles.button} />
-          <AddButton
-            id={item.id}
-            number={data.contents.number}
-            style={styles.button}
-          />
-          <LikeButton
-            moment={{
-              id: item.id,
-              path: item.path,
-              user: {id: item.user.id},
-              likeFrom: item.likeFrom,
-            }}
-            style={styles.button}
-          />
-
-          <ShareButton
-            input={{
-              title:
-                'Hey! Check this moment out! You can also connect yours to it!',
-              param: 'moments',
-              value: moment.id,
-              image: {path: item.path, type: 'video'},
-            }}
-            style={styles.button}
-          />
-          <ReportButton
-            moment={{
-              id: item.id,
-              path: item.path,
-              user: {id: item.user.id},
-            }}
-            style={styles.button}
-          />
-        </ScrollView>
+        <Footer item={item} number={data.contents.number} />
       </View>
     );
   };
@@ -241,18 +211,5 @@ const MomentCard = ({
 export default MomentCard;
 
 const styles = StyleSheet.create({
-  buttons: {
-    bottom: 40,
-    paddingHorizontal: 5,
-    position: 'absolute',
-    zIndex: 100,
-    left: 0,
-  },
-  button: {
-    width: 70,
-    marginRight: 10,
-    backgroundColor: defaultBlack.lv2(1),
-    borderRadius: 10,
-  },
   users: {position: 'absolute', bottom: 90},
 });

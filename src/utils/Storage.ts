@@ -36,7 +36,7 @@ export const uploadFile = async ({
 }: {
   uri: string;
   path: string;
-  onProgress: (progress: number) => void;
+  onProgress?: (progress: number) => void;
 }): Promise<string> => {
   // if uri doesn't start from file, no need to upload file
   // return the uri
@@ -53,12 +53,13 @@ export const uploadFile = async ({
     uploadTask.on(
       'state_changed',
       snapshot => {
-        // Observe state change events such as progress, pause, and resume
-        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-
-        onProgress(progress);
+        if (onProgress) {
+          // Observe state change events such as progress, pause, and resume
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          onProgress(progress);
+        }
       },
       () => rej(new Error('file upload error')),
       () => res(path),

@@ -6,8 +6,9 @@ export const createMoment = async (input: {
   moment: {
     id: string;
     path: string;
-    latlng?: TLatLng;
+    latlng: TLatLng;
     type: 'everyone' | 'friends';
+    name?: string;
   };
 }) => {
   try {
@@ -91,7 +92,8 @@ export const addMoment = async (input: {
   moment: {
     id: string;
     path: string;
-    latlng?: TLatLng;
+    latlng: TLatLng;
+    name?: string;
   };
 }) => {
   const {data} = await firebaseFunctions.httpsCallable('addMoment')(input);

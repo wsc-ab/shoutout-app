@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
   left: {flex: 1, alignItems: 'flex-start'},
   center: {
     flex: 1,
+    paddingVertical: 10,
     alignItems: 'center',
   },
   centerText: {

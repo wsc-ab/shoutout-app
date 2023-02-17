@@ -18,6 +18,7 @@ type TProps = {
     path: string;
     addedAt: TTimestamp;
     location?: TLocation;
+    name?: string;
     user: {id: string; displayName: string; thumbnail?: string};
   };
   style?: TStyleView;
@@ -55,6 +56,11 @@ const ContentCard = ({
         )}
         <View style={styles.text}>
           <View style={{flex: 1}}>
+            <DefaultText
+              title={content.name}
+              textStyle={{fontWeight: 'bold'}}
+              style={{marginBottom: 10}}
+            />
             <LocationButton location={content.location} />
             <DefaultText title={getTimeSinceTimestamp(content.addedAt)} />
           </View>

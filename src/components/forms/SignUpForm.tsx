@@ -207,6 +207,6 @@ const Terms = () => {
 };
 
 const styles = StyleSheet.create({
-  textInput: {marginTop: 10},
+  textInput: {marginTop: 20},
   terms: {marginTop: 10, flexDirection: 'row', flexWrap: 'wrap'},
 });

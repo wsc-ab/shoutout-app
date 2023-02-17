@@ -1,14 +1,18 @@
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 import React, {createContext, useEffect, useState} from 'react';
+import AddMomentForm from '../components/forms/AddMomentForm';
+import CreateMomentForm from '../components/forms/CreateMomentForm';
 import AuthUserModal from '../components/modals/AuthUserModal';
 import ContactsModal from '../components/modals/ContactsModal';
-import RollModal from '../components/modals/MomentModal';
+import MomentModal from '../components/modals/MomentModal';
 import UserModal from '../components/modals/UserModal';
+import {TObject} from '../types/Firebase';
 import {getLinkData} from '../utils/Share';
 
 type TModal = {
   target: string;
   id?: string;
+  data?: TObject;
 };
 
 type TContextProps = {
@@ -57,6 +61,7 @@ const ModalProvider = ({children}: TProps) => {
       setModal(newModal);
     }
   };
+  console.log(modal?.target, 'modal?.target');
 
   return (
     <ModalContext.Provider
@@ -66,7 +71,9 @@ const ModalProvider = ({children}: TProps) => {
       }}>
       {children}
       {modal?.target === 'users' && modal.id && <UserModal id={modal.id} />}
-      {modal?.target === 'moments' && modal.id && <RollModal id={modal.id} />}
+      {modal?.target === 'moments' && modal.id && <MomentModal id={modal.id} />}
+      {modal?.target === 'create' && <CreateMomentForm {...modal.data} />}
+      {modal?.target === 'add' && <AddMomentForm {...modal.data} />}
       {modal?.target === 'auth' && <AuthUserModal />}
       {modal?.target === 'friends' && <ContactsModal />}
     </ModalContext.Provider>

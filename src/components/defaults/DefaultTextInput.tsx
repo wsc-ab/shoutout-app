@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderRadius: 10,
     color: 'white',
-    marginTop: 5,
+    marginTop: 10,
   },
   titleText: {fontWeight: 'bold', fontSize: 20},
   detail: {marginTop: 5},

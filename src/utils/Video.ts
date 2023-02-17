@@ -47,16 +47,22 @@ export const takeAndUploadVideo = async ({
 }: {
   userId: string;
   id: string;
-  onProgress: (progress: number) => void;
-  onTake: () => void;
+  onProgress?: (progress: number) => void;
+  onTake?: (path: string) => void;
 }): Promise<string> => {
+  const videoPath = createStoragePath({
+    userId,
+    collection: 'moments',
+    id,
+    type: 'video',
+  });
+
   let asset;
 
   try {
     asset = await takeVideo({
       durationLimit: 30,
     });
-    onTake();
   } catch (error) {
     if ((error as {message: string}).message !== 'cancel') {
       DefaultAlert({
@@ -64,7 +70,6 @@ export const takeAndUploadVideo = async ({
         message: 'Failed to take video',
       });
     }
-    console.log(error, 'etake video');
 
     throw new Error('cancel');
   }
@@ -83,6 +88,10 @@ export const takeAndUploadVideo = async ({
       message: 'Video file path not found.',
     });
     throw new Error('cancel');
+  }
+
+  if (onTake) {
+    onTake(videoPath);
   }
 
   // convert to mp4
@@ -113,12 +122,6 @@ export const takeAndUploadVideo = async ({
     throw new Error('cancel');
   }
 
-  const videoPath = createStoragePath({
-    userId,
-    collection: 'moments',
-    id,
-    type: 'video',
-  });
   try {
     await uploadFile({
       path: videoPath,
