@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   popup: {
-    padding: 10,
+    padding: 20,
     backgroundColor: defaultBlack.lv3(1),
     borderRadius: 10,
     flexDirection: 'row',
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    padding: 10,
+    padding: 20,
     borderRadius: 10,
     backgroundColor: defaultBlack.lv3(1),
     flexDirection: 'row',
