@@ -68,7 +68,7 @@ const AddButton = ({id, number, style}: TProps) => {
         />
       )}
       {submitting && <ActivityIndicator style={styles.act} color="white" />}
-      <DefaultText title={number.toString()} />
+      <DefaultText title={number.toString()} style={{paddingRight: 5}} />
     </View>
   );
 };

@@ -4,7 +4,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import AuthUserContext from '../../contexts/AuthUser';
 import {signIn} from '../../functions/User';
 
-import Notify from './Notifications';
+import Notifications from './Notifications';
 
 const Permission = () => {
   const {authUserData} = useContext(AuthUserContext);
@@ -52,7 +52,7 @@ const Permission = () => {
     };
   }, [authUserData, isChecked]);
 
-  return <Notify isPermitted={isPermitted} />;
+  return <Notifications isPermitted={isPermitted} />;
 };
 
 export default Permission;

@@ -36,7 +36,6 @@ const FriendMoments = ({style}: TProps) => {
     const load = async () => {
       try {
         const {contents} = await getFriendMoments({});
-        console.log(contents, 'contents');
 
         const addNoti = [
           {type: 'inviteFriend'},

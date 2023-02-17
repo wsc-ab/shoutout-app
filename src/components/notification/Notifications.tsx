@@ -26,6 +26,7 @@ const Notifications = ({isPermitted}: TProps) => {
         remoteMessage.notification?.title &&
         remoteMessage.notification?.body
       ) {
+        console.log(remoteMessage, 'remoteMessage');
         const title = remoteMessage.notification?.title;
         const body = remoteMessage.notification?.body;
 
@@ -56,15 +57,18 @@ const Notifications = ({isPermitted}: TProps) => {
     }
   }, [isPermitted]);
 
+  const [used, setUsed] = useState(false);
+
   useEffect(() => {
     const openModal = (remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
       onUpdate({
         target: remoteMessage.data?.collection!,
         id: remoteMessage.data?.id!,
       });
+      setUsed(true);
     };
 
-    if (isPermitted) {
+    if (isPermitted && !used) {
       // handle notification to open app
       messaging().onNotificationOpenedApp(openModal);
 
@@ -77,7 +81,7 @@ const Notifications = ({isPermitted}: TProps) => {
           }
         });
     }
-  }, [isPermitted, onUpdate]);
+  }, [isPermitted, onUpdate, used]);
 
   // manage push notification arrays
 
