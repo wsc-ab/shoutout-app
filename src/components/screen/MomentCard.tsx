@@ -149,30 +149,30 @@ const MomentCard = ({
     };
     index: number;
   }) => {
-    console.log(item.name, 'item');
-
     return (
-      <View style={{height, width}}>
-        <DefaultText
-          title={item.name}
-          style={{
-            position: 'absolute',
-            top: 100,
-            zIndex: 100,
-            paddingHorizontal: 10,
-          }}
-          textStyle={{fontWeight: 'bold', fontSize: 20}}
-        />
-        <DefaultVideo
-          index={index}
-          elIndex={elIndex}
-          path={item.path}
-          videoStyle={{height, width}}
-          mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
-          pauseOnModal={pauseOnModal}
-          repeat
-          inView={inView && index === elIndex}
-        />
+      <View style={{flex: 1}}>
+        <View style={{height, width}}>
+          <DefaultText
+            title={item.name}
+            style={{
+              position: 'absolute',
+              top: 100,
+              zIndex: 100,
+              paddingHorizontal: 10,
+            }}
+            textStyle={{fontWeight: 'bold', fontSize: 20}}
+          />
+          <DefaultVideo
+            index={index}
+            elIndex={elIndex}
+            path={item.path}
+            videoStyle={{height, width}}
+            mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
+            pauseOnModal={pauseOnModal}
+            repeat
+            inView={inView && index === elIndex}
+          />
+        </View>
         <Footer item={item} number={data.contents.number} />
       </View>
     );

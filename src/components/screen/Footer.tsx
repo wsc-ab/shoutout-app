@@ -73,19 +73,16 @@ export default Footer;
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    bottom: 40,
-    paddingHorizontal: 5,
+    alignItems: 'center',
     position: 'absolute',
-    zIndex: 100,
     left: 0,
     right: 0,
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    bottom: 24,
   },
   button: {
     flex: 1,
     marginHorizontal: 5,
-    backgroundColor: defaultBlack.lv2(1),
+    backgroundColor: defaultBlack.lv3(1),
     borderRadius: 20,
   },
 });

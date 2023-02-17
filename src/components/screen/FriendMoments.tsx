@@ -79,8 +79,6 @@ const FriendMoments = ({style}: TProps) => {
     );
   }
 
-  console.log(data, 'data');
-
   return (
     <View style={[styles.container, style]}>
       <FlatList
