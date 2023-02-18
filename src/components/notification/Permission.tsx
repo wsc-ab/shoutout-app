@@ -25,7 +25,7 @@ const Permission = () => {
           authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
         setIsPermitted(enabled);
-        console.log('called', enabled);
+
         if (enabled) {
           try {
             const newToken = await messaging().getToken();

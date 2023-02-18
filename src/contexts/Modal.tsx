@@ -6,13 +6,12 @@ import AuthUserModal from '../components/modals/AuthUserModal';
 import ContactsModal from '../components/modals/ContactsModal';
 import MomentModal from '../components/modals/MomentModal';
 import UserModal from '../components/modals/UserModal';
-import {TObject} from '../types/Firebase';
 import {getLinkData} from '../utils/Share';
 
 type TModal = {
   target: string;
   id?: string;
-  data?: TObject;
+  path?: string;
 };
 
 type TContextProps = {
@@ -61,7 +60,6 @@ const ModalProvider = ({children}: TProps) => {
       setModal(newModal);
     }
   };
-  console.log(modal?.target, 'modal?.target');
 
   return (
     <ModalContext.Provider
@@ -71,7 +69,9 @@ const ModalProvider = ({children}: TProps) => {
       }}>
       {children}
       {modal?.target === 'users' && modal.id && <UserModal id={modal.id} />}
-      {modal?.target === 'moments' && modal.id && <MomentModal id={modal.id} />}
+      {modal?.target === 'moments' && modal.id && (
+        <MomentModal id={modal.id} path={modal.path} />
+      )}
       {modal?.target === 'create' && <CreateMomentForm {...modal.data} />}
       {modal?.target === 'add' && <AddMomentForm {...modal.data} />}
       {modal?.target === 'auth' && <AuthUserModal />}

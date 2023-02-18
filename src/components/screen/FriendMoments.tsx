@@ -49,8 +49,6 @@ const FriendMoments = ({style}: TProps) => {
         setData(addNoti);
         setStatus('loaded');
       } catch (error) {
-        console.log(error, 'error');
-
         DefaultAlert({
           title: 'Error',
           message: (error as {message: string}).message,
@@ -115,7 +113,11 @@ const FriendMoments = ({style}: TProps) => {
                 },
               }}
               onPress={() => {
-                onUpdate({target: 'moments', id: item.content.id});
+                onUpdate({
+                  target: 'moments',
+                  id: item.content.id,
+                  path: item.content.path,
+                });
               }}
               contentStyle={{
                 width: videoWidth,

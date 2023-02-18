@@ -90,10 +90,6 @@ const DefaultVideo = ({
 
   const paused = !inView || userPaused;
 
-  if (!uri) {
-    return null;
-  }
-
   return (
     <Pressable
       style={style}
@@ -112,7 +108,7 @@ const DefaultVideo = ({
           />
         </View>
       )}
-      {status === 'error' && (
+      {status === 'error' && uri && (
         <Pressable style={styles.error} onPress={() => setStatus('loading')}>
           <DefaultIcon icon="exclamation" />
           <DefaultText title="Reload" />
@@ -127,7 +123,11 @@ const DefaultVideo = ({
             posterResizeMode="cover"
             ignoreSilentSwitch="ignore"
             paused={paused}
-            onError={() => setStatus('error')}
+            onError={() => {
+              if (uri) {
+                setStatus('error');
+              }
+            }}
             onLoad={() => {
               onLoaded && onLoaded();
             }}

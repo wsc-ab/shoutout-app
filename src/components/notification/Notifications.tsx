@@ -26,7 +26,6 @@ const Notifications = ({isPermitted}: TProps) => {
         remoteMessage.notification?.title &&
         remoteMessage.notification?.body
       ) {
-        console.log(remoteMessage, 'remoteMessage');
         const title = remoteMessage.notification?.title;
         const body = remoteMessage.notification?.body;
 
