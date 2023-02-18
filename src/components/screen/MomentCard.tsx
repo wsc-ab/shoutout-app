@@ -47,20 +47,19 @@ const MomentCard = ({
   const ref = useRef<FlatList>(null);
 
   const [index, setIndex] = useState(0);
-  const [pathUsed, setPathUsed] = useState(false);
+  const [initialScrollIndex, setInitialScrollIndex] = useState<number>();
 
   useEffect(() => {
-    if (!pathUsed) {
+    if (data) {
       const pathIndex = data?.contents.items.findIndex(
         ({path: elPath}: {path: string}) => elPath === path,
       );
 
-      if (pathIndex !== -1) {
-        ref.current?.scrollToIndex({index: pathIndex, animated: true});
-        setPathUsed(true);
+      if (pathIndex >= 0) {
+        setInitialScrollIndex(pathIndex);
       }
     }
-  }, [data?.contents.items, path, pathUsed]);
+  }, [data, path]);
 
   useEffect(() => {
     const onNext = async (doc: TDocSnapshot) => {
@@ -187,6 +186,7 @@ const MomentCard = ({
         windowSize={3}
         maxToRenderPerBatch={1}
         horizontal
+        initialScrollIndex={initialScrollIndex}
         snapToInterval={width}
         showsHorizontalScrollIndicator={false}
         snapToAlignment={'start'}

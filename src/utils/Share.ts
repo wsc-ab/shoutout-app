@@ -29,8 +29,6 @@ export const createShareLink = async ({
     imageUrl = await thumbRef.getDownloadURL();
   }
 
-  console.log(defaultConfigs[target], 'defaultConfigs[target]');
-
   const shortLink = await dynamicLinks().buildShortLink({
     ...defaultConfigs[target],
     link,
