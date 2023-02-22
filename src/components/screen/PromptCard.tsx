@@ -1,5 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -8,6 +8,7 @@ import {
   ViewabilityConfigCallbackPairs,
   ViewToken,
 } from 'react-native';
+import AuthUserContext from '../../contexts/AuthUser';
 
 import {
   TDocData,
@@ -17,15 +18,17 @@ import {
   TTimestamp,
 } from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
+import {getThumbnailPath} from '../../utils/Storage';
+import AddMomentButton from '../buttons/AddMomentButton';
 import ContributorsButton from '../buttons/ContributorsButton';
 import DefaultAlert from '../defaults/DefaultAlert';
+import {defaultBlack} from '../defaults/DefaultColors';
+import DefaultImage from '../defaults/DefaultImage';
 import DefaultText from '../defaults/DefaultText';
-
 import DefaultVideo from '../defaults/DefaultVideo';
-import Footer from './Footer';
 
 type TProps = {
-  moment: TDocData;
+  prompt: TDocData;
   style?: TStyleView;
   mount: boolean;
   path?: string;
@@ -33,8 +36,8 @@ type TProps = {
   inView: boolean;
 };
 
-const MomentCard = ({
-  moment,
+const PromptCard = ({
+  prompt,
   path,
   style,
   pauseOnModal = true,
@@ -43,7 +46,7 @@ const MomentCard = ({
 }: TProps) => {
   const {height, width} = useWindowDimensions();
   const [data, setData] = useState<TDocData>();
-
+  const {authUserData} = useContext(AuthUserContext);
   const ref = useRef<FlatList>(null);
 
   const [index, setIndex] = useState(0);
@@ -51,7 +54,7 @@ const MomentCard = ({
 
   useEffect(() => {
     if (data) {
-      const pathIndex = data?.contents.items.findIndex(
+      const pathIndex = data?.moments.items.findIndex(
         ({path: elPath}: {path: string}) => elPath === path,
       );
 
@@ -72,18 +75,18 @@ const MomentCard = ({
 
     const onError = (error: Error) => {
       DefaultAlert({
-        title: 'Failed to get moment data',
+        title: 'Failed to get prompt data',
         message: (error as {message: string}).message,
       });
     };
 
     const unsubscribe = firestore()
-      .collection('moments')
-      .doc(moment.id)
+      .collection('prompts')
+      .doc(prompt.id)
       .onSnapshot(onNext, onError);
 
     return unsubscribe;
-  }, [moment.id]);
+  }, [prompt.id]);
 
   const onViewableItemsChanged = ({
     viewableItems,
@@ -112,7 +115,7 @@ const MomentCard = ({
     return null;
   }
 
-  const users = data.contents.items.map(
+  const users = data.moments.items.map(
     ({
       user,
       addedAt,
@@ -123,6 +126,8 @@ const MomentCard = ({
       location?: TLocation;
     }) => ({...user, addedAt, location}),
   );
+
+  const added = users.some(({id: elId}) => elId === authUserData.id);
 
   if (!data) {
     return null;
@@ -161,18 +166,34 @@ const MomentCard = ({
             }}
             textStyle={{fontWeight: 'bold', fontSize: 20}}
           />
-          <DefaultVideo
-            index={index}
-            elIndex={elIndex}
-            path={item.path}
-            videoStyle={{height, width}}
-            mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
-            pauseOnModal={pauseOnModal}
-            repeat
-            inView={inView && index === elIndex}
-          />
+          {!added && (
+            <View>
+              <DefaultImage
+                imageStyle={{height, width}}
+                blurRadius={30}
+                image={getThumbnailPath(item.path, 'video')}
+              />
+              <DefaultText
+                title="Share your moment to view"
+                style={styles.add}
+              />
+            </View>
+          )}
+
+          {added && (
+            <DefaultVideo
+              index={index}
+              elIndex={elIndex}
+              path={item.path}
+              videoStyle={{height, width}}
+              mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
+              pauseOnModal={pauseOnModal}
+              repeat
+              inView={inView && index === elIndex}
+            />
+          )}
         </View>
-        <Footer item={item} number={data.contents.number} />
+        {!added && <AddMomentButton id={item.id} style={styles.addMoment} />}
       </View>
     );
   };
@@ -181,7 +202,7 @@ const MomentCard = ({
     <View style={style}>
       <FlatList
         ref={ref}
-        data={data.contents.items as TObject[]}
+        data={data.moments.items as TObject[]}
         initialNumToRender={1}
         windowSize={3}
         maxToRenderPerBatch={1}
@@ -207,8 +228,28 @@ const MomentCard = ({
   );
 };
 
-export default MomentCard;
+export default PromptCard;
 
 const styles = StyleSheet.create({
   users: {position: 'absolute', bottom: 90},
+  add: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  addMoment: {
+    position: 'absolute',
+    bottom: 24,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: defaultBlack.lv3(1),
+    marginHorizontal: 5,
+    borderRadius: 20,
+  },
 });

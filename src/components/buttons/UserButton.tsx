@@ -19,7 +19,7 @@ const UserButton = ({style}: TProps) => {
         icon="user"
         size={20}
         onPress={() => {
-          onUpdate({target: 'users', id: authUserData.id});
+          onUpdate({target: 'users', data: {id: authUserData.id}});
         }}
       />
     </View>

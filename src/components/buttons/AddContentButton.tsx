@@ -3,7 +3,7 @@ import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import {TStyleView} from '../../types/Style';
-import {getLatLng} from '../../utils/Location';
+import {checkLocationPermission} from '../../utils/Location';
 import {takeAndUploadVideo} from '../../utils/Video';
 import DefaultAlert from '../defaults/DefaultAlert';
 import {defaultRed} from '../defaults/DefaultColors';
@@ -16,7 +16,7 @@ type TProps = {
   style?: TStyleView;
 };
 
-const AddButton = ({id, number, style}: TProps) => {
+const AddContentButton = ({id, number, style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
   const {onUpdate} = useContext(ModalContext);
   const [submitting, setSubmitting] = useState(false);
@@ -32,16 +32,23 @@ const AddButton = ({id, number, style}: TProps) => {
 
     setSubmitting(true);
 
-    try {
-      const latlng = await getLatLng();
+    const permitted = await checkLocationPermission();
 
+    if (!permitted) {
+      DefaultAlert({
+        title: 'Error',
+        message: 'No location permission',
+      });
+    }
+
+    try {
       await takeAndUploadVideo({
         id,
         userId: authUserData.id,
         onTake: (path: string) =>
           onUpdate({
-            target: 'add',
-            data: {latlng, path, id},
+            target: 'addContent',
+            data: {path, id},
           }),
       });
     } catch (error) {
@@ -62,7 +69,7 @@ const AddButton = ({id, number, style}: TProps) => {
       {!submitting && (
         <DefaultIcon
           icon="plus"
-          onPress={onAdd}
+          onPress={added ? undefined : onAdd}
           size={20}
           color={added ? defaultRed.lv2 : 'white'}
         />
@@ -73,7 +80,7 @@ const AddButton = ({id, number, style}: TProps) => {
   );
 };
 
-export default AddButton;
+export default AddContentButton;
 
 const styles = StyleSheet.create({
   act: {padding: 10},

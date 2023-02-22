@@ -1,10 +1,9 @@
 import {yupResolver} from '@hookform/resolvers/yup';
-import {firebase} from '@react-native-firebase/auth';
 import React, {useContext, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {object} from 'yup';
 import ModalContext from '../../contexts/Modal';
-import {addMoment} from '../../functions/Moment';
+import {addContent} from '../../functions/Moment';
 import {getLatLng} from '../../utils/Location';
 
 import {defaultSchema} from '../../utils/Schema';
@@ -19,13 +18,13 @@ type TProps = {
   id: string;
 };
 
-const AddMomentForm = ({path, id}: TProps) => {
+const AddContentForm = ({path, id}: TProps) => {
   const {text} = defaultSchema();
   const [submitting, setSubmitting] = useState(false);
   const {onUpdate} = useContext(ModalContext);
 
   const schema = object({
-    name: text({min: 1, max: 50, required: true}),
+    name: text({min: 4, max: 50, required: true}),
   }).required();
 
   const {
@@ -42,12 +41,10 @@ const AddMomentForm = ({path, id}: TProps) => {
   const onSubmit = async ({name}: {name: string}) => {
     try {
       setSubmitting(true);
-      const momentId = firebase.firestore().collection('momentId').doc().id;
       const latlng = await getLatLng();
 
-      await addMoment({
-        prompt: {id},
-        moment: {id: momentId, type: 'everyone'},
+      await addContent({
+        moment: {id},
         content: {path, name, latlng},
       });
     } catch (error) {
@@ -85,4 +82,4 @@ const AddMomentForm = ({path, id}: TProps) => {
   );
 };
 
-export default AddMomentForm;
+export default AddContentForm;

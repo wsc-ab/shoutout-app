@@ -89,14 +89,24 @@ export const deleteReport = async (input: {
 };
 
 export const addMoment = async (input: {
-  moment: {
+  prompt: {
     id: string;
-    path: string;
-    latlng: TLatLng;
-    name?: string;
   };
+  moment: {id: string; type: 'friends' | 'everyone'};
+  content: {path: string; latlng: TLatLng; name: string};
 }) => {
   const {data} = await firebaseFunctions.httpsCallable('addMoment')(input);
+
+  return {...data};
+};
+
+export const addContent = async (input: {
+  moment: {
+    id: string;
+  };
+  content: {path: string; latlng: TLatLng; name: string};
+}) => {
+  const {data} = await firebaseFunctions.httpsCallable('addContent')(input);
 
   return {...data};
 };

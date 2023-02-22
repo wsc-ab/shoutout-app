@@ -15,9 +15,7 @@ import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
 import {addItemEveryIndex} from '../../utils/Array';
 import {getSecondsGap} from '../../utils/Date';
-import CreateButton from '../buttons/CreateButton';
 import DefaultAlert from '../defaults/DefaultAlert';
-import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultText from '../defaults/DefaultText';
 import MomentCard from './MomentCard';
 
@@ -153,42 +151,6 @@ const Moments = ({style, mount}: TProps) => {
     item: TDocData;
     index: number;
   }) => {
-    if (item.type === 'shareMoment') {
-      return (
-        <View
-          style={{
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height,
-            width,
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <View
-            style={{
-              backgroundColor: defaultBlack.lv2(1),
-              padding: 20,
-              borderRadius: 10,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <DefaultText
-              title={'Share your live moment'}
-              textStyle={{fontWeight: 'bold'}}
-            />
-            <DefaultText
-              title={'and connect with others!'}
-              textStyle={{fontWeight: 'bold'}}
-              style={{marginTop: 5}}
-            />
-            <CreateButton style={{marginTop: 5}} />
-          </View>
-        </View>
-      );
-    }
     return (
       <View style={{height, width}}>
         <MomentCard

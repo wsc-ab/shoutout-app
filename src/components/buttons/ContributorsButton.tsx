@@ -16,7 +16,6 @@ import FollowButton from './FollowButton';
 import LocationButton from './LocationButton';
 
 type TProps = {
-  type: string;
   users: {
     displayName: string;
     id: string;
@@ -30,7 +29,7 @@ type TProps = {
   onPress: (index: number) => void;
 };
 
-const ContributorsButton = ({type, users, onPress, index, style}: TProps) => {
+const ContributorsButton = ({users, onPress, index, style}: TProps) => {
   const {width} = useWindowDimensions();
 
   const ref = useRef<FlatList>(null);
@@ -45,9 +44,6 @@ const ContributorsButton = ({type, users, onPress, index, style}: TProps) => {
 
   return (
     <View style={style}>
-      <View style={styles.type}>
-        <DefaultText title={`For ${type}`} />
-      </View>
       <FlatList
         data={users}
         horizontal
@@ -60,7 +56,7 @@ const ContributorsButton = ({type, users, onPress, index, style}: TProps) => {
               key={item.id + elIndex}
               onPress={() => {
                 if (isCurrent) {
-                  onUpdate({target: 'users', id: item.id});
+                  onUpdate({target: 'users', data: {id: item.id}});
                 } else {
                   onPress(elIndex);
                 }
@@ -108,9 +104,5 @@ const styles = StyleSheet.create({
   nameText: {fontWeight: 'bold', fontSize: 16},
   follow: {
     marginTop: 5,
-  },
-  type: {
-    marginHorizontal: 5,
-    marginBottom: 10,
   },
 });

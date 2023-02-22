@@ -1,5 +1,4 @@
-import {firebase} from '@react-native-firebase/firestore';
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
@@ -7,20 +6,28 @@ import {TStyleView} from '../../types/Style';
 import {checkLocationPermission} from '../../utils/Location';
 import {takeAndUploadVideo} from '../../utils/Video';
 import DefaultAlert from '../defaults/DefaultAlert';
-import {defaultBlack} from '../defaults/DefaultColors';
-import DefaultText from '../defaults/DefaultText';
+import {defaultRed} from '../defaults/DefaultColors';
+import DefaultIcon from '../defaults/DefaultIcon';
 
 type TProps = {
+  id: string;
   style?: TStyleView;
 };
 
-const CreateButton = ({style}: TProps) => {
+const AddMomentButton = ({id, style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
   const {onUpdate} = useContext(ModalContext);
   const [submitting, setSubmitting] = useState(false);
 
+  const [added, setAdded] = useState(false);
+
+  useEffect(() => {
+    setAdded(authUserData.contributeTo.ids.includes(id));
+  }, [authUserData.contributeTo.ids, id]);
+
   const onAdd = async () => {
     onUpdate({target: 'video'});
+
     setSubmitting(true);
 
     const permitted = await checkLocationPermission();
@@ -33,15 +40,13 @@ const CreateButton = ({style}: TProps) => {
     }
 
     try {
-      const momentId = firebase.firestore().collection('moments').doc().id;
-
       await takeAndUploadVideo({
-        id: momentId,
+        id,
         userId: authUserData.id,
         onTake: (path: string) =>
           onUpdate({
-            target: 'create',
-            data: {path},
+            target: 'addMoment',
+            data: {path, id},
           }),
       });
     } catch (error) {
@@ -60,11 +65,11 @@ const CreateButton = ({style}: TProps) => {
   return (
     <View style={[styles.container, style]}>
       {!submitting && (
-        <DefaultText
-          title="What's up?"
-          onPress={onAdd}
-          style={{padding: 10, flex: 1}}
-          textStyle={{fontWeight: 'bold'}}
+        <DefaultIcon
+          icon="plus"
+          onPress={added ? undefined : onAdd}
+          size={20}
+          color={added ? defaultRed.lv2 : 'white'}
         />
       )}
       {submitting && <ActivityIndicator style={styles.act} color="white" />}
@@ -72,16 +77,13 @@ const CreateButton = ({style}: TProps) => {
   );
 };
 
-export default CreateButton;
+export default AddMomentButton;
 
 const styles = StyleSheet.create({
   act: {padding: 10},
   container: {
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 1,
-    marginHorizontal: 5,
-    backgroundColor: defaultBlack.lv3(1),
-    borderRadius: 20,
   },
 });

@@ -32,6 +32,8 @@ const DefaultImage = ({
   const [imageUrl, setImageUrl] = useState<string>();
   const [status, setStatus] = useState<TStatus>('loading');
 
+  console.log(imageUrl, 'imageUrl');
+
   useEffect(() => {
     let isMounted = true;
     const loadImageUrl = async () => {

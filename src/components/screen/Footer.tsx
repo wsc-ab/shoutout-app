@@ -1,15 +1,14 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {TStyleView} from '../../types/Style';
-import AddButton from '../buttons/AddButton';
-import CreateButton from '../buttons/CreateButton';
+import AddContentButton from '../buttons/AddContentButton';
 import LikeButton from '../buttons/LikeButton';
 import ReportButton from '../buttons/ReportButton';
 import ShareButton from '../buttons/ShareButton';
 import {defaultBlack} from '../defaults/DefaultColors';
 
 type TProps = {
-  item?: {
+  item: {
     id: string;
     path: string;
     user: {id: string};
@@ -22,48 +21,41 @@ type TProps = {
 const Footer = ({item, number, style}: TProps) => {
   return (
     <View style={[styles.container, style]}>
-      {item && (
-        <LikeButton
-          moment={{
-            id: item.id,
-            path: item.path,
-            user: {id: item.user.id},
-            likeFrom: item.likeFrom,
-          }}
-          style={styles.button}
-        />
-      )}
-      {!!(item && number) && (
-        <AddButton id={item.id} number={number} style={styles.button} />
-      )}
-      {!item && <View style={styles.button} />}
-      {!item && <View style={styles.button} />}
+      <LikeButton
+        moment={{
+          id: item.id,
+          path: item.path,
+          user: {id: item.user.id},
+          likeFrom: item.likeFrom,
+        }}
+        style={styles.button}
+      />
 
-      <CreateButton style={styles.button} />
-      {item && (
-        <ShareButton
-          input={{
-            title:
-              'Hey! Check this moment out! You can also connect yours to it!',
-            param: 'moments',
-            value: item.id,
-            image: {path: item.path, type: 'video'},
-          }}
-          style={styles.button}
-        />
-      )}
-      {item && (
-        <ReportButton
-          moment={{
-            id: item.id,
-            path: item.path,
-            user: {id: item.user.id},
-          }}
-          style={styles.button}
-        />
-      )}
-      {!item && <View style={styles.button} />}
-      {!item && <View style={styles.button} />}
+      <AddContentButton
+        id={item.id}
+        number={number ?? 0}
+        style={styles.button}
+      />
+
+      <ShareButton
+        input={{
+          title:
+            'Hey! Check this moment out! You can also connect yours to it!',
+          param: 'moments',
+          value: item.id,
+          image: {path: item.path, type: 'video'},
+        }}
+        style={styles.button}
+      />
+
+      <ReportButton
+        moment={{
+          id: item.id,
+          path: item.path,
+          user: {id: item.user.id},
+        }}
+        style={styles.button}
+      />
     </View>
   );
 };

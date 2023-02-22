@@ -2,9 +2,10 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {firebase} from '@react-native-firebase/auth';
 import React, {useContext, useState} from 'react';
 import {useForm} from 'react-hook-form';
+import {StyleSheet} from 'react-native';
 import {object} from 'yup';
 import ModalContext from '../../contexts/Modal';
-import {addMoment} from '../../functions/Moment';
+import {createPrompt} from '../../functions/Prompt';
 import {getLatLng} from '../../utils/Location';
 
 import {defaultSchema} from '../../utils/Schema';
@@ -16,10 +17,9 @@ import DefaultModal from '../defaults/DefaultModal';
 
 type TProps = {
   path: string;
-  id: string;
 };
 
-const AddMomentForm = ({path, id}: TProps) => {
+const CreatePromptForm = ({path}: TProps) => {
   const {text} = defaultSchema();
   const [submitting, setSubmitting] = useState(false);
   const {onUpdate} = useContext(ModalContext);
@@ -42,13 +42,18 @@ const AddMomentForm = ({path, id}: TProps) => {
   const onSubmit = async ({name}: {name: string}) => {
     try {
       setSubmitting(true);
+
+      const promptId = firebase.firestore().collection('prompts').doc().id;
       const momentId = firebase.firestore().collection('momentId').doc().id;
       const latlng = await getLatLng();
 
-      await addMoment({
-        prompt: {id},
-        moment: {id: momentId, type: 'everyone'},
-        content: {path, name, latlng},
+      await createPrompt({
+        moment: {
+          id: momentId,
+          type: 'everyone',
+        },
+        prompt: {id: promptId, type: 'friends'},
+        content: {path, latlng, name},
       });
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {
@@ -78,6 +83,7 @@ const AddMomentForm = ({path, id}: TProps) => {
             title="Name"
             detail="Set the name of the moment."
             errors={errors.name}
+            style={styles.textInput}
           />
         </DefaultKeyboardAwareScrollView>
       </DefaultForm>
@@ -85,4 +91,6 @@ const AddMomentForm = ({path, id}: TProps) => {
   );
 };
 
-export default AddMomentForm;
+export default CreatePromptForm;
+
+const styles = StyleSheet.create({textInput: {marginTop: 20}});

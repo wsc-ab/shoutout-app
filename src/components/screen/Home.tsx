@@ -4,7 +4,7 @@ import Moments from './Moments';
 
 import AuthUserContext from '../../contexts/AuthUser';
 import Permission from '../notification/Permission';
-import FriendMoments from './FriendMoments';
+import Prompts from './Prompts';
 import Header from './Header';
 import Landing from './Landing';
 import Welcome from './Welcome';
@@ -37,9 +37,7 @@ const Home = () => {
         onGlobal={() => setTab('globe')}
         tab={tab}
       />
-      <FriendMoments
-        style={[styles.moments, tab !== 'friends' && styles.hide]}
-      />
+      <Prompts style={[styles.moments, tab !== 'friends' && styles.hide]} />
       <Moments
         style={[styles.moments, tab !== 'globe' && styles.hide]}
         mount={tab === 'globe'}
