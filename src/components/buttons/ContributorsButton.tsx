@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import ModalContext from '../../contexts/Modal';
 import {TTimestamp} from '../../types/Firebase';
-import {getTimeSinceTimestamp} from '../../utils/Date';
+import {getTimeGap} from '../../utils/Date';
 import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultText from '../defaults/DefaultText';
 import FollowButton from './FollowButton';
@@ -71,7 +71,7 @@ const ContributorsButton = ({users, onPress, index, style}: TProps) => {
                 textStyle={styles.nameText}
               />
               <LocationButton location={item.location} />
-              <DefaultText title={getTimeSinceTimestamp(item.addedAt)} />
+              <DefaultText title={getTimeGap(item.addedAt) + ' ago'} />
               <FollowButton
                 user={{
                   id: item.id,

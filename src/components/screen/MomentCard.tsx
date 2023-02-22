@@ -25,7 +25,7 @@ import DefaultVideo from '../defaults/DefaultVideo';
 import Footer from './Footer';
 
 type TProps = {
-  moment: TDocData;
+  moment: {id: string};
   style?: TStyleView;
   mount: boolean;
   path?: string;
@@ -162,8 +162,6 @@ const MomentCard = ({
             textStyle={{fontWeight: 'bold', fontSize: 20}}
           />
           <DefaultVideo
-            index={index}
-            elIndex={elIndex}
             path={item.path}
             videoStyle={{height, width}}
             mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}

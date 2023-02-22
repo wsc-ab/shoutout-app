@@ -22,8 +22,6 @@ type TProps = {
   onPress?: () => void;
   disabled?: boolean;
   repeat?: boolean;
-  index: number;
-  elIndex: number;
   mount: boolean;
   pauseOnModal?: boolean;
   inView: boolean;

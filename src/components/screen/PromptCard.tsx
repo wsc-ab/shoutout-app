@@ -1,60 +1,40 @@
 import firestore from '@react-native-firebase/firestore';
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   FlatList,
+  RefreshControl,
   StyleSheet,
   useWindowDimensions,
   View,
   ViewabilityConfigCallbackPairs,
   ViewToken,
 } from 'react-native';
-import AuthUserContext from '../../contexts/AuthUser';
-
-import {
-  TDocData,
-  TDocSnapshot,
-  TLocation,
-  TObject,
-  TTimestamp,
-} from '../../types/Firebase';
+import {TDocData, TDocSnapshot} from '../../types/Firebase';
+import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
-import {getThumbnailPath} from '../../utils/Storage';
-import AddMomentButton from '../buttons/AddMomentButton';
-import ContributorsButton from '../buttons/ContributorsButton';
 import DefaultAlert from '../defaults/DefaultAlert';
-import {defaultBlack} from '../defaults/DefaultColors';
-import DefaultImage from '../defaults/DefaultImage';
 import DefaultText from '../defaults/DefaultText';
-import DefaultVideo from '../defaults/DefaultVideo';
+import MomentCard from './MomentCard';
 
 type TProps = {
-  prompt: TDocData;
   style?: TStyleView;
-  mount: boolean;
-  path?: string;
+  prompt: {id: string};
   pauseOnModal?: boolean;
-  inView: boolean;
+  path?: string;
+  mount: boolean;
 };
 
-const PromptCard = ({
-  prompt,
-  path,
-  style,
-  pauseOnModal = true,
-  mount,
-  inView,
-}: TProps) => {
-  const {height, width} = useWindowDimensions();
-  const [data, setData] = useState<TDocData>();
-  const {authUserData} = useContext(AuthUserContext);
-  const ref = useRef<FlatList>(null);
+const PromptCard = ({style, prompt, pauseOnModal, path, mount}: TProps) => {
+  const [data, setData] = useState<{id: string; path: string}[]>([]);
 
+  const [status, setStatus] = useState<TStatus>('loading');
+  const {height, width} = useWindowDimensions();
   const [index, setIndex] = useState(0);
   const [initialScrollIndex, setInitialScrollIndex] = useState<number>();
 
   useEffect(() => {
     if (data) {
-      const pathIndex = data?.moments.items.findIndex(
+      const pathIndex = data.findIndex(
         ({path: elPath}: {path: string}) => elPath === path,
       );
 
@@ -69,13 +49,13 @@ const PromptCard = ({
       const newMoment = doc.data();
 
       if (newMoment) {
-        setData(newMoment);
+        setData(newMoment.moments.items);
       }
     };
 
     const onError = (error: Error) => {
       DefaultAlert({
-        title: 'Failed to get prompt data',
+        title: 'Failed to get moment data',
         message: (error as {message: string}).message,
       });
     };
@@ -102,134 +82,104 @@ const PromptCard = ({
     [
       {
         onViewableItemsChanged,
-        viewabilityConfig: {itemVisiblePercentThreshold: 100},
+        viewabilityConfig: {
+          itemVisiblePercentThreshold: 100,
+        },
       },
     ],
   );
 
-  const onContributor = (newIndex: number) => {
-    ref.current?.scrollToIndex({index: newIndex, animated: true});
-  };
-
-  if (!data) {
-    return null;
+  if (status === 'error') {
+    return (
+      <View style={styles.noData}>
+        <DefaultText title="Error. Please retry." />
+        <DefaultText
+          title="Reload"
+          onPress={() => setStatus('loading')}
+          style={styles.refresh}
+        />
+      </View>
+    );
   }
 
-  const users = data.moments.items.map(
-    ({
-      user,
-      addedAt,
-      location,
-    }: {
-      user: {id: string; name: string; thumbnail?: string};
-      addedAt: TTimestamp;
-      location?: TLocation;
-    }) => ({...user, addedAt, location}),
+  const ListEmptyComponent = (
+    <>
+      {status === 'loaded' ? (
+        <DefaultText
+          title="No moment found. Please reload."
+          style={styles.noMoment}
+        />
+      ) : null}
+    </>
   );
-
-  const added = users.some(({id: elId}) => elId === authUserData.id);
-
-  if (!data) {
-    return null;
-  }
-
-  const getItemLayout = (_: any[] | null | undefined, itemIndex: number) => ({
-    length: width,
-    offset: width * itemIndex,
-    index: itemIndex,
-  });
 
   const renderItem = ({
     item,
     index: elIndex,
   }: {
-    item: {
-      id: string;
-      path: string;
-      user: {id: string; name: string};
-      likeFrom: {ids: string[]; number: number};
-      addedAt: TTimestamp;
-      name?: string;
-    };
+    item: {id: string};
     index: number;
   }) => {
     return (
-      <View style={{flex: 1}}>
-        <View style={{height, width}}>
-          <DefaultText
-            title={item.name}
-            style={{
-              position: 'absolute',
-              top: 100,
-              zIndex: 100,
-              paddingHorizontal: 10,
-            }}
-            textStyle={{fontWeight: 'bold', fontSize: 20}}
-          />
-          {!added && (
-            <View>
-              <DefaultImage
-                imageStyle={{height, width}}
-                blurRadius={30}
-                image={getThumbnailPath(item.path, 'video')}
-              />
-              <View style={styles.add}>
-                <DefaultText title="Share your moment to view this moment" />
-                <AddMomentButton
-                  id={item.id}
-                  style={{
-                    marginHorizontal: 5,
-                    backgroundColor: defaultBlack.lv3(1),
-                    borderRadius: 20,
-                    marginTop: 10,
-                  }}
-                />
-              </View>
-            </View>
-          )}
-
-          {added && (
-            <DefaultVideo
-              index={index}
-              elIndex={elIndex}
-              path={item.path}
-              videoStyle={{height, width}}
-              mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
-              pauseOnModal={pauseOnModal}
-              repeat
-              inView={inView && index === elIndex}
-            />
-          )}
-        </View>
+      <View
+        style={{
+          height,
+          width,
+        }}>
+        <MomentCard
+          moment={item}
+          mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
+          pauseOnModal={pauseOnModal}
+          inView={index === elIndex}
+        />
       </View>
     );
   };
 
+  const onEndReached = () => {
+    if (data.length >= 50) {
+      setData([]);
+      setStatus('loading');
+    } else {
+      setStatus('loadMore');
+    }
+  };
+
+  const getItemLayout = (_: any[] | null | undefined, itemIndex: number) => ({
+    length: height,
+    offset: height * itemIndex,
+    index: itemIndex,
+  });
+
+  const keyExtractor = (item: TDocData, elIndex: number) => item.id + elIndex;
+
   return (
     <View style={style}>
       <FlatList
-        ref={ref}
-        data={data.moments.items as TObject[]}
+        data={data}
         initialNumToRender={1}
         windowSize={3}
         maxToRenderPerBatch={1}
-        horizontal
         initialScrollIndex={initialScrollIndex}
-        snapToInterval={width}
-        showsHorizontalScrollIndicator={false}
+        ListEmptyComponent={ListEmptyComponent}
+        snapToInterval={height}
         snapToAlignment={'start'}
+        showsVerticalScrollIndicator={false}
         decelerationRate="fast"
+        keyExtractor={keyExtractor}
         getItemLayout={getItemLayout}
+        refreshControl={
+          <RefreshControl
+            refreshing={status === 'loading'}
+            onRefresh={() => setStatus('loading')}
+            tintColor={'gray'}
+            progressViewOffset={100}
+          />
+        }
         disableIntervalMomentum
-        keyExtractor={item => item.path}
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+        onEndReached={onEndReached}
         renderItem={renderItem}
-      />
-      <ContributorsButton
-        users={users}
-        index={index}
-        onPress={onContributor}
-        style={styles.users}
       />
     </View>
   );
@@ -238,14 +188,15 @@ const PromptCard = ({
 export default PromptCard;
 
 const styles = StyleSheet.create({
-  users: {position: 'absolute', bottom: 90},
-  add: {
+  noData: {flex: 1, justifyContent: 'center', alignItems: 'center'},
+  refresh: {marginTop: 10},
+  noMoment: {
     position: 'absolute',
     top: 0,
     bottom: 0,
     left: 0,
     right: 0,
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
   },
 });

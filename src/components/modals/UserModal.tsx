@@ -134,7 +134,10 @@ const UserModal = ({id}: TProps) => {
                   content={{...item, user: {id: data.id}}}
                   onDelete={() => setStatus('loading')}
                   onPress={() => {
-                    onUpdate({target: 'moments', id: item.id, path: item.path});
+                    onUpdate({
+                      target: 'moments',
+                      data: {id: item.id, path: item.path},
+                    });
                   }}
                   contentStyle={{
                     width: videoWidth,

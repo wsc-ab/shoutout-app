@@ -4,7 +4,7 @@ import AuthUserContext from '../../contexts/AuthUser';
 
 import {TLocation, TTimestamp} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
-import {getTimeSinceTimestamp} from '../../utils/Date';
+import {getTimeGap} from '../../utils/Date';
 import {getThumbnailPath} from '../../utils/Storage';
 import DeleteButton from '../buttons/DeleteButton';
 import LocationButton from '../buttons/LocationButton';
@@ -62,7 +62,7 @@ const ContentCard = ({
               style={{marginBottom: 10}}
             />
             <LocationButton location={content.location} />
-            <DefaultText title={getTimeSinceTimestamp(content.addedAt)} />
+            <DefaultText title={getTimeGap(content.addedAt) + ' ago'} />
           </View>
           {content.user.id === authUserData.id && onDelete && (
             <DeleteButton

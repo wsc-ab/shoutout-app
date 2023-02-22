@@ -1,12 +1,18 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {FlatList, RefreshControl, StyleSheet, View} from 'react-native';
+import {
+  FlatList,
+  Pressable,
+  RefreshControl,
+  StyleSheet,
+  View,
+} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import {getPrompts} from '../../functions/Prompt';
 import {TDocData} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
-import {getTimeTill} from '../../utils/Date';
+import {getSecondsGap, getTimeGap} from '../../utils/Date';
 import {getThumbnailPath} from '../../utils/Storage';
 import AddMomentButton from '../buttons/AddMomentButton';
 import CreateButton from '../buttons/CreateButton';
@@ -62,9 +68,12 @@ const Prompts = ({style}: TProps) => {
   }
 
   const renderItem = ({item}) => {
-    const added = item.moments.items.some(
+    const authUserItem = item.moments.items.filter(
       ({user: {id: elId}}) => elId === authUserData.id,
     );
+
+    const added = authUserItem.length === 0;
+    const expired = getSecondsGap({end: item.endAt}) >= 0;
 
     const onView = ({id, path}: {id: string; path: string}) =>
       onUpdate({target: 'prompt', data: {id, path}});
@@ -77,9 +86,16 @@ const Prompts = ({style}: TProps) => {
           padding: 20,
           borderRadius: 10,
         }}>
-        {item.moments.items.map(({name, path}) => {
+        {item.moments.items.map(({name, path, addedAt, user: {id: userId}}) => {
+          const late = getSecondsGap({start: addedAt, end: item.endAt}) >= 0;
+
           return (
-            <View style={{flexDirection: 'row', marginBottom: 10}}>
+            <Pressable
+              key={path}
+              style={{flexDirection: 'row', marginBottom: 10}}
+              onPress={() => {
+                onView({id: item.id, path});
+              }}>
               <DefaultIcon
                 icon="user"
                 style={{
@@ -92,13 +108,21 @@ const Prompts = ({style}: TProps) => {
                   width: 50,
                 }}
               />
-              <View style={{marginLeft: 10, flex: 1}}>
+              <Pressable
+                style={{marginLeft: 10, flex: 1}}
+                onPress={() => {
+                  onUpdate({target: 'users', data: {id: userId}});
+                }}>
                 <DefaultText
                   title={item.createdBy.displayName}
                   textStyle={{fontWeight: 'bold'}}
                 />
                 <DefaultText title={name} />
-              </View>
+                {late && (
+                  <DefaultText title={`${getTimeGap(addedAt)} ago (late)`} />
+                )}
+                {!late && <DefaultText title={`${getTimeGap(addedAt)} ago`} />}
+              </Pressable>
               <DefaultImage
                 image={getThumbnailPath(path, 'video')}
                 imageStyle={{
@@ -106,26 +130,26 @@ const Prompts = ({style}: TProps) => {
                   width: 50,
                 }}
               />
-            </View>
+            </Pressable>
           );
         })}
         {!added && (
-          <DefaultText
-            title={`Submit yours in ${getTimeTill(item.endAt)}`}
-            style={{marginTop: 10}}
-          />
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 10,
+              paddingTop: 10,
+              borderTopWidth: 1,
+              borderColor: 'gray',
+            }}>
+            <AddMomentButton id={item.id} />
+            {!expired && (
+              <DefaultText title={`Share in ${getTimeGap(item.endAt)}`} />
+            )}
+            {expired && <DefaultText title={'Share late'} />}
+          </View>
         )}
-
-        {added && (
-          <DefaultText
-            title={'View moments'}
-            style={{marginTop: 10}}
-            onPress={() =>
-              onView({id: item.id, path: item.moments.items[0].path})
-            }
-          />
-        )}
-        {!added && <AddMomentButton style={{marginTop: 10}} id={item.id} />}
       </View>
     );
   };
