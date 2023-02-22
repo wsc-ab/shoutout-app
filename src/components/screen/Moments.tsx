@@ -13,8 +13,6 @@ import {getMoments} from '../../functions/Moment';
 import {TDocData} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
-import {addItemEveryIndex} from '../../utils/Array';
-import {getSecondsGap} from '../../utils/Date';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultText from '../defaults/DefaultText';
 import MomentCard from './MomentCard';
@@ -58,25 +56,7 @@ const Moments = ({style, mount}: TProps) => {
       try {
         const {moments} = await getMoments({pagination: {number: 5}});
 
-        let newMoments: TDocData[] = moments;
-
-        const promptToShare = authUserData.contributeTo.items[0]?.addedAt
-          ? getSecondsGap({
-              date: new Date(),
-              timestamp: authUserData.contributeTo.items[0]?.addedAt,
-            }) >=
-            3 * 24 * 60 * 60
-          : true;
-
-        if (promptToShare) {
-          newMoments = addItemEveryIndex({
-            array: moments,
-            index: 10,
-            item: {type: 'shareMoment'},
-          });
-        }
-
-        setData(newMoments);
+        setData(moments);
 
         setStatus('loaded');
       } catch (error) {

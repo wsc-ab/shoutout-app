@@ -173,10 +173,18 @@ const PromptCard = ({
                 blurRadius={30}
                 image={getThumbnailPath(item.path, 'video')}
               />
-              <DefaultText
-                title="Share your moment to view"
-                style={styles.add}
-              />
+              <View style={styles.add}>
+                <DefaultText title="Share your moment to view this moment" />
+                <AddMomentButton
+                  id={item.id}
+                  style={{
+                    marginHorizontal: 5,
+                    backgroundColor: defaultBlack.lv3(1),
+                    borderRadius: 20,
+                    marginTop: 10,
+                  }}
+                />
+              </View>
             </View>
           )}
 
@@ -193,7 +201,6 @@ const PromptCard = ({
             />
           )}
         </View>
-        {!added && <AddMomentButton id={item.id} style={styles.addMoment} />}
       </View>
     );
   };
@@ -240,16 +247,5 @@ const styles = StyleSheet.create({
     right: 0,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  addMoment: {
-    position: 'absolute',
-    bottom: 24,
-    left: 0,
-    right: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: defaultBlack.lv3(1),
-    marginHorizontal: 5,
-    borderRadius: 20,
   },
 });
