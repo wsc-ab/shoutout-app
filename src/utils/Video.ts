@@ -1,3 +1,4 @@
+import RNFS from 'react-native-fs';
 import {
   Asset,
   CameraOptions,
@@ -5,7 +6,7 @@ import {
   launchImageLibrary,
 } from 'react-native-image-picker';
 import DefaultAlert from '../components/defaults/DefaultAlert';
-import {sendNotification} from '../functions/Moment';
+import {saveCacheData} from './Cache';
 import {encodeToH264, generateThumb} from './Ffmpeg';
 import {createStoragePath, uploadFile} from './Storage';
 
@@ -152,9 +153,27 @@ export const takeAndUploadVideo = async ({
   }
 
   try {
-    await sendNotification({moment: {id}, content: {path: videoPath}});
+    const size = (await RNFS.stat(`${videoPath}_thumb`)).size;
+
+    await saveCacheData({
+      remotePath: `${videoPath}_thumb`,
+      localPath: thumbUri,
+      size,
+    });
   } catch (error) {
-    console.log('failed to send notification');
+    console.log('failed to save thumb to cache');
+  }
+
+  try {
+    const size = (await RNFS.stat(videoPath)).size;
+
+    await saveCacheData({
+      remotePath: videoPath,
+      localPath: uri,
+      size,
+    });
+  } catch (error) {
+    console.log('failed to save video to cache');
   }
 
   return videoPath;
