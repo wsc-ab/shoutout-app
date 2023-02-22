@@ -63,7 +63,11 @@ const CreateButton = ({style}: TProps) => {
         <DefaultText
           title="What's up?"
           onPress={onAdd}
-          style={{padding: 10, flex: 1}}
+          style={{
+            padding: 10,
+            alignSelf: 'stretch',
+            alignItems: 'center',
+          }}
           textStyle={{fontWeight: 'bold'}}
         />
       )}
@@ -78,8 +82,8 @@ const styles = StyleSheet.create({
   act: {padding: 10},
   container: {
     alignItems: 'center',
+    alignSelf: 'center',
     justifyContent: 'center',
-    borderWidth: 1,
     marginHorizontal: 5,
     backgroundColor: defaultBlack.lv3(1),
     borderRadius: 20,

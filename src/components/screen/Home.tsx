@@ -4,9 +4,9 @@ import Moments from './Moments';
 
 import AuthUserContext from '../../contexts/AuthUser';
 import Permission from '../notification/Permission';
-import Prompts from './Prompts';
 import Header from './Header';
 import Landing from './Landing';
+import Prompts from './Prompts';
 import Welcome from './Welcome';
 
 const Home = () => {
@@ -37,7 +37,7 @@ const Home = () => {
         onGlobal={() => setTab('globe')}
         tab={tab}
       />
-      <Prompts style={[styles.moments, tab !== 'friends' && styles.hide]} />
+      <Prompts style={[styles.prompts, tab !== 'friends' && styles.hide]} />
       <Moments
         style={[styles.moments, tab !== 'globe' && styles.hide]}
         mount={tab === 'globe'}
@@ -51,6 +51,7 @@ export default Home;
 
 const styles = StyleSheet.create({
   container: {flex: 1},
-  moments: {flex: 1, marginHorizontal: 10},
+  prompts: {flex: 1, marginHorizontal: 10},
+  moments: {flex: 1},
   hide: {display: 'none'},
 });
