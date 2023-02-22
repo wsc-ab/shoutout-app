@@ -10,7 +10,7 @@ type TProps = {
   id: string;
   displayName: string;
   thumbnail?: string;
-  style: TStyleView;
+  style?: TStyleView;
 };
 
 const SmallUserCard = ({id, displayName, style}: TProps) => {

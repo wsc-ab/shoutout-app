@@ -72,7 +72,15 @@ const Prompts = ({style}: TProps) => {
       ({user: {id: elId}}) => elId === authUserData.id,
     );
 
-    const added = authUserItem.length === 0;
+    const addedUserIds = item.moments.items.map(({id: elId}) => elId);
+
+    const users =
+      item.invited.items?.map(item => ({
+        ...item,
+        added: addedUserIds.includes(item.id),
+      })) ?? [];
+
+    const added = authUserItem.length >= 1;
     const expired = getSecondsGap({end: item.endAt}) >= 0;
 
     const onView = ({id, path}: {id: string; path: string}) =>
@@ -88,7 +96,6 @@ const Prompts = ({style}: TProps) => {
         }}>
         {item.moments.items.map(({name, path, addedAt, user: {id: userId}}) => {
           const late = getSecondsGap({start: addedAt, end: item.endAt}) >= 0;
-
           return (
             <Pressable
               key={path}
@@ -133,23 +140,34 @@ const Prompts = ({style}: TProps) => {
             </Pressable>
           );
         })}
-        {!added && (
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginTop: 10,
-              paddingTop: 10,
-              borderTopWidth: 1,
-              borderColor: 'gray',
-            }}>
-            <AddMomentButton id={item.id} />
-            {!expired && (
-              <DefaultText title={`Share in ${getTimeGap(item.endAt)}`} />
-            )}
-            {expired && <DefaultText title={'Share late'} />}
+
+        <View
+          style={{
+            marginTop: 10,
+            paddingTop: 10,
+            borderTopWidth: 1,
+            borderColor: 'gray',
+          }}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{flex: 1}}>
+              {!added && <AddMomentButton id={item.id} />}
+              {!expired && !added && (
+                <DefaultText title={`Share in ${getTimeGap(item.endAt)}`} />
+              )}
+              {expired && !added && <DefaultText title={'Share late'} />}
+            </View>
+
+            <Pressable
+              style={{flexDirection: 'row'}}
+              onPress={() => onUpdate({target: 'promptUsers', data: {users}})}>
+              <DefaultIcon icon="user-group" style={{padding: 0}} />
+              <DefaultText
+                title={item.invited.number}
+                style={{marginLeft: 5}}
+              />
+            </Pressable>
           </View>
-        )}
+        </View>
       </View>
     );
   };

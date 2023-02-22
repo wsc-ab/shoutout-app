@@ -7,11 +7,16 @@ import ContactsModal from '../components/modals/ContactsModal';
 import MomentModal from '../components/modals/MomentModal';
 import PromptModal from '../components/modals/PromptModal';
 import UserModal from '../components/modals/UserModal';
+import UsersModal from '../components/modals/UsersModal';
 import {getLinkData} from '../utils/Share';
 
 type TModal = {
   target: string;
-  data?: {id?: string; path?: string};
+  data?: {
+    id?: string;
+    path?: string;
+    users?: {id: string; displayName: string; thumbnail?: string}[];
+  };
 };
 
 type TContextProps = {
@@ -84,6 +89,9 @@ const ModalProvider = ({children}: TProps) => {
       )}
       {modal?.target === 'auth' && <AuthUserModal />}
       {modal?.target === 'friends' && <ContactsModal />}
+      {modal?.target === 'promptUsers' && modal.data?.users && (
+        <UsersModal users={modal.data.users} />
+      )}
     </ModalContext.Provider>
   );
 };
