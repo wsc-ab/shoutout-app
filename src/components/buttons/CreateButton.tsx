@@ -62,7 +62,18 @@ const CreateButton = ({style, onCreate}: TProps) => {
 
   return (
     <View style={[styles.container, style]}>
-      {!submitting && <DefaultIcon icon="video" onPress={onAdd} size={20} />}
+      {!submitting && (
+        <DefaultIcon
+          icon="video"
+          onPress={onAdd}
+          size={20}
+          style={{
+            alignItems: 'center',
+            alignSelf: 'stretch',
+            borderRadius: 20,
+          }}
+        />
+      )}
       {submitting && <ActivityIndicator style={styles.act} color="white" />}
     </View>
   );

@@ -2,9 +2,9 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {firebase} from '@react-native-firebase/auth';
 import React, {useContext, useState} from 'react';
 import {useForm} from 'react-hook-form';
-import {StyleSheet} from 'react-native';
 import {object} from 'yup';
 import ModalContext from '../../contexts/Modal';
+import UploadingContext from '../../contexts/Uploading';
 import {createPrompt} from '../../functions/Prompt';
 import {getLatLng} from '../../utils/Location';
 
@@ -25,6 +25,7 @@ const CreatePromptForm = ({remotePath, localPath}: TProps) => {
   const {text} = defaultSchema();
   const [submitting, setSubmitting] = useState(false);
   const {onUpdate} = useContext(ModalContext);
+  const {addUpload, removeUpload} = useContext(UploadingContext);
 
   const schema = object({
     name: text({min: 1, max: 50, required: true}),
@@ -49,6 +50,8 @@ const CreatePromptForm = ({remotePath, localPath}: TProps) => {
       const momentId = firebase.firestore().collection('momentId').doc().id;
       const latlng = await getLatLng();
       onUpdate(undefined);
+
+      addUpload({localPath, remotePath, type: 'createPrompt'});
       await uploadVideo({localPath, remotePath});
 
       await createPrompt({
@@ -59,6 +62,7 @@ const CreatePromptForm = ({remotePath, localPath}: TProps) => {
         prompt: {id: promptId, type: 'friends'},
         content: {path: remotePath, latlng, name},
       });
+      removeUpload({localPath, remotePath, type: 'createPrompt'});
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {
         DefaultAlert({
@@ -87,7 +91,6 @@ const CreatePromptForm = ({remotePath, localPath}: TProps) => {
             title="Name"
             detail="Set the name of the moment."
             errors={errors.name}
-            style={styles.textInput}
           />
         </DefaultKeyboardAwareScrollView>
       </DefaultForm>
@@ -96,5 +99,3 @@ const CreatePromptForm = ({remotePath, localPath}: TProps) => {
 };
 
 export default CreatePromptForm;
-
-const styles = StyleSheet.create({textInput: {marginTop: 20}});

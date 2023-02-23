@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
+import UploadingContext from '../../contexts/Uploading';
 import {getPrompts} from '../../functions/Prompt';
 import {TDocData} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
@@ -31,6 +32,13 @@ const Prompts = ({style}: TProps) => {
 
   const {onUpdate} = useContext(ModalContext);
   const {authUserData} = useContext(AuthUserContext);
+  const {promptUpdated} = useContext(UploadingContext);
+
+  useEffect(() => {
+    if (promptUpdated) {
+      setStatus('loading');
+    }
+  }, [promptUpdated]);
 
   useEffect(() => {
     const load = async () => {

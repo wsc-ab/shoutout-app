@@ -3,6 +3,7 @@ import React, {useContext, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {object} from 'yup';
 import ModalContext from '../../contexts/Modal';
+import UploadingContext from '../../contexts/Uploading';
 import {addContent} from '../../functions/Moment';
 import {getLatLng} from '../../utils/Location';
 
@@ -24,6 +25,7 @@ const AddContentForm = ({remotePath, localPath, id}: TProps) => {
   const {text} = defaultSchema();
   const [submitting, setSubmitting] = useState(false);
   const {onUpdate} = useContext(ModalContext);
+  const {addUpload, removeUpload} = useContext(UploadingContext);
 
   const schema = object({
     name: text({min: 1, max: 50, required: true}),
@@ -44,13 +46,14 @@ const AddContentForm = ({remotePath, localPath, id}: TProps) => {
     try {
       setSubmitting(true);
       const latlng = await getLatLng();
-
+      addUpload({localPath, remotePath, type: 'addContent'});
       await uploadVideo({localPath, remotePath});
 
       await addContent({
         moment: {id},
         content: {path: remotePath, name, latlng},
       });
+      removeUpload({localPath, remotePath, type: 'addContent'});
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {
         DefaultAlert({
