@@ -15,8 +15,6 @@ export const loadFromCache = async ({remotePath}: {remotePath: string}) => {
 
   // 3. return local path
 
-  console.log(localPath, 'localPath');
-
   return `file://${localPath}`;
 };
 

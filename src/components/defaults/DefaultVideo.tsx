@@ -115,8 +115,6 @@ const DefaultVideo = ({
     );
   }
 
-  console.log(uri, 'uri');
-
   return (
     <Pressable
       style={style}
