@@ -4,7 +4,7 @@ import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import {TStyleView} from '../../types/Style';
 import {checkLocationPermission} from '../../utils/Location';
-import {takeAndUploadVideo} from '../../utils/Video';
+import {takeVideo} from '../../utils/Video';
 import DefaultAlert from '../defaults/DefaultAlert';
 import {defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
@@ -42,14 +42,14 @@ const AddContentButton = ({id, number, style}: TProps) => {
     }
 
     try {
-      await takeAndUploadVideo({
+      const {remotePath, localPath} = await takeVideo({
         id,
         userId: authUserData.id,
-        onTake: (path: string) =>
-          onUpdate({
-            target: 'addContent',
-            data: {path, id},
-          }),
+      });
+
+      onUpdate({
+        target: 'addContent',
+        data: {remotePath, localPath, id},
       });
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {

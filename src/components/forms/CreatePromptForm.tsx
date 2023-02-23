@@ -9,6 +9,7 @@ import {createPrompt} from '../../functions/Prompt';
 import {getLatLng} from '../../utils/Location';
 
 import {defaultSchema} from '../../utils/Schema';
+import {uploadVideo} from '../../utils/Video';
 import ControllerText from '../controllers/ControllerText';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
@@ -16,10 +17,11 @@ import DefaultKeyboardAwareScrollView from '../defaults/DefaultKeyboardAwareScro
 import DefaultModal from '../defaults/DefaultModal';
 
 type TProps = {
-  path: string;
+  remotePath: string;
+  localPath: string;
 };
 
-const CreatePromptForm = ({path}: TProps) => {
+const CreatePromptForm = ({remotePath, localPath}: TProps) => {
   const {text} = defaultSchema();
   const [submitting, setSubmitting] = useState(false);
   const {onUpdate} = useContext(ModalContext);
@@ -46,6 +48,8 @@ const CreatePromptForm = ({path}: TProps) => {
       const promptId = firebase.firestore().collection('prompts').doc().id;
       const momentId = firebase.firestore().collection('momentId').doc().id;
       const latlng = await getLatLng();
+      onUpdate(undefined);
+      await uploadVideo({localPath, remotePath});
 
       await createPrompt({
         moment: {
@@ -53,7 +57,7 @@ const CreatePromptForm = ({path}: TProps) => {
           type: 'everyone',
         },
         prompt: {id: promptId, type: 'friends'},
-        content: {path, latlng, name},
+        content: {path: remotePath, latlng, name},
       });
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {

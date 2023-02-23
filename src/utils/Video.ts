@@ -10,7 +10,7 @@ import {saveCacheData} from './Cache';
 import {encodeToH264, generateThumb} from './Ffmpeg';
 import {createStoragePath, uploadFile} from './Storage';
 
-export const takeVideo = async ({
+export const getVideo = async ({
   durationLimit,
 }: {
   durationLimit: number;
@@ -41,18 +41,8 @@ export const takeVideo = async ({
   return asset;
 };
 
-export const takeAndUploadVideo = async ({
-  onProgress,
-  userId,
-  id,
-  onTake,
-}: {
-  userId: string;
-  id: string;
-  onProgress?: (progress: number) => void;
-  onTake?: (path: string) => void;
-}): Promise<string> => {
-  const videoPath = createStoragePath({
+export const takeVideo = async ({userId, id}: {userId: string; id: string}) => {
+  const remotePath = createStoragePath({
     userId,
     collection: 'moments',
     id,
@@ -62,7 +52,7 @@ export const takeAndUploadVideo = async ({
   let asset;
 
   try {
-    asset = await takeVideo({
+    asset = await getVideo({
       durationLimit: 30,
     });
   } catch (error) {
@@ -92,16 +82,24 @@ export const takeAndUploadVideo = async ({
     throw new Error('cancel');
   }
 
-  if (onTake) {
-    onTake(videoPath);
-  }
+  return {remotePath, localPath: asset.uri};
+};
 
+export const uploadVideo = async ({
+  localPath,
+  remotePath,
+  onProgress,
+}: {
+  localPath: string;
+  remotePath: string;
+  onProgress?: () => void;
+}) => {
   // convert to mp4
 
   let uri;
   try {
     uri = await encodeToH264({
-      input: asset.uri,
+      input: localPath,
     });
   } catch (error) {
     DefaultAlert({
@@ -126,7 +124,7 @@ export const takeAndUploadVideo = async ({
 
   try {
     await uploadFile({
-      path: `${videoPath}_thumb`,
+      path: `${remotePath}_thumb`,
       uri: thumbUri,
       onProgress,
     });
@@ -140,7 +138,7 @@ export const takeAndUploadVideo = async ({
 
   try {
     await uploadFile({
-      path: videoPath,
+      path: remotePath,
       uri,
       onProgress,
     });
@@ -156,7 +154,7 @@ export const takeAndUploadVideo = async ({
     const size = (await RNFS.stat(thumbUri)).size;
 
     await saveCacheData({
-      remotePath: `${videoPath}_thumb`,
+      remotePath: `${remotePath}_thumb`,
       localPath: thumbUri,
       size,
     });
@@ -168,13 +166,11 @@ export const takeAndUploadVideo = async ({
     const size = (await RNFS.stat(uri)).size;
 
     await saveCacheData({
-      remotePath: videoPath,
+      remotePath,
       localPath: uri,
       size,
     });
   } catch (error) {
     console.log('failed to save video to cache');
   }
-
-  return videoPath;
 };

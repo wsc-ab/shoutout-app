@@ -7,6 +7,7 @@ import {addContent} from '../../functions/Moment';
 import {getLatLng} from '../../utils/Location';
 
 import {defaultSchema} from '../../utils/Schema';
+import {uploadVideo} from '../../utils/Video';
 import ControllerText from '../controllers/ControllerText';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
@@ -14,11 +15,12 @@ import DefaultKeyboardAwareScrollView from '../defaults/DefaultKeyboardAwareScro
 import DefaultModal from '../defaults/DefaultModal';
 
 type TProps = {
-  path: string;
+  remotePath: string;
+  localPath: string;
   id: string;
 };
 
-const AddContentForm = ({path, id}: TProps) => {
+const AddContentForm = ({remotePath, localPath, id}: TProps) => {
   const {text} = defaultSchema();
   const [submitting, setSubmitting] = useState(false);
   const {onUpdate} = useContext(ModalContext);
@@ -43,9 +45,11 @@ const AddContentForm = ({path, id}: TProps) => {
       setSubmitting(true);
       const latlng = await getLatLng();
 
+      await uploadVideo({localPath, remotePath});
+
       await addContent({
         moment: {id},
-        content: {path, name, latlng},
+        content: {path: remotePath, name, latlng},
       });
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {

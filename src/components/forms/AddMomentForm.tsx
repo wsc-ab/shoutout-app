@@ -8,6 +8,7 @@ import {addMoment} from '../../functions/Moment';
 import {getLatLng} from '../../utils/Location';
 
 import {defaultSchema} from '../../utils/Schema';
+import {uploadVideo} from '../../utils/Video';
 import ControllerText from '../controllers/ControllerText';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
@@ -15,11 +16,12 @@ import DefaultKeyboardAwareScrollView from '../defaults/DefaultKeyboardAwareScro
 import DefaultModal from '../defaults/DefaultModal';
 
 type TProps = {
-  path: string;
+  remotePath: string;
+  localPath: string;
   id: string;
 };
 
-const AddMomentForm = ({path, id}: TProps) => {
+const AddMomentForm = ({remotePath, localPath, id}: TProps) => {
   const {text} = defaultSchema();
   const [submitting, setSubmitting] = useState(false);
   const {onUpdate} = useContext(ModalContext);
@@ -45,10 +47,13 @@ const AddMomentForm = ({path, id}: TProps) => {
       const momentId = firebase.firestore().collection('momentId').doc().id;
       const latlng = await getLatLng();
 
+      // upload video
+      await uploadVideo({localPath, remotePath});
+
       await addMoment({
         prompt: {id},
         moment: {id: momentId, type: 'everyone'},
-        content: {path, name, latlng},
+        content: {path: remotePath, name, latlng},
       });
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {
