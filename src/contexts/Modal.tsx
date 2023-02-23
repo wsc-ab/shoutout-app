@@ -9,6 +9,7 @@ import MomentModal from '../components/modals/MomentModal';
 import PromptModal from '../components/modals/PromptModal';
 import UserModal from '../components/modals/UserModal';
 import UsersModal from '../components/modals/UsersModal';
+import {TTimestamp} from '../types/Firebase';
 import {getLinkData} from '../utils/Share';
 
 type TModal = {
@@ -22,7 +23,7 @@ type TModal = {
       id: string;
       displayName: string;
       thumbnail?: string;
-      added: boolean;
+      moment: {path: string; addedAt: TTimestamp};
     }[];
   };
 };

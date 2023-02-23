@@ -4,6 +4,7 @@ import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 
 import ModalContext from '../../contexts/Modal';
+import {TObject, TTimestamp, TTimestampClient} from '../../types/Firebase';
 import SmallUserCard from '../cards/SmallUserCard';
 
 type TProps = {
@@ -11,12 +12,25 @@ type TProps = {
     id: string;
     displayName: string;
     thumbnail?: string;
-    added: boolean;
+    moment?: {addedAt: TTimestampClient};
   }[];
 };
 
 const UsersModal = ({users}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
+
+  console.log(users[0].moment?.addedAt);
+
+  const sortByAddedAt = users.sort((a, b) => {
+    if (!a.moment?.addedAt._seconds) {
+      return 1;
+    }
+
+    if (!b.moment?.addedAt._seconds) {
+      return -1;
+    }
+    return a.moment.addedAt._seconds - b.moment.addedAt._seconds;
+  });
 
   return (
     <DefaultModal style={{zIndex: 200}}>
@@ -26,7 +40,7 @@ const UsersModal = ({users}: TProps) => {
           onPress: () => onUpdate(undefined),
         }}>
         <FlatList
-          data={users}
+          data={sortByAddedAt}
           contentContainerStyle={styles.container}
           keyExtractor={item => item.id}
           renderItem={({
@@ -36,7 +50,7 @@ const UsersModal = ({users}: TProps) => {
               id: string;
               displayName: string;
               thumbnail?: string;
-              added: boolean;
+              moment: {addedAt: TTimestamp};
             };
           }) => {
             return (

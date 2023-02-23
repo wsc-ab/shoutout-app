@@ -81,12 +81,12 @@ const Prompts = ({style}: TProps) => {
       ({user: {id: elId}}) => elId === authUserData.id,
     );
 
-    const addedUserIds = item.moments.items.map(({user: {id: elId}}) => elId);
-
     const users =
-      item.invited.items?.map(item => ({
-        ...item,
-        added: addedUserIds.includes(item.id),
+      item.invited.items?.map(elItem => ({
+        ...elItem,
+        moment: item.moments.items.filter(
+          ({user: {id: elId}}) => elId === elItem.id,
+        )[0],
       })) ?? [];
 
     const added = authUserItem.length >= 1;

@@ -2,6 +2,7 @@ import React, {useContext} from 'react';
 import {Pressable, StyleSheet, View} from 'react-native';
 import ModalContext from '../../contexts/Modal';
 import {TStyleView} from '../../types/Style';
+import {getTimeGap} from '../../utils/Date';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
 
@@ -10,10 +11,10 @@ type TProps = {
   displayName: string;
   thumbnail?: string;
   style?: TStyleView;
-  added: boolean;
+  moment?: {addedAt: boolean};
 };
 
-const SmallUserCard = ({id, displayName, added, style}: TProps) => {
+const SmallUserCard = ({id, displayName, moment, style}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
 
   return (
@@ -28,8 +29,10 @@ const SmallUserCard = ({id, displayName, added, style}: TProps) => {
             style={styles.displayName}
             textStyle={styles.displayNameText}
           />
-          {added && <DefaultText title={'Added'} />}
-          {!added && <DefaultText title={'Not Added'} />}
+          {moment && (
+            <DefaultText title={`${getTimeGap(moment.addedAt)} ago`} />
+          )}
+          {!moment && <DefaultText title={'Not Added'} />}
         </View>
       </View>
     </Pressable>
