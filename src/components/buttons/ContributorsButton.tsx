@@ -69,6 +69,7 @@ const ContributorsButton = ({users, type, onPress, index, style}: TProps) => {
                 styles.container,
                 {width: (width - 80) / 1.5},
                 isCurrent && styles.current,
+                elIndex === users.length - 1 && styles.isLast,
               ]}>
               <View style={{flexDirection: 'row', flex: 1}}>
                 <UserProfileImage
@@ -109,7 +110,5 @@ const styles = StyleSheet.create({
   contentContainer: {paddingHorizontal: 20},
   current: {backgroundColor: defaultBlack.lv3(0.9)},
   nameText: {fontWeight: 'bold', fontSize: 16},
-  follow: {
-    marginTop: 5,
-  },
+  isLast: {marginRight: 0},
 });
