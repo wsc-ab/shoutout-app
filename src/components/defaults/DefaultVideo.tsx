@@ -60,6 +60,7 @@ const DefaultVideo = ({
   useEffect(() => {
     if (pauseOnModal) {
       setInView(modal ? false : parentInview);
+      setUserPaused(false);
     } else {
       setInView(parentInview);
     }

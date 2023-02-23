@@ -14,11 +14,10 @@ type TProps = {
     user: {id: string};
     likeFrom: {number: number};
   };
-  number?: number;
   style?: TStyleView;
 };
 
-const Footer = ({item, number, style}: TProps) => {
+const Footer = ({item, style}: TProps) => {
   return (
     <View style={[styles.container, style]}>
       <LikeButton
@@ -31,11 +30,7 @@ const Footer = ({item, number, style}: TProps) => {
         style={styles.button}
       />
 
-      <AddContentButton
-        id={item.id}
-        number={number ?? 0}
-        style={styles.button}
-      />
+      <AddContentButton id={item.id} style={styles.button} />
 
       <ShareButton
         input={{

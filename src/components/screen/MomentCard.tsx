@@ -156,7 +156,6 @@ const MomentCard = ({
       id: string;
       path: string;
       user: {id: string; name: string};
-      likeFrom: {ids: string[]; number: number};
       addedAt: TTimestamp;
       name?: string;
     };
