@@ -81,7 +81,10 @@ const UserModal = ({id}: TProps) => {
           }}
           right={{
             icon: authUserData.id === id ? 'gear' : undefined,
-            onPress: () => onUpdate({target: 'auth'}),
+            onPress:
+              authUserData.id === id
+                ? () => onUpdate({target: 'auth'})
+                : undefined,
           }}>
           <FlatList
             data={data.contributeTo?.items}

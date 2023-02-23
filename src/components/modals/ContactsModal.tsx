@@ -24,6 +24,16 @@ const ContactsModal = ({}: TProps) => {
     authUserData.followTo.items,
   );
 
+  const friendIds = friends.map(({id}) => id);
+
+  const followTo = authUserData.followTo.items.filter(
+    ({id: elId}) => !friendIds.includes(elId),
+  );
+
+  const followFrom = authUserData.followFrom.items.filter(
+    ({id: elId}) => !friendIds.includes(elId),
+  );
+
   const [tab, setTab] = useState<'friends' | 'search'>('friends');
 
   const renderItem = (item: THitItem) => {
@@ -66,19 +76,19 @@ const ContactsModal = ({}: TProps) => {
             ))}
 
             <DefaultText
-              title="Followers"
+              title="Incoming Requests"
               style={{marginTop: 10, marginBottom: 5}}
               textStyle={styles.textHeader}
             />
-            {authUserData.followFrom.items.map(item => (
+            {followFrom.map(item => (
               <UserCard {...item} key={item.id} />
             ))}
             <DefaultText
-              title="Followings"
+              title="Sent Requests"
               style={{marginTop: 10, marginBottom: 5}}
               textStyle={styles.textHeader}
             />
-            {authUserData.followTo.items.map(item => (
+            {followTo.map(item => (
               <UserCard {...item} key={item.id} />
             ))}
           </ScrollView>

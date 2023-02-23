@@ -77,13 +77,13 @@ const FollowButton = ({user, style}: TProps) => {
         <DefaultText title="Friend" onPress={onUnfollow} />
       )}
       {!isAuthUser && status === 'from' && !submitting && (
-        <DefaultText title="Follow back" onPress={onFollow} />
+        <DefaultText title="Accept" onPress={onFollow} />
       )}
       {!isAuthUser && status === 'to' && !submitting && (
-        <DefaultText title="Following" onPress={onUnfollow} />
+        <DefaultText title="Requested" onPress={onUnfollow} />
       )}
       {!isAuthUser && status === 'none' && !submitting && (
-        <DefaultText title="Follow" onPress={onFollow} />
+        <DefaultText title="Request" onPress={onFollow} />
       )}
       {submitting && <ActivityIndicator />}
     </View>

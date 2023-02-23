@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Pressable, StyleSheet} from 'react-native';
+import ModalContext from '../../contexts/Modal';
 import FollowButton from '../buttons/FollowButton';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultImage from '../defaults/DefaultImage';
@@ -9,12 +10,14 @@ type TProps = {
   id: string;
   displayName: string;
   thumbnail?: string;
-  onPress: (id: string) => void;
 };
 
-const UserCard = ({id, displayName, onPress, thumbnail}: TProps) => {
+const UserCard = ({id, displayName, thumbnail}: TProps) => {
+  const {onUpdate} = useContext(ModalContext);
   return (
-    <Pressable style={styles.container} onPress={() => onPress(id)}>
+    <Pressable
+      style={styles.container}
+      onPress={() => onUpdate({target: 'users', data: {id}})}>
       {thumbnail && (
         <DefaultImage
           image={thumbnail}

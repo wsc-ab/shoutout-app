@@ -11,7 +11,7 @@ type TProps = {
   left?: {onPress: () => void};
   right?: {
     icon?: IconProp;
-    onPress: () => void;
+    onPress?: () => void;
     disabled?: boolean;
     submitting?: boolean;
   };
@@ -32,7 +32,7 @@ const DefaultForm = ({title, left, right, children, style}: TProps) => {
           textStyle={styles.centerText}
         />
         <View style={styles.right}>
-          {right && !right.submitting && (
+          {right && !right.submitting && right.onPress && (
             <DefaultIcon
               icon={right.icon ?? 'angle-right'}
               onPress={right.onPress}
