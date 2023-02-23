@@ -129,7 +129,10 @@ const DefaultVideo = ({
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <DefaultText title="No ghosting!" textStyle={{fontWeight: 'bold'}} />
+          <DefaultText
+            title="No more ghosting!"
+            textStyle={{fontWeight: 'bold'}}
+          />
           <DefaultText
             title="Share your moment to view"
             style={{
@@ -138,7 +141,7 @@ const DefaultVideo = ({
             textStyle={{fontWeight: 'bold'}}
           />
           <DefaultText
-            title="what your friends are upto!"
+            title="what your friends are up to!"
             style={{
               marginTop: 10,
             }}
