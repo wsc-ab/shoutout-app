@@ -111,13 +111,13 @@ export const addContent = async (input: {
   return {...data};
 };
 
-export const removeMoment = async (input: {
+export const removeContent = async (input: {
   moment: {
     id: string;
-    path: string;
   };
+  content: {path: string};
 }) => {
-  const {data} = await firebaseFunctions.httpsCallable('removeMoment')(input);
+  const {data} = await firebaseFunctions.httpsCallable('removeContent')(input);
 
   return {...data};
 };

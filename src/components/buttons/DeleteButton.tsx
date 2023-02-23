@@ -1,25 +1,28 @@
 import React, {useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
-import {removeMoment} from '../../functions/Moment';
+import {removeContent} from '../../functions/Moment';
 import {TStyleView} from '../../types/Style';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultIcon from '../defaults/DefaultIcon';
 
 type TProps = {
-  item: {id: string; path: string};
+  moment: {id: string};
+  content: {path: string};
   style?: TStyleView;
   onSuccess?: () => void;
 };
 
-const DeleteButton = ({item, style, onSuccess}: TProps) => {
+const DeleteButton = ({moment, content, style, onSuccess}: TProps) => {
   const [submitting, setSubmitting] = useState(false);
 
-  const onDelete = async (moment: {id: string; path: string}) => {
+  const onDelete = async () => {
     try {
       setSubmitting(true);
-      await removeMoment({moment});
+      await removeContent({moment, content});
       onSuccess && onSuccess();
     } catch (error) {
+      console.log(error, 'r');
+
       DefaultAlert({title: 'Failed to delete'});
     } finally {
       setSubmitting(false);
@@ -31,13 +34,8 @@ const DeleteButton = ({item, style, onSuccess}: TProps) => {
       {!submitting && (
         <DefaultIcon
           icon={'times'}
-          style={style}
-          onPress={async () =>
-            await onDelete({
-              id: item.id,
-              path: item.path,
-            })
-          }
+          style={[{padding: 10}, style]}
+          onPress={async () => await onDelete()}
         />
       )}
       {submitting && <ActivityIndicator style={styles.act} />}

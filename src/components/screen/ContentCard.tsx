@@ -55,7 +55,8 @@ const ContentCard = ({
           </View>
           {content.user.id === authUserData.id && onDelete && (
             <DeleteButton
-              item={content}
+              content={{path: content.path}}
+              moment={{id: content.id}}
               style={styles.delete}
               onSuccess={onDelete}
             />
