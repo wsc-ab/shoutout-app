@@ -39,13 +39,22 @@ const Notifications = ({isPermitted}: TProps) => {
       remoteMessage: FirebaseMessagingTypes.RemoteMessage,
     ) => {
       const {notification, data} = remoteMessage;
-      console.log('onMessageHandler');
 
       if (notification) {
+        await notifee.createChannel({
+          id: 'sound',
+          name: 'Channel with sound',
+          sound: 'default',
+        });
+
         await notifee.displayNotification({
           title: notification.title,
           body: notification.body,
           data: data,
+          android: {channelId: 'sound'},
+          ios: {
+            sound: 'default',
+          },
         });
       }
     };
