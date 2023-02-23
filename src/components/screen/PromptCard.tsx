@@ -39,7 +39,7 @@ const PromptCard = ({style, prompt, pauseOnModal, path, mount}: TProps) => {
       if (!doc.exists) {
         return DefaultAlert({
           title: 'Failed to read data',
-          message: 'This moment seems to be deleted',
+          message: 'This moment seems to be deleted.',
         });
       }
 

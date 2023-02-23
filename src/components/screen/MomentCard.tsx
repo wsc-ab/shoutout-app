@@ -51,25 +51,35 @@ const MomentCard = ({
   const ref = useRef<FlatList>(null);
 
   const [index, setIndex] = useState(0);
-  const [initialScrollIndex, setInitialScrollIndex] = useState<number>();
-
-  useEffect(() => {
-    if (data) {
-      const pathIndex = data?.contents.items.findIndex(
-        ({path: elPath}: {path: string}) => elPath === path,
-      );
-
-      if (pathIndex >= 0) {
-        setInitialScrollIndex(pathIndex);
-      }
-    }
-  }, [data, path]);
 
   useEffect(() => {
     const onNext = async (doc: TDocSnapshot) => {
       const newMoment = doc.data();
 
+      if (!doc.exists) {
+        return DefaultAlert({
+          title: 'Failed to read data',
+          message: 'This moment seems to be deleted.',
+        });
+      }
+
       if (newMoment) {
+        if (path) {
+          const pathIndex = newMoment.contents.items.findIndex(
+            ({path: elPath}) => elPath === path,
+          );
+
+          if (pathIndex === -1) {
+            DefaultAlert({
+              title: 'Failed to get moment data',
+              message: 'This moment seems to be deleted',
+            });
+          }
+
+          newMoment.contents.items.unshift(
+            newMoment.contents.items.splice(pathIndex, 1)[0],
+          );
+        }
         setData(newMoment);
       }
     };
@@ -87,7 +97,7 @@ const MomentCard = ({
       .onSnapshot(onNext, onError);
 
     return unsubscribe;
-  }, [moment.id]);
+  }, [moment.id, path]);
 
   const onViewableItemsChanged = ({
     viewableItems,
@@ -196,7 +206,6 @@ const MomentCard = ({
         windowSize={3}
         maxToRenderPerBatch={1}
         horizontal
-        initialScrollIndex={initialScrollIndex}
         snapToInterval={width}
         showsHorizontalScrollIndicator={false}
         snapToAlignment={'start'}
