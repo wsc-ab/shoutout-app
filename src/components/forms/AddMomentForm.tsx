@@ -57,7 +57,7 @@ const AddMomentForm = ({remotePath, localPath, id}: TProps) => {
       setSubmitting(true);
       const momentId = firebase.firestore().collection('momentId').doc().id;
       const latlng = await getLatLng();
-
+      onUpdate(undefined);
       // upload video
       addUpload({localPath, remotePath, type: 'addMoment'});
 

@@ -35,8 +35,6 @@ const Notifications = ({isPermitted}: TProps) => {
   }, [isPermitted, openModal]);
 
   useEffect(() => {
-    console.log('called');
-
     const onMessageHandler = async (
       remoteMessage: FirebaseMessagingTypes.RemoteMessage,
     ) => {

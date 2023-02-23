@@ -46,6 +46,8 @@ const AddContentForm = ({remotePath, localPath, id}: TProps) => {
     try {
       setSubmitting(true);
       const latlng = await getLatLng();
+      onUpdate(undefined);
+
       addUpload({localPath, remotePath, type: 'addContent'});
       await uploadVideo({localPath, remotePath});
 

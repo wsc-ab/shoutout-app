@@ -6,6 +6,7 @@ import {
   RefreshControl,
   StyleSheet,
   View,
+  AppState,
 } from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
@@ -40,6 +41,18 @@ const Prompts = ({style}: TProps) => {
       setStatus('loading');
     }
   }, [promptUpdated]);
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if (nextAppState === 'active') {
+        setStatus('loading');
+      }
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
   useEffect(() => {
     const load = async () => {
@@ -82,7 +95,7 @@ const Prompts = ({style}: TProps) => {
     );
 
     const users =
-      item.invited.items?.map(elItem => ({
+      item.inviteTo.items?.map(elItem => ({
         ...elItem,
         moment: item.moments.items.filter(
           ({user: {id: elId}}) => elId === elItem.id,
