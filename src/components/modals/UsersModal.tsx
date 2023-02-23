@@ -4,8 +4,9 @@ import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 
 import ModalContext from '../../contexts/Modal';
-import {TObject, TTimestamp, TTimestampClient} from '../../types/Firebase';
+import {TTimestampClient} from '../../types/Firebase';
 import SmallUserCard from '../cards/SmallUserCard';
+import DefaultText from '../defaults/DefaultText';
 
 type TProps = {
   users: {
@@ -18,8 +19,6 @@ type TProps = {
 
 const UsersModal = ({users}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
-
-  console.log(users[0].moment?.addedAt);
 
   const sortByAddedAt = users.sort((a, b) => {
     if (!a.moment?.addedAt._seconds) {
@@ -43,19 +42,18 @@ const UsersModal = ({users}: TProps) => {
           data={sortByAddedAt}
           contentContainerStyle={styles.container}
           keyExtractor={item => item.id}
-          renderItem={({
-            item,
-          }: {
-            item: {
-              id: string;
-              displayName: string;
-              thumbnail?: string;
-              moment: {addedAt: TTimestamp};
-            };
-          }) => {
+          ListHeaderComponent={
+            <DefaultText
+              title="Check who shared the fastest!"
+              textStyle={{fontWeight: 'bold'}}
+              style={{marginBottom: 20}}
+            />
+          }
+          renderItem={({item, index}: {item: TProps['users'][0]}) => {
             return (
               <SmallUserCard
                 {...item}
+                index={index}
                 style={{
                   padding: 20,
                   borderWidth: 1,

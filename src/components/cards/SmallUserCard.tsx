@@ -12,9 +12,10 @@ type TProps = {
   thumbnail?: string;
   style?: TStyleView;
   moment?: {addedAt: boolean};
+  index: number;
 };
 
-const SmallUserCard = ({id, displayName, moment, style}: TProps) => {
+const SmallUserCard = ({id, index, displayName, moment, style}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
 
   return (
@@ -22,6 +23,11 @@ const SmallUserCard = ({id, displayName, moment, style}: TProps) => {
       onPress={() => onUpdate({target: 'users', data: {id}})}
       style={style}>
       <View style={styles.body}>
+        <DefaultText
+          title={moment ? (index + 1).toString() : '-'}
+          style={{marginRight: 10}}
+          textStyle={{fontWeight: 'bold', fontSize: 30}}
+        />
         <DefaultIcon icon="user" style={styles.icon} />
         <View>
           <DefaultText
