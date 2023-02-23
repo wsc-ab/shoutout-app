@@ -1,4 +1,4 @@
-import notifee, {EventType} from '@notifee/react-native';
+import notifee, {EventDetail, EventType} from '@notifee/react-native';
 import messaging, {
   FirebaseMessagingTypes,
 } from '@react-native-firebase/messaging';
@@ -11,11 +11,13 @@ const Notifications = ({isPermitted}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
 
   const openModal = useCallback(
-    (remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
-      onUpdate({
-        target: remoteMessage.data?.collection!,
-        data: {id: remoteMessage.data?.id, path: remoteMessage.data?.path},
-      });
+    (remoteMessage: EventDetail['notification']) => {
+      if (remoteMessage) {
+        onUpdate({
+          target: remoteMessage.data?.collection!,
+          data: {id: remoteMessage.data?.id, path: remoteMessage.data?.path},
+        });
+      }
     },
     [onUpdate],
   );
@@ -24,8 +26,6 @@ const Notifications = ({isPermitted}: TProps) => {
       const unsub = notifee.onForegroundEvent(({type, detail}) => {
         switch (type) {
           case EventType.PRESS:
-            console.log(detail.notification, 'detail.notification');
-
             openModal(detail.notification);
             break;
         }
@@ -39,6 +39,7 @@ const Notifications = ({isPermitted}: TProps) => {
       remoteMessage: FirebaseMessagingTypes.RemoteMessage,
     ) => {
       const {notification, data} = remoteMessage;
+      console.log('onMessageHandler');
 
       if (notification) {
         notifee.displayNotification({
@@ -53,18 +54,6 @@ const Notifications = ({isPermitted}: TProps) => {
       unsub();
     };
   }, []);
-
-  useEffect(() => {
-    if (isPermitted) {
-      notifee.getInitialNotification().then(remoteMessage => {
-        if (remoteMessage) {
-          console.log('getInitialNotification called', remoteMessage);
-
-          openModal(remoteMessage.notification);
-        }
-      });
-    }
-  }, [isPermitted, openModal]);
 
   return null;
 };
