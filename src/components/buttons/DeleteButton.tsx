@@ -15,18 +15,24 @@ type TProps = {
 const DeleteButton = ({moment, content, style, onSuccess}: TProps) => {
   const [submitting, setSubmitting] = useState(false);
 
-  const onDelete = async () => {
-    try {
-      setSubmitting(true);
-      await removeContent({moment, content});
-      onSuccess && onSuccess();
-    } catch (error) {
-      console.log(error, 'r');
+  const onDelete = () => {
+    const onPress = async () => {
+      try {
+        setSubmitting(true);
+        await removeContent({moment, content});
+        onSuccess && onSuccess();
+      } catch (error) {
+        DefaultAlert({title: 'Failed to delete'});
+      } finally {
+        setSubmitting(false);
+      }
+    };
 
-      DefaultAlert({title: 'Failed to delete'});
-    } finally {
-      setSubmitting(false);
-    }
+    DefaultAlert({
+      title: 'Please confirm',
+      message: 'Delete this content?',
+      buttons: [{text: 'No'}, {text: 'Delete', style: 'destructive', onPress}],
+    });
   };
 
   return (

@@ -48,6 +48,13 @@ const PromptCard = ({style, prompt, pauseOnModal, path, mount}: TProps) => {
 
   useEffect(() => {
     const onNext = async (doc: TDocSnapshot) => {
+      if (!doc.exists) {
+        return DefaultAlert({
+          title: 'Failed to read data',
+          message: 'This moment seems to be deleted',
+        });
+      }
+
       const newPrompt = doc.data();
 
       if (newPrompt) {
@@ -62,6 +69,8 @@ const PromptCard = ({style, prompt, pauseOnModal, path, mount}: TProps) => {
     };
 
     const onError = (error: Error) => {
+      console.log(error, 'error');
+
       DefaultAlert({
         title: 'Failed to get moment data',
         message: (error as {message: string}).message,

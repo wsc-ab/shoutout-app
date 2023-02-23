@@ -135,9 +135,7 @@ const Prompts = ({style}: TProps) => {
                   textStyle={{fontWeight: 'bold'}}
                 />
                 <DefaultText title={name} />
-                {late && (
-                  <DefaultText title={`${getTimeGap(addedAt)} ago (late)`} />
-                )}
+                {late && <DefaultText title={'Missed this one'} />}
                 {!late && <DefaultText title={`${getTimeGap(addedAt)} ago`} />}
               </Pressable>
               <DefaultImage

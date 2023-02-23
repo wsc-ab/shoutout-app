@@ -76,7 +76,7 @@ const AddMomentButton = ({id, style}: TProps) => {
           icon="plus"
           onPress={added ? onAdded : onAdd}
           style={{paddingHorizontal: 10}}
-          color={added ? defaultRed.lv2 : 'white'}
+          color={added ? 'white' : defaultRed.lv2}
         />
       )}
       {submitting && <ActivityIndicator color="white" />}
