@@ -230,5 +230,5 @@ const MomentCard = ({
 export default MomentCard;
 
 const styles = StyleSheet.create({
-  users: {position: 'absolute', bottom: 80},
+  users: {position: 'absolute', bottom: 70},
 });
