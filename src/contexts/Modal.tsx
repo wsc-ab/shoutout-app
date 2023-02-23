@@ -22,7 +22,6 @@ type TModal = {
     users?: {
       id: string;
       displayName: string;
-      thumbnail?: string;
       moment: {path: string; addedAt: TTimestamp};
     }[];
   };

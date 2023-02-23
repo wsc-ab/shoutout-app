@@ -7,7 +7,7 @@ import DefaultText from '../components/defaults/DefaultText';
 type TContent = {
   remotePath: string;
   localPath: string;
-  type: 'createPrompt' | 'addMoment' | 'addContent';
+  type: 'createPrompt' | 'addMoment' | 'addContent' | 'profileImage';
 };
 
 type TContextProps = {
@@ -42,7 +42,9 @@ const UploadingProvider = ({children}: TProps) => {
       pre.filter(({remotePath: elRemotePath}) => elRemotePath !== remotePath),
     );
 
-    if (type === 'createPrompt' || type === 'addMoment') {
+    const promptTypes = ['createPrompt', 'addMoment', 'profileImage'];
+
+    if (promptTypes.includes(type)) {
       setPromptUpdated(true);
       setPromptUpdated(false);
     }
@@ -99,5 +101,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 20,
   },
-  text: {flex: 1},
+  text: {flex: 1, padding: 10},
 });

@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
+import UploadingContext from '../../contexts/Uploading';
 import {TDocData} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
 import {groupByLength} from '../../utils/Array';
@@ -18,6 +19,7 @@ import {defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultImage from '../defaults/DefaultImage';
 import DefaultText from '../defaults/DefaultText';
+import UserProfileImage from '../defaults/UserProfileImage';
 
 type TProps = {
   prompt: TDocData;
@@ -87,18 +89,7 @@ const PromptSummary = ({prompt}: TProps) => {
                       onPress={() => {
                         onView({id: prompt.id, path});
                       }}>
-                      <DefaultIcon
-                        icon="user"
-                        style={{
-                          borderWidth: 1,
-                          borderColor: 'gray',
-                          borderRadius: 20,
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          height: 50,
-                          width: 50,
-                        }}
-                      />
+                      <UserProfileImage user={{id: userId}} />
                       <Pressable
                         style={{marginLeft: 10, flex: 1}}
                         onPress={() => {

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Image, Pressable, StyleSheet, View} from 'react-native';
+import {Image, Pressable, StyleSheet} from 'react-native';
 import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
 import {loadFromCache} from '../../utils/Cache';
@@ -7,45 +7,32 @@ import {loadFromCache} from '../../utils/Cache';
 import {defaultBlack} from './DefaultColors';
 import DefaultIcon from './DefaultIcon';
 
-import DefaultText from './DefaultText';
-
 export const getThumnailPath = (url: string) => url + '_200x200';
 
 export type Props = {
-  image?: string;
-  type?: string;
+  user: {id: string};
   style?: TStyleView;
-  imageStyle: {height: number; width: number};
-  blurRadius?: number;
-  onLoaded?: () => void;
+  imageStyle?: {height: number; width: number};
   onPress?: () => void;
 };
 
-const DefaultImage = ({
-  image,
+const UserProfileImage = ({
   style,
-  imageStyle,
-  blurRadius,
-  onLoaded,
+  user: {id},
+  imageStyle = {height: 50, width: 50},
   onPress,
 }: Props) => {
   const [imageUrl, setImageUrl] = useState<string>();
+
   const [status, setStatus] = useState<TStatus>('loading');
 
   useEffect(() => {
     let isMounted = true;
     const loadImageUrl = async () => {
-      if (!image) {
-        isMounted && setStatus('loaded');
-        return;
-      }
-      if (image.startsWith('file') || image.startsWith('http')) {
-        isMounted && setImageUrl(image);
-        isMounted && setStatus('loaded');
-      }
+      const remoteThumbPath = `${id}/images/profileImage_200x200`;
 
       try {
-        const localPath = await loadFromCache({remotePath: image});
+        const localPath = await loadFromCache({remotePath: remoteThumbPath});
 
         setImageUrl(localPath);
       } catch (e) {
@@ -60,53 +47,52 @@ const DefaultImage = ({
     return () => {
       isMounted = false;
     };
-  }, [image]);
+  }, [id]);
 
-  if (!image) {
-    return null;
+  if (!imageUrl || status === 'error') {
+    return (
+      <DefaultIcon
+        icon="user"
+        style={[styles.icon, imageStyle]}
+        size={imageStyle.height / 3}
+      />
+    );
   }
 
   return (
     <Pressable style={style} onPress={onPress} disabled={!onPress}>
-      {status === 'loaded' && image && (
+      {status === 'loaded' && imageUrl && (
         <Image
           style={[styles.image, imageStyle]}
           source={{
             uri: imageUrl,
           }}
           resizeMode="cover"
-          onLoadEnd={onLoaded}
           onError={() => setStatus('error')}
-          blurRadius={blurRadius}
-        />
-      )}
-      {status === 'loaded' && !image && (
-        <DefaultText
-          title="No image found"
-          style={[styles.image, imageStyle]}
-        />
-      )}
-      {status === 'loading' && (
-        <View style={[styles.image, imageStyle, styles.loading]} />
-      )}
-      {status === 'error' && (
-        <DefaultIcon
-          icon="exclamation"
-          style={[styles.image, imageStyle, styles.loading]}
         />
       )}
     </Pressable>
   );
 };
 
-export default DefaultImage;
+export default UserProfileImage;
 
 const styles = StyleSheet.create({
+  icon: {
+    backgroundColor: defaultBlack.lv4(1),
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 50,
+    width: 50,
+  },
   image: {
     overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
     resizeMode: 'cover',
+    height: 50,
+    width: 50,
+    borderRadius: 20,
   },
-  loading: {backgroundColor: defaultBlack.lv3(1)},
 });

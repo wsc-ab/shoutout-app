@@ -36,12 +36,7 @@ const Welcome = ({style}: TProps) => {
       icon: 'video',
     },
     {
-      title: 'You can connect to moments',
-      detail: 'Press',
-      icon: 'plus',
-    },
-    {
-      title: 'Moments',
+      title: 'Connect to moments',
       detail: 'Press',
       icon: 'plus',
     },
@@ -76,7 +71,11 @@ const Welcome = ({style}: TProps) => {
             <View style={[styles.card, {width, height}]}>
               <View style={styles.detail}>
                 {item.detail && <DefaultText title={item.detail} />}
-                <DefaultIcon icon={item.icon as IconProp} size={20} />
+                <DefaultIcon
+                  icon={item.icon as IconProp}
+                  size={20}
+                  style={styles.icon}
+                />
               </View>
 
               <DefaultText
@@ -126,4 +125,5 @@ const styles = StyleSheet.create({
   titleText: {fontWeight: 'bold'},
   button: {bottom: 100, position: 'absolute'},
   buttonText: {fontWeight: 'bold'},
+  icon: {padding: 10},
 });

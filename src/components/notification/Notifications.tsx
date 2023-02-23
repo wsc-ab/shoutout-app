@@ -12,10 +12,13 @@ const Notifications = ({isPermitted}: TProps) => {
 
   const openModal = useCallback(
     (remoteMessage: EventDetail['notification']) => {
-      if (remoteMessage) {
+      if (remoteMessage?.data?.collection) {
         onUpdate({
-          target: remoteMessage.data?.collection!,
-          data: {id: remoteMessage.data?.id, path: remoteMessage.data?.path},
+          target: remoteMessage.data.collection as string,
+          data: {
+            id: remoteMessage.data.id as string | undefined,
+            path: remoteMessage.data.path as string | undefined,
+          },
         });
       }
     },

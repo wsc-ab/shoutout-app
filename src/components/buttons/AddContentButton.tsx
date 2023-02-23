@@ -8,15 +8,14 @@ import {takeVideo} from '../../utils/Video';
 import DefaultAlert from '../defaults/DefaultAlert';
 import {defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
-import DefaultText from '../defaults/DefaultText';
 
 type TProps = {
   id: string;
-  number: number;
+
   style?: TStyleView;
 };
 
-const AddContentButton = ({id, number, style}: TProps) => {
+const AddContentButton = ({id, style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
   const {onUpdate} = useContext(ModalContext);
   const [submitting, setSubmitting] = useState(false);
@@ -82,7 +81,6 @@ const AddContentButton = ({id, number, style}: TProps) => {
         />
       )}
       {submitting && <ActivityIndicator color="white" />}
-      <DefaultText title={number.toString()} style={{marginLeft: 5}} />
     </View>
   );
 };

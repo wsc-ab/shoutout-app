@@ -5,7 +5,12 @@ import {useForm} from 'react-hook-form';
 import {Linking, StyleSheet, View} from 'react-native';
 import {object} from 'yup';
 
-import {createUser, sendVerificationCode} from '../../functions/User';
+import {
+  createUser,
+  sendVerificationCode,
+  updateUserProfileImage,
+} from '../../functions/User';
+import {getImage} from '../../utils/Image';
 import {defaultSchema} from '../../utils/Schema';
 import ControllerText from '../controllers/ControllerText';
 import DefaultAlert from '../defaults/DefaultAlert';
@@ -74,6 +79,7 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
   }) => {
     setIsSubmitting(true);
     const userId = firebase.firestore().collection('users').doc().id;
+
     try {
       await createUser({
         user: {
@@ -166,6 +172,7 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
           control={control}
           name="code"
           title="Code"
+          detail="Enter the code sent to your phone."
           errors={errors.code}
           placeholder="000000"
           keyboardType="number-pad"

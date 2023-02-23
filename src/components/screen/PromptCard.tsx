@@ -75,8 +75,6 @@ const PromptCard = ({style, prompt, pauseOnModal, path, mount}: TProps) => {
     };
 
     const onError = (error: Error) => {
-      console.log(error, 'error');
-
       DefaultAlert({
         title: 'Failed to get moment data',
         message: (error as {message: string}).message,

@@ -29,7 +29,6 @@ const Permission = () => {
         if (enabled) {
           try {
             const newToken = await messaging().getToken();
-            console.log(newToken, 'newToken');
 
             if (authUserData?.token !== newToken) {
               await signIn({user: {token: newToken, id: authUserData.id}});

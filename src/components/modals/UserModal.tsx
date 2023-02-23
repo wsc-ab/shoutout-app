@@ -20,6 +20,7 @@ import {TDocData, TLocation, TTimestamp} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import FollowButton from '../buttons/FollowButton';
 import DefaultIcon from '../defaults/DefaultIcon';
+import UserProfileImage from '../defaults/UserProfileImage';
 
 type TProps = {
   id: string;
@@ -93,23 +94,10 @@ const UserModal = ({id}: TProps) => {
               <View
                 style={{
                   flexDirection: 'row',
-                  borderWidth: 1,
-                  borderColor: 'gray',
-                  padding: 10,
-                  borderRadius: 10,
-                  marginBottom: 10,
+                  marginBottom: 20,
                 }}>
-                <DefaultIcon
-                  icon="user"
-                  style={{
-                    padding: 20,
-                    borderWidth: 1,
-                    borderColor: 'gray',
-                    borderRadius: 10,
-                    marginRight: 10,
-                  }}
-                />
-                <View style={{alignItems: 'flex-start', marginLeft: 5}}>
+                <UserProfileImage user={{id}} />
+                <View style={{alignItems: 'flex-start', marginLeft: 10}}>
                   <DefaultText
                     title={data.displayName}
                     textStyle={{fontWeight: 'bold', fontSize: 16}}

@@ -13,7 +13,9 @@ import {TDocData} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
 import CreateButton from '../buttons/CreateButton';
+import InviteCard from '../cards/InviteCard';
 import DefaultAlert from '../defaults/DefaultAlert';
+import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultText from '../defaults/DefaultText';
 import PromptSummary from './PromptSummary';
 
@@ -29,6 +31,7 @@ const Prompts = ({style}: TProps) => {
 
   useEffect(() => {
     if (promptUpdated) {
+      setData([]);
       setStatus('loading');
     }
   }, [promptUpdated]);
@@ -49,9 +52,10 @@ const Prompts = ({style}: TProps) => {
     const load = async () => {
       try {
         const {prompts: newPrompts} = await getPrompts({});
-        await notifee.setBadgeCount(0);
+
         setData(newPrompts);
         setStatus('loaded');
+        await notifee.setBadgeCount(0);
       } catch (error) {
         DefaultAlert({
           title: 'Error',
@@ -84,6 +88,20 @@ const Prompts = ({style}: TProps) => {
     return <PromptSummary prompt={item} style={undefined} />;
   };
 
+  const ListEmptyComponent = () => {
+    return (
+      <View>
+        <InviteCard
+          style={{backgroundColor: defaultBlack.lv2(1), marginHorizontal: 10}}
+        />
+        <DefaultText
+          title="You need friends to start connecting!"
+          style={{margin: 10}}
+        />
+      </View>
+    );
+  };
+
   return (
     <View style={style}>
       <FlatList
@@ -98,6 +116,7 @@ const Prompts = ({style}: TProps) => {
           />
         }
         renderItem={renderItem}
+        ListEmptyComponent={ListEmptyComponent}
         ItemSeparatorComponent={() => <View style={styles.seperator} />}
       />
       <CreateButton

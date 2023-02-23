@@ -4,6 +4,7 @@ import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import {TStyleView} from '../../types/Style';
+import {getSameIds} from '../../utils/Array';
 import {checkLocationPermission} from '../../utils/Location';
 import {takeVideo} from '../../utils/Video';
 import DefaultAlert from '../defaults/DefaultAlert';
@@ -19,6 +20,11 @@ const CreateButton = ({style, onCreate}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
   const {onUpdate} = useContext(ModalContext);
   const [submitting, setSubmitting] = useState(false);
+
+  const friends = getSameIds(
+    authUserData.followFrom.items,
+    authUserData.followTo.items,
+  );
 
   const onAdd = async () => {
     onUpdate({target: 'video'});
@@ -60,12 +66,19 @@ const CreateButton = ({style, onCreate}: TProps) => {
     }
   };
 
+  const onAddFriends = () => {
+    DefaultAlert({
+      title: 'Need more friends',
+      message: 'You need friends to start connecting!',
+    });
+  };
+
   return (
     <View style={[styles.container, style]}>
       {!submitting && (
         <DefaultIcon
           icon="plus"
-          onPress={onAdd}
+          onPress={friends.length >= 1 ? onAdd : onAddFriends}
           size={20}
           style={styles.icon}
         />

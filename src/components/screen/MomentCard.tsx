@@ -132,7 +132,7 @@ const MomentCard = ({
       addedAt,
       location,
     }: {
-      user: {id: string; name: string; thumbnail?: string};
+      user: {id: string; name: string};
       addedAt: TTimestamp;
       location?: TLocation;
     }) => ({...user, addedAt, location}),

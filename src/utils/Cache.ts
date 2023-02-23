@@ -42,18 +42,27 @@ export const checkCache = async ({
   if (!(size === cacheData.size)) {
     return undefined;
   }
+
+  // if cache file size is different from remote path, return undefined
+  const storageRef = storage().ref(remotePath);
+  const metaData = await storageRef.getMetadata();
+
+  if (!(metaData.size === cacheData.size)) {
+    return undefined;
+  }
+
   return cacheData.localPath;
 };
 
 export const saveCache = async ({remotePath}: {remotePath: string}) => {
   try {
     const storageRef = storage().ref(remotePath);
-    const downloadUrl = await storageRef.getDownloadURL();
     const metaData = await storageRef.getMetadata();
     const ext = metaData.contentType!.split('/')[1];
     const size = metaData.size;
     const localPath = `${RNFS.CachesDirectoryPath}/${createMockId(5)}.${ext}`;
 
+    const downloadUrl = await storageRef.getDownloadURL();
     await RNFS.downloadFile({fromUrl: downloadUrl, toFile: localPath}).promise;
 
     await saveCacheData({remotePath, localPath, size});

@@ -3,13 +3,12 @@ import {Pressable, StyleSheet, View} from 'react-native';
 import ModalContext from '../../contexts/Modal';
 import {TStyleView} from '../../types/Style';
 import {getTimeGap} from '../../utils/Date';
-import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
+import UserProfileImage from '../defaults/UserProfileImage';
 
 type TProps = {
   id: string;
   displayName: string;
-  thumbnail?: string;
   style?: TStyleView;
   moment?: {addedAt: boolean};
   index: number;
@@ -28,7 +27,7 @@ const SmallUserCard = ({id, index, displayName, moment, style}: TProps) => {
           style={{marginRight: 10}}
           textStyle={{fontWeight: 'bold', fontSize: 30}}
         />
-        <DefaultIcon icon="user" style={styles.icon} />
+        <UserProfileImage user={{id}} />
         <View>
           <DefaultText
             title={displayName}

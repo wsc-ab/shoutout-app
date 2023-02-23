@@ -18,7 +18,7 @@ type TProps = {
     addedAt: TTimestamp;
     location?: TLocation;
     name?: string;
-    user: {id: string; displayName: string; thumbnail?: string};
+    user: {id: string; displayName: string};
   };
   style?: TStyleView;
   contentStyle: {width: number; height: number};

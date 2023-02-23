@@ -12,14 +12,13 @@ import {TTimestamp} from '../../types/Firebase';
 import {getTimeGap} from '../../utils/Date';
 import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultText from '../defaults/DefaultText';
-import FollowButton from './FollowButton';
+import UserProfileImage from '../defaults/UserProfileImage';
 import LocationButton from './LocationButton';
 
 type TProps = {
   users: {
     displayName: string;
     id: string;
-    thumbnail?: string;
     location?: {name: string};
     addedAt: TTimestamp;
   }[];
@@ -68,21 +67,24 @@ const ContributorsButton = ({users, type, onPress, index, style}: TProps) => {
               }}
               style={[
                 styles.container,
-                {width: (width - 80) / 2},
+                {width: (width - 80) / 1.5},
                 isCurrent && styles.current,
               ]}>
-              <DefaultText
-                title={item.displayName}
-                textStyle={styles.nameText}
-              />
-              <LocationButton location={item.location} />
-              <DefaultText title={getTimeGap(item.addedAt) + ' ago'} />
-              <FollowButton
-                user={{
-                  id: item.id,
-                }}
-                style={styles.follow}
-              />
+              <View style={{flexDirection: 'row', flex: 1}}>
+                <UserProfileImage
+                  user={{
+                    id: item.id,
+                  }}
+                />
+                <View style={{marginLeft: 5, flex: 1}}>
+                  <DefaultText
+                    title={item.displayName}
+                    textStyle={{fontWeight: 'bold'}}
+                  />
+                  <LocationButton location={item.location} />
+                  <DefaultText title={getTimeGap(item.addedAt) + ' ago'} />
+                </View>
+              </View>
             </Pressable>
           );
         }}

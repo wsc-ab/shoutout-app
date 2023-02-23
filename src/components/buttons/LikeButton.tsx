@@ -6,7 +6,6 @@ import {TStyleView} from '../../types/Style';
 import DefaultAlert from '../defaults/DefaultAlert';
 import {defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
-import DefaultText from '../defaults/DefaultText';
 
 type TProps = {
   moment: {
@@ -20,7 +19,6 @@ type TProps = {
 
 const LikeButton = ({moment, style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
-  const [number, setNumber] = useState(moment.likeFrom.number);
   const [liked, setLiked] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -28,7 +26,7 @@ const LikeButton = ({moment, style}: TProps) => {
     try {
       setSubmitting(true);
       setLiked(true);
-      setNumber(pre => pre + 1);
+
       await addLike({moment});
     } catch (error) {
       if ((error as {message: string}).message === "moment doesn't exist") {
@@ -42,7 +40,6 @@ const LikeButton = ({moment, style}: TProps) => {
         });
       }
       setLiked(false);
-      setNumber(pre => pre - 1);
     } finally {
       setSubmitting(false);
     }
@@ -52,7 +49,7 @@ const LikeButton = ({moment, style}: TProps) => {
     try {
       setSubmitting(true);
       setLiked(false);
-      setNumber(pre => pre - 1);
+
       await removeLike({
         moment,
       });
@@ -62,7 +59,6 @@ const LikeButton = ({moment, style}: TProps) => {
         title: 'Error',
         message: (error as {message: string}).message,
       });
-      setNumber(pre => pre + 1);
     } finally {
       setSubmitting(false);
     }
@@ -84,7 +80,6 @@ const LikeButton = ({moment, style}: TProps) => {
         color={liked ? defaultRed.lv2 : 'white'}
         size={20}
       />
-      <DefaultText title={number.toString()} style={{marginLeft: 5}} />
     </View>
   );
 };

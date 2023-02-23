@@ -44,7 +44,7 @@ const InviteCard = ({style}: TProps) => {
       <View style={styles.body}>
         <DefaultText title={'Invite friends'} textStyle={styles.textName} />
         <DefaultText
-          title={'Connect live moments with more friends!'}
+          title={'Connect live moments with friends!'}
           numberOfLines={1}
           style={styles.detail}
           textStyle={styles.detailText}

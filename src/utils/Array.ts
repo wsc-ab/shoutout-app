@@ -23,7 +23,6 @@ export const groupByLength = <A extends TObject>(
     }
     group[groupIndex].push(item);
   });
-  console.log(group[0].length, '1');
 
   return group;
 };

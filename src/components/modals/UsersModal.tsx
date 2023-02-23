@@ -12,7 +12,6 @@ type TProps = {
   users: {
     id: string;
     displayName: string;
-    thumbnail?: string;
     moment?: {addedAt: TTimestampClient};
   }[];
 };
