@@ -22,9 +22,11 @@ const LikeButton = ({moment, style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
   const [number, setNumber] = useState(moment.likeFrom.number);
   const [liked, setLiked] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const onLike = async () => {
     try {
+      setSubmitting(true);
       setLiked(true);
       setNumber(pre => pre + 1);
       await addLike({moment});
@@ -41,11 +43,14 @@ const LikeButton = ({moment, style}: TProps) => {
       }
       setLiked(false);
       setNumber(pre => pre - 1);
+    } finally {
+      setSubmitting(false);
     }
   };
 
   const onUnlike = async () => {
     try {
+      setSubmitting(true);
       setLiked(false);
       setNumber(pre => pre - 1);
       await removeLike({
@@ -58,6 +63,8 @@ const LikeButton = ({moment, style}: TProps) => {
         message: (error as {message: string}).message,
       });
       setNumber(pre => pre + 1);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -73,7 +80,7 @@ const LikeButton = ({moment, style}: TProps) => {
     <View style={[styles.container, style]}>
       <DefaultIcon
         icon="heart"
-        onPress={liked ? onUnlike : onLike}
+        onPress={!submitting ? (liked ? onUnlike : onLike) : undefined}
         color={liked ? defaultRed.lv2 : 'white'}
         size={20}
       />
