@@ -18,7 +18,12 @@ type TModal = {
     remotePath?: string;
     localPath?: string;
     path?: string;
-    users?: {id: string; displayName: string; thumbnail?: string}[];
+    users?: {
+      id: string;
+      displayName: string;
+      thumbnail?: string;
+      added: boolean;
+    }[];
   };
 };
 

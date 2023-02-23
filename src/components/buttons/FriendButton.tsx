@@ -1,5 +1,4 @@
 import React from 'react';
-import {View} from 'react-native';
 import {TStyleView} from '../../types/Style';
 import DefaultIcon from '../defaults/DefaultIcon';
 
@@ -10,9 +9,7 @@ type TProps = {
 
 const FriendsButton = ({style, onPress}: TProps) => {
   return (
-    <View style={style}>
-      <DefaultIcon icon="user-group" size={20} onPress={onPress} />
-    </View>
+    <DefaultIcon icon="user-group" style={style} size={20} onPress={onPress} />
   );
 };
 

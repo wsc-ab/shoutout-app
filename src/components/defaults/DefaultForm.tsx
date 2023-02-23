@@ -70,7 +70,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
     zIndex: 100,
-    paddingHorizontal: 20,
   },
   icon: {padding: 10},
   left: {flex: 1, alignItems: 'flex-start'},

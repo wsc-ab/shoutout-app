@@ -1,5 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -8,6 +8,7 @@ import {
   ViewabilityConfigCallbackPairs,
   ViewToken,
 } from 'react-native';
+import AuthUserContext from '../../contexts/AuthUser';
 import {TDocData, TDocSnapshot} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
@@ -30,6 +31,8 @@ const PromptCard = ({style, prompt, pauseOnModal, path, mount}: TProps) => {
   const {height, width} = useWindowDimensions();
   const [index, setIndex] = useState(0);
   const [initialScrollIndex, setInitialScrollIndex] = useState<number>();
+  const {authUserData} = useContext(AuthUserContext);
+  const [added, setAdded] = useState(true);
 
   useEffect(() => {
     if (data) {
@@ -45,10 +48,16 @@ const PromptCard = ({style, prompt, pauseOnModal, path, mount}: TProps) => {
 
   useEffect(() => {
     const onNext = async (doc: TDocSnapshot) => {
-      const newMoment = doc.data();
+      const newPrompt = doc.data();
 
-      if (newMoment) {
-        setData(newMoment.moments.items);
+      if (newPrompt) {
+        const addedUserIds = newPrompt.moments.items.map(
+          ({user: {id: elId}}) => elId,
+        );
+
+        const newAdded = addedUserIds.includes(authUserData.id);
+        setAdded(newAdded);
+        setData(newPrompt.moments.items);
       }
     };
 
@@ -65,7 +74,7 @@ const PromptCard = ({style, prompt, pauseOnModal, path, mount}: TProps) => {
       .onSnapshot(onNext, onError);
 
     return unsubscribe;
-  }, [prompt.id]);
+  }, [authUserData.id, prompt.id]);
 
   const onViewableItemsChanged = ({
     viewableItems,
@@ -112,6 +121,8 @@ const PromptCard = ({style, prompt, pauseOnModal, path, mount}: TProps) => {
     </>
   );
 
+  console.log(added, 'added');
+
   const renderItem = ({
     item,
     index: elIndex,
@@ -130,6 +141,8 @@ const PromptCard = ({style, prompt, pauseOnModal, path, mount}: TProps) => {
           mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
           pauseOnModal={pauseOnModal}
           inView={index === elIndex}
+          blur={!added}
+          promptId={prompt.id}
         />
       </View>
     );

@@ -37,6 +37,6 @@ const MomentModal = ({id, path}: TProps) => {
 export default MomentModal;
 
 const styles = StyleSheet.create({
-  icon: {top: 40, zIndex: 200},
+  icon: {top: 40, zIndex: 200, padding: 20, position: 'absolute'},
   card: {top: 0, left: 0, right: 0, position: 'absolute'},
 });

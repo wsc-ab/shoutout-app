@@ -99,7 +99,16 @@ const UserModal = ({id}: TProps) => {
                   borderRadius: 10,
                   marginBottom: 10,
                 }}>
-                <DefaultIcon icon="user" />
+                <DefaultIcon
+                  icon="user"
+                  style={{
+                    padding: 20,
+                    borderWidth: 1,
+                    borderColor: 'gray',
+                    borderRadius: 10,
+                    marginRight: 10,
+                  }}
+                />
                 <View style={{alignItems: 'flex-start', marginLeft: 5}}>
                   <DefaultText
                     title={data.displayName}

@@ -31,6 +31,8 @@ type TProps = {
   path?: string;
   pauseOnModal?: boolean;
   inView: boolean;
+  blur?: boolean;
+  promptId?: string;
 };
 
 const MomentCard = ({
@@ -40,6 +42,8 @@ const MomentCard = ({
   pauseOnModal = true,
   mount,
   inView,
+  blur,
+  promptId,
 }: TProps) => {
   const {height, width} = useWindowDimensions();
   const [data, setData] = useState<TDocData>();
@@ -168,13 +172,17 @@ const MomentCard = ({
             pauseOnModal={pauseOnModal}
             repeat
             inView={inView && index === elIndex}
+            blur={blur}
+            promptId={promptId}
           />
         </View>
-        <Footer
-          item={item}
-          number={data.contents.number}
-          style={{marginHorizontal: 10}}
-        />
+        {!blur && (
+          <Footer
+            item={item}
+            number={data.contents.number}
+            style={{marginHorizontal: 10}}
+          />
+        )}
       </View>
     );
   };

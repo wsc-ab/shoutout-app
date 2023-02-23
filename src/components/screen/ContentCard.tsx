@@ -8,7 +8,6 @@ import {getTimeGap} from '../../utils/Date';
 import {getThumbnailPath} from '../../utils/Storage';
 import DeleteButton from '../buttons/DeleteButton';
 import LocationButton from '../buttons/LocationButton';
-import SmallUserCard from '../cards/SmallUserCard';
 import DefaultImage from '../defaults/DefaultImage';
 import DefaultText from '../defaults/DefaultText';
 
@@ -23,7 +22,6 @@ type TProps = {
   };
   style?: TStyleView;
   contentStyle: {width: number; height: number};
-  showUser?: boolean;
   onPress?: () => void;
   onDelete?: () => void;
 };
@@ -33,7 +31,6 @@ const ContentCard = ({
   onPress,
   onDelete,
   contentStyle,
-  showUser,
   style,
 }: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
@@ -46,14 +43,6 @@ const ContentCard = ({
         imageStyle={contentStyle}
       />
       <View style={{flex: 1}}>
-        {showUser && (
-          <SmallUserCard
-            id={content.user.id}
-            displayName={content.user.displayName}
-            thumbnail={content.user.thumbnail}
-            style={styles.user}
-          />
-        )}
         <View style={styles.text}>
           <View style={{flex: 1}}>
             <DefaultText
@@ -82,7 +71,6 @@ export default ContentCard;
 const styles = StyleSheet.create({
   container: {flexDirection: 'row'},
   delete: {paddingTop: 0},
-  user: {marginLeft: 10, marginBottom: 5},
   text: {
     marginLeft: 10,
     flexDirection: 'row',

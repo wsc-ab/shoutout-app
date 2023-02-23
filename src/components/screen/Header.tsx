@@ -4,6 +4,7 @@ import ContactButton from '../buttons/ContactButton';
 import FriendsButton from '../buttons/FriendButton';
 import GlobalButton from '../buttons/GlobalButton';
 import UserButton from '../buttons/UserButton';
+import {defaultBlack} from '../defaults/DefaultColors';
 
 type TProps = {onFriends: () => void; onGlobal: () => void; tab: string};
 
@@ -31,10 +32,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 5,
+    marginHorizontal: 10,
     position: 'absolute',
     zIndex: 100,
   },
-  button: {flex: 1, alignItems: 'center', padding: 10},
+  button: {
+    flex: 1,
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: defaultBlack.lv3(1),
+    borderRadius: 20,
+    marginHorizontal: 10,
+    alignSelf: 'stretch',
+  },
   selected: {borderBottomWidth: 1, borderColor: 'white'},
 });

@@ -1,8 +1,7 @@
 import React, {useContext} from 'react';
-import {Pressable, StyleSheet} from 'react-native';
+import {Pressable, StyleSheet, View} from 'react-native';
 import ModalContext from '../../contexts/Modal';
 import {TStyleView} from '../../types/Style';
-import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
 
@@ -11,21 +10,28 @@ type TProps = {
   displayName: string;
   thumbnail?: string;
   style?: TStyleView;
+  added: boolean;
 };
 
-const SmallUserCard = ({id, displayName, style}: TProps) => {
+const SmallUserCard = ({id, displayName, added, style}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
 
   return (
     <Pressable
-      onPress={() => onUpdate({target: 'users', id})}
-      style={[styles.container, style]}>
-      <DefaultIcon icon="user" style={styles.icon} />
-      <DefaultText
-        title={displayName}
-        style={styles.displayName}
-        textStyle={styles.displayNameText}
-      />
+      onPress={() => onUpdate({target: 'users', data: {id}})}
+      style={style}>
+      <View style={styles.body}>
+        <DefaultIcon icon="user" style={styles.icon} />
+        <View>
+          <DefaultText
+            title={displayName}
+            style={styles.displayName}
+            textStyle={styles.displayNameText}
+          />
+          {added && <DefaultText title={'Added'} />}
+          {!added && <DefaultText title={'Not Added'} />}
+        </View>
+      </View>
     </Pressable>
   );
 };
@@ -33,15 +39,19 @@ const SmallUserCard = ({id, displayName, style}: TProps) => {
 export default SmallUserCard;
 
 const styles = StyleSheet.create({
-  container: {
+  body: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   icon: {
+    borderWidth: 1,
+    borderColor: 'gray',
     borderRadius: 20,
-    flexDirection: 'row',
-    backgroundColor: defaultBlack.lv2(1),
-    marginRight: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 50,
+    width: 50,
+    marginRight: 10,
   },
   displayName: {marginBottom: 5},
   displayNameText: {fontWeight: 'bold'},

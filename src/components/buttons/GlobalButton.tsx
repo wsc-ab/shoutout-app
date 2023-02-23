@@ -1,5 +1,4 @@
 import React from 'react';
-import {View} from 'react-native';
 import {TStyleView} from '../../types/Style';
 import DefaultIcon from '../defaults/DefaultIcon';
 
@@ -9,11 +8,7 @@ type TProps = {
 };
 
 const GlobalButton = ({style, onPress}: TProps) => {
-  return (
-    <View style={style}>
-      <DefaultIcon icon="globe" size={20} onPress={onPress} />
-    </View>
-  );
+  return <DefaultIcon icon="globe" style={style} size={20} onPress={onPress} />;
 };
 
 export default GlobalButton;

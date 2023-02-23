@@ -1,3 +1,4 @@
+import notifee from '@notifee/react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import {
   FlatList,
@@ -21,7 +22,6 @@ import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultImage from '../defaults/DefaultImage';
 import DefaultText from '../defaults/DefaultText';
-import notifee from '@notifee/react-native';
 
 type TProps = {
   style: TStyleView;
@@ -36,10 +36,6 @@ const Prompts = ({style}: TProps) => {
   const {promptUpdated} = useContext(UploadingContext);
 
   useEffect(() => {
-    notifee.setBadgeCount(0).then(() => console.log('Badge count removed'));
-  }, []);
-
-  useEffect(() => {
     if (promptUpdated) {
       setStatus('loading');
     }
@@ -49,7 +45,7 @@ const Prompts = ({style}: TProps) => {
     const load = async () => {
       try {
         const {prompts: newPrompts} = await getPrompts({});
-
+        await notifee.setBadgeCount(0);
         setData(newPrompts);
         setStatus('loaded');
       } catch (error) {
@@ -85,7 +81,7 @@ const Prompts = ({style}: TProps) => {
       ({user: {id: elId}}) => elId === authUserData.id,
     );
 
-    const addedUserIds = item.moments.items.map(({id: elId}) => elId);
+    const addedUserIds = item.moments.items.map(({user: {id: elId}}) => elId);
 
     const users =
       item.invited.items?.map(item => ({
@@ -163,9 +159,12 @@ const Prompts = ({style}: TProps) => {
             borderColor: 'gray',
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
               {!expired && !added && <AddMomentButton id={item.id} />}
               {!expired && added && (
+                <DefaultIcon icon="check" style={{paddingHorizontal: 10}} />
+              )}
+              {!expired && (
                 <DefaultText title={`Closing in ${getTimeGap(item.endAt)}`} />
               )}
               {expired && !added && <DefaultText title={'Missed'} />}

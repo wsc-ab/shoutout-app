@@ -9,6 +9,7 @@ import {TStyleView} from '../../types/Style';
 import {loadFromCache} from '../../utils/Cache';
 
 import {getThumbnailPath} from '../../utils/Storage';
+import AddMomentButton from '../buttons/AddMomentButton';
 import DefaultIcon from './DefaultIcon';
 import DefaultImage from './DefaultImage';
 import DefaultText from './DefaultText';
@@ -25,6 +26,8 @@ type TProps = {
   mount: boolean;
   pauseOnModal?: boolean;
   inView: boolean;
+  blur?: boolean;
+  promptId?: string;
 };
 
 const DefaultVideo = ({
@@ -39,6 +42,8 @@ const DefaultVideo = ({
   videoStyle,
   pauseOnModal = true,
   inView: parentInview,
+  blur,
+  promptId,
 }: TProps) => {
   const [uri, setUri] = useState<string>();
   const [thumbPath, setThumbPath] = useState<string>();
@@ -100,6 +105,32 @@ const DefaultVideo = ({
           title="Cancel report to view this moment"
           style={styles.reported}
         />
+      </View>
+    );
+  }
+
+  if (blur && promptId) {
+    return (
+      <View>
+        <DefaultImage
+          imageStyle={videoStyle}
+          image={getThumbnailPath(path, 'video')}
+          blurRadius={20}
+        />
+        <View
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <DefaultText title="No ghosting!" />
+          <DefaultText title="Share your moment to view this" />
+          <AddMomentButton id={promptId} style={{marginTop: 10}} />
+        </View>
       </View>
     );
   }

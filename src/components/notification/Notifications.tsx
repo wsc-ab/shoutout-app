@@ -35,6 +35,8 @@ const Notifications = ({isPermitted}: TProps) => {
   }, [isPermitted, openModal]);
 
   useEffect(() => {
+    console.log('called');
+
     const onMessageHandler = async (
       remoteMessage: FirebaseMessagingTypes.RemoteMessage,
     ) => {
@@ -49,10 +51,8 @@ const Notifications = ({isPermitted}: TProps) => {
         });
       }
     };
-    const unsub = messaging().onMessage(onMessageHandler);
-    return () => {
-      unsub();
-    };
+    const unsubscribe = messaging().onMessage(onMessageHandler);
+    return unsubscribe;
   }, []);
 
   return null;

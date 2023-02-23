@@ -65,8 +65,9 @@ const UploadingProvider = ({children}: TProps) => {
           {status === 'started' && (
             <View style={styles.box}>
               <DefaultText
-                title="Started to upload your moment!"
+                title="Uploading your moment!"
                 style={styles.text}
+                textStyle={{fontWeight: 'bold'}}
               />
               <DefaultIcon icon="times" onPress={() => setstatus(undefined)} />
             </View>
@@ -91,9 +92,9 @@ const styles = StyleSheet.create({
   },
   box: {
     flexDirection: 'row',
-    paddingVertical: 5,
+    paddingVertical: 10,
     paddingHorizontal: 20,
-    backgroundColor: defaultBlack.lv3(50),
+    backgroundColor: defaultBlack.lv3(1),
     borderRadius: 20,
     alignItems: 'center',
     marginHorizontal: 20,

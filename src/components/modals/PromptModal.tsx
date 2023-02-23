@@ -37,6 +37,6 @@ const PromptModal = ({id, path}: TProps) => {
 export default PromptModal;
 
 const styles = StyleSheet.create({
-  icon: {top: 40, zIndex: 300, position: 'absolute'},
+  icon: {top: 40, zIndex: 300, position: 'absolute', padding: 20},
   card: {flex: 1, position: 'absolute'},
 });

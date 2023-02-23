@@ -17,6 +17,7 @@ type TProps = {
 
 const UsersModal = ({users}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
+
   return (
     <DefaultModal style={{zIndex: 200}}>
       <DefaultForm
@@ -35,10 +36,19 @@ const UsersModal = ({users}: TProps) => {
               id: string;
               displayName: string;
               thumbnail?: string;
+              added: boolean;
             };
           }) => {
             return (
-              <SmallUserCard id={item.id} displayName={item.displayName} />
+              <SmallUserCard
+                {...item}
+                style={{
+                  padding: 20,
+                  borderWidth: 1,
+                  borderColor: 'gray',
+                  borderRadius: 10,
+                }}
+              />
             );
           }}
           ItemSeparatorComponent={() => <View style={styles.seperator} />}

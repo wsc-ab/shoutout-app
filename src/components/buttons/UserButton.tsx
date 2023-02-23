@@ -1,5 +1,4 @@
 import React, {useContext} from 'react';
-import {View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import {TStyleView} from '../../types/Style';
@@ -14,15 +13,14 @@ const UserButton = ({style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
 
   return (
-    <View style={style}>
-      <DefaultIcon
-        icon="user"
-        size={20}
-        onPress={() => {
-          onUpdate({target: 'users', data: {id: authUserData.id}});
-        }}
-      />
-    </View>
+    <DefaultIcon
+      icon="user"
+      size={20}
+      style={style}
+      onPress={() => {
+        onUpdate({target: 'users', data: {id: authUserData.id}});
+      }}
+    />
   );
 };
 
