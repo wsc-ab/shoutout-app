@@ -4,6 +4,7 @@ import AuthUserContext from '../../contexts/AuthUser';
 import {TStyleView} from '../../types/Style';
 import {createShareLink} from '../../utils/Share';
 import DefaultAlert from '../defaults/DefaultAlert';
+import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
 import openShareModal from '../modals/ShareModal';
 
@@ -43,10 +44,12 @@ const InviteCard = ({style}: TProps) => {
       <View style={styles.body}>
         <DefaultText title={'Invite friends'} textStyle={styles.textName} />
         <DefaultText
-          title={'Connect your live moments with more friends!'}
+          title={'Connect live moments with more friends!'}
+          numberOfLines={1}
           style={styles.detail}
         />
       </View>
+      {!submitting && <DefaultIcon icon="plus" />}
       {submitting && <ActivityIndicator />}
     </Pressable>
   );
@@ -59,6 +62,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 20,
     borderRadius: 10,
+    alignItems: 'center',
   },
   body: {flex: 1},
   textName: {fontWeight: 'bold'},

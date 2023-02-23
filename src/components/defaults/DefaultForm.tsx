@@ -24,7 +24,14 @@ const DefaultForm = ({title, left, right, children, style}: TProps) => {
     <View style={[styles.container, style]}>
       <View style={styles.header}>
         <View style={styles.left}>
-          {left && <DefaultIcon icon="angle-left" onPress={left.onPress} />}
+          {left && (
+            <DefaultIcon
+              icon="angle-left"
+              onPress={left.onPress}
+              size={20}
+              style={styles.icon}
+            />
+          )}
         </View>
         <DefaultText
           title={title}
@@ -36,6 +43,8 @@ const DefaultForm = ({title, left, right, children, style}: TProps) => {
             <DefaultIcon
               icon={right.icon ?? 'angle-right'}
               onPress={right.onPress}
+              size={20}
+              style={styles.icon}
             />
           )}
           {right?.submitting && <ActivityIndicator style={styles.act} />}
@@ -63,6 +72,7 @@ const styles = StyleSheet.create({
     zIndex: 100,
     paddingHorizontal: 20,
   },
+  icon: {padding: 10},
   left: {flex: 1, alignItems: 'flex-start'},
   center: {
     flex: 1,

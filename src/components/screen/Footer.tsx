@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
+    padding: 10,
     marginHorizontal: 10,
     backgroundColor: defaultBlack.lv3(1),
     borderRadius: 20,

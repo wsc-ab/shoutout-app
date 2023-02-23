@@ -8,11 +8,6 @@
  * @format
  */
 
-import notifee from '@notifee/react-native';
-import {
-  firebase,
-  FirebaseMessagingTypes,
-} from '@react-native-firebase/messaging';
 import React, {useEffect, useState} from 'react';
 import {StatusBar, StyleSheet, View} from 'react-native';
 import Home from './src/components/screen/Home';
@@ -25,26 +20,6 @@ import {TStatus} from './src/types/Screen';
 import {initAlgolia} from './src/utils/Algolia';
 import {initFirebase} from './src/utils/Firebase';
 import './src/utils/FontAwesome';
-
-// Your app's background handler for incoming remote messages
-firebase
-  .messaging()
-  .setBackgroundMessageHandler(
-    async (remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
-      console.log('called');
-
-      const {notification, data} = remoteMessage;
-      if (notification) {
-        await notifee.displayNotification({
-          title: notification.title,
-          body: notification.body,
-          data: data,
-        });
-      }
-      // Increment the count by 1
-      await notifee.incrementBadgeCount();
-    },
-  );
 
 type TProps = {
   bundleId: TBundleId;

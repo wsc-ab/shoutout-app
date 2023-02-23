@@ -36,7 +36,6 @@ const Prompts = ({style}: TProps) => {
   const {promptUpdated} = useContext(UploadingContext);
 
   useEffect(() => {
-    // App launched, remove the badge count
     notifee.setBadgeCount(0).then(() => console.log('Badge count removed'));
   }, []);
 

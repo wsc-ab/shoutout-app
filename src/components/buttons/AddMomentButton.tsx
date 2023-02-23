@@ -76,7 +76,7 @@ const AddMomentButton = ({id, style}: TProps) => {
           icon="plus"
           onPress={added ? onAdded : onAdd}
           size={20}
-          style={{paddingVertical: 0, paddingHorizontal: 10}}
+          style={{paddingHorizontal: 10}}
           color={added ? defaultRed.lv2 : 'white'}
         />
       )}

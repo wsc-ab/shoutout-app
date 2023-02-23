@@ -35,6 +35,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 100,
   },
-  button: {flex: 1, alignItems: 'center'},
+  button: {flex: 1, alignItems: 'center', padding: 10},
   selected: {borderBottomWidth: 1, borderColor: 'white'},
 });

@@ -77,7 +77,7 @@ const LikeButton = ({moment, style}: TProps) => {
         color={liked ? defaultRed.lv2 : 'white'}
         size={20}
       />
-      <DefaultText title={number.toString()} style={{paddingRight: 5}} />
+      <DefaultText title={number.toString()} style={{marginLeft: 5}} />
     </View>
   );
 };

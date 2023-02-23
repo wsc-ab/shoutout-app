@@ -67,11 +67,7 @@ const CreateButton = ({style, onCreate}: TProps) => {
           icon="video"
           onPress={onAdd}
           size={20}
-          style={{
-            alignItems: 'center',
-            alignSelf: 'stretch',
-            borderRadius: 20,
-          }}
+          style={styles.icon}
         />
       )}
       {submitting && <ActivityIndicator style={styles.act} color="white" />}
@@ -88,6 +84,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     backgroundColor: defaultBlack.lv3(1),
+    borderRadius: 20,
+  },
+  icon: {
+    padding: 10,
+    alignItems: 'center',
+    alignSelf: 'stretch',
     borderRadius: 20,
   },
 });
