@@ -50,7 +50,7 @@ const AuthUserModal = ({}: TProps) => {
         right={{
           icon: 'user',
           onPress: () => {
-            onUpdate({target: 'users', id: authUserData.id});
+            onUpdate({target: 'users', data: {id: authUserData.id}});
           },
         }}>
         <ScrollView

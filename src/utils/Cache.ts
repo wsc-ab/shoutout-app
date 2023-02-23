@@ -7,11 +7,14 @@ import {createMockId} from './Storage';
 export const loadFromCache = async ({remotePath}: {remotePath: string}) => {
   // 1. check if cached
   let localPath = await checkCache({remotePath});
+  console.log(localPath, 'check');
 
   // 2. if not cached, cache it
   if (!localPath) {
     localPath = await saveCache({remotePath});
   }
+
+  console.log(localPath, 'saveCache');
 
   // 3. return local path
 
@@ -54,7 +57,10 @@ export const saveCache = async ({remotePath}: {remotePath: string}) => {
     const size = metaData.size;
     const localPath = `${RNFS.CachesDirectoryPath}/${createMockId(5)}.${ext}`;
 
-    await RNFS.downloadFile({fromUrl: downloadUrl, toFile: localPath}).promise;
+    const r = await RNFS.downloadFile({fromUrl: downloadUrl, toFile: localPath})
+      .promise;
+    console.log(r, 'r');
+
     await saveCacheData({remotePath, localPath, size});
 
     return localPath;
@@ -80,7 +86,7 @@ export const saveCacheData = async ({
       : localPath;
 
     await saveToAS({
-      key: remotePath,
+      key: `cache_${remotePath}`,
       data: JSON.stringify({localPath: path, accessedAt, size}),
     });
 
@@ -97,7 +103,7 @@ export const readCacheData = async ({
 }): Promise<TCacheData | undefined> => {
   try {
     const json = await readFromAS({
-      key: remotePath,
+      key: `cache_${remotePath}`,
     });
 
     if (json) {
@@ -120,6 +126,7 @@ export const clearCache = async () => {
     }
 
     await RNFS.unlink(RNFS.CachesDirectoryPath);
+    await RNFS.mkdir(RNFS.CachesDirectoryPath);
     const now = Date.now();
     await saveToAS({
       key: 'lastCacheClean',

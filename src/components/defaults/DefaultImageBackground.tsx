@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Image, Pressable, StyleSheet, View} from 'react-native';
+import {ImageBackground, Pressable, StyleSheet, View} from 'react-native';
 import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
 import {loadFromCache} from '../../utils/Cache';
@@ -19,14 +19,16 @@ export type Props = {
   blurRadius?: number;
   onLoaded?: () => void;
   onPress?: () => void;
+  children: React.ReactNode;
 };
 
-const DefaultImage = ({
+const DefaultImageBackground = ({
   image,
   style,
   imageStyle,
   blurRadius,
   onLoaded,
+  children,
   onPress,
 }: Props) => {
   const [imageUrl, setImageUrl] = useState<string>();
@@ -49,8 +51,6 @@ const DefaultImage = ({
 
         setImageUrl(localPath);
       } catch (e) {
-        console.log(e, 'e');
-
         setStatus('error');
       } finally {
         isMounted && setStatus('loaded');
@@ -71,7 +71,7 @@ const DefaultImage = ({
   return (
     <Pressable style={style} onPress={onPress} disabled={!onPress}>
       {status === 'loaded' && image && (
-        <Image
+        <ImageBackground
           style={[styles.image, imageStyle]}
           source={{
             uri: imageUrl,
@@ -79,8 +79,9 @@ const DefaultImage = ({
           resizeMode="cover"
           onLoadEnd={onLoaded}
           onError={() => setStatus('error')}
-          blurRadius={blurRadius}
-        />
+          blurRadius={blurRadius}>
+          {children}
+        </ImageBackground>
       )}
       {status === 'loaded' && !image && (
         <DefaultText
@@ -101,7 +102,7 @@ const DefaultImage = ({
   );
 };
 
-export default DefaultImage;
+export default DefaultImageBackground;
 
 const styles = StyleSheet.create({
   image: {

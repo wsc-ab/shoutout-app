@@ -13,6 +13,7 @@ import AddMomentButton from '../buttons/AddMomentButton';
 import {defaultBlack} from './DefaultColors';
 import DefaultIcon from './DefaultIcon';
 import DefaultImage from './DefaultImage';
+import DefaultImageBackground from './DefaultImageBackground';
 import DefaultText from './DefaultText';
 
 type TProps = {
@@ -157,18 +158,7 @@ const DefaultVideo = ({
     );
   }
 
-  if (!uri && thumbPath) {
-    return (
-      <View>
-        <DefaultImage
-          imageStyle={videoStyle}
-          image={getThumbnailPath(path, 'video')}
-        />
-      </View>
-    );
-  }
-
-  if (!uri) {
+  if (!thumbPath) {
     return null;
   }
 
@@ -177,48 +167,52 @@ const DefaultVideo = ({
       style={style}
       disabled={disabled}
       onPress={onPress ? onPress : () => setUserPaused(pre => !pre)}>
-      {status === 'error' && (
-        <Pressable style={styles.error} onPress={() => setStatus('loading')}>
-          <DefaultIcon icon="exclamation" />
-          <DefaultText title="Reload" />
-        </Pressable>
-      )}
-      {mount && (
-        <View style={videoStyle}>
-          <Video
-            source={{uri}}
-            style={videoStyle}
-            resizeMode="cover"
-            posterResizeMode="cover"
-            ignoreSilentSwitch="ignore"
-            paused={paused}
-            onError={() => {
-              if (uri) {
-                setStatus('error');
-              }
-            }}
-            onLoad={() => {
-              onLoaded && onLoaded();
-            }}
-            bufferConfig={{
-              minBufferMs: 0,
-              maxBufferMs: 0,
-              bufferForPlaybackMs: 0,
-              bufferForPlaybackAfterRebufferMs: 0,
-            }}
-            poster={thumbPath}
-            onBuffer={({isBuffering}) => setBuffer(isBuffering)}
-            repeat={repeat}
-            onEnd={onEnd}
-          />
-          {userPaused && (
-            <DefaultIcon icon="play" style={styles.play} size={20} />
-          )}
-          {!paused && buffer && (
-            <ActivityIndicator style={styles.play} color="white" />
-          )}
-        </View>
-      )}
+      <DefaultImageBackground
+        imageStyle={videoStyle}
+        image={getThumbnailPath(path, 'video')}>
+        {status === 'error' && (
+          <Pressable style={styles.error} onPress={() => setStatus('loading')}>
+            <DefaultIcon icon="exclamation" />
+            <DefaultText title="Reload" />
+          </Pressable>
+        )}
+        {mount && uri && (
+          <View style={videoStyle}>
+            <Video
+              source={{uri}}
+              style={videoStyle}
+              resizeMode="cover"
+              posterResizeMode="cover"
+              ignoreSilentSwitch="ignore"
+              paused={paused}
+              onError={() => {
+                if (uri) {
+                  setStatus('error');
+                }
+              }}
+              onLoad={() => {
+                onLoaded && onLoaded();
+              }}
+              bufferConfig={{
+                minBufferMs: 0,
+                maxBufferMs: 0,
+                bufferForPlaybackMs: 0,
+                bufferForPlaybackAfterRebufferMs: 0,
+              }}
+              poster={thumbPath}
+              onBuffer={({isBuffering}) => setBuffer(isBuffering)}
+              repeat={repeat}
+              onEnd={onEnd}
+            />
+            {userPaused && (
+              <DefaultIcon icon="play" style={styles.play} size={20} />
+            )}
+            {!paused && buffer && (
+              <ActivityIndicator style={styles.play} color="white" />
+            )}
+          </View>
+        )}
+      </DefaultImageBackground>
     </Pressable>
   );
 };
