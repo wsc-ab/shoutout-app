@@ -40,10 +40,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     padding: 10,
-    backgroundColor: defaultBlack.lv3(1),
+    backgroundColor: defaultBlack.lv3(0.5),
     borderRadius: 20,
     marginHorizontal: 10,
     alignSelf: 'stretch',
   },
-  selected: {borderBottomWidth: 1, borderColor: 'white'},
+  selected: {backgroundColor: defaultBlack.lv3(1)},
 });

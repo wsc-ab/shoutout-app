@@ -30,21 +30,9 @@ const PromptCard = ({style, prompt, pauseOnModal, path, mount}: TProps) => {
   const [status, setStatus] = useState<TStatus>('loading');
   const {height, width} = useWindowDimensions();
   const [index, setIndex] = useState(0);
-  const [initialScrollIndex, setInitialScrollIndex] = useState<number>();
+
   const {authUserData} = useContext(AuthUserContext);
   const [added, setAdded] = useState(true);
-
-  useEffect(() => {
-    if (data) {
-      const pathIndex = data.findIndex(
-        ({path: elPath}: {path: string}) => elPath === path,
-      );
-
-      if (pathIndex >= 0) {
-        setInitialScrollIndex(pathIndex);
-      }
-    }
-  }, [data, path]);
 
   useEffect(() => {
     const onNext = async (doc: TDocSnapshot) => {
@@ -63,6 +51,24 @@ const PromptCard = ({style, prompt, pauseOnModal, path, mount}: TProps) => {
         );
 
         const newAdded = addedUserIds.includes(authUserData.id);
+
+        if (path) {
+          const pathIndex = newPrompt.moments.items.findIndex(
+            ({path: elPath}) => elPath === path,
+          );
+
+          if (pathIndex === -1) {
+            DefaultAlert({
+              title: 'Failed to get moment data',
+              message: 'This moment seems to be deleted',
+            });
+          }
+
+          newPrompt.moments.items.unshift(
+            newPrompt.moments.items.splice(pathIndex, 1)[0],
+          );
+        }
+
         setAdded(newAdded);
         setData(newPrompt.moments.items);
       }
@@ -83,7 +89,7 @@ const PromptCard = ({style, prompt, pauseOnModal, path, mount}: TProps) => {
       .onSnapshot(onNext, onError);
 
     return unsubscribe;
-  }, [authUserData.id, prompt.id]);
+  }, [authUserData.id, path, prompt.id]);
 
   const onViewableItemsChanged = ({
     viewableItems,
@@ -129,8 +135,6 @@ const PromptCard = ({style, prompt, pauseOnModal, path, mount}: TProps) => {
       ) : null}
     </>
   );
-
-  console.log(added, 'added');
 
   const renderItem = ({
     item,
@@ -181,7 +185,6 @@ const PromptCard = ({style, prompt, pauseOnModal, path, mount}: TProps) => {
         initialNumToRender={1}
         windowSize={3}
         maxToRenderPerBatch={1}
-        initialScrollIndex={initialScrollIndex}
         ListEmptyComponent={ListEmptyComponent}
         snapToInterval={height}
         snapToAlignment={'start'}

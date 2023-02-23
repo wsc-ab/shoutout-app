@@ -81,7 +81,7 @@ const AddContentButton = ({id, number, style}: TProps) => {
           color={added ? defaultRed.lv2 : 'white'}
         />
       )}
-      {submitting && <ActivityIndicator style={styles.act} color="white" />}
+      {submitting && <ActivityIndicator color="white" />}
       <DefaultText title={number.toString()} style={{marginLeft: 5}} />
     </View>
   );
@@ -90,7 +90,6 @@ const AddContentButton = ({id, number, style}: TProps) => {
 export default AddContentButton;
 
 const styles = StyleSheet.create({
-  act: {padding: 10},
   container: {
     flexDirection: 'row',
     alignItems: 'center',

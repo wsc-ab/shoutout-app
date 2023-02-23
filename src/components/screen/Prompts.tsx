@@ -104,50 +104,54 @@ const Prompts = ({style}: TProps) => {
           borderRadius: 10,
           marginHorizontal: 10,
         }}>
-        {item.moments.items.map(({name, path, addedAt, user: {id: userId}}) => {
-          const late = getSecondsGap({start: addedAt, end: item.endAt}) >= 0;
-          return (
-            <Pressable
-              key={path}
-              style={{flexDirection: 'row', marginBottom: 10}}
-              onPress={() => {
-                onView({id: item.id, path});
-              }}>
-              <DefaultIcon
-                icon="user"
-                style={{
-                  borderWidth: 1,
-                  borderColor: 'gray',
-                  borderRadius: 20,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  height: 50,
-                  width: 50,
-                }}
-              />
+        {item.moments.items.map(
+          ({name, path, addedAt, user: {id: userId, displayName}}) => {
+            const late = getSecondsGap({start: addedAt, end: item.endAt}) >= 0;
+            return (
               <Pressable
-                style={{marginLeft: 10, flex: 1}}
+                key={path}
+                style={{flexDirection: 'row', marginBottom: 10}}
                 onPress={() => {
-                  onUpdate({target: 'users', data: {id: userId}});
+                  onView({id: item.id, path});
                 }}>
-                <DefaultText
-                  title={item.createdBy.displayName}
-                  textStyle={{fontWeight: 'bold'}}
+                <DefaultIcon
+                  icon="user"
+                  style={{
+                    borderWidth: 1,
+                    borderColor: 'gray',
+                    borderRadius: 20,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: 50,
+                    width: 50,
+                  }}
                 />
-                <DefaultText title={name} />
-                {late && <DefaultText title={'Missed this one'} />}
-                {!late && <DefaultText title={`${getTimeGap(addedAt)} ago`} />}
+                <Pressable
+                  style={{marginLeft: 10, flex: 1}}
+                  onPress={() => {
+                    onUpdate({target: 'users', data: {id: userId}});
+                  }}>
+                  <DefaultText
+                    title={displayName}
+                    textStyle={{fontWeight: 'bold'}}
+                  />
+                  <DefaultText title={name} />
+                  {late && <DefaultText title={'Missed this one'} />}
+                  {!late && (
+                    <DefaultText title={`${getTimeGap(addedAt)} ago`} />
+                  )}
+                </Pressable>
+                <DefaultImage
+                  image={getThumbnailPath(path, 'video')}
+                  imageStyle={{
+                    height: 50,
+                    width: 50,
+                  }}
+                />
               </Pressable>
-              <DefaultImage
-                image={getThumbnailPath(path, 'video')}
-                imageStyle={{
-                  height: 50,
-                  width: 50,
-                }}
-              />
-            </Pressable>
-          );
-        })}
+            );
+          },
+        )}
 
         <View
           style={{
@@ -160,7 +164,11 @@ const Prompts = ({style}: TProps) => {
             <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
               {!expired && !added && <AddMomentButton id={item.id} />}
               {!expired && added && (
-                <DefaultIcon icon="check" style={{paddingHorizontal: 10}} />
+                <DefaultIcon
+                  icon="check"
+                  style={{paddingHorizontal: 10}}
+                  size={20}
+                />
               )}
               {!expired && (
                 <DefaultText title={`Closing in ${getTimeGap(item.endAt)}`} />

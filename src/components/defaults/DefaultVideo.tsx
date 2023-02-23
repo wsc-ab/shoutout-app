@@ -10,6 +10,7 @@ import {loadFromCache} from '../../utils/Cache';
 
 import {getThumbnailPath} from '../../utils/Storage';
 import AddMomentButton from '../buttons/AddMomentButton';
+import {defaultBlack} from './DefaultColors';
 import DefaultIcon from './DefaultIcon';
 import DefaultImage from './DefaultImage';
 import DefaultText from './DefaultText';
@@ -115,7 +116,7 @@ const DefaultVideo = ({
         <DefaultImage
           imageStyle={videoStyle}
           image={getThumbnailPath(path, 'video')}
-          blurRadius={20}
+          blurRadius={50}
         />
         <View
           style={{
@@ -127,9 +128,30 @@ const DefaultVideo = ({
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <DefaultText title="No ghosting!" />
-          <DefaultText title="Share your moment to view this" />
-          <AddMomentButton id={promptId} style={{marginTop: 10}} />
+          <DefaultText title="No ghosting!" textStyle={{fontWeight: 'bold'}} />
+          <DefaultText
+            title="Share your moment to view"
+            style={{
+              marginTop: 10,
+            }}
+            textStyle={{fontWeight: 'bold'}}
+          />
+          <DefaultText
+            title="what your friends are upto!"
+            style={{
+              marginTop: 10,
+            }}
+            textStyle={{fontWeight: 'bold'}}
+          />
+          <AddMomentButton
+            id={promptId}
+            style={{
+              marginTop: 20,
+              backgroundColor: defaultBlack.lv3(1),
+              padding: 10,
+              borderRadius: 50,
+            }}
+          />
         </View>
       </View>
     );

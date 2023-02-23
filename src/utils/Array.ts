@@ -80,3 +80,18 @@ export const pickRandomItem = <A extends TObject | string>({
 }: {
   array: A[];
 }) => array[Math.floor(Math.random() * array.length)];
+
+export const moveToFirst = <A extends TObject>({
+  array,
+  key,
+  value,
+}: {
+  array: A[];
+  key: string;
+  value: string;
+}) => {
+  const index = array.findIndex(item => item[key] === value);
+  array.unshift(array.splice(index, 1)[0]);
+
+  return array;
+};

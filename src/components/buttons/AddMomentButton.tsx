@@ -75,7 +75,7 @@ const AddMomentButton = ({id, style}: TProps) => {
         <DefaultIcon
           icon="plus"
           onPress={added ? onAdded : onAdd}
-          style={{paddingHorizontal: 10}}
+          size={20}
           color={added ? 'white' : defaultRed.lv2}
         />
       )}
@@ -88,6 +88,7 @@ export default AddMomentButton;
 
 const styles = StyleSheet.create({
   container: {
+    paddingHorizontal: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
