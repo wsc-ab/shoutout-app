@@ -47,6 +47,7 @@ const InviteCard = ({style}: TProps) => {
           title={'Connect live moments with more friends!'}
           numberOfLines={1}
           style={styles.detail}
+          textStyle={styles.detailText}
         />
       </View>
       {!submitting && <DefaultIcon icon="plus" />}
@@ -65,6 +66,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   body: {flex: 1},
-  textName: {fontWeight: 'bold'},
+  textName: {fontWeight: 'bold', fontSize: 20},
   detail: {marginTop: 5},
+  detailText: {fontWeight: 'bold'},
 });
