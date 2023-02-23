@@ -1,5 +1,6 @@
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 import React, {createContext, useEffect, useState} from 'react';
+import AddContentForm from '../components/forms/AddContentForm';
 import AddMomentForm from '../components/forms/AddMomentForm';
 import CreatePromptForm from '../components/forms/CreatePromptForm';
 import AuthUserModal from '../components/modals/AuthUserModal';

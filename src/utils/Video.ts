@@ -153,7 +153,7 @@ export const takeAndUploadVideo = async ({
   }
 
   try {
-    const size = (await RNFS.stat(`${videoPath}_thumb`)).size;
+    const size = (await RNFS.stat(thumbUri)).size;
 
     await saveCacheData({
       remotePath: `${videoPath}_thumb`,
@@ -165,7 +165,7 @@ export const takeAndUploadVideo = async ({
   }
 
   try {
-    const size = (await RNFS.stat(videoPath)).size;
+    const size = (await RNFS.stat(uri)).size;
 
     await saveCacheData({
       remotePath: videoPath,

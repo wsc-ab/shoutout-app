@@ -24,7 +24,7 @@ const AddContentForm = ({path, id}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
 
   const schema = object({
-    name: text({min: 4, max: 50, required: true}),
+    name: text({min: 1, max: 50, required: true}),
   }).required();
 
   const {
@@ -73,7 +73,7 @@ const AddContentForm = ({path, id}: TProps) => {
             control={control}
             name="name"
             title="Name"
-            detail="Set the name of the moment."
+            detail="Short description of the moment."
             errors={errors.name}
           />
         </DefaultKeyboardAwareScrollView>

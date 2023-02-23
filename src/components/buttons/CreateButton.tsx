@@ -8,13 +8,14 @@ import {checkLocationPermission} from '../../utils/Location';
 import {takeAndUploadVideo} from '../../utils/Video';
 import DefaultAlert from '../defaults/DefaultAlert';
 import {defaultBlack} from '../defaults/DefaultColors';
-import DefaultText from '../defaults/DefaultText';
+import DefaultIcon from '../defaults/DefaultIcon';
 
 type TProps = {
   style?: TStyleView;
+  onCreate: () => void;
 };
 
-const CreateButton = ({style}: TProps) => {
+const CreateButton = ({style, onCreate}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
   const {onUpdate} = useContext(ModalContext);
   const [submitting, setSubmitting] = useState(false);
@@ -44,6 +45,7 @@ const CreateButton = ({style}: TProps) => {
             data: {path},
           }),
       });
+      onCreate();
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {
         DefaultAlert({
@@ -59,18 +61,7 @@ const CreateButton = ({style}: TProps) => {
 
   return (
     <View style={[styles.container, style]}>
-      {!submitting && (
-        <DefaultText
-          title="What's up?"
-          onPress={onAdd}
-          style={{
-            padding: 10,
-            alignSelf: 'stretch',
-            alignItems: 'center',
-          }}
-          textStyle={{fontWeight: 'bold'}}
-        />
-      )}
+      {!submitting && <DefaultIcon icon="video" onPress={onAdd} size={20} />}
       {submitting && <ActivityIndicator style={styles.act} color="white" />}
     </View>
   );

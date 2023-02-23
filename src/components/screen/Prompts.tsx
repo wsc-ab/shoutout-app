@@ -150,11 +150,12 @@ const Prompts = ({style}: TProps) => {
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <View style={{flex: 1}}>
-              {!added && <AddMomentButton id={item.id} />}
-              {!expired && !added && (
-                <DefaultText title={`Share in ${getTimeGap(item.endAt)}`} />
+              {!expired && !added && <AddMomentButton id={item.id} />}
+              {!expired && added && (
+                <DefaultText title={`Closing in ${getTimeGap(item.endAt)}`} />
               )}
-              {expired && !added && <DefaultText title={'Share late'} />}
+              {expired && !added && <DefaultText title={'Missed'} />}
+              {expired && added && <DefaultText title={'Shared my moment'} />}
             </View>
 
             <Pressable
@@ -196,6 +197,7 @@ const Prompts = ({style}: TProps) => {
         ItemSeparatorComponent={() => <View style={styles.seperator} />}
       />
       <CreateButton
+        onCreate={() => setStatus('loading')}
         style={{position: 'absolute', bottom: 24, left: 0, right: 0}}
       />
     </View>

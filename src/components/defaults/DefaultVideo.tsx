@@ -88,31 +88,47 @@ const DefaultVideo = ({
 
   const paused = !inView || userPaused;
 
+  if (isReported) {
+    return (
+      <View>
+        <DefaultImage
+          imageStyle={videoStyle}
+          blurRadius={20}
+          image={getThumbnailPath(path, 'video')}
+        />
+        <DefaultText
+          title="Cancel report to view this moment"
+          style={styles.reported}
+        />
+      </View>
+    );
+  }
+
+  if (!uri) {
+    return (
+      <View>
+        <DefaultImage
+          imageStyle={videoStyle}
+          image={getThumbnailPath(path, 'video')}
+        />
+      </View>
+    );
+  }
+
+  console.log(uri, 'uri');
+
   return (
     <Pressable
       style={style}
       disabled={disabled}
       onPress={onPress ? onPress : () => setUserPaused(pre => !pre)}>
-      {isReported && (
-        <View>
-          <DefaultImage
-            imageStyle={videoStyle}
-            blurRadius={20}
-            image={getThumbnailPath(path, 'video')}
-          />
-          <DefaultText
-            title="Cancel report to view this moment"
-            style={styles.reported}
-          />
-        </View>
-      )}
-      {status === 'error' && uri && (
+      {status === 'error' && (
         <Pressable style={styles.error} onPress={() => setStatus('loading')}>
           <DefaultIcon icon="exclamation" />
           <DefaultText title="Reload" />
         </Pressable>
       )}
-      {!isReported && mount && (
+      {mount && (
         <View style={videoStyle}>
           <Video
             source={{uri}}

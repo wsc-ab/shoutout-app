@@ -80,7 +80,7 @@ const AddMomentButton = ({id, style}: TProps) => {
           color={added ? defaultRed.lv2 : 'white'}
         />
       )}
-      {submitting && <ActivityIndicator style={styles.act} color="white" />}
+      {submitting && <ActivityIndicator color="white" />}
     </View>
   );
 };
@@ -88,7 +88,6 @@ const AddMomentButton = ({id, style}: TProps) => {
 export default AddMomentButton;
 
 const styles = StyleSheet.create({
-  act: {padding: 10},
   container: {
     flexDirection: 'row',
     alignItems: 'center',

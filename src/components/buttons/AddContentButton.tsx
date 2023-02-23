@@ -76,7 +76,7 @@ const AddContentButton = ({id, number, style}: TProps) => {
       {!submitting && (
         <DefaultIcon
           icon="plus"
-          onPress={added ? onAdded : onAdd}
+          onPress={added ? onAdd : onAdd}
           size={20}
           color={added ? defaultRed.lv2 : 'white'}
         />

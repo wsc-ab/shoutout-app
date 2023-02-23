@@ -15,6 +15,8 @@ export const loadFromCache = async ({remotePath}: {remotePath: string}) => {
 
   // 3. return local path
 
+  console.log(localPath, 'localPath');
+
   return `file://${localPath}`;
 };
 
@@ -75,9 +77,13 @@ export const saveCacheData = async ({
   try {
     const accessedAt = Date.now();
 
+    const path = localPath.startsWith('file://')
+      ? localPath.split('file://')[1]
+      : localPath;
+
     await saveToAS({
       key: remotePath,
-      data: JSON.stringify({localPath, accessedAt, size}),
+      data: JSON.stringify({localPath: path, accessedAt, size}),
     });
 
     return localPath;
