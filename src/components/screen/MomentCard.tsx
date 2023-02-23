@@ -157,7 +157,7 @@ const MomentCard = ({
               position: 'absolute',
               top: 100,
               zIndex: 100,
-              paddingHorizontal: 10,
+              paddingHorizontal: 20,
             }}
             textStyle={{fontWeight: 'bold', fontSize: 20}}
           />
@@ -170,7 +170,11 @@ const MomentCard = ({
             inView={inView && index === elIndex}
           />
         </View>
-        <Footer item={item} number={data.contents.number} />
+        <Footer
+          item={item}
+          number={data.contents.number}
+          style={{marginHorizontal: 10}}
+        />
       </View>
     );
   };
@@ -208,5 +212,5 @@ const MomentCard = ({
 export default MomentCard;
 
 const styles = StyleSheet.create({
-  users: {position: 'absolute', bottom: 90},
+  users: {position: 'absolute', bottom: 90, marginLeft: 20},
 });

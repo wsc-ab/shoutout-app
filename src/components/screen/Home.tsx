@@ -51,7 +51,7 @@ export default Home;
 
 const styles = StyleSheet.create({
   container: {flex: 1},
-  prompts: {flex: 1, marginHorizontal: 10},
+  prompts: {flex: 1},
   moments: {flex: 1},
   hide: {display: 'none'},
 });

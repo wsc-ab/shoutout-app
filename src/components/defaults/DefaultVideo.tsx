@@ -104,7 +104,7 @@ const DefaultVideo = ({
     );
   }
 
-  if (!uri) {
+  if (!uri && thumbPath) {
     return (
       <View>
         <DefaultImage

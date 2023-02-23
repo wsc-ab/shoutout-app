@@ -2,7 +2,6 @@ import firestore from '@react-native-firebase/firestore';
 import React, {useEffect, useRef, useState} from 'react';
 import {
   FlatList,
-  RefreshControl,
   StyleSheet,
   useWindowDimensions,
   View,
@@ -168,14 +167,6 @@ const PromptCard = ({style, prompt, pauseOnModal, path, mount}: TProps) => {
         decelerationRate="fast"
         keyExtractor={keyExtractor}
         getItemLayout={getItemLayout}
-        refreshControl={
-          <RefreshControl
-            refreshing={status === 'loading'}
-            onRefresh={() => setStatus('loading')}
-            tintColor={'gray'}
-            progressViewOffset={100}
-          />
-        }
         disableIntervalMomentum
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         onEndReached={onEndReached}

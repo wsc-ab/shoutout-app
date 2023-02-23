@@ -93,6 +93,7 @@ const Prompts = ({style}: TProps) => {
           borderColor: 'gray',
           padding: 20,
           borderRadius: 10,
+          marginHorizontal: 10,
         }}>
         {item.moments.items.map(({name, path, addedAt, user: {id: userId}}) => {
           const late = getSecondsGap({start: addedAt, end: item.endAt}) >= 0;
@@ -198,7 +199,13 @@ const Prompts = ({style}: TProps) => {
       />
       <CreateButton
         onCreate={() => setStatus('loading')}
-        style={{position: 'absolute', bottom: 24, left: 0, right: 0}}
+        style={{
+          position: 'absolute',
+          bottom: 24,
+          left: 0,
+          right: 0,
+          marginHorizontal: 20,
+        }}
       />
     </View>
   );
