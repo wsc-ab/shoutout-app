@@ -61,11 +61,11 @@ const FollowButton = ({user, style}: TProps) => {
     };
 
     DefaultAlert({
-      title: 'Unfollow?',
+      title: 'Are you sure?',
       message: "You won't get updates from this user.",
       buttons: [
-        {text: 'Unfollow', onPress, style: 'destructive'},
         {text: 'No'},
+        {text: 'Unfriend', onPress, style: 'destructive'},
       ],
     });
   };
