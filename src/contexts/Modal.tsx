@@ -83,7 +83,7 @@ const ModalProvider = ({children}: TProps) => {
       {modal?.target === 'moments' && modal.data?.id && (
         <MomentModal id={modal.data.id} path={modal.data.path} />
       )}
-      {modal?.target === 'prompt' && modal.data?.id && (
+      {modal?.target === 'prompts' && modal.data?.id && (
         <PromptModal id={modal.data.id} path={modal.data.path} />
       )}
       {modal?.target === 'create' && <CreatePromptForm {...modal.data} />}

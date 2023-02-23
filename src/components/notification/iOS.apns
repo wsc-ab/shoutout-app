@@ -5,7 +5,8 @@
     "sound": "default",
     "badge": 1
   },
-  "screen": "place",
+  "collection": "collection",
+  "path": "path",
   "id": "id",
   "gcm.message_id": "123",
   "example-data-key": "example-data-value"

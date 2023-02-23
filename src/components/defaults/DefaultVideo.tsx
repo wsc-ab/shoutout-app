@@ -115,6 +115,10 @@ const DefaultVideo = ({
     );
   }
 
+  if (!uri) {
+    return null;
+  }
+
   return (
     <Pressable
       style={style}

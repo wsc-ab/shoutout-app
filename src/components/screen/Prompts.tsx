@@ -84,7 +84,7 @@ const Prompts = ({style}: TProps) => {
     const expired = getSecondsGap({end: item.endAt}) >= 0;
 
     const onView = ({id, path}: {id: string; path: string}) =>
-      onUpdate({target: 'prompt', data: {id, path}});
+      onUpdate({target: 'prompts', data: {id, path}});
 
     return (
       <View
