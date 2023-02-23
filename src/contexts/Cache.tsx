@@ -1,9 +1,10 @@
 import React, {createContext, useEffect, useState} from 'react';
+import DefaultAlert from '../components/defaults/DefaultAlert';
 import {TStatus} from '../types/Screen';
 import {readFromAS} from '../utils/AsyncStorage';
 import {clearCache, removeOldCache} from '../utils/Cache';
 
-type TContextProps = {status: TStatus; onClear: () => void};
+type TContextProps = {onClear: () => Promise<void>};
 
 const CacheContext = createContext({} as TContextProps);
 
@@ -55,14 +56,13 @@ const CacheProvider = ({children}: TProps) => {
       await clearCache();
       setStatus('loaded');
     } catch (error) {
+      DefaultAlert({title: 'Error', message: 'Failed to clear cache.'});
       setStatus('error');
     }
   };
 
   return (
-    <CacheContext.Provider value={{status, onClear}}>
-      {children}
-    </CacheContext.Provider>
+    <CacheContext.Provider value={{onClear}}>{children}</CacheContext.Provider>
   );
 };
 
