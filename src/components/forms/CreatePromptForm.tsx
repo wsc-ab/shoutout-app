@@ -2,6 +2,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {firebase} from '@react-native-firebase/auth';
 import React, {useContext, useState} from 'react';
 import {useForm} from 'react-hook-form';
+import {StyleSheet} from 'react-native';
 import {object} from 'yup';
 import ModalContext from '../../contexts/Modal';
 import UploadingContext from '../../contexts/Uploading';
@@ -10,6 +11,7 @@ import {getLatLng} from '../../utils/Location';
 
 import {defaultSchema} from '../../utils/Schema';
 import {uploadVideo} from '../../utils/Video';
+import ControllerOption from '../controllers/ControllerOption';
 import ControllerText from '../controllers/ControllerText';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
@@ -29,6 +31,7 @@ const CreatePromptForm = ({remotePath, localPath}: TProps) => {
 
   const schema = object({
     name: text({min: 1, max: 50, required: true}),
+    type: text({required: true}),
   }).required();
 
   const {
@@ -39,10 +42,17 @@ const CreatePromptForm = ({remotePath, localPath}: TProps) => {
     resolver: yupResolver(schema),
     defaultValues: {
       name: '',
+      type: 'everyone',
     },
   });
 
-  const onSubmit = async ({name}: {name: string}) => {
+  const onSubmit = async ({
+    name,
+    type,
+  }: {
+    name: string;
+    type: 'everyone' | 'friends';
+  }) => {
     try {
       setSubmitting(true);
 
@@ -57,7 +67,7 @@ const CreatePromptForm = ({remotePath, localPath}: TProps) => {
       await createPrompt({
         moment: {
           id: momentId,
-          type: 'everyone',
+          type,
         },
         prompt: {id: promptId, type: 'friends'},
         content: {path: remotePath, latlng, name},
@@ -89,8 +99,20 @@ const CreatePromptForm = ({remotePath, localPath}: TProps) => {
             control={control}
             name="name"
             title="Name"
-            detail="Set the name of the moment."
+            detail="A short description of your moment."
             errors={errors.name}
+          />
+          <ControllerOption
+            control={control}
+            name="type"
+            title="Type"
+            detail="Select friends to share only with friends."
+            errors={errors.type}
+            options={[
+              {name: 'everyone', title: 'Everyone'},
+              {name: 'friends', title: 'Friends'},
+            ]}
+            style={styles.textInput}
           />
         </DefaultKeyboardAwareScrollView>
       </DefaultForm>
@@ -99,3 +121,5 @@ const CreatePromptForm = ({remotePath, localPath}: TProps) => {
 };
 
 export default CreatePromptForm;
+
+const styles = StyleSheet.create({textInput: {marginTop: 20}});

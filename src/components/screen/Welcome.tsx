@@ -31,6 +31,21 @@ const Welcome = ({style}: TProps) => {
 
   const data = [
     {
+      title: 'Share moments with friends without ghosting',
+      detail: 'Share',
+      icon: 'video',
+    },
+    {
+      title: 'You can connect to moments',
+      detail: 'Press',
+      icon: 'plus',
+    },
+    {
+      title: 'Moments',
+      detail: 'Press',
+      icon: 'plus',
+    },
+    {
       title: 'To watch connected moments',
       detail: 'Swipe',
       icon: 'hand-point-left',
@@ -39,16 +54,6 @@ const Welcome = ({style}: TProps) => {
       title: 'To watch the next moment',
       detail: 'Swipe',
       icon: 'hand-point-up',
-    },
-    {
-      title: 'To share a moment',
-      detail: 'Press',
-      icon: 'video',
-    },
-    {
-      title: 'To connect a moment',
-      detail: 'Press',
-      icon: 'plus',
     },
     {
       title: "Let's go",

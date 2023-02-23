@@ -23,13 +23,13 @@ type TProps = {
     location?: {name: string};
     addedAt: TTimestamp;
   }[];
-
+  type: string;
   index: number;
   style?: ViewStyle;
   onPress: (index: number) => void;
 };
 
-const ContributorsButton = ({users, onPress, index, style}: TProps) => {
+const ContributorsButton = ({users, type, onPress, index, style}: TProps) => {
   const {width} = useWindowDimensions();
 
   const ref = useRef<FlatList>(null);
@@ -44,6 +44,11 @@ const ContributorsButton = ({users, onPress, index, style}: TProps) => {
 
   return (
     <View style={style}>
+      <DefaultText
+        title={`For ${type}`}
+        textStyle={styles.nameText}
+        style={{paddingLeft: 20, marginBottom: 5}}
+      />
       <FlatList
         data={users}
         horizontal
