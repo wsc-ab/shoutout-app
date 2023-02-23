@@ -66,7 +66,7 @@ const AddContentButton = ({id, number, style}: TProps) => {
 
   const onAdded = () => {
     DefaultAlert({
-      title: 'Error',
+      title: 'Thank you',
       message: "You've already connected to this moment",
     });
   };
@@ -76,7 +76,7 @@ const AddContentButton = ({id, number, style}: TProps) => {
       {!submitting && (
         <DefaultIcon
           icon="plus"
-          onPress={added ? onAdd : onAdd}
+          onPress={added ? onAdded : onAdd}
           size={20}
           color={added ? defaultRed.lv2 : 'white'}
         />

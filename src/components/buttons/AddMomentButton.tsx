@@ -64,7 +64,7 @@ const AddMomentButton = ({id, style}: TProps) => {
 
   const onAdded = () => {
     DefaultAlert({
-      title: 'Error',
+      title: 'Thank you',
       message: "You've already connected to this moment",
     });
   };
