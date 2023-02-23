@@ -20,6 +20,7 @@ import {getThumbnailPath} from '../../utils/Storage';
 import AddMomentButton from '../buttons/AddMomentButton';
 import CreateButton from '../buttons/CreateButton';
 import DefaultAlert from '../defaults/DefaultAlert';
+import {defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultImage from '../defaults/DefaultImage';
 import DefaultText from '../defaults/DefaultText';
@@ -95,7 +96,7 @@ const Prompts = ({style}: TProps) => {
     );
 
     const users =
-      item.inviteTo.items?.map(elItem => ({
+      item.inviteTo?.items?.map(elItem => ({
         ...elItem,
         moment: item.moments.items.filter(
           ({user: {id: elId}}) => elId === elItem.id,
@@ -149,7 +150,7 @@ const Prompts = ({style}: TProps) => {
                     textStyle={{fontWeight: 'bold'}}
                   />
                   <DefaultText title={name} />
-                  {late && <DefaultText title={'Missed this one'} />}
+                  {late && <DefaultText title={'Late!'} />}
                   {!late && (
                     <DefaultText title={`${getTimeGap(addedAt)} ago`} />
                   )}
@@ -175,8 +176,8 @@ const Prompts = ({style}: TProps) => {
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-              {!expired && !added && <AddMomentButton id={item.id} />}
-              {!expired && added && (
+              {!added && <AddMomentButton id={item.id} />}
+              {added && (
                 <DefaultIcon
                   icon="check"
                   style={{paddingHorizontal: 10}}
@@ -184,10 +185,14 @@ const Prompts = ({style}: TProps) => {
                 />
               )}
               {!expired && (
-                <DefaultText title={`Closing in ${getTimeGap(item.endAt)}`} />
+                <DefaultText title={`Ends in ${getTimeGap(item.endAt)}`} />
               )}
-              {expired && !added && <DefaultText title={'Missed'} />}
-              {expired && added && <DefaultText title={'Shared my moment'} />}
+              {expired && (
+                <DefaultText
+                  title={`Late by ${getTimeGap(item.endAt)}!`}
+                  textStyle={{color: defaultRed.lv2}}
+                />
+              )}
             </View>
 
             <Pressable
