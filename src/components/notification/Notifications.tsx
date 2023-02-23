@@ -35,14 +35,14 @@ const Notifications = ({isPermitted}: TProps) => {
   }, [isPermitted, openModal]);
 
   useEffect(() => {
-    const onMessageHandler = (
+    const onMessageHandler = async (
       remoteMessage: FirebaseMessagingTypes.RemoteMessage,
     ) => {
       const {notification, data} = remoteMessage;
       console.log('onMessageHandler');
 
       if (notification) {
-        notifee.displayNotification({
+        await notifee.displayNotification({
           title: notification.title,
           body: notification.body,
           data: data,

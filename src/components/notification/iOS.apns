@@ -3,7 +3,6 @@
   "aps": {
     "alert": "Time to send a daily shoutout",
     "sound": "default",
-    "badge": 1
   },
   "collection": "collection",
   "path": "path",

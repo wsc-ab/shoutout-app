@@ -21,6 +21,7 @@ import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultImage from '../defaults/DefaultImage';
 import DefaultText from '../defaults/DefaultText';
+import notifee from '@notifee/react-native';
 
 type TProps = {
   style: TStyleView;
@@ -33,6 +34,11 @@ const Prompts = ({style}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
   const {authUserData} = useContext(AuthUserContext);
   const {promptUpdated} = useContext(UploadingContext);
+
+  useEffect(() => {
+    // App launched, remove the badge count
+    notifee.setBadgeCount(0).then(() => console.log('Badge count removed'));
+  }, []);
 
   useEffect(() => {
     if (promptUpdated) {
