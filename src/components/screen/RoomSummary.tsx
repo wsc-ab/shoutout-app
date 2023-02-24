@@ -195,7 +195,7 @@ const RoomSummary = ({room}: TProps) => {
           />
           {!added && (
             <DefaultText
-              title={'Share your moment!'}
+              title={'This room missed you!'}
               textStyle={{color: defaultRed.lv2}}
             />
           )}
