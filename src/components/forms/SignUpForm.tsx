@@ -5,12 +5,7 @@ import {useForm} from 'react-hook-form';
 import {Linking, StyleSheet, View} from 'react-native';
 import {object} from 'yup';
 
-import {
-  createUser,
-  sendVerificationCode,
-  updateUserProfileImage,
-} from '../../functions/User';
-import {getImage} from '../../utils/Image';
+import {createUser, sendVerificationCode} from '../../functions/User';
 import {defaultSchema} from '../../utils/Schema';
 import ControllerText from '../controllers/ControllerText';
 import DefaultAlert from '../defaults/DefaultAlert';

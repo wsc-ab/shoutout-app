@@ -40,8 +40,6 @@ const Rooms = ({style}: TProps) => {
     );
   };
 
-  console.log(authUserData.inviteFrom.ids, 'authUserData.inviteFrom.ids');
-
   return (
     <View style={style}>
       <FlatList
