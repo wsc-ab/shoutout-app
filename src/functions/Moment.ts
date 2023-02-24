@@ -8,8 +8,9 @@ export const createMoment = async (input: {
     path: string;
     latlng: TLatLng;
     type: 'everyone' | 'friends';
-    name?: string;
+    name: string;
   };
+  room?: {id: string};
 }) => {
   try {
     const {data} = await firebaseFunctions.httpsCallable('createMoment')(input);
@@ -89,10 +90,7 @@ export const deleteReport = async (input: {
 };
 
 export const addMoment = async (input: {
-  prompt: {
-    id: string;
-  };
-  moment: {id: string; type: 'friends' | 'everyone'};
+  moment: {id: string};
   content: {path: string; latlng: TLatLng; name: string};
 }) => {
   const {data} = await firebaseFunctions.httpsCallable('addMoment')(input);
@@ -100,24 +98,13 @@ export const addMoment = async (input: {
   return {...data};
 };
 
-export const addContent = async (input: {
-  moment: {
-    id: string;
-  };
-  content: {path: string; latlng: TLatLng; name: string};
-}) => {
-  const {data} = await firebaseFunctions.httpsCallable('addContent')(input);
-
-  return {...data};
-};
-
-export const removeContent = async (input: {
+export const removeMoment = async (input: {
   moment: {
     id: string;
   };
   content: {path: string};
 }) => {
-  const {data} = await firebaseFunctions.httpsCallable('removeContent')(input);
+  const {data} = await firebaseFunctions.httpsCallable('removeMoment')(input);
 
   return {...data};
 };

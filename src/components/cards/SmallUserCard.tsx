@@ -19,7 +19,7 @@ const SmallUserCard = ({id, index, displayName, moment, style}: TProps) => {
 
   return (
     <Pressable
-      onPress={() => onUpdate({target: 'users', data: {id}})}
+      onPress={() => onUpdate({target: 'user', data: {id}})}
       style={style}>
       <View style={styles.body}>
         <DefaultText
@@ -28,7 +28,7 @@ const SmallUserCard = ({id, index, displayName, moment, style}: TProps) => {
           textStyle={{fontWeight: 'bold', fontSize: 30}}
         />
         <UserProfileImage user={{id}} />
-        <View>
+        <View style={{marginLeft: 10}}>
           <DefaultText
             title={displayName}
             style={styles.displayName}
@@ -50,16 +50,6 @@ const styles = StyleSheet.create({
   body: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  icon: {
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 50,
-    width: 50,
-    marginRight: 10,
   },
   displayName: {marginBottom: 5},
   displayNameText: {fontWeight: 'bold'},

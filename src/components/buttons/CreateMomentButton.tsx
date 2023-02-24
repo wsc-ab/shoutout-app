@@ -1,4 +1,5 @@
-import React, {useContext, useEffect, useState} from 'react';
+import {firebase} from '@react-native-firebase/auth';
+import React, {useContext, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
@@ -6,25 +7,18 @@ import {TStyleView} from '../../types/Style';
 import {checkLocationPermission} from '../../utils/Location';
 import {takeVideo} from '../../utils/Video';
 import DefaultAlert from '../defaults/DefaultAlert';
-import {defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 
 type TProps = {
-  id: string;
-
   style?: TStyleView;
+  room?: {id: string};
+  color?: string;
 };
 
-const AddContentButton = ({id, style}: TProps) => {
+const CreateMomentButton = ({room, color = 'white', style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
   const {onUpdate} = useContext(ModalContext);
   const [submitting, setSubmitting] = useState(false);
-
-  const [added, setAdded] = useState(false);
-
-  useEffect(() => {
-    setAdded(authUserData.contributeTo.ids.includes(id));
-  }, [authUserData.contributeTo.ids, id]);
 
   const onAdd = async () => {
     onUpdate({target: 'video'});
@@ -32,6 +26,8 @@ const AddContentButton = ({id, style}: TProps) => {
     setSubmitting(true);
 
     const permitted = await checkLocationPermission();
+
+    const momentId = firebase.firestore().collection('moments').doc().id;
 
     if (!permitted) {
       DefaultAlert({
@@ -42,13 +38,13 @@ const AddContentButton = ({id, style}: TProps) => {
 
     try {
       const {remotePath, localPath} = await takeVideo({
-        id,
+        id: momentId,
         userId: authUserData.id,
       });
 
       onUpdate({
-        target: 'addContent',
-        data: {remotePath, localPath, id},
+        target: 'createMoment',
+        data: {remotePath, localPath, id: momentId, room},
       });
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {
@@ -63,29 +59,17 @@ const AddContentButton = ({id, style}: TProps) => {
     }
   };
 
-  const onAdded = () => {
-    DefaultAlert({
-      title: 'Thank you',
-      message: "You've already connected to this moment",
-    });
-  };
-
   return (
     <View style={[styles.container, style]}>
       {!submitting && (
-        <DefaultIcon
-          icon="plus"
-          onPress={added ? onAdded : onAdd}
-          size={20}
-          color={added ? defaultRed.lv2 : 'white'}
-        />
+        <DefaultIcon icon="video" onPress={onAdd} size={20} color={color} />
       )}
       {submitting && <ActivityIndicator color="white" />}
     </View>
   );
 };
 
-export default AddContentButton;
+export default CreateMomentButton;
 
 const styles = StyleSheet.create({
   container: {

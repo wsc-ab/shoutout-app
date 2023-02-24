@@ -6,7 +6,7 @@ import AuthUserContext from '../../contexts/AuthUser';
 import Permission from '../notification/Permission';
 import Header from './Header';
 import Landing from './Landing';
-import Prompts from './Prompts';
+import Prompts from './Rooms';
 import Welcome from './Welcome';
 
 const Home = () => {

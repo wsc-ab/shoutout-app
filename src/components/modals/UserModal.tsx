@@ -12,14 +12,13 @@ import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
-import ContentCard from '../screen/ContentCard';
+import MomentSummary from '../screen/MomentSummary';
 
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import {TDocData, TLocation, TTimestamp} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import FollowButton from '../buttons/FollowButton';
-import DefaultIcon from '../defaults/DefaultIcon';
 import UserProfileImage from '../defaults/UserProfileImage';
 
 type TProps = {
@@ -124,19 +123,23 @@ const UserModal = ({id}: TProps) => {
             }: {
               item: {
                 id: string;
-                path: string;
-                addedAt: TTimestamp;
-                location?: TLocation;
+                contents: {
+                  path: string;
+                  addedAt: TTimestamp;
+                  location: TLocation;
+                  name: string;
+                  user: {id: string; displayName: string};
+                }[];
               };
             }) => {
               return (
-                <ContentCard
-                  content={{...item, user: {id: data.id}}}
+                <MomentSummary
+                  moment={item}
                   onDelete={() => setStatus('loading')}
-                  onPress={() => {
+                  onPress={(path: string) => {
                     onUpdate({
-                      target: 'moments',
-                      data: {id: item.id, path: item.path},
+                      target: 'moment',
+                      data: {id: item.id, path},
                     });
                   }}
                   contentStyle={{

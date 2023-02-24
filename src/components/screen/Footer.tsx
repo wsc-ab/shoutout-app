@@ -1,7 +1,8 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {TStyleView} from '../../types/Style';
-import AddContentButton from '../buttons/AddContentButton';
+import AddMomentButton from '../buttons/AddMomentButton';
+import CreateMomentButton from '../buttons/CreateMomentButton';
 import LikeButton from '../buttons/LikeButton';
 import ReportButton from '../buttons/ReportButton';
 import ShareButton from '../buttons/ShareButton';
@@ -30,8 +31,8 @@ const Footer = ({item, style}: TProps) => {
         style={styles.button}
       />
 
-      <AddContentButton id={item.id} style={styles.button} />
-
+      <AddMomentButton id={item.id} style={styles.button} />
+      <CreateMomentButton style={styles.button} />
       <ShareButton
         input={{
           title:

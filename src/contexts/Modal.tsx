@@ -1,30 +1,20 @@
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 import React, {createContext, useEffect, useState} from 'react';
-import AddContentForm from '../components/forms/AddContentForm';
 import AddMomentForm from '../components/forms/AddMomentForm';
-import CreatePromptForm from '../components/forms/CreatePromptForm';
+import CreateMomentForm from '../components/forms/CreateMomentForm';
+import CreateRoomForm from '../components/forms/CreateRoomForm';
 import AuthUserModal from '../components/modals/AuthUserModal';
 import ContactsModal from '../components/modals/ContactsModal';
 import MomentModal from '../components/modals/MomentModal';
-import PromptModal from '../components/modals/PromptModal';
+import RoomModal from '../components/modals/RoomModal';
 import UserModal from '../components/modals/UserModal';
 import UsersModal from '../components/modals/UsersModal';
-import {TTimestamp} from '../types/Firebase';
+import {TObject} from '../types/Firebase';
 import {getLinkData} from '../utils/Share';
 
 type TModal = {
   target: string;
-  data?: {
-    id?: string;
-    remotePath?: string;
-    localPath?: string;
-    path?: string;
-    users?: {
-      id: string;
-      displayName: string;
-      moment: {path: string; addedAt: TTimestamp};
-    }[];
-  };
+  data?: TObject;
 };
 
 type TContextProps = {
@@ -81,17 +71,20 @@ const ModalProvider = ({children}: TProps) => {
         onUpdate,
       }}>
       {children}
-      {modal?.target === 'users' && modal.data?.id && (
+      {modal?.target === 'user' && modal.data?.id && (
         <UserModal id={modal.data.id} />
       )}
-      {modal?.target === 'moments' && modal.data?.id && (
+      {modal?.target === 'moment' && modal.data?.id && (
         <MomentModal id={modal.data.id} path={modal.data.path} />
       )}
-      {modal?.target === 'prompts' && modal.data?.id && (
-        <PromptModal id={modal.data.id} path={modal.data.path} />
+      {modal?.target === 'room' && modal.data?.room && (
+        <RoomModal room={modal.data.room} />
       )}
-      {modal?.target === 'create' && <CreatePromptForm {...modal.data} />}
-      {modal?.target === 'addContent' && <AddContentForm {...modal.data} />}
+      {modal?.target === 'createRoom' && <CreateRoomForm {...modal.data} />}
+      {modal?.target === 'createMoment' && modal.data && (
+        <CreateMomentForm {...modal.data} />
+      )}
+
       {modal?.target === 'addMoment' && modal.data && (
         <AddMomentForm {...modal.data} />
       )}

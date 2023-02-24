@@ -95,3 +95,24 @@ export const moveToFirst = <A extends TObject>({
 
   return array;
 };
+
+export const sentToFirst = <A extends TObject>({
+  array,
+  field,
+  value,
+}: {
+  array: A[];
+  field: string;
+  value: string;
+}) => {
+  const items = [...array];
+  const pathIndex = items.findIndex(item => item[field] === value);
+
+  if (pathIndex === -1) {
+    throw new Error('no item found');
+  }
+
+  items.unshift(items.splice(pathIndex, 1)[0]);
+
+  return items;
+};

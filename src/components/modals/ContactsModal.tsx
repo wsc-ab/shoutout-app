@@ -46,10 +46,12 @@ const ContactsModal = ({}: TProps) => {
         key={item.objectID}
         {...item}
         id={item.objectID}
-        onPress={(id: string) => onUpdate({target: 'users', id})}
+        onPress={onUser}
       />
     );
   };
+
+  const onUser = (id: string) => onUpdate({target: 'user', data: {id}});
 
   return (
     <DefaultModal>
@@ -72,7 +74,7 @@ const ContactsModal = ({}: TProps) => {
               textStyle={styles.textHeader}
             />
             {friends.map(item => (
-              <UserCard {...item} key={item.id} />
+              <UserCard {...item} key={item.id} onPress={onUser} />
             ))}
 
             <DefaultText
@@ -81,7 +83,7 @@ const ContactsModal = ({}: TProps) => {
               textStyle={styles.textHeader}
             />
             {followFrom.map(item => (
-              <UserCard {...item} key={item.id} />
+              <UserCard {...item} key={item.id} onPress={onUser} />
             ))}
             <DefaultText
               title="Sent Requests"
@@ -89,7 +91,7 @@ const ContactsModal = ({}: TProps) => {
               textStyle={styles.textHeader}
             />
             {followTo.map(item => (
-              <UserCard {...item} key={item.id} />
+              <UserCard {...item} key={item.id} onPress={onUser} />
             ))}
           </ScrollView>
         )}

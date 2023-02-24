@@ -1,6 +1,6 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {Pressable, StyleSheet} from 'react-native';
-import ModalContext from '../../contexts/Modal';
+import {TStyleView} from '../../types/Style';
 import FollowButton from '../buttons/FollowButton';
 import DefaultText from '../defaults/DefaultText';
 import UserProfileImage from '../defaults/UserProfileImage';
@@ -8,14 +8,15 @@ import UserProfileImage from '../defaults/UserProfileImage';
 type TProps = {
   id: string;
   displayName: string;
+  onPress?: (id: string) => void;
+  style?: TStyleView;
 };
 
-const UserCard = ({id, displayName}: TProps) => {
-  const {onUpdate} = useContext(ModalContext);
+const UserCard = ({id, displayName, style, onPress}: TProps) => {
   return (
     <Pressable
-      style={styles.container}
-      onPress={() => onUpdate({target: 'users', data: {id}})}>
+      style={[styles.container, style]}
+      onPress={onPress ? () => onPress(id) : undefined}>
       <UserProfileImage user={{id}} />
       <DefaultText title={displayName} style={styles.displayName} />
       <FollowButton

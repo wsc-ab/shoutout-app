@@ -10,6 +10,7 @@ import {loadFromCache} from '../../utils/Cache';
 
 import {getThumbnailPath} from '../../utils/Storage';
 import AddMomentButton from '../buttons/AddMomentButton';
+import CreateMomentButton from '../buttons/CreateMomentButton';
 import {defaultBlack} from './DefaultColors';
 import DefaultIcon from './DefaultIcon';
 import DefaultImage from './DefaultImage';
@@ -148,8 +149,8 @@ const DefaultVideo = ({
             }}
             textStyle={{fontWeight: 'bold'}}
           />
-          <AddMomentButton
-            id={promptId}
+          <CreateMomentButton
+            room={{id: promptId}}
             style={{
               marginTop: 20,
               backgroundColor: defaultBlack.lv3(1),

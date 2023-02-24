@@ -27,7 +27,7 @@ const UsersModal = ({users}: TProps) => {
     if (!b.moment?.addedAt._seconds) {
       return -1;
     }
-    return a.moment.addedAt._seconds - b.moment.addedAt._seconds;
+    return b.moment.addedAt._seconds - a.moment.addedAt._seconds;
   });
 
   return (
@@ -43,7 +43,7 @@ const UsersModal = ({users}: TProps) => {
           keyExtractor={item => item.id}
           ListHeaderComponent={
             <DefaultText
-              title="Check who shared the fastest!"
+              title="Check who shared most recently!"
               textStyle={{fontWeight: 'bold'}}
               style={{marginBottom: 20}}
             />

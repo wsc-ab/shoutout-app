@@ -36,7 +36,14 @@ const UserProfileImage = ({
 
         setImageUrl(localPath);
       } catch (e) {
-        setStatus('error');
+        try {
+          const localPath = await loadFromCache({
+            remotePath: `${id}/images/profileImage`,
+          });
+          setImageUrl(localPath);
+        } catch (error) {
+          setStatus('error');
+        }
       } finally {
         isMounted && setStatus('loaded');
       }

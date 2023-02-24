@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
-import {removeContent} from '../../functions/Moment';
+import {removeMoment} from '../../functions/Moment';
 import {TStyleView} from '../../types/Style';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultIcon from '../defaults/DefaultIcon';
@@ -19,7 +19,7 @@ const DeleteButton = ({moment, content, style, onSuccess}: TProps) => {
     const onPress = async () => {
       try {
         setSubmitting(true);
-        await removeContent({moment, content});
+        await removeMoment({moment, content});
         onSuccess && onSuccess();
       } catch (error) {
         DefaultAlert({title: 'Failed to delete'});
@@ -38,11 +38,7 @@ const DeleteButton = ({moment, content, style, onSuccess}: TProps) => {
   return (
     <View style={style}>
       {!submitting && (
-        <DefaultIcon
-          icon={'times'}
-          style={[{padding: 10}, style]}
-          onPress={async () => await onDelete()}
-        />
+        <DefaultIcon icon={'times'} style={style} onPress={onDelete} />
       )}
       {submitting && <ActivityIndicator style={styles.act} />}
     </View>

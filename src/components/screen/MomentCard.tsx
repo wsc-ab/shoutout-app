@@ -17,6 +17,7 @@ import {
   TTimestamp,
 } from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
+import {sentToFirst} from '../../utils/Array';
 import ContributorsButton from '../buttons/ContributorsButton';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultText from '../defaults/DefaultText';
@@ -64,22 +65,14 @@ const MomentCard = ({
       }
 
       if (newMoment) {
-        if (path) {
-          const pathIndex = newMoment.contents.items.findIndex(
-            ({path: elPath}) => elPath === path,
-          );
+        newMoment.contents.items = path
+          ? sentToFirst({
+              array: newMoment.contents.items,
+              field: 'path',
+              value: path,
+            })
+          : newMoment.contents.items;
 
-          if (pathIndex === -1) {
-            DefaultAlert({
-              title: 'Failed to get moment data',
-              message: 'This moment seems to be deleted',
-            });
-          }
-
-          newMoment.contents.items.unshift(
-            newMoment.contents.items.splice(pathIndex, 1)[0],
-          );
-        }
         setData(newMoment);
       }
     };
@@ -157,7 +150,7 @@ const MomentCard = ({
       path: string;
       user: {id: string; name: string};
       addedAt: TTimestamp;
-      name?: string;
+      name: string;
     };
     index: number;
   }) => {

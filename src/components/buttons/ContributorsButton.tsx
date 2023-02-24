@@ -60,7 +60,7 @@ const ContributorsButton = ({users, type, onPress, index, style}: TProps) => {
               key={item.id + elIndex}
               onPress={() => {
                 if (isCurrent) {
-                  onUpdate({target: 'users', data: {id: item.id}});
+                  onUpdate({target: 'user', data: {id: item.id}});
                 } else {
                   onPress(elIndex);
                 }

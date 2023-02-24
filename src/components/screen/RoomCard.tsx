@@ -1,5 +1,4 @@
-import firestore from '@react-native-firebase/firestore';
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useContext, useRef, useState} from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -9,85 +8,30 @@ import {
   ViewToken,
 } from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
-import {TDocData, TDocSnapshot} from '../../types/Firebase';
+import {TDocData} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
-import DefaultAlert from '../defaults/DefaultAlert';
+import {sentToFirst} from '../../utils/Array';
+import {getUserAdded} from '../../utils/Moment';
 import DefaultText from '../defaults/DefaultText';
 import MomentCard from './MomentCard';
 
 type TProps = {
   style?: TStyleView;
-  prompt: {id: string};
+  room: TDocData;
   pauseOnModal?: boolean;
   path?: string;
   mount: boolean;
 };
 
-const PromptCard = ({style, prompt, pauseOnModal, path, mount}: TProps) => {
-  const [data, setData] = useState<{id: string; path: string}[]>([]);
-
+const RoomCard = ({style, room, path, pauseOnModal, mount}: TProps) => {
   const [status, setStatus] = useState<TStatus>('loading');
   const {height, width} = useWindowDimensions();
   const [index, setIndex] = useState(0);
 
   const {authUserData} = useContext(AuthUserContext);
-  const [added, setAdded] = useState(true);
 
-  useEffect(() => {
-    const onNext = async (doc: TDocSnapshot) => {
-      if (!doc.exists) {
-        return DefaultAlert({
-          title: 'Failed to read data',
-          message: 'This moment seems to be deleted.',
-        });
-      }
-
-      const newPrompt = doc.data();
-
-      if (newPrompt) {
-        const addedUserIds = newPrompt.moments.items.map(
-          ({user: {id: elId}}) => elId,
-        );
-
-        const newAdded = addedUserIds.includes(authUserData.id);
-
-        if (path) {
-          const pathIndex = newPrompt.moments.items.findIndex(
-            ({path: elPath}) => elPath === path,
-          );
-
-          if (pathIndex === -1) {
-            DefaultAlert({
-              title: 'Failed to get moment data',
-              message: 'This moment seems to be deleted',
-            });
-          }
-
-          newPrompt.moments.items.unshift(
-            newPrompt.moments.items.splice(pathIndex, 1)[0],
-          );
-        }
-
-        setAdded(newAdded);
-        setData(newPrompt.moments.items);
-      }
-    };
-
-    const onError = (error: Error) => {
-      DefaultAlert({
-        title: 'Failed to get moment data',
-        message: (error as {message: string}).message,
-      });
-    };
-
-    const unsubscribe = firestore()
-      .collection('prompts')
-      .doc(prompt.id)
-      .onSnapshot(onNext, onError);
-
-    return unsubscribe;
-  }, [authUserData.id, path, prompt.id]);
+  const {added} = getUserAdded({authUserData, room});
 
   const onViewableItemsChanged = ({
     viewableItems,
@@ -153,19 +97,10 @@ const PromptCard = ({style, prompt, pauseOnModal, path, mount}: TProps) => {
           pauseOnModal={pauseOnModal}
           inView={index === elIndex}
           blur={!added}
-          promptId={prompt.id}
+          promptId={room.id}
         />
       </View>
     );
-  };
-
-  const onEndReached = () => {
-    if (data.length >= 50) {
-      setData([]);
-      setStatus('loading');
-    } else {
-      setStatus('loadMore');
-    }
   };
 
   const getItemLayout = (_: any[] | null | undefined, itemIndex: number) => ({
@@ -176,10 +111,15 @@ const PromptCard = ({style, prompt, pauseOnModal, path, mount}: TProps) => {
 
   const keyExtractor = (item: TDocData, elIndex: number) => item.id + elIndex;
 
+  const sortMoment = () =>
+    path
+      ? sentToFirst({array: room.moments.items, field: 'path', value: path})
+      : room.moments.items;
+
   return (
     <View style={style}>
       <FlatList
-        data={data}
+        data={sortMoment()}
         initialNumToRender={1}
         windowSize={3}
         maxToRenderPerBatch={1}
@@ -192,14 +132,13 @@ const PromptCard = ({style, prompt, pauseOnModal, path, mount}: TProps) => {
         getItemLayout={getItemLayout}
         disableIntervalMomentum
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
-        onEndReached={onEndReached}
         renderItem={renderItem}
       />
     </View>
   );
 };
 
-export default PromptCard;
+export default RoomCard;
 
 const styles = StyleSheet.create({
   noData: {flex: 1, justifyContent: 'center', alignItems: 'center'},
