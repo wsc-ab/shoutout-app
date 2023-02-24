@@ -12,7 +12,7 @@ import {TTimestamp} from '../../types/Firebase';
 import {getTimeGap} from '../../utils/Date';
 import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultText from '../defaults/DefaultText';
-import UserProfileImage from '../defaults/UserProfileImage';
+import UserProfileImage from '../images/UserProfileImage';
 import LocationButton from './LocationButton';
 
 type TProps = {
@@ -46,7 +46,7 @@ const ContributorsButton = ({users, type, onPress, index, style}: TProps) => {
       <DefaultText
         title={`For ${type}`}
         textStyle={styles.nameText}
-        style={{paddingLeft: 20, marginBottom: 5}}
+        style={styles.type}
       />
       <FlatList
         data={users}
@@ -71,16 +71,16 @@ const ContributorsButton = ({users, type, onPress, index, style}: TProps) => {
                 isCurrent && styles.current,
                 elIndex === users.length - 1 && styles.isLast,
               ]}>
-              <View style={{flexDirection: 'row', flex: 1}}>
+              <View style={styles.user}>
                 <UserProfileImage
                   user={{
                     id: item.id,
                   }}
                 />
-                <View style={{marginLeft: 5, flex: 1}}>
+                <View style={styles.texts}>
                   <DefaultText
                     title={item.displayName}
-                    textStyle={{fontWeight: 'bold'}}
+                    textStyle={styles.nameText}
                   />
                   <LocationButton location={item.location} />
                   <DefaultText title={getTimeGap(item.addedAt) + ' ago'} />
@@ -111,4 +111,7 @@ const styles = StyleSheet.create({
   current: {backgroundColor: defaultBlack.lv3(0.9)},
   nameText: {fontWeight: 'bold', fontSize: 16},
   isLast: {marginRight: 0},
+  type: {paddingLeft: 20, marginBottom: 5},
+  user: {flexDirection: 'row', flex: 1},
+  texts: {marginLeft: 5, flex: 1},
 });

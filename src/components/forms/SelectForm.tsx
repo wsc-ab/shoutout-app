@@ -4,7 +4,7 @@ import DefaultAlert from '../defaults/DefaultAlert';
 import {defaultRed} from '../defaults/DefaultColors';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultText from '../defaults/DefaultText';
-import UserProfileImage from '../defaults/UserProfileImage';
+import UserProfileImage from '../images/UserProfileImage';
 
 type TProps = {
   data: {id: string; name: string; collection: string}[];
@@ -44,10 +44,7 @@ const SelectForm = ({title, onSuccess, onCancel, data, min, max}: TProps) => {
     item: {id: string; name: string};
   }) => (
     <Pressable
-      style={[
-        styles.container,
-        {borderColor: ids.includes(id) ? defaultRed.lv2 : 'white'},
-      ]}
+      style={[styles.container, ids.includes(id) && styles.selected]}
       onPress={() => onPress(id)}>
       <UserProfileImage user={{id}} />
       <DefaultText title={name} style={styles.displayName} />
@@ -99,4 +96,5 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   displayName: {marginLeft: 10, flex: 1},
+  selected: {borderColor: defaultRed.lv2},
 });

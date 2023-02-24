@@ -9,9 +9,7 @@ import {TStyleView} from '../../types/Style';
 import {loadFromCache} from '../../utils/Cache';
 
 import {getThumbnailPath} from '../../utils/Storage';
-import AddMomentButton from '../buttons/AddMomentButton';
-import CreateMomentButton from '../buttons/CreateMomentButton';
-import {defaultBlack} from './DefaultColors';
+import DefaultBlurImage from './DefaultBlurImage';
 import DefaultIcon from './DefaultIcon';
 import DefaultImage from './DefaultImage';
 import DefaultImageBackground from './DefaultImageBackground';
@@ -30,7 +28,7 @@ type TProps = {
   pauseOnModal?: boolean;
   inView: boolean;
   blur?: boolean;
-  promptId?: string;
+  room?: {id: string};
 };
 
 const DefaultVideo = ({
@@ -46,7 +44,7 @@ const DefaultVideo = ({
   pauseOnModal = true,
   inView: parentInview,
   blur,
-  promptId,
+  room,
 }: TProps) => {
   const [uri, setUri] = useState<string>();
   const [thumbPath, setThumbPath] = useState<string>();
@@ -113,54 +111,8 @@ const DefaultVideo = ({
     );
   }
 
-  if (blur && promptId) {
-    return (
-      <View>
-        <DefaultImage
-          imageStyle={videoStyle}
-          image={getThumbnailPath(path, 'video')}
-          blurRadius={50}
-        />
-        <View
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <DefaultText
-            title="No more ghosting!"
-            textStyle={{fontWeight: 'bold'}}
-          />
-          <DefaultText
-            title="Share your moment to view"
-            style={{
-              marginTop: 10,
-            }}
-            textStyle={{fontWeight: 'bold'}}
-          />
-          <DefaultText
-            title="what your friends are up to!"
-            style={{
-              marginTop: 10,
-            }}
-            textStyle={{fontWeight: 'bold'}}
-          />
-          <CreateMomentButton
-            room={{id: promptId}}
-            style={{
-              marginTop: 20,
-              backgroundColor: defaultBlack.lv3(1),
-              padding: 10,
-              borderRadius: 50,
-            }}
-          />
-        </View>
-      </View>
-    );
+  if (blur && room) {
+    return <DefaultBlurImage imageStyle={videoStyle} path={path} room={room} />;
   }
 
   if (!thumbPath) {
@@ -190,7 +142,9 @@ const DefaultVideo = ({
               posterResizeMode="cover"
               ignoreSilentSwitch="ignore"
               paused={paused}
-              onError={() => {
+              onError={data => {
+                console.log(data, 'data');
+
                 if (uri) {
                   setStatus('error');
                 }

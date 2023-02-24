@@ -19,7 +19,7 @@ import ModalContext from '../../contexts/Modal';
 import {TDocData, TLocation, TTimestamp} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import FollowButton from '../buttons/FollowButton';
-import UserProfileImage from '../defaults/UserProfileImage';
+import UserProfileImage from '../images/UserProfileImage';
 
 type TProps = {
   id: string;

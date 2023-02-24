@@ -12,6 +12,7 @@ import ModalContext from '../../contexts/Modal';
 import {TDocData, TDocSnapshot} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
 import {groupByLength} from '../../utils/Array';
+import {getTimeGap} from '../../utils/Date';
 import {getUserAdded} from '../../utils/Moment';
 import {getThumbnailPath} from '../../utils/Storage';
 import CreateMomentButton from '../buttons/CreateMomentButton';
@@ -20,7 +21,7 @@ import {defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultImage from '../defaults/DefaultImage';
 import DefaultText from '../defaults/DefaultText';
-import UserProfileImage from '../defaults/UserProfileImage';
+import UserProfileImage from '../images/UserProfileImage';
 
 type TProps = {
   room: {id: string};
@@ -138,40 +139,43 @@ const RoomSummary = ({room}: TProps) => {
               style={{
                 marginHorizontal: 10,
               }}>
-              {item.map(({name, path, user: {id: userId, displayName}}) => {
-                return (
-                  <Pressable
-                    key={path}
-                    style={{
-                      flexDirection: 'row',
-                      width: itemWidth,
-                      marginBottom: 10,
-                    }}
-                    onPress={() => {
-                      onView({path});
-                    }}>
-                    <UserProfileImage user={{id: userId}} />
+              {item.map(
+                ({name, path, addedAt, user: {id: userId, displayName}}) => {
+                  return (
                     <Pressable
-                      style={{marginLeft: 10, flex: 1}}
-                      onPress={() => {
-                        onUpdate({target: 'user', data: {id: userId}});
-                      }}>
-                      <DefaultText
-                        title={displayName}
-                        textStyle={{fontWeight: 'bold'}}
-                      />
-                      <DefaultText title={name} />
-                    </Pressable>
-                    <DefaultImage
-                      image={getThumbnailPath(path, 'video')}
-                      imageStyle={{
-                        height: 50,
-                        width: 50,
+                      key={path}
+                      style={{
+                        flexDirection: 'row',
+                        width: itemWidth,
+                        marginBottom: 10,
                       }}
-                    />
-                  </Pressable>
-                );
-              })}
+                      onPress={() => {
+                        onView({path});
+                      }}>
+                      <UserProfileImage user={{id: userId}} />
+                      <Pressable
+                        style={{marginLeft: 10, flex: 1}}
+                        onPress={() => {
+                          onUpdate({target: 'user', data: {id: userId}});
+                        }}>
+                        <DefaultText
+                          title={displayName}
+                          textStyle={{fontWeight: 'bold'}}
+                        />
+                        <DefaultText title={name} />
+                        <DefaultText title={`${getTimeGap(addedAt)} ago`} />
+                      </Pressable>
+                      <DefaultImage
+                        image={getThumbnailPath(path, 'video')}
+                        imageStyle={{
+                          height: 50,
+                          width: 50,
+                        }}
+                      />
+                    </Pressable>
+                  );
+                },
+              )}
             </View>
           );
         }}

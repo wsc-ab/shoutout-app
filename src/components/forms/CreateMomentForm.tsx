@@ -44,7 +44,7 @@ const CreateMomentForm = ({remotePath, localPath, id, room}: TProps) => {
     defaultValues: {
       type: 'everyone',
       name: '',
-    },
+    } as {type: 'everyone' | 'friends'; name: string},
   });
 
   const onSubmit = async ({

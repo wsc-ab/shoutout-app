@@ -97,7 +97,7 @@ const RoomCard = ({style, room, path, pauseOnModal, mount}: TProps) => {
           pauseOnModal={pauseOnModal}
           inView={index === elIndex}
           blur={!added}
-          promptId={room.id}
+          room={{id: room.id}}
         />
       </View>
     );

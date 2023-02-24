@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
@@ -10,20 +10,15 @@ import {defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 
 type TProps = {
-  id: string;
+  moment: {id: string};
   style?: TStyleView;
+  added: boolean;
 };
 
-const AddMomentButton = ({id, style}: TProps) => {
+const AddMomentButton = ({moment: {id}, added, style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
   const {onUpdate} = useContext(ModalContext);
   const [submitting, setSubmitting] = useState(false);
-
-  const [added, setAdded] = useState(false);
-
-  useEffect(() => {
-    setAdded(authUserData.contributeTo.ids.includes(id));
-  }, [authUserData.contributeTo.ids, id]);
 
   const onAdd = async () => {
     onUpdate({target: 'video'});
@@ -56,6 +51,7 @@ const AddMomentButton = ({id, style}: TProps) => {
           message: (error as {message: string}).message,
         });
       }
+
       onUpdate(undefined);
     } finally {
       setSubmitting(false);
@@ -64,8 +60,8 @@ const AddMomentButton = ({id, style}: TProps) => {
 
   const onAdded = () => {
     DefaultAlert({
-      title: 'Thank you',
-      message: "You've already connected to this moment",
+      title: 'Great!',
+      message: "You've already connected to this moment!",
     });
   };
 

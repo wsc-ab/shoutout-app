@@ -9,46 +9,46 @@ import ShareButton from '../buttons/ShareButton';
 import {defaultBlack} from '../defaults/DefaultColors';
 
 type TProps = {
-  item: {
+  content: {
     id: string;
     path: string;
     user: {id: string};
-    likeFrom: {number: number};
   };
+  moment: {id: string};
+  added: boolean;
   style?: TStyleView;
 };
 
-const Footer = ({item, style}: TProps) => {
+const Footer = ({content, moment, added, style}: TProps) => {
   return (
     <View style={[styles.container, style]}>
       <LikeButton
         moment={{
-          id: item.id,
-          path: item.path,
-          user: {id: item.user.id},
-          likeFrom: item.likeFrom,
+          id: content.id,
+          path: content.path,
+          user: {id: content.user.id},
         }}
         style={styles.button}
       />
 
-      <AddMomentButton id={item.id} style={styles.button} />
+      <AddMomentButton moment={moment} style={styles.button} added={added} />
       <CreateMomentButton style={styles.button} />
       <ShareButton
         input={{
           title:
             'Hey! Check this moment out! You can also connect yours to it!',
           param: 'moments',
-          value: item.id,
-          image: {path: item.path, type: 'video'},
+          value: content.id,
+          image: {path: content.path, type: 'video'},
         }}
         style={styles.button}
       />
 
       <ReportButton
         moment={{
-          id: item.id,
-          path: item.path,
-          user: {id: item.user.id},
+          id: content.id,
+          path: content.path,
+          user: {id: content.user.id},
         }}
         style={styles.button}
       />

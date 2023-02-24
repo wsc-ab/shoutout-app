@@ -21,20 +21,17 @@ const Rooms = ({style}: TProps) => {
 
   const ListEmptyComponent = () => {
     return (
-      <View>
+      <View style={{marginHorizontal: 10}}>
+        <InviteCard style={{backgroundColor: defaultBlack.lv2(1)}} />
         <DefaultText
-          title="Connection invites from friends will show up here."
-          style={{margin: 10, marginBottom: 5}}
+          title="No room has been found."
+          style={{marginTop: 10}}
           textStyle={{fontWeight: 'bold'}}
         />
         <DefaultText
-          title="Connect with friends first to share with others."
-          style={{margin: 10, marginTop: 5}}
-          numberOfLines={2}
+          title="Invite friends and start connecting live moments!"
+          style={{marginTop: 10}}
           textStyle={{fontWeight: 'bold'}}
-        />
-        <InviteCard
-          style={{backgroundColor: defaultBlack.lv2(1), marginHorizontal: 10}}
         />
       </View>
     );

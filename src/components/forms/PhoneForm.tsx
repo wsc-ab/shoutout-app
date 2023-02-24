@@ -1,9 +1,11 @@
 import {yupResolver} from '@hookform/resolvers/yup';
-import {CountryCode, parsePhoneNumber} from 'libphonenumber-js/mobile';
+import {CountryCode} from 'libphonenumber-js/mobile';
 import React, {useState} from 'react';
 import {useForm} from 'react-hook-form';
+import {StyleSheet} from 'react-native';
 import {object} from 'yup';
 import {countryData} from '../../utils/CountryData';
+import {formatMobileNumber} from '../../utils/Phone';
 import {defaultSchema} from '../../utils/Schema';
 import ControllerText from '../controllers/ControllerText';
 import DefaultAlert from '../defaults/DefaultAlert';
@@ -77,27 +79,13 @@ const PhoneForm = ({onCancel, onSuccess, submitting}: TProps) => {
       <DefaultKeyboardAwareScrollView>
         <DefaultText title="Enter phone number to sign in or up." />
         <DefaultDivider />
-        <DefaultText
-          title="Country"
-          textStyle={{fontWeight: 'bold', fontSize: 20}}
-        />
+        <DefaultText title="Country" textStyle={styles.countryText} />
         <DefaultText
           title={countryCode}
           onPress={() => setModal('code')}
-          style={{
-            padding: 10,
-            borderWidth: 1,
-            borderColor: 'gray',
-            borderRadius: 10,
-            marginTop: 5,
-            justifyContent: 'center',
-            alignSelf: 'flex-start',
-          }}
+          style={styles.code}
         />
-        <DefaultText
-          title="Phone number"
-          textStyle={{fontWeight: 'bold', fontSize: 20, marginTop: 10}}
-        />
+        <DefaultText title="Phone number" textStyle={styles.numberText} />
 
         <ControllerText
           control={control}
@@ -130,18 +118,16 @@ const PhoneForm = ({onCancel, onSuccess, submitting}: TProps) => {
 
 export default PhoneForm;
 
-export const formatMobileNumber = ({
-  phoneNumber,
-  countryCode,
-}: {
-  phoneNumber: string;
-  countryCode: CountryCode;
-}) => {
-  const parsed = parsePhoneNumber(phoneNumber, countryCode);
-
-  if (!(parsed?.getType() === 'MOBILE')) {
-    return undefined;
-  }
-
-  return parsed.number;
-};
+const styles = StyleSheet.create({
+  countryText: {fontWeight: 'bold', fontSize: 20},
+  code: {
+    padding: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 10,
+    marginTop: 5,
+    justifyContent: 'center',
+    alignSelf: 'flex-start',
+  },
+  numberText: {fontWeight: 'bold', fontSize: 20, marginTop: 10},
+});

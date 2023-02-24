@@ -4,8 +4,8 @@ import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
 import {loadFromCache} from '../../utils/Cache';
 
-import {defaultBlack} from './DefaultColors';
-import DefaultIcon from './DefaultIcon';
+import {defaultBlack} from '../defaults/DefaultColors';
+import DefaultIcon from '../defaults/DefaultIcon';
 
 export const getThumnailPath = (url: string) => url + '_200x200';
 

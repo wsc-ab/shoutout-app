@@ -1,5 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -8,6 +8,7 @@ import {
   ViewabilityConfigCallbackPairs,
   ViewToken,
 } from 'react-native';
+import AuthUserContext from '../../contexts/AuthUser';
 
 import {
   TDocData,
@@ -33,7 +34,7 @@ type TProps = {
   pauseOnModal?: boolean;
   inView: boolean;
   blur?: boolean;
-  promptId?: string;
+  room?: {id: string};
 };
 
 const MomentCard = ({
@@ -44,14 +45,20 @@ const MomentCard = ({
   mount,
   inView,
   blur,
-  promptId,
+  room,
 }: TProps) => {
   const {height, width} = useWindowDimensions();
   const [data, setData] = useState<TDocData>();
+  const {authUserData} = useContext(AuthUserContext);
 
   const ref = useRef<FlatList>(null);
 
   const [index, setIndex] = useState(0);
+  const [added, setAdded] = useState(false);
+
+  useEffect(() => {
+    setAdded(authUserData.contributeTo.ids.includes(moment.id));
+  }, [authUserData.contributeTo.ids, moment.id]);
 
   useEffect(() => {
     const onNext = async (doc: TDocSnapshot) => {
@@ -159,6 +166,7 @@ const MomentCard = ({
         <View style={{height, width}}>
           <DefaultText
             title={item.name}
+            numberOfLines={4}
             style={{
               position: 'absolute',
               top: 100,
@@ -175,13 +183,14 @@ const MomentCard = ({
             repeat
             inView={inView && index === elIndex}
             blur={blur}
-            promptId={promptId}
+            room={room}
           />
         </View>
         {!blur && (
           <Footer
-            item={item}
-            number={data.contents.number}
+            content={item}
+            added={added}
+            moment={moment}
             style={{marginHorizontal: 10}}
           />
         )}

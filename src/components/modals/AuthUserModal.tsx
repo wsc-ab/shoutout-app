@@ -162,7 +162,7 @@ const AuthUserModal = ({}: TProps) => {
           </View>
           <View
             style={{borderWidth: 1, borderColor: 'gray', marginVertical: 20}}
-          />
+        />
           <DefaultText
             title={
               imageUploading ? 'Changing profile image' : 'Change profile image'

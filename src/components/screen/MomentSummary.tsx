@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 
 import {TLocation, TTimestamp} from '../../types/Firebase';
@@ -37,7 +37,7 @@ const MomentSummary = ({
 
   return (
     <View style={style}>
-      <ScrollView horizontal>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {moment.contents.map(
           ({path, name, location, user: {id: elId, displayName}}) => (
             <View style={[{marginRight: 10}]} key={path}>
@@ -77,7 +77,3 @@ const MomentSummary = ({
 };
 
 export default MomentSummary;
-
-const styles = StyleSheet.create({
-  delete: {position: 'absolute', right: 0},
-});

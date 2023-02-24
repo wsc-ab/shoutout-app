@@ -1,3 +1,4 @@
+import {faBottleWater} from '@fortawesome/free-solid-svg-icons';
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
   FlatList,
@@ -13,6 +14,7 @@ import {getMoments} from '../../functions/Moment';
 import {TDocData} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
+import CreateMomentButton from '../buttons/CreateMomentButton';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultText from '../defaults/DefaultText';
 import MomentCard from './MomentCard';
@@ -116,10 +118,10 @@ const Moments = ({style, mount}: TProps) => {
   const ListEmptyComponent = (
     <>
       {status === 'loaded' ? (
-        <DefaultText
-          title="No moment found. Please reload."
-          style={styles.noMoment}
-        />
+        <View style={styles.noMoment}>
+          <DefaultText title="No moment found. Add one!" />
+          <CreateMomentButton />
+        </View>
       ) : null}
     </>
   );
@@ -151,15 +153,10 @@ const Moments = ({style, mount}: TProps) => {
     }
   };
 
-  const keyExtractor = (item: TDocData, elIndex: number) => {
-    if (item.type === 'shareMoment') {
-      return item.type + elIndex;
-    }
-    return item.id + elIndex;
-  };
+  const keyExtractor = (item: TDocData) => item.id;
 
   return (
-    <View style={style}>
+    <View style={[style]}>
       <FlatList
         data={data}
         initialNumToRender={1}
@@ -194,12 +191,7 @@ const styles = StyleSheet.create({
   noData: {flex: 1, justifyContent: 'center', alignItems: 'center'},
   refresh: {marginTop: 10},
   noMoment: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    justifyContent: 'center',
+    top: 100,
     alignItems: 'center',
   },
 });

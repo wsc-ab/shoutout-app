@@ -4,7 +4,7 @@ import ModalContext from '../../contexts/Modal';
 import {TStyleView} from '../../types/Style';
 import {getTimeGap} from '../../utils/Date';
 import DefaultText from '../defaults/DefaultText';
-import UserProfileImage from '../defaults/UserProfileImage';
+import UserProfileImage from '../images/UserProfileImage';
 
 type TProps = {
   id: string;
@@ -37,7 +37,7 @@ const SmallUserCard = ({id, index, displayName, moment, style}: TProps) => {
           {moment && (
             <DefaultText title={`${getTimeGap(moment.addedAt)} ago`} />
           )}
-          {!moment && <DefaultText title={'Not Added'} />}
+          {!moment && <DefaultText title={'Not shared'} />}
         </View>
       </View>
     </Pressable>

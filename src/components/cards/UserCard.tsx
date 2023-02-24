@@ -3,7 +3,7 @@ import {Pressable, StyleSheet} from 'react-native';
 import {TStyleView} from '../../types/Style';
 import FollowButton from '../buttons/FollowButton';
 import DefaultText from '../defaults/DefaultText';
-import UserProfileImage from '../defaults/UserProfileImage';
+import UserProfileImage from '../images/UserProfileImage';
 
 type TProps = {
   id: string;
