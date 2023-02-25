@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Pressable, StyleSheet} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import {createReport, deleteReport} from '../../functions/Moment';
 import {TStyleView} from '../../types/Style';
@@ -76,14 +76,15 @@ const ReportButton = ({moment, onSuccess, style}: TProps) => {
   }, [authUserData.reported.items, moment.path]);
 
   return (
-    <View style={[styles.container, style]}>
+    <Pressable
+      style={[styles.container, style]}
+      onPress={isReported ? onUnreport : onReport}>
       <DefaultIcon
         icon="flag"
         size={20}
-        onPress={isReported ? onUnreport : onReport}
         color={isReported ? defaultRed.lv2 : 'white'}
       />
-    </View>
+    </Pressable>
   );
 };
 

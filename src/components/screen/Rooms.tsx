@@ -44,6 +44,7 @@ const Rooms = ({style}: TProps) => {
         contentContainerStyle={styles.contentContainer}
         renderItem={renderItem}
         ListEmptyComponent={ListEmptyComponent}
+        indicatorStyle="white"
         ItemSeparatorComponent={() => <View style={styles.seperator} />}
       />
       <CreateRoomButton

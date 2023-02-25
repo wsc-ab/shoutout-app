@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, Pressable, StyleSheet} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import {TStyleView} from '../../types/Style';
 import {createShareLink} from '../../utils/Share';
@@ -40,12 +40,13 @@ const ShareButton = ({input, style}: TProps) => {
   };
 
   return (
-    <View style={[styles.container, style]}>
-      {!submitting && (
-        <DefaultIcon icon="share" onPress={onShare} size={20} color={'white'} />
-      )}
+    <Pressable
+      style={[styles.container, style]}
+      disabled={submitting}
+      onPress={onShare}>
+      {!submitting && <DefaultIcon icon="share" size={20} color={'white'} />}
       {submitting && <ActivityIndicator />}
-    </View>
+    </Pressable>
   );
 };
 

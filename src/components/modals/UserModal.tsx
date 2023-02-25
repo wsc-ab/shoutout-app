@@ -88,6 +88,10 @@ const UserModal = ({id}: TProps) => {
           }}>
           <FlatList
             data={data.contributeTo?.items}
+            indicatorStyle="white"
+            style={{
+              paddingHorizontal: 10,
+            }}
             ListEmptyComponent={<DefaultText title="No moments found" />}
             ListHeaderComponent={
               <View

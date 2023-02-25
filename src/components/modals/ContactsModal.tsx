@@ -63,7 +63,9 @@ const ContactsModal = ({}: TProps) => {
           onPress: () => setTab(tab === 'friends' ? 'search' : 'friends'),
         }}>
         {tab === 'friends' && (
-          <ScrollView style={{flex: 1}}>
+          <ScrollView
+            style={{flex: 1, paddingHorizontal: 10, paddingBottom: 100}}
+            indicatorStyle="white">
             <InviteCard
               style={{marginBottom: 10, backgroundColor: defaultBlack.lv3(1)}}
             />

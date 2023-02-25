@@ -40,13 +40,9 @@ const DeleteButton = ({moment, content, style, onSuccess}: TProps) => {
       {!submitting && (
         <DefaultIcon icon={'times'} style={style} onPress={onDelete} />
       )}
-      {submitting && <ActivityIndicator style={styles.act} />}
+      {submitting && <ActivityIndicator />}
     </View>
   );
 };
 
 export default DeleteButton;
-
-const styles = StyleSheet.create({
-  act: {paddingHorizontal: 10},
-});

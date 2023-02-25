@@ -194,6 +194,7 @@ const MomentCard = ({
         </View>
         {!blur && (
           <Footer
+            added={added}
             content={item}
             moment={moment}
             style={{marginHorizontal: 10}}

@@ -1,6 +1,6 @@
 import {firebase} from '@react-native-firebase/auth';
 import React, {useContext, useState} from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, Pressable, StyleSheet} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import UploadingContext from '../../contexts/Uploading';
@@ -62,17 +62,13 @@ const CreateMomentButton = ({room, color = 'white', style}: TProps) => {
   };
 
   return (
-    <View style={[styles.container, style]}>
-      {!submitting && (
-        <DefaultIcon
-          icon="video"
-          onPress={status === 'ready' ? onAdd : onUploading}
-          size={20}
-          color={color}
-        />
-      )}
+    <Pressable
+      style={[styles.container, style]}
+      disabled={submitting}
+      onPress={status === 'ready' ? onAdd : onUploading}>
+      {!submitting && <DefaultIcon icon="video" size={20} color={color} />}
       {submitting && <ActivityIndicator color="white" />}
-    </View>
+    </Pressable>
   );
 };
 

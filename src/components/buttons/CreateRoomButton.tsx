@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Pressable, StyleSheet} from 'react-native';
 import ModalContext from '../../contexts/Modal';
 import {TStyleView} from '../../types/Style';
 import {defaultBlack} from '../defaults/DefaultColors';
@@ -14,15 +14,12 @@ const CreateRoomButton = ({style}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
 
   return (
-    <View style={[styles.container, style]}>
+    <Pressable
+      style={[styles.container, style]}
+      onPress={() => onUpdate({target: 'createRoom'})}>
       <DefaultText title="Room" textStyle={styles.titleText} />
-      <DefaultIcon
-        icon="plus"
-        onPress={() => onUpdate({target: 'createRoom'})}
-        size={20}
-        style={styles.icon}
-      />
-    </View>
+      <DefaultIcon icon="plus" size={20} style={styles.icon} />
+    </Pressable>
   );
 };
 

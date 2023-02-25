@@ -78,7 +78,12 @@ const SelectForm = ({title, onSuccess, onCancel, data, min, max}: TProps) => {
       right={{
         onPress: onSubmit,
       }}>
-      <FlatList data={data} renderItem={renderItem} />
+      <FlatList
+        data={data}
+        renderItem={renderItem}
+        style={{padding: 10}}
+        indicatorStyle="white"
+      />
     </DefaultForm>
   );
 };

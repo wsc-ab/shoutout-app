@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import {addLike, removeLike} from '../../functions/Moment';
 import {TStyleView} from '../../types/Style';
@@ -72,14 +72,13 @@ const LikeButton = ({moment, style}: TProps) => {
   }, [authUserData.likeTo?.items, moment.path]);
 
   return (
-    <View style={[styles.container, style]}>
-      <DefaultIcon
-        icon="heart"
-        onPress={!submitting ? (liked ? onUnlike : onLike) : undefined}
-        color={liked ? defaultRed.lv2 : 'white'}
-        size={20}
-      />
-    </View>
+    <DefaultIcon
+      style={[styles.container, style]}
+      icon="heart"
+      onPress={!submitting ? (liked ? onUnlike : onLike) : undefined}
+      color={liked ? defaultRed.lv2 : 'white'}
+      size={20}
+    />
   );
 };
 

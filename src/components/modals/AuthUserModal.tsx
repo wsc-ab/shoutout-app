@@ -82,7 +82,7 @@ const AuthUserModal = ({}: TProps) => {
           },
         }}>
         <ScrollView
-          contentContainerStyle={{flex: 1}}
+          contentContainerStyle={{flex: 1, paddingHorizontal: 10}}
           refreshControl={
             <RefreshControl
               refreshing={false}

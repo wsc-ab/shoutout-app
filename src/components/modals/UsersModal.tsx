@@ -41,6 +41,8 @@ const UsersModal = ({users}: TProps) => {
           data={sortByAddedAt}
           contentContainerStyle={styles.container}
           keyExtractor={item => item.id}
+          indicatorStyle="white"
+          showsVerticalScrollIndicator
           ListHeaderComponent={
             <DefaultText
               title="Check who shared most recently!"
@@ -72,7 +74,7 @@ const UsersModal = ({users}: TProps) => {
 export default UsersModal;
 
 const styles = StyleSheet.create({
-  container: {paddingBottom: 100},
+  container: {paddingBottom: 100, paddingHorizontal: 10},
   seperator: {
     marginBottom: 20,
   },

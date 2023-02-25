@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, Pressable, StyleSheet} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import UploadingContext from '../../contexts/Uploading';
@@ -24,6 +24,9 @@ const AddMomentButton = ({moment: {id}, added, style}: TProps) => {
   const {status} = useContext(UploadingContext);
 
   const onAdd = async () => {
+    if (added) {
+      return onAdded();
+    }
     onUpdate({target: 'video'});
 
     setSubmitting(true);
@@ -69,17 +72,19 @@ const AddMomentButton = ({moment: {id}, added, style}: TProps) => {
   };
 
   return (
-    <View style={[styles.container, style]}>
+    <Pressable
+      style={[styles.container, style]}
+      disabled={submitting}
+      onPress={status === 'ready' ? onAdd : onUploading}>
       {!submitting && (
         <DefaultIcon
           icon="plus"
-          onPress={status === 'ready' ? (added ? onAdded : onAdd) : onUploading}
           size={20}
           color={added ? defaultRed.lv2 : 'white'}
         />
       )}
       {submitting && <ActivityIndicator color="white" />}
-    </View>
+    </Pressable>
   );
 };
 
