@@ -80,7 +80,7 @@ const RoomSummary = ({room}: TProps) => {
   const onView = ({path}: {path: string}) =>
     onUpdate({target: 'room', data: {room: data, path}});
 
-  const grouped = groupByLength(data.moments.items, 1);
+  const grouped = groupByLength(data.moments.items, 3);
 
   const itemWidth = width - 30;
 
@@ -103,7 +103,7 @@ const RoomSummary = ({room}: TProps) => {
         }}>
         <DefaultText
           title={data.name}
-          textStyle={{fontWeight: 'bold'}}
+          textStyle={{fontWeight: 'bold', fontSize: 20}}
           style={{flex: 1}}
         />
         <View
@@ -153,7 +153,13 @@ const RoomSummary = ({room}: TProps) => {
           return (
             <View>
               {item.map(
-                ({name, path, addedAt, user: {id: userId, displayName}}) => {
+                ({
+                  name,
+                  path,
+                  location,
+                  addedAt,
+                  user: {id: userId, displayName},
+                }) => {
                   return (
                     <Pressable
                       key={path}
@@ -162,25 +168,35 @@ const RoomSummary = ({room}: TProps) => {
                         flexDirection: 'row',
                         width: itemWidth,
                         height: 50,
-                        borderColor: 'white',
                         marginBottom: 10,
                       }}
                       onPress={() => {
                         onView({path});
                       }}>
-                      <UserProfileImage user={{id: userId}} />
-                      <Pressable
-                        style={{marginLeft: 10, flex: 1}}
+                      <UserProfileImage
+                        user={{id: userId}}
                         onPress={() => {
                           onUpdate({target: 'user', data: {id: userId}});
-                        }}>
+                        }}
+                      />
+                      <View style={{marginLeft: 10, flex: 1}}>
                         <DefaultText
                           title={displayName}
-                          textStyle={{fontWeight: 'bold'}}
+                          textStyle={{fontWeight: 'bold', fontSize: 16}}
                         />
                         <DefaultText title={name} />
-                        <DefaultText title={`${getTimeGap(addedAt)} ago`} />
-                      </Pressable>
+                        <View style={{flexDirection: 'row'}}>
+                          <DefaultText
+                            title={`${getTimeGap(addedAt)} ago - `}
+                            textStyle={{fontSize: 14, color: 'gray'}}
+                          />
+                          <DefaultText
+                            title={location.formatted}
+                            textStyle={{fontSize: 14, color: 'gray'}}
+                            style={{flex: 1}}
+                          />
+                        </View>
+                      </View>
                       <DefaultImage
                         image={getThumbnailPath(path, 'video')}
                         imageStyle={{

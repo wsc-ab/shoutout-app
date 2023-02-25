@@ -40,7 +40,7 @@ const Rooms = ({style}: TProps) => {
   return (
     <View style={style}>
       <FlatList
-        data={authUserData.inviteFrom.ids}
+        data={authUserData.inviteFrom.items.map(({id: elId}) => elId)}
         contentContainerStyle={styles.contentContainer}
         renderItem={renderItem}
         ListEmptyComponent={ListEmptyComponent}

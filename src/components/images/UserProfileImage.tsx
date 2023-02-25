@@ -62,6 +62,7 @@ const UserProfileImage = ({
         icon="user"
         style={[styles.icon, imageStyle]}
         size={imageStyle.height / 3}
+        onPress={onPress}
       />
     );
   }
