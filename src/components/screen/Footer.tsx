@@ -69,9 +69,11 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 24,
+    justifyContent: 'space-between',
   },
   button: {
-    flex: 1,
+    height: 40,
+    width: 50,
     padding: 10,
     marginHorizontal: 10,
     backgroundColor: defaultBlack.lv3(1),

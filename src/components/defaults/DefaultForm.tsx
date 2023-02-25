@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
   icon: {padding: 10},
-  left: {flex: 1, alignItems: 'flex-start'},
+  left: {alignItems: 'flex-start'},
   center: {
     flex: 1,
     paddingVertical: 10,
@@ -82,6 +82,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
-  right: {flex: 1, alignItems: 'flex-end'},
+  right: {alignItems: 'flex-end'},
   act: {paddingHorizontal: 10},
 });

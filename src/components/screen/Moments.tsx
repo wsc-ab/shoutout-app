@@ -1,4 +1,3 @@
-import {faBottleWater} from '@fortawesome/free-solid-svg-icons';
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
   FlatList,

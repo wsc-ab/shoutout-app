@@ -14,6 +14,7 @@ import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultKeyboardAwareScrollView from '../defaults/DefaultKeyboardAwareScrollView';
 import DefaultModal from '../defaults/DefaultModal';
+import DefaultText from '../defaults/DefaultText';
 import SelectForm from './SelectForm';
 
 type TProps = {};
@@ -90,7 +91,7 @@ const CreateRoomForm = ({}: TProps) => {
             name: displayName,
             collection: 'users',
           }))}
-          title={'Invite friends'}
+          title={'Select friends'}
         />
       )}
       {type === 'form' && (

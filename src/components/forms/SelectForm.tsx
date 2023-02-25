@@ -83,6 +83,12 @@ const SelectForm = ({title, onSuccess, onCancel, data, min, max}: TProps) => {
         renderItem={renderItem}
         style={{padding: 10}}
         indicatorStyle="white"
+        ListHeaderComponent={
+          <DefaultText
+            title="Select friends for your new room."
+            style={{marginBottom: 20}}
+          />
+        }
       />
     </DefaultForm>
   );

@@ -13,16 +13,19 @@ type TProps = {
 };
 
 const InviteCard = ({style}: TProps) => {
-  const {bundleId} = useContext(AuthUserContext);
+  const {bundleId, authUserData} = useContext(AuthUserContext);
   const [submitting, setSubmitting] = useState(false);
 
   const onPress = async () => {
     try {
       setSubmitting(true);
-      const target =
+      const type =
         bundleId === 'app.airballoon.Shoutout' ? 'development' : 'production';
 
-      const shareLink = await createShareLink({target});
+      const shareLink = await createShareLink({
+        type,
+        target: {collection: 'users', id: authUserData.id},
+      });
       await openShareModal({
         title: "Let's connect our live moments on Shoutout!",
         url: shareLink,

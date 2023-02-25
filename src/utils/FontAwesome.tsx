@@ -8,6 +8,7 @@ import {
   faExclamation,
   faFaceSmile,
   faFlag,
+  faFolderPlus,
   faGear,
   faGlobe,
   faHandPointLeft,
@@ -46,4 +47,5 @@ library.add(
   faVideo,
   faAddressBook,
   faUpload,
+  faFolderPlus,
 );

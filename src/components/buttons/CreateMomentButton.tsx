@@ -15,9 +15,15 @@ type TProps = {
   style?: TStyleView;
   room?: {id: string};
   color?: string;
+  onSuccess?: () => void;
 };
 
-const CreateMomentButton = ({room, color = 'white', style}: TProps) => {
+const CreateMomentButton = ({
+  room,
+  color = 'white',
+  onSuccess,
+  style,
+}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
   const {onUpdate} = useContext(ModalContext);
   const [submitting, setSubmitting] = useState(false);
@@ -49,6 +55,10 @@ const CreateMomentButton = ({room, color = 'white', style}: TProps) => {
         target: 'createMoment',
         data: {remotePath, localPath, id: momentId, room},
       });
+
+      if (onSuccess) {
+        onSuccess();
+      }
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {
         DefaultAlert({

@@ -10,6 +10,8 @@ import {
 import AuthUserContext from '../../contexts/AuthUser';
 import {addLog} from '../../functions/Log';
 import {TStyleView} from '../../types/Style';
+import CreateMomentButton from '../buttons/CreateMomentButton';
+import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
 
@@ -25,33 +27,53 @@ const Welcome = ({style}: TProps) => {
     await addLog({
       id: authUserData.id,
       collection: 'users',
-      log: {name: 'viewedWelcome', detail: 'user viewed the welcome screen'},
+      log: {
+        name: 'viewedWelcomeTest',
+        detail: 'user viewed the welcome screen',
+      },
     });
   };
 
   const data = [
     {
-      title: 'Share moments with friends without ghosting',
-      detail: 'Share',
+      title: ['Welcome to Shoutout!'],
+    },
+    {
+      title: ['To share live moment with others!'],
+      detail: 'Press',
       icon: 'video',
     },
     {
-      title: 'Connect to moments',
+      title: ['To connect your moment!'],
       detail: 'Press',
       icon: 'plus',
     },
     {
-      title: 'To watch connected moments',
+      title: ['To catch-up with friends!'],
+      detail: 'Go to',
+      icon: 'user-group',
+    },
+    {
+      title: ['To connect with others!'],
+      detail: 'Go to',
+      icon: 'globe',
+    },
+    {
+      title: ['To watch connected moments'],
       detail: 'Swipe',
       icon: 'hand-point-left',
     },
     {
-      title: 'To watch the next moment',
+      title: ['To watch the next moment'],
       detail: 'Swipe',
       icon: 'hand-point-up',
     },
     {
-      title: "Let's go",
+      title: [
+        'Now upload your live moment!',
+        'How about sharing how the weather is like?',
+        'Moment should be 3 ~ 30 seconds.',
+      ],
       icon: 'face-smile',
       onPress: onDone,
     },
@@ -77,13 +99,15 @@ const Welcome = ({style}: TProps) => {
                   style={styles.icon}
                 />
               </View>
-
-              <DefaultText
-                title={item.title}
-                style={styles.title}
-                textStyle={styles.titleText}
-                onPress={item.onPress}
-              />
+              {item.title.map(text => (
+                <DefaultText
+                  key={text}
+                  title={text}
+                  style={styles.title}
+                  textStyle={styles.titleText}
+                  onPress={item.onPress}
+                />
+              ))}
 
               {!isLast && (
                 <DefaultText
@@ -93,11 +117,9 @@ const Welcome = ({style}: TProps) => {
               )}
 
               {isLast && !submitting && (
-                <DefaultText
-                  title={'OK'}
-                  style={styles.button}
-                  textStyle={styles.buttonText}
-                  onPress={item.onPress}
+                <CreateMomentButton
+                  style={[styles.button, styles.createButton]}
+                  onSuccess={item.onPress}
                 />
               )}
               {isLast && submitting && (
@@ -123,7 +145,14 @@ const styles = StyleSheet.create({
   detail: {flexDirection: 'row', alignItems: 'center'},
   title: {marginTop: 20},
   titleText: {fontWeight: 'bold'},
-  button: {bottom: 100, position: 'absolute'},
-  buttonText: {fontWeight: 'bold'},
+  button: {
+    bottom: 100,
+    position: 'absolute',
+  },
+  createButton: {
+    backgroundColor: defaultBlack.lv3(1),
+    padding: 20,
+    borderRadius: 20,
+  },
   icon: {padding: 10},
 });

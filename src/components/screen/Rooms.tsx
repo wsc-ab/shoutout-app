@@ -22,16 +22,25 @@ const Rooms = ({style}: TProps) => {
   const ListEmptyComponent = () => {
     return (
       <View style={{marginHorizontal: 10}}>
-        <InviteCard style={{backgroundColor: defaultBlack.lv2(1)}} />
         <DefaultText
-          title="No room has been found."
-          style={{marginTop: 10}}
-          textStyle={{fontWeight: 'bold'}}
+          title="A place for friends, without ghosting."
+          numberOfLines={2}
+          textStyle={{fontWeight: 'bold', fontSize: 20}}
         />
         <DefaultText
-          title="Invite friends and start connecting live moments!"
-          style={{marginTop: 10}}
+          title="Create a room with friends to share moments."
+          style={{marginTop: 40}}
           textStyle={{fontWeight: 'bold'}}
+          numberOfLines={2}
+        />
+        <DefaultText
+          title="You need to have shared within the last 24 hours to view other moments."
+          style={{marginTop: 20}}
+          textStyle={{fontWeight: 'bold'}}
+          numberOfLines={2}
+        />
+        <InviteCard
+          style={{backgroundColor: defaultBlack.lv2(1), marginTop: 40}}
         />
       </View>
     );
@@ -47,15 +56,9 @@ const Rooms = ({style}: TProps) => {
         indicatorStyle="white"
         ItemSeparatorComponent={() => <View style={styles.seperator} />}
       />
-      <CreateRoomButton
-        style={{
-          position: 'absolute',
-          bottom: 24,
-          left: 0,
-          right: 0,
-          marginHorizontal: 20,
-        }}
-      />
+      <View style={styles.footer}>
+        <CreateRoomButton style={styles.create} />
+      </View>
     </View>
   );
 };
@@ -66,5 +69,19 @@ const styles = StyleSheet.create({
   contentContainer: {paddingTop: 100, paddingBottom: 150},
   seperator: {
     marginVertical: 20,
+  },
+  footer: {
+    position: 'absolute',
+    bottom: 24,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    marginHorizontal: 10,
+  },
+  create: {
+    height: 40,
+    width: 50,
+    padding: 10,
+    marginHorizontal: 10,
   },
 });
