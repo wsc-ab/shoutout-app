@@ -23,7 +23,7 @@ const Home = () => {
   }
 
   const isWelcomeViewed = authUserData?.logs?.some(
-    ({name}: {name: string}) => name === 'viewedWelcomeTest',
+    ({name}: {name: string}) => name === 'viewedWelcome',
   );
 
   if (!isWelcomeViewed) {

@@ -28,7 +28,7 @@ const Welcome = ({style}: TProps) => {
       id: authUserData.id,
       collection: 'users',
       log: {
-        name: 'viewedWelcomeTest',
+        name: 'viewedWelcome',
         detail: 'user viewed the welcome screen',
       },
     });
