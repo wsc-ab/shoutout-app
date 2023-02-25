@@ -4,6 +4,7 @@ import AuthUserContext from '../../contexts/AuthUser';
 
 import {TLocation, TTimestamp} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
+import {getCityAndCountry} from '../../utils/Map';
 import {getThumbnailPath} from '../../utils/Storage';
 import DeleteButton from '../buttons/DeleteButton';
 import DefaultImage from '../defaults/DefaultImage';
@@ -76,10 +77,12 @@ const MomentSummary = ({
                   textStyle={{fontWeight: 'bold', fontSize: 16}}
                 />
                 <DefaultText title={name} numberOfLines={2} />
-                <DefaultText
-                  title={location.formatted}
-                  textStyle={{fontSize: 14, color: 'gray'}}
-                />
+                {location.formatted && (
+                  <DefaultText
+                    title={getCityAndCountry(location.formatted)}
+                    textStyle={{fontSize: 14, color: 'gray'}}
+                  />
+                )}
               </View>
             </View>
           </View>

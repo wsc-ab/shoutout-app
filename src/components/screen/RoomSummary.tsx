@@ -13,6 +13,7 @@ import {TDocData, TDocSnapshot} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
 import {groupByLength} from '../../utils/Array';
 import {getTimeGap} from '../../utils/Date';
+import {getCityAndCountry} from '../../utils/Map';
 import {getUserAdded} from '../../utils/Moment';
 import {getThumbnailPath} from '../../utils/Storage';
 import CreateMomentButton from '../buttons/CreateMomentButton';
@@ -185,17 +186,12 @@ const RoomSummary = ({room}: TProps) => {
                           textStyle={{fontWeight: 'bold', fontSize: 16}}
                         />
                         <DefaultText title={name} />
-                        <View style={{flexDirection: 'row'}}>
-                          <DefaultText
-                            title={`${getTimeGap(addedAt)} ago - `}
-                            textStyle={{fontSize: 14, color: 'gray'}}
-                          />
-                          <DefaultText
-                            title={location.formatted}
-                            textStyle={{fontSize: 14, color: 'gray'}}
-                            style={{flex: 1}}
-                          />
-                        </View>
+                        <DefaultText
+                          title={`${getTimeGap(
+                            addedAt,
+                          )} ago - ${getCityAndCountry(location.formatted)}`}
+                          textStyle={{fontSize: 14, color: 'gray'}}
+                        />
                       </View>
                       <DefaultImage
                         image={getThumbnailPath(path, 'video')}

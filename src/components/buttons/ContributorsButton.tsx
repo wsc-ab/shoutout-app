@@ -10,6 +10,7 @@ import {
 import ModalContext from '../../contexts/Modal';
 import {TTimestamp} from '../../types/Firebase';
 import {getTimeGap} from '../../utils/Date';
+import {getCityAndCountry} from '../../utils/Map';
 import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultText from '../defaults/DefaultText';
 import UserProfileImage from '../images/UserProfileImage';
@@ -102,8 +103,13 @@ const ContributorsButton = ({users, type, onPress, index, style}: TProps) => {
                     title={item.displayName}
                     textStyle={styles.nameText}
                   />
-                  <LocationButton location={item.location} />
-                  <DefaultText title={getTimeGap(item.addedAt) + ' ago'} />
+                  <DefaultText
+                    title={`${getTimeGap(
+                      item.addedAt,
+                    )} ago - ${getCityAndCountry(item.location.formatted)}`}
+                    textStyle={{fontSize: 14, color: 'lightgray'}}
+                    numberOfLines={3}
+                  />
                 </View>
               </View>
             </Pressable>
