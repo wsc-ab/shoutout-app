@@ -43,16 +43,9 @@ const ShareButton = ({input, style}: TProps) => {
   return (
     <View style={[styles.container, style]}>
       {!submitting && (
-        <View style={[styles.container]}>
-          <DefaultIcon
-            icon="share"
-            onPress={onShare}
-            size={20}
-            color={'white'}
-          />
-        </View>
+        <DefaultIcon icon="share" onPress={onShare} size={20} color={'white'} />
       )}
-      {submitting && <ActivityIndicator style={styles.act} />}
+      {submitting && <ActivityIndicator />}
     </View>
   );
 };
@@ -60,10 +53,9 @@ const ShareButton = ({input, style}: TProps) => {
 export default ShareButton;
 
 const styles = StyleSheet.create({
-  act: {padding: 10},
   container: {
     flexDirection: 'row',
-
+    alignItems: 'center',
     justifyContent: 'center',
   },
 });

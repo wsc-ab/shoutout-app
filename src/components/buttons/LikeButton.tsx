@@ -12,7 +12,6 @@ type TProps = {
     id: string;
     path: string;
     user: {id: string};
-    likeFrom: {number: number};
   };
   style?: TStyleView;
 };
