@@ -8,6 +8,7 @@
  * @format
  */
 
+import notifee from '@notifee/react-native';
 import React, {useEffect, useState} from 'react';
 import {StatusBar, StyleSheet, View} from 'react-native';
 import Home from './src/components/screen/Home';
@@ -32,8 +33,8 @@ const App = ({bundleId}: TProps) => {
     const load = async () => {
       initFirebase();
       initAlgolia(bundleId);
-
       setStatus('loaded');
+      await notifee.setBadgeCount(0);
     };
 
     if (status === 'loading') {

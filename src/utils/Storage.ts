@@ -83,3 +83,9 @@ export const getThumbnailPath = (path: string, type: 'video' | 'image') => {
       return `${path}_200x200`;
   }
 };
+
+export const getUserProfileImageThumbPath = (id: string) =>
+  `${id}/images/profileImage_200x200`;
+
+export const getUserProfileImagePath = (id: string) =>
+  `${id}/images/profileImage`;

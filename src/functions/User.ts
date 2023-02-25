@@ -1,5 +1,5 @@
 import {firebaseFunctions} from '../utils/Firebase';
-import {uploadFile} from '../utils/Storage';
+import {getUserProfileImagePath, uploadFile} from '../utils/Storage';
 
 export const createUser = async (input: {}) => {
   const {data} = await firebaseFunctions.httpsCallable('createUser')(input);
@@ -44,5 +44,5 @@ export const updateUserProfileImage = async ({
   uri: string;
   user: {id: string};
 }) => {
-  await uploadFile({uri, path: `${id}/images/profileImage`});
+  await uploadFile({uri, path: getUserProfileImagePath(id)});
 };

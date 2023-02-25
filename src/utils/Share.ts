@@ -2,7 +2,7 @@ import dynamicLinks, {
   FirebaseDynamicLinksTypes,
 } from '@react-native-firebase/dynamic-links';
 import storage from '@react-native-firebase/storage';
-import {getThumbnailPath} from './Storage';
+import {getThumbnailPath, getUserProfileImageThumbPath} from './Storage';
 
 export const createShareLink = async ({
   target,
@@ -43,6 +43,39 @@ export const createShareLink = async ({
   return shortLink;
 };
 
+export const createInviteLink = async ({
+  target,
+  authUser,
+}: {
+  target: 'production' | 'development';
+  authUser: {id: string; displayName: string};
+}) => {
+  const link =
+    defaultConfigs[target].domainUriPrefix +
+    `/invite?id=${authUser.id}&displayName=${authUser.displayName}`;
+
+  let imageUrl;
+
+  try {
+    const thumbRef = storage().ref(getUserProfileImageThumbPath(authUser.id));
+
+    imageUrl = await thumbRef.getDownloadURL();
+  } catch (error) {}
+
+  const shortLink = await dynamicLinks().buildShortLink({
+    ...defaultConfigs[target],
+    link,
+    social: {
+      title:
+        target === 'production' ? 'Shoutout Mobile' : 'Shoutout Development',
+      descriptionText: "Let's be friends on Shoutout!",
+      imageUrl,
+    },
+  });
+
+  return shortLink;
+};
+
 const defaultConfigs = {
   development: {
     ios: {
@@ -66,8 +99,32 @@ const defaultConfigs = {
   },
 };
 
-export const getLinkData = ({url}: FirebaseDynamicLinksTypes.DynamicLink) => {
+export const getShareLinkData = ({
+  url,
+}: FirebaseDynamicLinksTypes.DynamicLink) => {
   const prefix = 'airballoon.app/share?';
+  if (!url.includes(prefix)) {
+    return {collection: undefined, id: undefined};
+  }
+
+  const data = url.split(prefix)[1];
+
+  if (data) {
+    const collection = data.split('=')[0];
+    const id = data.split('=')[1];
+
+    return {collection, id};
+  }
+  return {collection: undefined, id: undefined};
+};
+
+export const getInviteLinkData = ({
+  url,
+}: FirebaseDynamicLinksTypes.DynamicLink) => {
+  const prefix = 'airballoon.app/invite?';
+  if (!url.includes(prefix)) {
+    return {collection: undefined, id: undefined};
+  }
 
   const data = url.split(prefix)[1];
 

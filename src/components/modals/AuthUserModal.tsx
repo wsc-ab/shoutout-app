@@ -4,7 +4,6 @@ import {RefreshControl, ScrollView, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import CacheContext from '../../contexts/Cache';
 import ModalContext from '../../contexts/Modal';
-import UploadingContext from '../../contexts/Uploading';
 
 import {deleteUser, updateUserProfileImage} from '../../functions/User';
 import {getImage} from '../../utils/Image';
@@ -20,7 +19,6 @@ const AuthUserModal = ({}: TProps) => {
   const {onSignOut, authUserData, onReload} = useContext(AuthUserContext);
   const {onClear} = useContext(CacheContext);
   const {onUpdate} = useContext(ModalContext);
-  const {addUpload, removeUpload} = useContext(UploadingContext);
 
   const [cacheClearing, setCacheClearing] = useState<boolean>();
 
@@ -60,17 +58,8 @@ const AuthUserModal = ({}: TProps) => {
       setImageUploading(true);
 
       const uri = await getImage();
-      addUpload({
-        type: 'profileImage',
-        remotePath: `${authUserData.id}/images/profileImage`,
-        localPath: uri,
-      });
+
       await updateUserProfileImage({uri, user: {id: authUserData.id}});
-      removeUpload({
-        type: 'profileImage',
-        remotePath: `${authUserData.id}/images/profileImage`,
-        localPath: uri,
-      });
     } catch (error) {
       DefaultAlert({
         title: 'Error',
@@ -162,7 +151,7 @@ const AuthUserModal = ({}: TProps) => {
           </View>
           <View
             style={{borderWidth: 1, borderColor: 'gray', marginVertical: 20}}
-        />
+          />
           <DefaultText
             title={
               imageUploading ? 'Changing profile image' : 'Change profile image'

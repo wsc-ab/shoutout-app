@@ -10,7 +10,7 @@ import RoomModal from '../components/modals/RoomModal';
 import UserModal from '../components/modals/UserModal';
 import UsersModal from '../components/modals/UsersModal';
 import {TObject} from '../types/Firebase';
-import {getLinkData} from '../utils/Share';
+import {getShareLinkData} from '../utils/Share';
 
 type TModal = {
   target: string;
@@ -36,7 +36,7 @@ const ModalProvider = ({children}: TProps) => {
       const initialLink = await dynamicLinks().getInitialLink();
 
       if (initialLink) {
-        const {collection, id} = getLinkData(initialLink);
+        const {collection, id} = getShareLinkData(initialLink);
 
         if (collection) {
           onUpdate({target: collection, data: {id}});
@@ -49,7 +49,8 @@ const ModalProvider = ({children}: TProps) => {
 
   useEffect(() => {
     const unsub = dynamicLinks().onLink(link => {
-      const {collection, id} = getLinkData(link);
+      const {collection, id} = getShareLinkData(link);
+
       if (collection) {
         onUpdate({target: collection, data: {id}});
       }

@@ -3,6 +3,10 @@ import {Image, Pressable, StyleSheet} from 'react-native';
 import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
 import {loadFromCache} from '../../utils/Cache';
+import {
+  getUserProfileImagePath,
+  getUserProfileImageThumbPath,
+} from '../../utils/Storage';
 
 import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
@@ -29,7 +33,7 @@ const UserProfileImage = ({
   useEffect(() => {
     let isMounted = true;
     const loadImageUrl = async () => {
-      const remoteThumbPath = `${id}/images/profileImage_200x200`;
+      const remoteThumbPath = getUserProfileImageThumbPath(id);
 
       try {
         const localPath = await loadFromCache({remotePath: remoteThumbPath});
@@ -38,7 +42,7 @@ const UserProfileImage = ({
       } catch (e) {
         try {
           const localPath = await loadFromCache({
-            remotePath: `${id}/images/profileImage`,
+            remotePath: getUserProfileImagePath(id),
           });
           setImageUrl(localPath);
         } catch (error) {
