@@ -104,9 +104,12 @@ const ContributorsButton = ({users, type, onPress, index, style}: TProps) => {
                     textStyle={styles.nameText}
                   />
                   <DefaultText
-                    title={`${getTimeGap(
-                      item.addedAt,
-                    )} ago - ${getCityAndCountry(item.location.formatted)}`}
+                    title={`${getTimeGap(item.addedAt)} ago`}
+                    textStyle={{fontSize: 14, color: 'lightgray'}}
+                    numberOfLines={3}
+                  />
+                  <DefaultText
+                    title={getCityAndCountry(item.location.formatted)}
                     textStyle={{fontSize: 14, color: 'lightgray'}}
                     numberOfLines={3}
                   />

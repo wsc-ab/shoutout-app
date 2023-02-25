@@ -186,6 +186,7 @@ const RoomSummary = ({room}: TProps) => {
                           textStyle={{fontWeight: 'bold', fontSize: 16}}
                         />
                         <DefaultText title={name} />
+
                         <DefaultText
                           title={`${getTimeGap(
                             addedAt,
