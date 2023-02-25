@@ -80,11 +80,17 @@ const RoomSummary = ({room}: TProps) => {
   const onView = ({path}: {path: string}) =>
     onUpdate({target: 'room', data: {room: data, path}});
 
-  const grouped = groupByLength(data.moments.items, 3);
+  const grouped = groupByLength(data.moments.items, 1);
 
   const itemWidth = width - 30;
 
-  const {added, timeGap} = getUserAdded({authUserData, room: data});
+  const {added} = getUserAdded({authUserData, room: data});
+
+  const getItemLayout = (_: any[] | null | undefined, itemIndex: number) => ({
+    length: itemWidth,
+    offset: itemWidth * itemIndex,
+    index: itemIndex,
+  });
 
   return (
     <View style={styles.container}>
@@ -93,8 +99,7 @@ const RoomSummary = ({room}: TProps) => {
           flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
-          marginHorizontal: 10,
-          marginBottom: 10,
+          padding: 10,
         }}>
         <DefaultText
           title={data.name}
@@ -106,7 +111,10 @@ const RoomSummary = ({room}: TProps) => {
             alignItems: 'center',
             flexDirection: 'row',
           }}>
-          <DefaultIcon icon="video" style={{padding: 0}} />
+          <CreateMomentButton
+            room={{id: data.id}}
+            color={added ? 'white' : defaultRed.lv2}
+          />
           <DefaultText
             title={data.moments.number.toString()}
             style={{marginLeft: 5}}
@@ -119,7 +127,7 @@ const RoomSummary = ({room}: TProps) => {
             marginLeft: 10,
           }}
           onPress={() => onUpdate({target: 'promptUsers', data: {users}})}>
-          <DefaultIcon icon="user-group" style={{padding: 0}} />
+          <DefaultIcon icon="user-group" style={{padding: 0}} size={20} />
           <DefaultText title={data.inviteTo.number} style={{marginLeft: 5}} />
         </Pressable>
       </View>
@@ -130,23 +138,31 @@ const RoomSummary = ({room}: TProps) => {
         snapToAlignment={'start'}
         decelerationRate="fast"
         disableIntervalMomentum
+        getItemLayout={getItemLayout}
         ListEmptyComponent={() => (
-          <DefaultText title="No moment shared" style={{margin: 10}} />
+          <DefaultText
+            title="No moment shared yet"
+            style={{
+              marginHorizontal: 10,
+              height: 50,
+              width: itemWidth,
+            }}
+          />
         )}
         renderItem={({item}) => {
           return (
-            <View
-              style={{
-                marginHorizontal: 10,
-              }}>
+            <View>
               {item.map(
                 ({name, path, addedAt, user: {id: userId, displayName}}) => {
                   return (
                     <Pressable
                       key={path}
                       style={{
+                        marginHorizontal: 10,
                         flexDirection: 'row',
                         width: itemWidth,
+                        height: 50,
+                        borderColor: 'white',
                         marginBottom: 10,
                       }}
                       onPress={() => {
@@ -180,28 +196,6 @@ const RoomSummary = ({room}: TProps) => {
           );
         }}
       />
-
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          marginHorizontal: 10,
-        }}>
-        <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
-          <CreateMomentButton
-            style={{paddingRight: 10}}
-            room={{id: data.id}}
-            color={added ? 'white' : defaultRed.lv2}
-          />
-          {!added && (
-            <DefaultText
-              title={'This room missed you!'}
-              textStyle={{color: defaultRed.lv2}}
-            />
-          )}
-          {added && <DefaultText title={`shared ${timeGap} ago!`} />}
-        </View>
-      </View>
     </View>
   );
 };

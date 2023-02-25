@@ -24,7 +24,7 @@ const AddMomentForm = ({remotePath, localPath, id}: TProps) => {
   const {text} = defaultSchema();
   const [submitting, setSubmitting] = useState(false);
   const {onUpdate} = useContext(ModalContext);
-  const {addUpload, removeUpload} = useContext(UploadingContext);
+  const {onUpload} = useContext(UploadingContext);
 
   const schema = object({
     name: text({min: 1, max: 50, required: true}),
@@ -42,13 +42,27 @@ const AddMomentForm = ({remotePath, localPath, id}: TProps) => {
   });
 
   const onSubmit = async ({name}: {name: string}) => {
+    const target = {
+      collection: 'moments',
+      id,
+      data: {
+        remotePath,
+        localPath,
+        name,
+      },
+    };
+
     try {
       setSubmitting(true);
 
       const latlng = await getLatLng();
       onUpdate(undefined);
       // upload video
-      addUpload({localPath, remotePath, type: 'addMoment'});
+
+      onUpload({
+        target,
+        status: 'uploading',
+      });
 
       await uploadVideo({localPath, remotePath});
 
@@ -56,7 +70,23 @@ const AddMomentForm = ({remotePath, localPath, id}: TProps) => {
         moment: {id},
         content: {path: remotePath, name, latlng},
       });
-      removeUpload({localPath, remotePath, type: 'addMoment'});
+      onUpload({
+        target,
+        status: 'ready',
+      });
+
+      const onPress = () => {
+        onUpdate({
+          target: 'moment',
+          data: {id, path: remotePath},
+        });
+      };
+
+      DefaultAlert({
+        title: 'Moment shared!',
+        message: 'Press Go to view your moment',
+        buttons: [{text: 'Go', onPress: onPress}, {text: 'Cancel'}],
+      });
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {
         DefaultAlert({
@@ -64,6 +94,10 @@ const AddMomentForm = ({remotePath, localPath, id}: TProps) => {
           message: (error as {message: string}).message,
         });
       }
+      onUpload({
+        target,
+        status: 'error',
+      });
     } finally {
       setSubmitting(false);
       onUpdate(undefined);

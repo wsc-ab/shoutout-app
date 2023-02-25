@@ -18,6 +18,7 @@ import LocationButton from './LocationButton';
 type TProps = {
   users: {
     displayName: string;
+    uploading?: boolean;
     id: string;
     location?: {name: string};
     addedAt: TTimestamp;
@@ -55,6 +56,25 @@ const ContributorsButton = ({users, type, onPress, index, style}: TProps) => {
         contentContainerStyle={styles.contentContainer}
         renderItem={({item, index: elIndex}) => {
           const isCurrent = elIndex === index;
+          if (item.uploading) {
+            console.log(item.canceled, 'item.canceled');
+
+            return (
+              <View
+                style={[
+                  styles.container,
+                  {width: (width - 80) / 1.5},
+                  isCurrent && styles.current,
+                  elIndex === users.length - 1 && styles.isLast,
+                ]}>
+                {!item.canceled && <DefaultText title="Uploading" />}
+                {item.canceled && (
+                  <DefaultText title="Cancel Upload" onPress={() => {}} />
+                )}
+              </View>
+            );
+          }
+
           return (
             <Pressable
               key={item.id + elIndex}

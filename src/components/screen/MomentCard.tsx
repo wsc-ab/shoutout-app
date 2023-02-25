@@ -49,6 +49,7 @@ const MomentCard = ({
 }: TProps) => {
   const {height, width} = useWindowDimensions();
   const [data, setData] = useState<TDocData>();
+
   const {authUserData} = useContext(AuthUserContext);
 
   const ref = useRef<FlatList>(null);
@@ -131,11 +132,15 @@ const MomentCard = ({
       user,
       addedAt,
       location,
+      uploading,
+      canceled,
     }: {
+      uploading?: boolean;
       user: {id: string; name: string};
       addedAt: TTimestamp;
-      location?: TLocation;
-    }) => ({...user, addedAt, location}),
+      location: TLocation;
+      canceled?: boolean;
+    }) => ({...user, uploading, canceled, addedAt, location}),
   );
 
   if (!data) {
@@ -155,6 +160,7 @@ const MomentCard = ({
     item: {
       id: string;
       path: string;
+      uploading?: boolean;
       user: {id: string; name: string};
       addedAt: TTimestamp;
       name: string;
@@ -189,11 +195,11 @@ const MomentCard = ({
         {!blur && (
           <Footer
             content={item}
-            added={added}
             moment={moment}
             style={{marginHorizontal: 10}}
           />
         )}
+        {item.uploading && <DefaultText title="Being uploaded" />}
       </View>
     );
   };

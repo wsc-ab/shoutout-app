@@ -3,8 +3,10 @@ import React, {useContext, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
+import UploadingContext from '../../contexts/Uploading';
 import {TStyleView} from '../../types/Style';
 import {checkLocationPermission} from '../../utils/Location';
+import {onUploading} from '../../utils/Upload';
 import {takeVideo} from '../../utils/Video';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultIcon from '../defaults/DefaultIcon';
@@ -19,6 +21,7 @@ const CreateMomentButton = ({room, color = 'white', style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
   const {onUpdate} = useContext(ModalContext);
   const [submitting, setSubmitting] = useState(false);
+  const {status} = useContext(UploadingContext);
 
   const onAdd = async () => {
     onUpdate({target: 'video'});
@@ -53,7 +56,6 @@ const CreateMomentButton = ({room, color = 'white', style}: TProps) => {
           message: (error as {message: string}).message,
         });
       }
-      onUpdate(undefined);
     } finally {
       setSubmitting(false);
     }
@@ -62,7 +64,12 @@ const CreateMomentButton = ({room, color = 'white', style}: TProps) => {
   return (
     <View style={[styles.container, style]}>
       {!submitting && (
-        <DefaultIcon icon="video" onPress={onAdd} size={20} color={color} />
+        <DefaultIcon
+          icon="video"
+          onPress={status === 'ready' ? onAdd : onUploading}
+          size={20}
+          color={color}
+        />
       )}
       {submitting && <ActivityIndicator color="white" />}
     </View>

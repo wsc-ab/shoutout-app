@@ -2,8 +2,10 @@ import React, {useContext, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
+import UploadingContext from '../../contexts/Uploading';
 import {TStyleView} from '../../types/Style';
 import {checkLocationPermission} from '../../utils/Location';
+import {onUploading} from '../../utils/Upload';
 import {takeVideo} from '../../utils/Video';
 import DefaultAlert from '../defaults/DefaultAlert';
 import {defaultRed} from '../defaults/DefaultColors';
@@ -19,6 +21,7 @@ const AddMomentButton = ({moment: {id}, added, style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
   const {onUpdate} = useContext(ModalContext);
   const [submitting, setSubmitting] = useState(false);
+  const {status} = useContext(UploadingContext);
 
   const onAdd = async () => {
     onUpdate({target: 'video'});
@@ -70,7 +73,7 @@ const AddMomentButton = ({moment: {id}, added, style}: TProps) => {
       {!submitting && (
         <DefaultIcon
           icon="plus"
-          onPress={added ? onAdd : onAdd}
+          onPress={status === 'ready' ? (added ? onAdded : onAdd) : onUploading}
           size={20}
           color={added ? defaultRed.lv2 : 'white'}
         />

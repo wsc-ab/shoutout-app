@@ -18,11 +18,9 @@ import {
   faSearch,
   faShare,
   faTimes,
+  faUpload,
   faUser,
-  faUserCheck,
   faUserGroup,
-  faUserMinus,
-  faUserPlus,
   faVideo,
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -43,11 +41,9 @@ library.add(
   faHandPointUp,
   faFaceSmile,
   faPlay,
-  faUserPlus,
-  faUserMinus,
-  faUserCheck,
   faSearch,
   faGear,
   faVideo,
   faAddressBook,
+  faUpload,
 );

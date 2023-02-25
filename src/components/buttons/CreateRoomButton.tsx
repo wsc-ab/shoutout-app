@@ -15,7 +15,7 @@ const CreateRoomButton = ({style}: TProps) => {
 
   return (
     <View style={[styles.container, style]}>
-      <DefaultText title="New room" textStyle={styles.titleText} />
+      <DefaultText title="Room" textStyle={styles.titleText} />
       <DefaultIcon
         icon="plus"
         onPress={() => onUpdate({target: 'createRoom'})}

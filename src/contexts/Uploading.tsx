@@ -1,20 +1,25 @@
 import React, {createContext, useState} from 'react';
-import {SafeAreaView, StyleSheet, View} from 'react-native';
-import {defaultBlack} from '../components/defaults/DefaultColors';
-import DefaultIcon from '../components/defaults/DefaultIcon';
-import DefaultText from '../components/defaults/DefaultText';
+import {SafeAreaView, StyleSheet} from 'react-native';
+import UploadButton from '../components/buttons/UploadButton';
+import {defaultBlue} from '../components/defaults/DefaultColors';
+import {TObject} from '../types/Firebase';
 
-type TContent = {
-  remotePath: string;
-  localPath: string;
-  type: 'createPrompt' | 'addMoment' | 'addContent' | 'profileImage';
+type TTarget = {
+  collection: string;
+  id: string;
+  data: TObject;
 };
 
 type TContextProps = {
-  contents: TContent[];
-  addUpload: (content: TContent) => void;
-  removeUpload: (content: TContent) => void;
-  promptUpdated: boolean;
+  target?: TTarget;
+  status: 'ready' | 'uploading' | 'error' | 'done';
+  onUpload: ({
+    target,
+    status,
+  }: {
+    target: TTarget;
+    status: TContextProps['status'];
+  }) => void;
 };
 
 const UploadingContext = createContext({} as TContextProps);
@@ -24,58 +29,33 @@ export type TProps = {
 };
 
 const UploadingProvider = ({children}: TProps) => {
-  const [contents, setContents] = useState<TContent[]>([]);
-  const [status, setstatus] = useState<'started' | 'ended'>();
-  const [promptUpdated, setPromptUpdated] = useState(false);
+  const [target, setTarget] = useState<TContextProps['target']>();
+  const [status, setStatus] = useState<TContextProps['status']>('ready');
 
-  const addUpload = (newContent: TContent) => {
-    setstatus('started');
-    setContents(pre => [...pre, newContent]);
-    setTimeout(() => {
-      setstatus(undefined);
-    }, 3000);
-  };
-
-  const removeUpload = ({remotePath, type}: TContent) => {
-    setstatus('ended');
-    setContents(pre =>
-      pre.filter(({remotePath: elRemotePath}) => elRemotePath !== remotePath),
-    );
-
-    const promptTypes = ['createPrompt', 'addMoment', 'profileImage'];
-
-    if (promptTypes.includes(type)) {
-      setPromptUpdated(true);
-      setPromptUpdated(false);
-    }
-    setTimeout(() => {
-      setstatus(undefined);
-    }, 3000);
+  const onUpload: TContextProps['onUpload'] = ({
+    target: newTarget,
+    status: newStatus,
+  }) => {
+    setStatus(newStatus);
+    setTarget(newStatus === 'ready' ? undefined : newTarget);
   };
 
   return (
     <UploadingContext.Provider
       value={{
-        contents,
-        addUpload,
-        removeUpload,
-        promptUpdated,
+        target,
+        status,
+        onUpload,
       }}>
       {children}
-      {status && (
-        <SafeAreaView style={styles.container}>
-          {status === 'started' && (
-            <View style={styles.box}>
-              <DefaultText
-                title="Uploading your moment!"
-                style={styles.text}
-                textStyle={{fontWeight: 'bold'}}
-              />
-              <DefaultIcon icon="times" onPress={() => setstatus(undefined)} />
-            </View>
-          )}
-        </SafeAreaView>
-      )}
+      <SafeAreaView style={styles.container}>
+        {status === 'uploading' && target && (
+          <UploadButton
+            style={styles.button}
+            localPath={target.data.localPath}
+          />
+        )}
+      </SafeAreaView>
     </UploadingContext.Provider>
   );
 };
@@ -85,21 +65,16 @@ export default UploadingContext;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 5,
     position: 'absolute',
     zIndex: 100,
   },
-  box: {
-    flexDirection: 'row',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    backgroundColor: defaultBlack.lv3(1),
-    borderRadius: 20,
+  button: {
+    flex: 1,
     alignItems: 'center',
-    marginHorizontal: 20,
+    padding: 10,
+    backgroundColor: defaultBlue,
+    borderTopRightRadius: 20,
+    borderBottomRightRadius: 20,
+    alignSelf: 'stretch',
   },
-  text: {flex: 1, padding: 10},
 });
