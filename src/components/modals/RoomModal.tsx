@@ -15,6 +15,8 @@ const RoomModal = ({room, path}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
   const {height, width} = useWindowDimensions();
 
+  console.log(path, 'p');
+
   return (
     <DefaultModal>
       <RoomCard

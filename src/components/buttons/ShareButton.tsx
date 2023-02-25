@@ -10,8 +10,7 @@ import openShareModal from '../modals/ShareModal';
 type TProps = {
   input: {
     title: string;
-    param: string;
-    value: string;
+    target: {collection: string; id: string; path?: string};
     image?: {path: string; type: 'video' | 'image'};
   };
   style?: TStyleView;
@@ -25,10 +24,10 @@ const ShareButton = ({input, style}: TProps) => {
     try {
       setSubmitting(true);
 
-      const target =
+      const type =
         bundleId === 'app.airballoon.Shoutout' ? 'development' : 'production';
 
-      const shareLink = await createShareLink({...input, target});
+      const shareLink = await createShareLink({...input, type});
       await openShareModal({title: input.title, url: shareLink});
     } catch (error) {
       DefaultAlert({

@@ -12,6 +12,7 @@ type TProps = {
   content: {
     id: string;
     path: string;
+    name: string;
     user: {id: string};
   };
   moment: {id: string};
@@ -35,10 +36,12 @@ const Footer = ({content, moment, added, style}: TProps) => {
       <CreateMomentButton style={styles.button} />
       <ShareButton
         input={{
-          title:
-            'Hey! Check this moment out! You can also connect yours to it!',
-          param: 'moments',
-          value: content.id,
+          title: `Hey! Check this ${content.name} moment out!`,
+          target: {
+            collection: 'moments',
+            id: content.id,
+            path: content.path,
+          },
           image: {path: content.path, type: 'video'},
         }}
         style={styles.button}

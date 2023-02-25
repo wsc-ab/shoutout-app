@@ -1,25 +1,20 @@
-import dynamicLinks, {
-  FirebaseDynamicLinksTypes,
-} from '@react-native-firebase/dynamic-links';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
 import storage from '@react-native-firebase/storage';
-import {getThumbnailPath, getUserProfileImageThumbPath} from './Storage';
+import {TObject} from '../types/Firebase';
+import {getThumbnailPath} from './Storage';
 
 export const createShareLink = async ({
+  type,
   target,
-  param,
-  value,
   image,
 }: {
-  target: 'production' | 'development';
-  param?: string;
-  value?: string;
+  type: 'production' | 'development';
+  target: {collection: string; id: string; path?: string};
   image?: {path: string; type: 'video' | 'image'};
 }) => {
-  let link = defaultConfigs[target].domainUriPrefix;
+  let base = defaultConfigs[type].domainUriPrefix + '/share';
 
-  if (param && value) {
-    link = link + `/share?${param}=${value}`;
-  }
+  const link = setQueryParams({base, target});
 
   let imageUrl;
 
@@ -30,45 +25,11 @@ export const createShareLink = async ({
   }
 
   const shortLink = await dynamicLinks().buildShortLink({
-    ...defaultConfigs[target],
+    ...defaultConfigs[type],
     link,
     social: {
-      title:
-        target === 'production' ? 'Shoutout Mobile' : 'Shoutout Development',
+      title: type === 'production' ? 'Shoutout Mobile' : 'Shoutout Development',
       descriptionText: 'Connect live moments on Shoutout!',
-      imageUrl,
-    },
-  });
-
-  return shortLink;
-};
-
-export const createInviteLink = async ({
-  target,
-  authUser,
-}: {
-  target: 'production' | 'development';
-  authUser: {id: string; displayName: string};
-}) => {
-  const link =
-    defaultConfigs[target].domainUriPrefix +
-    `/invite?id=${authUser.id}&displayName=${authUser.displayName}`;
-
-  let imageUrl;
-
-  try {
-    const thumbRef = storage().ref(getUserProfileImageThumbPath(authUser.id));
-
-    imageUrl = await thumbRef.getDownloadURL();
-  } catch (error) {}
-
-  const shortLink = await dynamicLinks().buildShortLink({
-    ...defaultConfigs[target],
-    link,
-    social: {
-      title:
-        target === 'production' ? 'Shoutout Mobile' : 'Shoutout Development',
-      descriptionText: "Let's be friends on Shoutout!",
       imageUrl,
     },
   });
@@ -99,40 +60,38 @@ const defaultConfigs = {
   },
 };
 
-export const getShareLinkData = ({
-  url,
-}: FirebaseDynamicLinksTypes.DynamicLink) => {
-  const prefix = 'airballoon.app/share?';
-  if (!url.includes(prefix)) {
-    return {collection: undefined, id: undefined};
+export const getQueryParams = (url: string) => {
+  const regex = /[?&]([^=#]+)=([^&#]*)/g;
+  const params: TObject = {};
+  let match;
+
+  while ((match = regex.exec(url))) {
+    params[match[1]] = match[2];
   }
 
-  const data = url.split(prefix)[1];
+  console.log(params, 'p');
 
-  if (data) {
-    const collection = data.split('=')[0];
-    const id = data.split('=')[1];
-
-    return {collection, id};
-  }
-  return {collection: undefined, id: undefined};
+  return params;
 };
 
-export const getInviteLinkData = ({
-  url,
-}: FirebaseDynamicLinksTypes.DynamicLink) => {
-  const prefix = 'airballoon.app/invite?';
-  if (!url.includes(prefix)) {
-    return {collection: undefined, id: undefined};
-  }
+export const setQueryParams = ({
+  base,
+  target,
+}: {
+  base: string;
+  target: {
+    collection: string;
+    id: string;
+    path?: string;
+  };
+}) => {
+  let link = base + '?';
+  Object.entries(target).map(([key, value], index) => {
+    if (index !== 0) {
+      link = link + '&';
+    }
+    link = link + `${key}=${value}`;
+  });
 
-  const data = url.split(prefix)[1];
-
-  if (data) {
-    const collection = data.split('=')[0];
-    const id = data.split('=')[1];
-
-    return {collection, id};
-  }
-  return {collection: undefined, id: undefined};
+  return link;
 };

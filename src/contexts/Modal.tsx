@@ -10,7 +10,7 @@ import RoomModal from '../components/modals/RoomModal';
 import UserModal from '../components/modals/UserModal';
 import UsersModal from '../components/modals/UsersModal';
 import {TObject} from '../types/Firebase';
-import {getShareLinkData} from '../utils/Share';
+import {getQueryParams} from '../utils/Share';
 
 type TModal = {
   target: string;
@@ -30,16 +30,17 @@ export type TProps = {
 
 const ModalProvider = ({children}: TProps) => {
   const [modal, setModal] = useState<TModal>();
+  console.log(modal, 'modal');
 
   useEffect(() => {
     const loadInitialLink = async () => {
       const initialLink = await dynamicLinks().getInitialLink();
 
       if (initialLink) {
-        const {collection, id} = getShareLinkData(initialLink);
-
+        const {collection, id, path} = getQueryParams(initialLink.url);
+        console.log(collection, id, path, 'collection, id, path');
         if (collection) {
-          onUpdate({target: collection, data: {id}});
+          onUpdate({target: collection.slice(0, -1), data: {id, path}});
         }
       }
     };
@@ -49,10 +50,11 @@ const ModalProvider = ({children}: TProps) => {
 
   useEffect(() => {
     const unsub = dynamicLinks().onLink(link => {
-      const {collection, id} = getShareLinkData(link);
+      const {collection, id, path} = getQueryParams(link.url);
+      console.log(collection, id, path, 'collection, id, path');
 
       if (collection) {
-        onUpdate({target: collection, data: {id}});
+        onUpdate({target: collection.slice(0, -1), data: {id, path}});
       }
     });
     return () => unsub();
@@ -79,7 +81,7 @@ const ModalProvider = ({children}: TProps) => {
         <MomentModal id={modal.data.id} path={modal.data.path} />
       )}
       {modal?.target === 'room' && modal.data?.room && (
-        <RoomModal room={modal.data.room} />
+        <RoomModal room={modal.data.room} path={modal.data.path} />
       )}
       {modal?.target === 'createRoom' && <CreateRoomForm {...modal.data} />}
       {modal?.target === 'createMoment' && modal.data && (
