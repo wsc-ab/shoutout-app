@@ -206,7 +206,8 @@ const start = async function () {
   try {
     await uploadToPlayStore(branchName);
   } catch (error) {
-    throw Error('Upload Bundle error:', error);
+    console.log('Upload Bundle error', error);
+    throw Error('Upload Bundle error', error);
   }
   console.log('upload to play store ended');
 };
