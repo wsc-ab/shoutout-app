@@ -7,7 +7,9 @@ import {
 } from 'react-native-image-picker';
 import DefaultAlert from '../components/defaults/DefaultAlert';
 import {saveCacheData} from './Cache';
+import {Platform} from 'react-native';
 import {encodeToH264, generateThumb} from './Ffmpeg';
+
 import {createStoragePath, uploadFile} from './Storage';
 
 export const getVideo = async ({
