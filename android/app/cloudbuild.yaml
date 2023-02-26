@@ -104,7 +104,7 @@ steps:
   - id: 'upload app bundle to playstore'
     name: 'reactnativecommunity/react-native-android'
     dir: 'android/app/'
-    waitFor: ['build']
+    waitFor: ['upload_properties']
     entrypoint: node
     args: ['upload-google-play.js', '${BRANCH_NAME}']
 
