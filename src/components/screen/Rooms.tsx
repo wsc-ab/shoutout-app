@@ -21,21 +21,24 @@ const Rooms = ({style}: TProps) => {
 
   const ListEmptyComponent = () => {
     return (
-      <View style={{marginHorizontal: 10}}>
+      <View
+        style={{
+          marginHorizontal: 10,
+        }}>
         <DefaultText
-          title="A place for friends, without ghosting."
+          title="Rooms with friends, without ghosting"
           numberOfLines={2}
           textStyle={{fontWeight: 'bold', fontSize: 20}}
         />
         <DefaultText
-          title="Create a room with friends to share moments."
+          title="Create rooms with friends to share live moments."
           style={{marginTop: 40}}
           textStyle={{fontWeight: 'bold'}}
           numberOfLines={2}
         />
         <DefaultText
-          title="You need to have shared within the last 24 hours to view other moments."
-          style={{marginTop: 20}}
+          title="You need to have shared within the last 24 hours to view other moments in the room."
+          style={{marginTop: 40}}
           textStyle={{fontWeight: 'bold'}}
           numberOfLines={2}
         />

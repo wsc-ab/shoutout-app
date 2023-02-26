@@ -83,7 +83,12 @@ const SelectForm = ({title, onSuccess, onCancel, data, min, max}: TProps) => {
         renderItem={renderItem}
         style={{padding: 10}}
         indicatorStyle="white"
-        ListEmptyComponent={<DefaultText title="This list is empty" />}
+        ListEmptyComponent={
+          <DefaultText
+            title="This list is empty."
+            textStyle={{fontWeight: 'bold'}}
+          />
+        }
         ListHeaderComponent={
           <DefaultText
             title="Select friends for your new room."

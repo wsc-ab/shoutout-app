@@ -119,7 +119,7 @@ const Moments = ({style, mount}: TProps) => {
       {status === 'loaded' ? (
         <View style={styles.noMoment}>
           <DefaultText title="No moment found. Add one!" />
-          <CreateMomentButton />
+          <CreateMomentButton style={{marginTop: 20}} />
         </View>
       ) : null}
     </>
