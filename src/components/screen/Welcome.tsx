@@ -11,7 +11,6 @@ import AuthUserContext from '../../contexts/AuthUser';
 import {addLog} from '../../functions/Log';
 import {TStyleView} from '../../types/Style';
 import CreateMomentButton from '../buttons/CreateMomentButton';
-import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
 
@@ -118,7 +117,7 @@ const Welcome = ({style}: TProps) => {
 
               {isLast && !submitting && (
                 <CreateMomentButton
-                  style={[styles.button, styles.createButton]}
+                  style={styles.button}
                   onSuccess={item.onPress}
                 />
               )}
@@ -148,11 +147,6 @@ const styles = StyleSheet.create({
   button: {
     bottom: 100,
     position: 'absolute',
-  },
-  createButton: {
-    backgroundColor: defaultBlack.lv3(1),
-    padding: 20,
-    borderRadius: 20,
   },
   icon: {padding: 10},
 });
