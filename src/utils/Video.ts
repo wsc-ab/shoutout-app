@@ -53,7 +53,7 @@ export const takeVideo = async ({userId, id}: {userId: string; id: string}) => {
 
   try {
     asset = await getVideo({
-      durationLimit: 30,
+      durationLimit: 15,
     });
   } catch (error) {
     if ((error as {message: string}).message !== 'cancel') {

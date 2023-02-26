@@ -41,17 +41,17 @@ const Welcome = ({style}: TProps) => {
     {
       title: ['To share live moment with others!'],
       detail: 'Press',
-      icon: 'video',
+      icon: 'square-plus',
     },
     {
       title: ['To connect your moment!'],
       detail: 'Press',
-      icon: 'square-plus',
+      icon: 'layer-group',
     },
     {
-      title: ['To catch-up with friends!'],
+      title: ['To view your rooms!'],
       detail: 'Go to',
-      icon: 'user-group',
+      icon: 'folder',
     },
     {
       title: ['To connect with others!'],
@@ -72,7 +72,7 @@ const Welcome = ({style}: TProps) => {
       title: [
         'Now upload your live moment!',
         'How about sharing how the weather is like?',
-        'Moment should be 3 ~ 30 seconds.',
+        'Moment should be 3 ~ 15 seconds.',
       ],
       icon: 'face-smile',
       onPress: onDone,

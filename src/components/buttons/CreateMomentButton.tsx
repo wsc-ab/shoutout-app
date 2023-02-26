@@ -76,7 +76,9 @@ const CreateMomentButton = ({
       style={[styles.container, style]}
       disabled={submitting}
       onPress={status === 'ready' ? onAdd : onUploading}>
-      {!submitting && <DefaultIcon icon="video" size={20} color={color} />}
+      {!submitting && (
+        <DefaultIcon icon="square-plus" size={20} color={color} />
+      )}
       {submitting && <ActivityIndicator color="white" />}
     </Pressable>
   );
