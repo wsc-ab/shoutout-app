@@ -39,7 +39,7 @@ const SearchForm = ({indexes, renderItem}: TProps) => {
 export default SearchForm;
 
 const styles = StyleSheet.create({
-  container: {flex: 1},
+  container: {flex: 1, marginHorizontal: 10},
   searchBox: {marginVertical: 10},
 });
 
