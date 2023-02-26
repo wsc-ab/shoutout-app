@@ -80,7 +80,7 @@ const ModalProvider = ({children}: TProps) => {
       {modal?.target === 'moments' && modal.data && (
         <MomentsModal
           moments={modal.data.moments}
-          user={{id: modal.data.user.id}}
+          user={modal.data.user}
           initialScrollIndex={modal.data.initialScrollIndex}
         />
       )}
@@ -89,11 +89,20 @@ const ModalProvider = ({children}: TProps) => {
       )}
       {modal?.target === 'createRoom' && <CreateRoomForm {...modal.data} />}
       {modal?.target === 'createMoment' && modal.data && (
-        <CreateMomentForm {...modal.data} />
+        <CreateMomentForm
+          remotePath={modal.data.remotePath}
+          localPath={modal.data.localPath}
+          id={modal.data.id}
+          room={modal.data.room}
+        />
       )}
 
       {modal?.target === 'addMoment' && modal.data && (
-        <AddMomentForm {...modal.data} />
+        <AddMomentForm
+          remotePath={modal.data.remotePath}
+          localPath={modal.data.localPath}
+          id={modal.data.id}
+        />
       )}
       {modal?.target === 'auth' && <AuthUserModal />}
       {modal?.target === 'friends' && <ContactsModal />}

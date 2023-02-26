@@ -24,9 +24,9 @@ const AddMomentButton = ({moment: {id}, added, style}: TProps) => {
   const {status} = useContext(UploadingContext);
 
   const onAdd = async () => {
-    // if (added) {
-    //   return onAdded();
-    // }
+    if (added) {
+      return onAdded();
+    }
     onUpdate({target: 'video'});
 
     setSubmitting(true);
