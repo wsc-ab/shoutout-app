@@ -9,7 +9,6 @@ import {createUser, sendVerificationCode} from '../../functions/User';
 import {defaultSchema} from '../../utils/Schema';
 import ControllerText from '../controllers/ControllerText';
 import DefaultAlert from '../defaults/DefaultAlert';
-import DefaultDivider from '../defaults/DefaultDivider';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultKeyboardAwareScrollView from '../defaults/DefaultKeyboardAwareScrollView';
 import DefaultText from '../defaults/DefaultText';
@@ -129,8 +128,10 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
         submitting,
       }}>
       <DefaultKeyboardAwareScrollView>
-        <DefaultText title="Please set your profile to sign up." />
-        <DefaultDivider />
+        <DefaultText
+          title="Please set your profile to sign up."
+          style={{marginBottom: 20}}
+        />
         <ControllerText
           control={control}
           name="email"

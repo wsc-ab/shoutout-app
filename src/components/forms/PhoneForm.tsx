@@ -77,8 +77,10 @@ const PhoneForm = ({onCancel, onSuccess, submitting}: TProps) => {
         submitting,
       }}>
       <DefaultKeyboardAwareScrollView>
-        <DefaultText title="Enter phone number to sign in or up." />
-        <DefaultDivider />
+        <DefaultText
+          title="Enter phone number to sign in or up."
+          style={{marginBottom: 20}}
+        />
         <DefaultText title="Country" textStyle={styles.countryText} />
         <DefaultText
           title={countryCode}
