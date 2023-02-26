@@ -15,11 +15,11 @@ import MomentCard from '../screen/MomentCard';
 
 type TProps = {
   moments: {id: string; contents: {path: string; user: {id: string}}[]}[];
-  initialScrollIndex?: number;
-  user?: {id: string};
+  momentIndex?: number;
+  contentPath?: string;
 };
 
-const MomentsModal = ({moments, initialScrollIndex, user}: TProps) => {
+const MomentsModal = ({moments, momentIndex, contentPath}: TProps) => {
   const {height, width} = useWindowDimensions();
   const [index, setIndex] = useState(0);
 
@@ -55,24 +55,24 @@ const MomentsModal = ({moments, initialScrollIndex, user}: TProps) => {
     item: {id: string; contents: {path: string; user: {id: string}}[]};
     index: number;
   }) => {
-    let path;
-    if (user?.id) {
-      path = item.contents.filter(({user: {id: elId}}) => elId === user.id)[0]
-        .path;
-    }
-
     return (
       <View style={{height, width}}>
         <MomentCard
           moment={{...item}}
           mount={index - 1 <= elIndex && elIndex <= index + 1}
-          path={path}
+          path={index === momentIndex ? contentPath : undefined}
           pauseOnModal={false}
           inView={index === elIndex}
         />
       </View>
     );
   };
+
+  const getItemLayout = (_: any[] | null | undefined, itemIndex: number) => ({
+    length: height,
+    offset: height * itemIndex,
+    index: itemIndex,
+  });
 
   return (
     <DefaultModal>
@@ -89,7 +89,8 @@ const MomentsModal = ({moments, initialScrollIndex, user}: TProps) => {
         windowSize={3}
         maxToRenderPerBatch={1}
         snapToInterval={height}
-        initialScrollIndex={initialScrollIndex}
+        getItemLayout={getItemLayout}
+        initialScrollIndex={momentIndex}
         snapToAlignment={'start'}
         showsVerticalScrollIndicator={false}
         decelerationRate="fast"

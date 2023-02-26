@@ -68,6 +68,16 @@ const UserModal = ({id}: TProps) => {
     };
   }, [id, status]);
 
+  const sorted = data?.contributeTo?.items.map(item => {
+    item.contents = item.contents.sort((a, b) =>
+      a.user.id === id ? -1 : b.user.id === id ? 1 : 0,
+    );
+
+    return item;
+  });
+
+  console.log(sorted?.[1].contents);
+
   return (
     <DefaultModal style={{zIndex: 200}}>
       {status === 'loading' && !data && (
@@ -87,7 +97,7 @@ const UserModal = ({id}: TProps) => {
                 : undefined,
           }}>
           <FlatList
-            data={data.contributeTo?.items}
+            data={sorted}
             indicatorStyle="white"
             style={{
               paddingHorizontal: 10,
@@ -142,13 +152,13 @@ const UserModal = ({id}: TProps) => {
                 <MomentSummary
                   moment={item}
                   onDelete={() => setStatus('loading')}
-                  onPress={() => {
+                  onPress={path => {
                     onUpdate({
                       target: 'moments',
                       data: {
-                        moments: data.contributeTo.items,
-                        initialScrollIndex: index,
-                        user: {id},
+                        moments: sorted,
+                        momentIndex: index,
+                        contentPath: path,
                       },
                     });
                   }}

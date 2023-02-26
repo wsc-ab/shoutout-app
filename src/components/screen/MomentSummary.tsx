@@ -36,57 +36,55 @@ const MomentSummary = ({
 }: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
 
-  const sorted = moment.contents.sort((a, b) =>
-    a.user.id === authUserData.id ? -1 : b.user.id === authUserData.id ? 1 : 0,
-  );
-
   return (
     <View style={style}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {sorted.map(({path, name, location, user: {id: elId, displayName}}) => (
-          <View style={[{marginRight: 10}]} key={path}>
-            {elId === authUserData.id && (
-              <DeleteButton
-                content={{path: path}}
-                moment={{id: moment.id}}
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                  zIndex: 100,
-                  padding: 10,
-                }}
-                onSuccess={onDelete}
-              />
-            )}
-            <DefaultImage
-              onPress={onPress ? () => onPress(path) : undefined}
-              image={getThumbnailPath(path, 'video')}
-              imageStyle={contentStyle}
-            />
-
-            <View
-              style={{
-                flexDirection: 'row',
-                width: contentStyle.width,
-                marginTop: 5,
-              }}>
-              <View style={{flex: 1}}>
-                <DefaultText
-                  title={displayName}
-                  textStyle={{fontWeight: 'bold', fontSize: 16}}
+        {moment.contents.map(
+          ({path, name, location, user: {id: elId, displayName}}) => (
+            <View style={[{marginRight: 10}]} key={path}>
+              {elId === authUserData.id && (
+                <DeleteButton
+                  content={{path: path}}
+                  moment={{id: moment.id}}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    zIndex: 100,
+                    padding: 10,
+                  }}
+                  onSuccess={onDelete}
                 />
-                <DefaultText title={name} numberOfLines={2} />
-                {location.formatted && (
+              )}
+              <DefaultImage
+                onPress={onPress ? () => onPress(path) : undefined}
+                image={getThumbnailPath(path, 'video')}
+                imageStyle={contentStyle}
+              />
+
+              <View
+                style={{
+                  flexDirection: 'row',
+                  width: contentStyle.width,
+                  marginTop: 5,
+                }}>
+                <View style={{flex: 1}}>
                   <DefaultText
-                    title={getCityAndCountry(location.formatted)}
-                    textStyle={{fontSize: 14, color: 'gray'}}
+                    title={displayName}
+                    textStyle={{fontWeight: 'bold', fontSize: 16}}
                   />
-                )}
+                  <DefaultText title={name} numberOfLines={2} />
+                  {location.formatted && (
+                    <DefaultText
+                      title={getCityAndCountry(location.formatted)}
+                      textStyle={{fontSize: 14, color: 'gray'}}
+                    />
+                  )}
+                </View>
               </View>
             </View>
-          </View>
-        ))}
+          ),
+        )}
       </ScrollView>
     </View>
   );
