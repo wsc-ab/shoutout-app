@@ -46,7 +46,7 @@ const Welcome = ({style}: TProps) => {
     {
       title: ['To connect your moment!'],
       detail: 'Press',
-      icon: 'plus',
+      icon: 'square-plus',
     },
     {
       title: ['To catch-up with friends!'],

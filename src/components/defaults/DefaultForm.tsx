@@ -47,6 +47,7 @@ const DefaultForm = ({title, left, right, children, style}: TProps) => {
               style={styles.icon}
             />
           )}
+
           {right?.submitting && <ActivityIndicator style={styles.act} />}
         </View>
       </View>
@@ -69,6 +70,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 20,
+    paddingHorizontal: 10,
     zIndex: 100,
   },
   icon: {padding: 10},
@@ -83,5 +85,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   right: {alignItems: 'flex-end'},
-  act: {paddingHorizontal: 10},
+  act: {padding: 10},
 });

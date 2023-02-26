@@ -5,7 +5,7 @@ import CreateMomentForm from '../components/forms/CreateMomentForm';
 import CreateRoomForm from '../components/forms/CreateRoomForm';
 import AuthUserModal from '../components/modals/AuthUserModal';
 import ContactsModal from '../components/modals/ContactsModal';
-import MomentModal from '../components/modals/MomentModal';
+import MomentsModal from '../components/modals/MomentsModal';
 import RoomModal from '../components/modals/RoomModal';
 import UserModal from '../components/modals/UserModal';
 import UsersModal from '../components/modals/UsersModal';
@@ -77,8 +77,11 @@ const ModalProvider = ({children}: TProps) => {
       {modal?.target === 'user' && modal.data?.id && (
         <UserModal id={modal.data.id} />
       )}
-      {modal?.target === 'moment' && modal.data?.id && (
-        <MomentModal id={modal.data.id} path={modal.data.path} />
+      {modal?.target === 'moments' && modal.data && (
+        <MomentsModal
+          moments={modal.data.moments}
+          user={{id: modal.data.user.id}}
+        />
       )}
       {modal?.target === 'room' && modal.data?.room && (
         <RoomModal room={modal.data.room} path={modal.data.path} />

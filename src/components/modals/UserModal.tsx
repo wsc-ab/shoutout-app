@@ -20,6 +20,7 @@ import {TDocData, TLocation, TTimestamp} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import FollowButton from '../buttons/FollowButton';
 import UserProfileImage from '../images/UserProfileImage';
+import {moveToFirst} from '../../utils/Array';
 
 type TProps = {
   id: string;
@@ -140,10 +141,13 @@ const UserModal = ({id}: TProps) => {
                 <MomentSummary
                   moment={item}
                   onDelete={() => setStatus('loading')}
-                  onPress={(path: string) => {
+                  onPress={() => {
                     onUpdate({
-                      target: 'moment',
-                      data: {id: item.id, path},
+                      target: 'moments',
+                      data: {
+                        moments: data.contributeTo.items,
+                        user: {id},
+                      },
                     });
                   }}
                   contentStyle={{

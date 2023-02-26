@@ -53,7 +53,7 @@ const InviteCard = ({style}: TProps) => {
           textStyle={styles.detailText}
         />
       </View>
-      {!submitting && <DefaultIcon icon="plus" />}
+      {!submitting && <DefaultIcon icon="share" />}
       {submitting && <ActivityIndicator />}
     </Pressable>
   );

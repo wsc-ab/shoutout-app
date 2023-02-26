@@ -21,10 +21,11 @@ import MomentCard from './MomentCard';
 type TProps = {
   style: TStyleView;
   mount: boolean;
+  ids: string[];
 };
 
-const Moments = ({style, mount}: TProps) => {
-  const [data, setData] = useState<{id: string}[]>([]);
+const Moments = ({style, mount, ids}: TProps) => {
+  const [data, setData] = useState<TDocData[]>([]);
 
   const [status, setStatus] = useState<TStatus>('loading');
   const {authUserData} = useContext(AuthUserContext);
@@ -129,7 +130,7 @@ const Moments = ({style, mount}: TProps) => {
     item,
     index: elIndex,
   }: {
-    item: {id: string};
+    item: TDocData;
     index: number;
   }) => {
     return (

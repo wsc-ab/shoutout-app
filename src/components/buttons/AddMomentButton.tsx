@@ -78,7 +78,7 @@ const AddMomentButton = ({moment: {id}, added, style}: TProps) => {
       onPress={status === 'ready' ? onAdd : onUploading}>
       {!submitting && (
         <DefaultIcon
-          icon="plus"
+          icon="square-plus"
           size={20}
           color={added ? defaultRed.lv2 : 'white'}
         />
