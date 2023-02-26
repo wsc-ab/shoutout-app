@@ -15,10 +15,11 @@ import MomentCard from '../screen/MomentCard';
 
 type TProps = {
   moments: {id: string; contents: {path: string; user: {id: string}}[]}[];
+  initialScrollIndex?: number;
   user?: {id: string};
 };
 
-const MomentsModal = ({moments, user}: TProps) => {
+const MomentsModal = ({moments, initialScrollIndex, user}: TProps) => {
   const {height, width} = useWindowDimensions();
   const [index, setIndex] = useState(0);
 
@@ -87,6 +88,7 @@ const MomentsModal = ({moments, user}: TProps) => {
         windowSize={3}
         maxToRenderPerBatch={1}
         snapToInterval={height}
+        initialScrollIndex={initialScrollIndex}
         snapToAlignment={'start'}
         showsVerticalScrollIndicator={false}
         decelerationRate="fast"

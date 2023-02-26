@@ -81,6 +81,7 @@ const ModalProvider = ({children}: TProps) => {
         <MomentsModal
           moments={modal.data.moments}
           user={{id: modal.data.user.id}}
+          initialScrollIndex={modal.data.initialScrollIndex}
         />
       )}
       {modal?.target === 'room' && modal.data?.room && (

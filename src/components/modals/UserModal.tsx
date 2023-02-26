@@ -20,7 +20,6 @@ import {TDocData, TLocation, TTimestamp} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import FollowButton from '../buttons/FollowButton';
 import UserProfileImage from '../images/UserProfileImage';
-import {moveToFirst} from '../../utils/Array';
 
 type TProps = {
   id: string;
@@ -125,6 +124,7 @@ const UserModal = ({id}: TProps) => {
             }
             renderItem={({
               item,
+              index,
             }: {
               item: {
                 id: string;
@@ -136,6 +136,7 @@ const UserModal = ({id}: TProps) => {
                   user: {id: string; displayName: string};
                 }[];
               };
+              index: number;
             }) => {
               return (
                 <MomentSummary
@@ -146,6 +147,7 @@ const UserModal = ({id}: TProps) => {
                       target: 'moments',
                       data: {
                         moments: data.contributeTo.items,
+                        initialScrollIndex: index,
                         user: {id},
                       },
                     });
