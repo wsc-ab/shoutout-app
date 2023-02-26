@@ -76,8 +76,6 @@ const UserModal = ({id}: TProps) => {
     return item;
   });
 
-  console.log(sorted?.[1].contents);
-
   return (
     <DefaultModal style={{zIndex: 200}}>
       {status === 'loading' && !data && (

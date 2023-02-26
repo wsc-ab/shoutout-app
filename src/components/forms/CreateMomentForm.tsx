@@ -3,6 +3,7 @@ import React, {useContext, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {StyleSheet} from 'react-native';
 import {object} from 'yup';
+import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import UploadingContext from '../../contexts/Uploading';
 import {createMoment} from '../../functions/Moment';
@@ -29,6 +30,7 @@ const CreateMomentForm = ({remotePath, localPath, id, room}: TProps) => {
   const [submitting, setSubmitting] = useState(false);
   const {onUpdate} = useContext(ModalContext);
   const {onUpload} = useContext(UploadingContext);
+  const {authUserData} = useContext(AuthUserContext);
 
   const schema = object({
     name: text({max: 50, required: true}),
@@ -95,15 +97,23 @@ const CreateMomentForm = ({remotePath, localPath, id, room}: TProps) => {
 
       const onPress = () => {
         onUpdate({
-          target: 'moment',
-          data: {id, path: remotePath},
+          target: 'user',
+          data: {
+            id: authUserData.id,
+          },
         });
       };
 
       DefaultAlert({
         title: 'Moment shared!',
-        message: 'Press Go to view your moment',
-        buttons: [{text: 'Go', onPress: onPress}, {text: 'Cancel'}],
+        message: 'Press Go to view your profile',
+        buttons: [
+          {
+            text: 'Go',
+            onPress,
+          },
+          {text: 'Cancel'},
+        ],
       });
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {

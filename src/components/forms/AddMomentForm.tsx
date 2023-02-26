@@ -2,6 +2,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import React, {useContext, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {object} from 'yup';
+import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import UploadingContext from '../../contexts/Uploading';
 import {addMoment} from '../../functions/Moment';
@@ -25,6 +26,7 @@ const AddMomentForm = ({remotePath, localPath, id}: TProps) => {
   const [submitting, setSubmitting] = useState(false);
   const {onUpdate} = useContext(ModalContext);
   const {onUpload} = useContext(UploadingContext);
+  const {authUserData} = useContext(AuthUserContext);
 
   const schema = object({
     name: text({min: 1, max: 50, required: true}),
@@ -77,8 +79,10 @@ const AddMomentForm = ({remotePath, localPath, id}: TProps) => {
 
       const onPress = () => {
         onUpdate({
-          target: 'moment',
-          data: {id, path: remotePath},
+          target: 'user',
+          data: {
+            id: authUserData.id,
+          },
         });
       };
 

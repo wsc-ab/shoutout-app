@@ -30,7 +30,6 @@ export type TProps = {
 
 const ModalProvider = ({children}: TProps) => {
   const [modal, setModal] = useState<TModal>();
-  console.log(modal, 'modal');
 
   useEffect(() => {
     const loadInitialLink = async () => {
