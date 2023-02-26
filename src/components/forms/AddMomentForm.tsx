@@ -88,7 +88,7 @@ const AddMomentForm = ({remotePath, localPath, id}: TProps) => {
 
       DefaultAlert({
         title: 'Moment shared!',
-        message: 'Press Go to view your moment',
+        message: 'Press Go to view your profile',
         buttons: [{text: 'Go', onPress: onPress}, {text: 'Cancel'}],
       });
     } catch (error) {

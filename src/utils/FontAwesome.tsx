@@ -24,7 +24,6 @@ import {
   faUpload,
   faUser,
   faUserGroup,
-  faUsers,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
