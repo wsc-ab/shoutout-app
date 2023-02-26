@@ -127,7 +127,7 @@ const RoomSummary = ({room}: TProps) => {
             flexDirection: 'row',
             marginLeft: 10,
           }}
-          onPress={() => onUpdate({target: 'promptUsers', data: {users}})}>
+          onPress={() => onUpdate({target: 'roomUsers', data: {users}})}>
           <DefaultIcon icon="user-group" style={{padding: 0}} size={20} />
           <DefaultText title={data.inviteTo.number} style={{marginLeft: 5}} />
         </Pressable>
