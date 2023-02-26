@@ -67,6 +67,7 @@ const MomentsModal = ({moments, initialScrollIndex, user}: TProps) => {
           moment={{...item}}
           mount={index - 1 <= elIndex && elIndex <= index + 1}
           path={path}
+          pauseOnModal={false}
           inView={index === elIndex}
         />
       </View>
