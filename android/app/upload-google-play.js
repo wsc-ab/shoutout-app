@@ -49,33 +49,38 @@ async function uploadToPlayStore(branchName) {
     throw Error('getOrCreateEdit error', error);
   }
 
-  console.log('uploadReleaseFiles started');
-  const versionCode = await uploadReleaseFiles(
-    authClient,
-    appEditId,
-    applicationId,
-    path,
-  );
-  console.log('uploadReleaseFiles ended with version code', versionCode);
+  try {
+    console.log('uploadReleaseFiles started');
+    const versionCode = await uploadReleaseFiles(
+      authClient,
+      appEditId,
+      applicationId,
+      path,
+    );
+    console.log('uploadReleaseFiles ended with version code', versionCode);
 
-  // Add the uploaded artifacts to the Edit track
-  console.log('addReleasesToTrack started');
-  await addReleasesToTrack(authClient, appEditId, applicationId, versionCode);
-  console.log('addReleasesToTrack ended');
+    // Add the uploaded artifacts to the Edit track
+    console.log('addReleasesToTrack started');
+    await addReleasesToTrack(authClient, appEditId, applicationId, versionCode);
+    console.log('addReleasesToTrack ended');
 
-  console.log('commit edit');
-  // Commit the pending Edit
-  const res = await androidPublisher.edits.commit({
-    auth: authClient,
-    editId: appEditId,
-    packageName: applicationId,
-  });
+    console.log('commit edit');
+    // Commit the pending Edit
+    const res = await androidPublisher.edits.commit({
+      auth: authClient,
+      editId: appEditId,
+      packageName: applicationId,
+    });
 
-  // Simple check to see whether commit was successful
-  if (res.data.id) {
-    return res.data.id;
-  } else {
-    return Promise.reject(res.status);
+    // Simple check to see whether commit was successful
+    if (res.data.id) {
+      return res.data.id;
+    } else {
+      return Promise.reject(res.status);
+    }
+  } catch (error) {
+    console.log('upload error', error.message);
+    throw Error('upload error', error);
   }
 }
 
