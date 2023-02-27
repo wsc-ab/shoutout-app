@@ -2,9 +2,9 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import React, {useContext, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {object} from 'yup';
-import ModalContext from '../../contexts/Modal';
+import AuthUserContext from '../../contexts/AuthUser';
 import PopupContext from '../../contexts/Popup';
-import UploadingContext from '../../contexts/Uploading';
+
 import {addMoment} from '../../functions/Moment';
 import {getLatLng} from '../../utils/Location';
 import {defaultSchema} from '../../utils/Schema';
@@ -19,13 +19,21 @@ type TProps = {
   remotePath: string;
   localPath: string;
   id: string;
+  onCancel: () => void;
+  onSuccess: () => void;
 };
 
-const AddMomentForm = ({remotePath, localPath, id}: TProps) => {
+const AddMomentForm = ({
+  remotePath,
+  localPath,
+  id,
+  onSuccess,
+  onCancel,
+}: TProps) => {
   const {text} = defaultSchema();
   const [submitting, setSubmitting] = useState(false);
-  const {onUpdate} = useContext(ModalContext);
-  const {onUpload} = useContext(UploadingContext);
+  const {addUpload, addPopup, removeUpload} = useContext(PopupContext);
+  const {authUserData} = useContext(AuthUserContext);
 
   const schema = object({
     name: text({min: 1, max: 50, required: true}),
@@ -43,27 +51,12 @@ const AddMomentForm = ({remotePath, localPath, id}: TProps) => {
   });
 
   const onSubmit = async ({name}: {name: string}) => {
-    const target = {
-      collection: 'moments',
-      id,
-      data: {
-        remotePath,
-        localPath,
-        name,
-      },
-    };
-
     try {
       setSubmitting(true);
 
       const latlng = await getLatLng();
-      onUpdate(undefined);
-      // upload video
-
-      onUpload({
-        target,
-        status: 'uploading',
-      });
+      onSuccess();
+      addUpload({id, localPath});
 
       await uploadVideo({localPath, remotePath});
 
@@ -71,9 +64,13 @@ const AddMomentForm = ({remotePath, localPath, id}: TProps) => {
         moment: {id},
         content: {path: remotePath, name, latlng},
       });
-      onUpload({
-        target,
-        status: 'done',
+      removeUpload({id});
+      addPopup({
+        id,
+        title: 'Moment uploaded',
+        body: 'Press to check your profile',
+        target: 'user',
+        data: {id: authUserData.id},
       });
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {
@@ -82,13 +79,8 @@ const AddMomentForm = ({remotePath, localPath, id}: TProps) => {
           message: (error as {message: string}).message,
         });
       }
-      onUpload({
-        target,
-        status: 'error',
-      });
     } finally {
       setSubmitting(false);
-      onUpdate(undefined);
     }
   };
 
@@ -96,6 +88,7 @@ const AddMomentForm = ({remotePath, localPath, id}: TProps) => {
     <DefaultModal>
       <DefaultForm
         title={'Moment'}
+        left={{onPress: onCancel}}
         right={{
           onPress: handleSubmit(onSubmit),
           submitting,

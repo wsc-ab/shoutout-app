@@ -4,17 +4,19 @@ import messaging, {
 } from '@react-native-firebase/messaging';
 import {useCallback, useContext, useEffect} from 'react';
 import ModalContext from '../../contexts/Modal';
+import PopupContext from '../../contexts/Popup';
 
 type TProps = {isPermitted: boolean};
 
 const Notifications = ({isPermitted}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
+  const {addPopup} = useContext(PopupContext);
 
   const openModal = useCallback(
     (remoteMessage: EventDetail['notification']) => {
       if (remoteMessage?.data?.collection) {
         onUpdate({
-          target: remoteMessage.data.collection as string,
+          target: (remoteMessage.data.collection as string).slice(0, -1),
           data: {
             id: remoteMessage.data.id as string | undefined,
             path: remoteMessage.data.path as string | undefined,
@@ -44,26 +46,20 @@ const Notifications = ({isPermitted}: TProps) => {
       const {notification, data} = remoteMessage;
 
       if (notification) {
-        await notifee.createChannel({
-          id: 'sound',
-          name: 'Channel with sound',
-          sound: 'default',
-        });
-
-        await notifee.displayNotification({
+        addPopup({
           title: notification.title,
-          body: notification.body,
-          data: data,
-          android: {channelId: 'sound'},
-          ios: {
-            sound: 'default',
+          detail: notification.body,
+          target: (data.collection as string).slice(0, -1),
+          data: {
+            id: data.id as string | undefined,
+            path: data.path as string | undefined,
           },
         });
       }
     };
     const unsubscribe = messaging().onMessage(onMessageHandler);
     return unsubscribe;
-  }, []);
+  }, [addPopup]);
 
   return null;
 };

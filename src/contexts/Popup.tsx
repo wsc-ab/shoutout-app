@@ -1,25 +1,38 @@
 import {IconProp} from '@fortawesome/fontawesome-svg-core';
-import React, {createContext, useEffect, useState} from 'react';
+import React, {createContext, useContext, useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Pressable,
   SafeAreaView,
   StyleSheet,
+  View,
 } from 'react-native';
 import {defaultBlue} from '../components/defaults/DefaultColors';
 import DefaultIcon from '../components/defaults/DefaultIcon';
 import DefaultText from '../components/defaults/DefaultText';
+import ModalContext from './Modal';
 
 type TPopup = {
-  title?: string;
+  id: string;
+  title: string;
+  body: string;
   icon?: IconProp;
-  submitting?: boolean;
-  onPress?: () => void;
-  dismissable: boolean;
+  target?: string;
+  data?: {id: string};
+  disabled?: boolean;
+};
+
+type TUpload = {
+  id: string;
+  localPath: string;
 };
 
 type TContextProps = {
   addPopup: (popup: TPopup) => void;
+  removePopup: ({id}: {id: string}) => void;
+  addUpload: (upload: TUpload) => void;
+  removeUpload: ({id}: {id: string}) => void;
+  uploading: boolean;
 };
 
 const PopupContext = createContext({} as TContextProps);
@@ -29,10 +42,37 @@ export type TProps = {
 };
 
 const PopupProvider = ({children}: TProps) => {
+  const {onUpdate} = useContext(ModalContext);
+  const [uploading, setUploading] = useState(false);
+  const [uploads, setUploads] = useState<TUpload[]>([]);
   const [popups, setPopups] = useState<TPopup[]>([]);
+
+  const addUpload: TContextProps['addUpload'] = newUpload => {
+    setUploads(pre => [...pre, newUpload]);
+  };
+
+  useEffect(() => {
+    setUploading(uploads.length >= 1);
+  }, [uploads]);
+
+  const removeUpload: TContextProps['removeUpload'] = ({id}) => {
+    setUploads(pre => {
+      const copy = [...pre];
+      const filtered = copy.filter(({id: elId}) => elId !== id);
+      return filtered;
+    });
+  };
 
   const addPopup: TContextProps['addPopup'] = newPopup => {
     setPopups(pre => [...pre, newPopup]);
+  };
+
+  const removePopup: TContextProps['removePopup'] = ({id}) => {
+    setPopups(pre => {
+      const copy = [...pre];
+      const filtered = copy.filter(({id: elId}) => elId !== id);
+      return filtered;
+    });
   };
 
   const shiftPopups = () =>
@@ -44,11 +84,10 @@ const PopupProvider = ({children}: TProps) => {
     });
 
   useEffect(() => {
-    if (popups[0]?.dismissable) {
+    if (popups[0]) {
       const sub = setTimeout(() => {
         shiftPopups();
       }, 5 * 1000);
-
       return () => {
         clearTimeout(sub);
       };
@@ -56,8 +95,8 @@ const PopupProvider = ({children}: TProps) => {
   }, [popups]);
 
   const onPress = () => {
-    if (popups[0].onPress) {
-      popups[0].onPress();
+    if (popups[0].target) {
+      onUpdate({target: popups[0].target, data: popups[0].data});
     }
 
     shiftPopups();
@@ -67,30 +106,48 @@ const PopupProvider = ({children}: TProps) => {
     <PopupContext.Provider
       value={{
         addPopup,
+        removePopup,
+        addUpload,
+        removeUpload,
+        uploading,
       }}>
       {children}
       <SafeAreaView style={styles.container}>
         {popups[0] && (
           <Pressable
+            disabled={popups[0].disabled}
             onPress={onPress}
             style={{
-              flex: 1,
               alignItems: 'center',
               padding: 10,
               backgroundColor: defaultBlue,
               borderTopRightRadius: 20,
               borderBottomRightRadius: 20,
-              alignSelf: 'stretch',
               flexDirection: 'row',
             }}>
             <DefaultIcon icon={popups[0].icon} style={{marginRight: 5}} />
-            <DefaultText
-              title={popups[0].title}
-              style={{marginRight: 5}}
-              textStyle={{fontWeight: 'bold'}}
-            />
-            {popups[0].submitting && <ActivityIndicator color={'white'} />}
+            <View style={{marginRight: 5}}>
+              <DefaultText
+                title={popups[0].title}
+                textStyle={{fontWeight: 'bold'}}
+              />
+              <DefaultText title={popups[0].body} />
+            </View>
           </Pressable>
+        )}
+        <View style={{flex: 1}} />
+        {uploads.length >= 1 && (
+          <View
+            style={{
+              padding: 10,
+              backgroundColor: defaultBlue,
+              borderTopLeftRadius: 20,
+              borderBottomLeftRadius: 20,
+              flexDirection: 'row',
+              alignSelf: 'flex-start',
+            }}>
+            <ActivityIndicator color={'white'} />
+          </View>
         )}
       </SafeAreaView>
     </PopupContext.Provider>
@@ -103,5 +160,6 @@ export default PopupContext;
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
+    flexDirection: 'row',
   },
 });

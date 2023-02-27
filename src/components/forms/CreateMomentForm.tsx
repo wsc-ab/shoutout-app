@@ -4,8 +4,8 @@ import {useForm} from 'react-hook-form';
 import {StyleSheet} from 'react-native';
 import {object} from 'yup';
 import AuthUserContext from '../../contexts/AuthUser';
-import ModalContext from '../../contexts/Modal';
-import UploadingContext from '../../contexts/Uploading';
+import PopupContext from '../../contexts/Popup';
+
 import {createMoment} from '../../functions/Moment';
 import {getLatLng} from '../../utils/Location';
 
@@ -23,13 +23,22 @@ type TProps = {
   localPath: string;
   id: string;
   room?: {id: string};
+  onCancel: () => void;
+  onSuccess: () => void;
 };
 
-const CreateMomentForm = ({remotePath, localPath, id, room}: TProps) => {
+const CreateMomentForm = ({
+  remotePath,
+  localPath,
+  id,
+  room,
+  onCancel,
+  onSuccess,
+}: TProps) => {
   const {text} = defaultSchema();
   const [submitting, setSubmitting] = useState(false);
-  const {onUpdate} = useContext(ModalContext);
-  const {onUpload} = useContext(UploadingContext);
+  const {addUpload, removeUpload, addPopup} = useContext(PopupContext);
+  const {authUserData} = useContext(AuthUserContext);
 
   const schema = object({
     name: text({max: 50, required: true}),
@@ -55,26 +64,12 @@ const CreateMomentForm = ({remotePath, localPath, id, room}: TProps) => {
     name: string;
     type: 'everyone' | 'friends';
   }) => {
-    const target = {
-      collection: 'moments',
-      id,
-      data: {
-        remotePath,
-        localPath,
-        name,
-        type,
-      },
-    };
     try {
       setSubmitting(true);
 
       const latlng = await getLatLng();
-      onUpdate(undefined);
-
-      onUpload({
-        target,
-        status: 'uploading',
-      });
+      onSuccess();
+      addUpload({id, localPath});
 
       await uploadVideo({localPath, remotePath});
 
@@ -89,14 +84,13 @@ const CreateMomentForm = ({remotePath, localPath, id, room}: TProps) => {
         room,
       });
 
-      onUpload({
-        target,
-        status: 'ready',
-      });
-
-      onUpload({
-        target,
-        status: 'done',
+      removeUpload({id});
+      addPopup({
+        id,
+        title: 'Moment uploaded',
+        body: 'Press to check your profile',
+        target: 'user',
+        data: {id: authUserData.id},
       });
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {
@@ -105,13 +99,8 @@ const CreateMomentForm = ({remotePath, localPath, id, room}: TProps) => {
           message: (error as {message: string}).message,
         });
       }
-      onUpload({
-        target,
-        status: 'error',
-      });
     } finally {
       setSubmitting(false);
-      onUpdate(undefined);
     }
   };
 
@@ -119,6 +108,7 @@ const CreateMomentForm = ({remotePath, localPath, id, room}: TProps) => {
     <DefaultModal>
       <DefaultForm
         title={'Moment'}
+        left={{onPress: onCancel}}
         right={{
           onPress: handleSubmit(onSubmit),
           submitting,
