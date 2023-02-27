@@ -1,5 +1,5 @@
 import React from 'react';
-import {Pressable, StyleSheet, View} from 'react-native';
+import {Pressable, View} from 'react-native';
 import Video from 'react-native-video';
 
 import {TStyleView} from '../../types/Style';
@@ -35,16 +35,3 @@ const DefaultLocalVideo = ({path, style, videoStyle}: TProps) => {
 };
 
 export default DefaultLocalVideo;
-
-const styles = StyleSheet.create({
-  error: {
-    position: 'absolute',
-    zIndex: 200,
-    alignItems: 'center',
-    top: 0,
-    bottom: 0,
-    justifyContent: 'center',
-    left: 0,
-    right: 0,
-  },
-});

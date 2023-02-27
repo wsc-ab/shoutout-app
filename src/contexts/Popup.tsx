@@ -7,6 +7,7 @@ import {
   View,
 } from 'react-native';
 import {defaultBlue} from '../components/defaults/DefaultColors';
+import DefaultIcon from '../components/defaults/DefaultIcon';
 import DefaultImage from '../components/defaults/DefaultImage';
 import DefaultText from '../components/defaults/DefaultText';
 import ModalContext from './Modal';
@@ -114,7 +115,7 @@ const PopupProvider = ({children}: TProps) => {
         uploading,
       }}>
       {children}
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, {zIndex: 400}]}>
         {popups[0] && (
           <Pressable
             disabled={popups[0].disabled}
@@ -123,9 +124,11 @@ const PopupProvider = ({children}: TProps) => {
               alignItems: 'center',
               padding: 10,
               backgroundColor: defaultBlue,
+              flexDirection: 'row',
               borderTopRightRadius: 20,
               borderBottomRightRadius: 20,
-              flexDirection: 'row',
+              flex: 1,
+              height: 70,
             }}>
             <DefaultImage
               image={popups[0].image}
@@ -133,19 +136,29 @@ const PopupProvider = ({children}: TProps) => {
                 height: 50,
                 width: 50,
               }}
-              style={{marginRight: 5}}
+              style={{marginRight: 10}}
             />
-            <View style={{marginRight: 5}}>
+            <View style={{marginRight: 10, flex: 1}}>
               <DefaultText
                 title={popups[0].title}
                 textStyle={{fontWeight: 'bold'}}
               />
-              <DefaultText title={popups[0].body} />
+              <DefaultText
+                title={popups[0].body}
+                numberOfLines={2}
+                style={{marginTop: 5}}
+              />
             </View>
+            <DefaultIcon
+              icon="times"
+              onPress={shiftPopups}
+              style={{padding: 10}}
+            />
           </Pressable>
         )}
-        <View style={{flex: 1}} />
-        {uploads.length >= 1 && (
+      </SafeAreaView>
+      <SafeAreaView style={[styles.container, {right: 0}]}>
+        {uploads[0] && (
           <View
             style={{
               padding: 10,
@@ -153,7 +166,6 @@ const PopupProvider = ({children}: TProps) => {
               borderTopLeftRadius: 20,
               borderBottomLeftRadius: 20,
               flexDirection: 'row',
-              alignSelf: 'flex-start',
             }}>
             <ActivityIndicator color={'white'} />
           </View>
