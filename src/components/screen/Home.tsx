@@ -1,7 +1,8 @@
-import React, {useContext, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {useContext, useEffect, useRef, useState} from 'react';
+import {AppState, StyleSheet, View} from 'react-native';
 import Moments from './Moments';
 
+import notifee from '@notifee/react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import Permission from '../notification/Permission';
 import Header from './Header';
@@ -13,6 +14,31 @@ const Home = () => {
   const {authUserData, loaded} = useContext(AuthUserContext);
 
   const [tab, setTab] = useState<'friends' | 'globe'>('friends');
+
+  const appState = useRef(AppState.currentState);
+
+  useEffect(() => {
+    if (authUserData) {
+      const load = async () => await notifee.setBadgeCount(0);
+      const subscription = AppState.addEventListener(
+        'change',
+        async nextAppState => {
+          if (
+            appState.current.match(/inactive|background/) &&
+            nextAppState === 'active'
+          ) {
+            await load();
+          }
+
+          appState.current = nextAppState;
+        },
+      );
+
+      return () => {
+        subscription.remove();
+      };
+    }
+  });
 
   if (!loaded) {
     return null;
