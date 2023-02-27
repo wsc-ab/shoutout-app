@@ -30,7 +30,6 @@ const CreateMomentForm = ({remotePath, localPath, id, room}: TProps) => {
   const [submitting, setSubmitting] = useState(false);
   const {onUpdate} = useContext(ModalContext);
   const {onUpload} = useContext(UploadingContext);
-  const {authUserData} = useContext(AuthUserContext);
 
   const schema = object({
     name: text({max: 50, required: true}),
@@ -95,25 +94,9 @@ const CreateMomentForm = ({remotePath, localPath, id, room}: TProps) => {
         status: 'ready',
       });
 
-      const onPress = () => {
-        onUpdate({
-          target: 'user',
-          data: {
-            id: authUserData.id,
-          },
-        });
-      };
-
-      DefaultAlert({
-        title: 'Moment shared!',
-        message: 'Press Go to view your profile',
-        buttons: [
-          {
-            text: 'Go',
-            onPress,
-          },
-          {text: 'Cancel'},
-        ],
+      onUpload({
+        target,
+        status: 'done',
       });
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {

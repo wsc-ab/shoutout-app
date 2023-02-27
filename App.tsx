@@ -14,6 +14,7 @@ import Home from './src/components/screen/Home';
 import {AuthUserProvider} from './src/contexts/AuthUser';
 import {CacheProvider} from './src/contexts/Cache';
 import {ModalProvider} from './src/contexts/Modal';
+import {PopupProvider} from './src/contexts/Popup';
 import {UploadingProvider} from './src/contexts/Uploading';
 import {TBundleId} from './src/types/Data';
 import {TStatus} from './src/types/Screen';
@@ -45,11 +46,13 @@ const App = ({bundleId}: TProps) => {
       <StatusBar barStyle="light-content" />
       <CacheProvider>
         <AuthUserProvider bundleId={bundleId}>
-          <UploadingProvider>
+          <PopupProvider>
             <ModalProvider>
-              <Home />
+              <UploadingProvider>
+                <Home />
+              </UploadingProvider>
             </ModalProvider>
-          </UploadingProvider>
+          </PopupProvider>
         </AuthUserProvider>
       </CacheProvider>
     </View>

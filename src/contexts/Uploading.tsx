@@ -1,8 +1,8 @@
-import React, {createContext, useState} from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
-import UploadButton from '../components/buttons/UploadButton';
-import {defaultBlue} from '../components/defaults/DefaultColors';
+import React, {createContext, useContext, useState} from 'react';
 import {TObject} from '../types/Firebase';
+import AuthUserContext from './AuthUser';
+import ModalContext from './Modal';
+import PopupContext from './Popup';
 
 type TTarget = {
   collection: string;
@@ -30,6 +30,10 @@ export type TProps = {
 
 const UploadingProvider = ({children}: TProps) => {
   const [target, setTarget] = useState<TContextProps['target']>();
+  const {addPopup} = useContext(PopupContext);
+  const {onUpdate} = useContext(ModalContext);
+  const {authUserData} = useContext(AuthUserContext);
+
   const [status, setStatus] = useState<TContextProps['status']>('ready');
 
   const onUpload: TContextProps['onUpload'] = ({
@@ -37,7 +41,20 @@ const UploadingProvider = ({children}: TProps) => {
     status: newStatus,
   }) => {
     setStatus(newStatus);
-    setTarget(newStatus === 'ready' ? undefined : newTarget);
+    setTarget(newTarget);
+
+    if (newStatus === 'uploading') {
+      addPopup({
+        icon: 'square-plus',
+        dismissable: false,
+      });
+    } else {
+      addPopup({
+        title: 'Uploaded',
+        dismissable: true,
+        onPress: () => onUpdate({target: 'user', data: {id: authUserData.id}}),
+      });
+    }
   };
 
   return (
@@ -48,32 +65,9 @@ const UploadingProvider = ({children}: TProps) => {
         onUpload,
       }}>
       {children}
-      <SafeAreaView style={styles.container}>
-        {status === 'uploading' && target && (
-          <UploadButton
-            style={styles.button}
-            localPath={target.data.localPath}
-          />
-        )}
-      </SafeAreaView>
     </UploadingContext.Provider>
   );
 };
 
 export {UploadingProvider};
 export default UploadingContext;
-
-const styles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-  },
-  button: {
-    flex: 1,
-    alignItems: 'center',
-    padding: 10,
-    backgroundColor: defaultBlue,
-    borderTopRightRadius: 20,
-    borderBottomRightRadius: 20,
-    alignSelf: 'stretch',
-  },
-});
