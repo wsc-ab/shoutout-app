@@ -85,6 +85,10 @@ const RoomCard = ({style, room, path, pauseOnModal, mount}: TProps) => {
     item: {id: string};
     index: number;
   }) => {
+    if (index - 3 >= elIndex || index + 3 <= elIndex) {
+      return <View style={{height, width}} />;
+    }
+
     return (
       <View
         style={{

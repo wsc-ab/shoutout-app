@@ -55,6 +55,10 @@ const MomentsModal = ({moments, momentIndex = 0, contentPath}: TProps) => {
     item: {id: string; contents: {path: string; user: {id: string}}[]};
     index: number;
   }) => {
+    if (index - 3 >= elIndex || index + 3 <= elIndex) {
+      return <View style={{height, width}} />;
+    }
+
     return (
       <View style={{height, width}}>
         <MomentCard
