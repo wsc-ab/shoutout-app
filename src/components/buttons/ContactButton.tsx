@@ -1,10 +1,11 @@
 import React, {useContext} from 'react';
-import {Pressable} from 'react-native';
+import {Pressable, StyleSheet} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import {TStyleView} from '../../types/Style';
 import {defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
+import DefaultText from '../defaults/DefaultText';
 
 type TProps = {
   style?: TStyleView;
@@ -13,8 +14,8 @@ type TProps = {
 const ContactButton = ({style}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
   const {authUserData} = useContext(AuthUserContext);
-  const hasFriendRequests =
-    authUserData.followTo.number < authUserData.followFrom.number;
+  const numberOfRequests =
+    authUserData.followFrom.number - authUserData.followTo.number;
 
   return (
     <Pressable
@@ -23,22 +24,21 @@ const ContactButton = ({style}: TProps) => {
         onUpdate({target: 'friends'});
       }}>
       <DefaultIcon icon="address-book" size={20} />
-      {hasFriendRequests && (
-        <DefaultIcon
-          icon="exclamation"
-          color={defaultRed.lv2}
-          style={{
-            position: 'absolute',
-            right: -5,
-            top: -5,
-            backgroundColor: 'white',
-            padding: 3,
-            borderRadius: 20,
-          }}
-        />
+      {numberOfRequests >= 1 && (
+        <DefaultText title={numberOfRequests.toString()} style={styles.badge} />
       )}
     </Pressable>
   );
 };
 
 export default ContactButton;
+
+const styles = StyleSheet.create({
+  badge: {
+    position: 'absolute',
+    right: 0,
+    backgroundColor: defaultRed.lv1,
+    padding: 3,
+    borderRadius: 20,
+  },
+});

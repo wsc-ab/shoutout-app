@@ -17,6 +17,8 @@ const Home = () => {
 
   const appState = useRef(AppState.currentState);
 
+  // [START] set badge count to 0 when app becomes active
+
   useEffect(() => {
     if (authUserData) {
       const load = async () => await notifee.setBadgeCount(0);
@@ -39,6 +41,8 @@ const Home = () => {
       };
     }
   });
+
+  // [END] set badge count to 0 when app becomes active
 
   if (!loaded) {
     return null;
