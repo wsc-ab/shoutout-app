@@ -25,7 +25,11 @@ const ContactButton = ({style}: TProps) => {
       }}>
       <DefaultIcon icon="address-book" size={20} />
       {numberOfRequests >= 1 && (
-        <DefaultText title={numberOfRequests.toString()} style={styles.badge} />
+        <DefaultText
+          title={numberOfRequests.toString()}
+          style={styles.badge}
+          textStyle={styles.badgeText}
+        />
       )}
     </Pressable>
   );
@@ -37,8 +41,13 @@ const styles = StyleSheet.create({
   badge: {
     position: 'absolute',
     right: 0,
+    top: -5,
     backgroundColor: defaultRed.lv1,
-    padding: 3,
+    padding: 5,
+    paddingHorizontal: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 20,
   },
+  badgeText: {fontWeight: 'bold'},
 });
