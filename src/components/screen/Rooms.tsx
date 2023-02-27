@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {FlatList, SafeAreaView, StyleSheet, View} from 'react-native';
+import {FlatList, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import {TStyleView} from '../../types/Style';
 import CreateRoomButton from '../buttons/CreateRoomButton';
