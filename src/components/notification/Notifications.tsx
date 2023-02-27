@@ -45,13 +45,12 @@ const Notifications = ({isPermitted}: TProps) => {
     ) => {
       const {notification, data} = remoteMessage;
 
-      console.log(data, 'notification');
-
       if (notification) {
         addPopup({
           title: notification.title,
           body: notification.body,
           target: (data.collection as string).slice(0, -1),
+          image: data.image,
           data: {
             id: data.id as string | undefined,
             path: data.path as string | undefined,

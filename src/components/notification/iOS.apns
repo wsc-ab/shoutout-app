@@ -8,9 +8,9 @@
     "sound": "default",
     "mutable-content": 1,
   },
-  "collection": "collection",
+  "collection": "users",
   "path": "path",
-  "id": "id",
+  "id": "trPcL5i0haO3ydjCW3eH",
   "gcm.message_id": "123",
-  "otherCustomURL" : "https://img.freepik.com/free-photo/grunge-paint-background_1409-1337.jpg?w=360"
+  "image" : "https://img.freepik.com/free-photo/grunge-paint-background_1409-1337.jpg?w=360"
 }

@@ -1,4 +1,3 @@
-import {IconProp} from '@fortawesome/fontawesome-svg-core';
 import React, {createContext, useContext, useEffect, useState} from 'react';
 import {
   ActivityIndicator,
@@ -8,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import {defaultBlue} from '../components/defaults/DefaultColors';
-import DefaultIcon from '../components/defaults/DefaultIcon';
+import DefaultImage from '../components/defaults/DefaultImage';
 import DefaultText from '../components/defaults/DefaultText';
 import ModalContext from './Modal';
 
@@ -16,7 +15,7 @@ type TPopup = {
   id: string;
   title: string;
   body: string;
-  icon?: IconProp;
+  image?: string;
   target?: string;
   data?: {id: string};
   disabled?: boolean;
@@ -42,7 +41,7 @@ export type TProps = {
 };
 
 const PopupProvider = ({children}: TProps) => {
-  const {onUpdate} = useContext(ModalContext);
+  const {onUpdate, modal} = useContext(ModalContext);
   const [uploading, setUploading] = useState(false);
   const [uploads, setUploads] = useState<TUpload[]>([]);
   const [popups, setPopups] = useState<TPopup[]>([]);
@@ -83,8 +82,11 @@ const PopupProvider = ({children}: TProps) => {
       return copy;
     });
 
+  // dismiss popups after 5 seconds
+  // only when modal is not present
+
   useEffect(() => {
-    if (popups[0]) {
+    if (popups[0] && !modal) {
       const sub = setTimeout(() => {
         shiftPopups();
       }, 5 * 1000);
@@ -92,7 +94,7 @@ const PopupProvider = ({children}: TProps) => {
         clearTimeout(sub);
       };
     }
-  }, [popups]);
+  }, [modal, popups]);
 
   const onPress = () => {
     if (popups[0].target) {
@@ -125,7 +127,14 @@ const PopupProvider = ({children}: TProps) => {
               borderBottomRightRadius: 20,
               flexDirection: 'row',
             }}>
-            <DefaultIcon icon={popups[0].icon} style={{marginRight: 5}} />
+            <DefaultImage
+              image={popups[0].image}
+              imageStyle={{
+                height: 50,
+                width: 50,
+              }}
+              style={{marginRight: 5}}
+            />
             <View style={{marginRight: 5}}>
               <DefaultText
                 title={popups[0].title}

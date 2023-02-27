@@ -58,8 +58,6 @@ const ContributorsButton = ({users, type, onPress, index, style}: TProps) => {
         renderItem={({item, index: elIndex}) => {
           const isCurrent = elIndex === index;
           if (item.uploading) {
-            console.log(item.canceled, 'item.canceled');
-
             return (
               <View
                 style={[

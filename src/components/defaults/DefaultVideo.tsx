@@ -142,9 +142,7 @@ const DefaultVideo = ({
               posterResizeMode="cover"
               ignoreSilentSwitch="ignore"
               paused={paused}
-              onError={data => {
-                console.log(data, 'data');
-
+              onError={() => {
                 if (uri) {
                   setStatus('error');
                 }

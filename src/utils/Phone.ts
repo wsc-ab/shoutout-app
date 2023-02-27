@@ -8,7 +8,6 @@ export const formatMobileNumber = ({
   countryCode: CountryCode;
 }) => {
   const parsed = parsePhoneNumber(phoneNumber, countryCode);
-  console.log(parsed?.getType(), 'parsed');
 
   if (!(parsed?.getType() === 'MOBILE')) {
     return undefined;

@@ -105,14 +105,10 @@ export const sentToFirst = <A extends TObject>({
   field: string;
   value: string;
 }) => {
-  console.log(array[0], 'array');
-
   const items = [...array];
   const pathIndex = items.findIndex(item => item[field] === value);
 
   if (pathIndex === -1) {
-    console.log('no item found', field, value);
-
     return items;
   }
 

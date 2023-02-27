@@ -66,6 +66,7 @@ const Home = () => {
     <View style={styles.container}>
       <ModalProvider>
         <PopupProvider>
+          <Permission />
           <Header
             onFriends={() => setTab('friends')}
             onGlobal={() => setTab('globe')}
@@ -76,7 +77,6 @@ const Home = () => {
             style={[styles.moments, tab !== 'globe' && styles.hide]}
             mount={tab === 'globe'}
           />
-          <Permission />
         </PopupProvider>
       </ModalProvider>
     </View>
