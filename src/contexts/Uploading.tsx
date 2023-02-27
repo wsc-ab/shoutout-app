@@ -29,8 +29,14 @@ export type TProps = {
 };
 
 const UploadingProvider = ({children}: TProps) => {
-  const [target, setTarget] = useState<TContextProps['target']>();
-  const [status, setStatus] = useState<TContextProps['status']>('ready');
+  const [target, setTarget] = useState<TContextProps['target']>({
+    collection: '1',
+    id: '1',
+    data: {
+      localPath: '1',
+    },
+  });
+  const [status, setStatus] = useState<TContextProps['status']>('uploading');
 
   const onUpload: TContextProps['onUpload'] = ({
     target: newTarget,
@@ -66,7 +72,6 @@ export default UploadingContext;
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    zIndex: 100,
   },
   button: {
     flex: 1,

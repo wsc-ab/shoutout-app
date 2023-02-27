@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {StyleSheet, useWindowDimensions} from 'react-native';
+import {SafeAreaView, StyleSheet, useWindowDimensions} from 'react-native';
 import ModalContext from '../../contexts/Modal';
 import {TDocData} from '../../types/Firebase';
 import DefaultIcon from '../defaults/DefaultIcon';
@@ -17,19 +17,21 @@ const RoomModal = ({room, path}: TProps) => {
 
   return (
     <DefaultModal>
+      <SafeAreaView style={styles.view}>
+        <DefaultIcon
+          icon="angle-left"
+          style={styles.icon}
+          onPress={() => {
+            onUpdate(undefined);
+          }}
+        />
+      </SafeAreaView>
       <RoomCard
         room={room}
         path={path}
         mount
         pauseOnModal={false}
         style={[styles.card, {height, width}]}
-      />
-      <DefaultIcon
-        icon="angle-left"
-        style={styles.icon}
-        onPress={() => {
-          onUpdate(undefined);
-        }}
       />
     </DefaultModal>
   );
@@ -38,6 +40,13 @@ const RoomModal = ({room, path}: TProps) => {
 export default RoomModal;
 
 const styles = StyleSheet.create({
-  icon: {top: 40, zIndex: 300, position: 'absolute', padding: 20},
+  view: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginHorizontal: 10,
+    zIndex: 100,
+  },
+  icon: {padding: 10},
   card: {flex: 1, position: 'absolute'},
 });

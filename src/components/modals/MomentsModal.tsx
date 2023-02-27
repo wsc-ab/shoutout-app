@@ -1,4 +1,5 @@
 import React, {useContext, useRef, useState} from 'react';
+import {SafeAreaView} from 'react-native';
 import {
   FlatList,
   StyleSheet,
@@ -9,6 +10,7 @@ import {
 } from 'react-native';
 import ModalContext from '../../contexts/Modal';
 import {TDocData} from '../../types/Firebase';
+import DefaultForm from '../defaults/DefaultForm';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultModal from '../defaults/DefaultModal';
 import MomentCard from '../screen/MomentCard';
@@ -80,13 +82,16 @@ const MomentsModal = ({moments, momentIndex = 0, contentPath}: TProps) => {
 
   return (
     <DefaultModal>
-      <DefaultIcon
-        icon="angle-left"
-        style={styles.icon}
-        onPress={() => {
-          onUpdate(undefined);
-        }}
-      />
+      <SafeAreaView style={styles.view}>
+        <DefaultIcon
+          icon="angle-left"
+          style={styles.icon}
+          onPress={() => {
+            onUpdate(undefined);
+          }}
+        />
+      </SafeAreaView>
+
       <FlatList
         data={moments}
         initialNumToRender={1}

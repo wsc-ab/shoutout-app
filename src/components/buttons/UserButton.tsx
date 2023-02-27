@@ -17,6 +17,7 @@ const UserButton = ({style}: TProps) => {
       icon="user"
       size={20}
       style={style}
+      color="gray"
       onPress={() => {
         onUpdate({target: 'user', data: {id: authUserData.id}});
       }}

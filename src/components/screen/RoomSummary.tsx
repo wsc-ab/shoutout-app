@@ -1,12 +1,6 @@
 import firestore from '@react-native-firebase/firestore';
 import React, {useContext, useEffect, useState} from 'react';
-import {
-  FlatList,
-  Pressable,
-  StyleSheet,
-  useWindowDimensions,
-  View,
-} from 'react-native';
+import {FlatList, Pressable, useWindowDimensions, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import {TDocData, TDocSnapshot} from '../../types/Firebase';
@@ -29,7 +23,7 @@ type TProps = {
   style?: TStyleView;
 };
 
-const RoomSummary = ({room}: TProps) => {
+const RoomSummary = ({room, style}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
   const {width} = useWindowDimensions();
   const [data, setData] = useState<TDocData>();
@@ -83,7 +77,7 @@ const RoomSummary = ({room}: TProps) => {
 
   const grouped = groupByLength(data.moments.items, 3);
 
-  const itemWidth = width - 30;
+  const itemWidth = width - 20;
 
   const {added} = getUserAdded({authUserData, room: data});
 
@@ -94,18 +88,17 @@ const RoomSummary = ({room}: TProps) => {
   });
 
   return (
-    <View style={styles.container}>
+    <View style={style}>
       <View
         style={{
           flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
-          padding: 10,
         }}>
         <DefaultText
           title={data.name}
           textStyle={{fontWeight: 'bold', fontSize: 20}}
-          style={{flex: 1}}
+          style={{flex: 1, marginBottom: 10}}
         />
         <View
           style={{
@@ -144,7 +137,6 @@ const RoomSummary = ({room}: TProps) => {
           <DefaultText
             title="No moment shared yet"
             style={{
-              marginHorizontal: 10,
               height: 50,
               width: itemWidth,
             }}
@@ -165,7 +157,7 @@ const RoomSummary = ({room}: TProps) => {
                     <Pressable
                       key={path}
                       style={{
-                        marginHorizontal: 10,
+                        // marginHorizontal: 10,
                         flexDirection: 'row',
                         width: itemWidth,
                         height: 50,
@@ -214,9 +206,3 @@ const RoomSummary = ({room}: TProps) => {
 };
 
 export default RoomSummary;
-
-const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: 5,
-  },
-});

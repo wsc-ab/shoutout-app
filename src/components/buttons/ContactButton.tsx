@@ -23,7 +23,7 @@ const ContactButton = ({style}: TProps) => {
       onPress={() => {
         onUpdate({target: 'friends'});
       }}>
-      <DefaultIcon icon="address-book" size={20} />
+      <DefaultIcon icon="address-book" size={20} color="gray" />
       {numberOfRequests >= 1 && (
         <DefaultText
           title={numberOfRequests.toString()}

@@ -105,7 +105,7 @@ const UserModal = ({id}: TProps) => {
               <View
                 style={{
                   flexDirection: 'row',
-                  marginBottom: 20,
+                  marginBottom: 10,
                 }}>
                 <UserProfileImage user={{id}} />
                 <View style={{alignItems: 'flex-start', marginLeft: 10}}>

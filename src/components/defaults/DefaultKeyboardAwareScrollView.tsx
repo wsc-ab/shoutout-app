@@ -19,5 +19,5 @@ const DefaultKeyboardAwareScrollView = ({children}: TProps) => {
 export default DefaultKeyboardAwareScrollView;
 
 const styles = StyleSheet.create({
-  container: {paddingBottom: 50, paddingHorizontal: 10},
+  container: {paddingBottom: 100, paddingHorizontal: 10},
 });

@@ -2,6 +2,7 @@ import firestore from '@react-native-firebase/firestore';
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
   FlatList,
+  SafeAreaView,
   StyleSheet,
   useWindowDimensions,
   View,
@@ -181,6 +182,7 @@ const MomentCard = ({
             }}
             textStyle={{fontWeight: 'bold', fontSize: 20}}
           />
+
           <DefaultVideo
             path={item.path}
             videoStyle={{height, width}}

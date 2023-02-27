@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
+import {FlatList, SafeAreaView, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import {TStyleView} from '../../types/Style';
 import CreateRoomButton from '../buttons/CreateRoomButton';
@@ -16,7 +16,7 @@ const Rooms = ({style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
 
   const renderItem = ({item}) => {
-    return <RoomSummary room={{id: item}} style={undefined} />;
+    return <RoomSummary room={{id: item}} style={{marginHorizontal: 10}} />;
   };
 
   const ListEmptyComponent = () => {
@@ -69,7 +69,7 @@ const Rooms = ({style}: TProps) => {
 export default Rooms;
 
 const styles = StyleSheet.create({
-  contentContainer: {paddingTop: 100, paddingBottom: 150},
+  contentContainer: {paddingBottom: 100},
   seperator: {
     marginVertical: 20,
   },

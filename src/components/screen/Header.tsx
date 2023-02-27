@@ -4,20 +4,22 @@ import ContactButton from '../buttons/ContactButton';
 import FriendsButton from '../buttons/FriendButton';
 import GlobalButton from '../buttons/GlobalButton';
 import UserButton from '../buttons/UserButton';
-import {defaultBlack} from '../defaults/DefaultColors';
 
 type TProps = {onFriends: () => void; onGlobal: () => void; tab: string};
 
 const Header = ({onFriends, onGlobal, tab}: TProps) => {
+  const position = tab === 'friends' ? 'relative' : 'absolute';
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, {position}]}>
       <UserButton style={styles.button} />
       <FriendsButton
-        style={[styles.button, tab === 'friends' && styles.selected]}
+        style={[styles.button]}
+        color={tab === 'friends' ? 'white' : 'gray'}
         onPress={onFriends}
       />
       <GlobalButton
-        style={[styles.button, tab === 'globe' && styles.selected]}
+        style={[styles.button]}
+        color={tab === 'globe' ? 'white' : 'gray'}
         onPress={onGlobal}
       />
       <ContactButton style={styles.button} />
@@ -32,17 +34,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginHorizontal: 10,
-    position: 'absolute',
     zIndex: 100,
+    margin: 10,
+    marginBottom: 10,
   },
   button: {
     flex: 1,
+    paddingVertical: 10,
     alignItems: 'center',
-    padding: 10,
-    borderRadius: 20,
-    marginHorizontal: 10,
-    alignSelf: 'stretch',
   },
-  selected: {backgroundColor: defaultBlack.lv3(0.5)},
 });

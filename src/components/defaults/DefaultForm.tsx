@@ -1,6 +1,6 @@
 import {IconProp} from '@fortawesome/fontawesome-svg-core';
 import React, {ReactNode} from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, SafeAreaView, StyleSheet, View} from 'react-native';
 import {TStyleView} from '../../types/Style';
 import DefaultIcon from './DefaultIcon';
 
@@ -22,7 +22,7 @@ type TProps = {
 const DefaultForm = ({title, left, right, children, style}: TProps) => {
   return (
     <View style={[styles.container, style]}>
-      <View style={styles.header}>
+      <SafeAreaView style={styles.header}>
         <View style={styles.left}>
           {left && (
             <DefaultIcon
@@ -50,8 +50,8 @@ const DefaultForm = ({title, left, right, children, style}: TProps) => {
 
           {right?.submitting && <ActivityIndicator style={styles.act} />}
         </View>
-      </View>
-      {children}
+      </SafeAreaView>
+      <View style={{flex: 1}}>{children}</View>
     </View>
   );
 };
@@ -60,17 +60,14 @@ export default DefaultForm;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    top: 40,
-    paddingBottom: 50,
     justifyContent: 'center',
+    flex: 1,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
-    paddingHorizontal: 10,
+    margin: 10,
     zIndex: 100,
   },
   icon: {padding: 10},
