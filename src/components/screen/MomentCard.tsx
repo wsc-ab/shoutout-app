@@ -2,7 +2,6 @@ import firestore from '@react-native-firebase/firestore';
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
   FlatList,
-  SafeAreaView,
   StyleSheet,
   useWindowDimensions,
   View,

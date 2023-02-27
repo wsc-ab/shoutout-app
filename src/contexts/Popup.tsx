@@ -161,5 +161,6 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     flexDirection: 'row',
+    zIndex: 300,
   },
 });

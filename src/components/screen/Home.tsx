@@ -4,6 +4,8 @@ import Moments from './Moments';
 
 import notifee from '@notifee/react-native';
 import AuthUserContext from '../../contexts/AuthUser';
+import {ModalProvider} from '../../contexts/Modal';
+import {PopupProvider} from '../../contexts/Popup';
 import Permission from '../notification/Permission';
 import Header from './Header';
 import Landing from './Landing';
@@ -62,17 +64,21 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
-      <Header
-        onFriends={() => setTab('friends')}
-        onGlobal={() => setTab('globe')}
-        tab={tab}
-      />
-      <Prompts style={[styles.prompts, tab !== 'friends' && styles.hide]} />
-      <Moments
-        style={[styles.moments, tab !== 'globe' && styles.hide]}
-        mount={tab === 'globe'}
-      />
-      <Permission />
+      <ModalProvider>
+        <PopupProvider>
+          <Header
+            onFriends={() => setTab('friends')}
+            onGlobal={() => setTab('globe')}
+            tab={tab}
+          />
+          <Prompts style={[styles.prompts, tab !== 'friends' && styles.hide]} />
+          <Moments
+            style={[styles.moments, tab !== 'globe' && styles.hide]}
+            mount={tab === 'globe'}
+          />
+          <Permission />
+        </PopupProvider>
+      </ModalProvider>
     </View>
   );
 };

@@ -69,8 +69,6 @@ export const getQueryParams = (url: string) => {
     params[match[1]] = match[2];
   }
 
-  console.log(params, 'p');
-
   return params;
 };
 

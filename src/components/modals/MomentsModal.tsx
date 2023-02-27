@@ -1,7 +1,7 @@
 import React, {useContext, useRef, useState} from 'react';
-import {SafeAreaView} from 'react-native';
 import {
   FlatList,
+  SafeAreaView,
   StyleSheet,
   useWindowDimensions,
   View,
@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import ModalContext from '../../contexts/Modal';
 import {TDocData} from '../../types/Firebase';
-import DefaultForm from '../defaults/DefaultForm';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultModal from '../defaults/DefaultModal';
 import MomentCard from '../screen/MomentCard';
@@ -94,6 +93,7 @@ const MomentsModal = ({moments, momentIndex = 0, contentPath}: TProps) => {
 
       <FlatList
         data={moments}
+        style={styles.card}
         initialNumToRender={1}
         windowSize={3}
         maxToRenderPerBatch={1}
@@ -115,5 +115,13 @@ const MomentsModal = ({moments, momentIndex = 0, contentPath}: TProps) => {
 export default MomentsModal;
 
 const styles = StyleSheet.create({
-  icon: {top: 40, zIndex: 200, padding: 20, position: 'absolute'},
+  view: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginHorizontal: 10,
+    zIndex: 100,
+  },
+  icon: {padding: 10},
+  card: {flex: 1, position: 'absolute'},
 });

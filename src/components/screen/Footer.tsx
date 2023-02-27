@@ -6,7 +6,6 @@ import CreateMomentButton from '../buttons/CreateMomentButton';
 import LikeButton from '../buttons/LikeButton';
 import ReportButton from '../buttons/ReportButton';
 import ShareButton from '../buttons/ShareButton';
-import {defaultBlack} from '../defaults/DefaultColors';
 
 type TProps = {
   content: {
