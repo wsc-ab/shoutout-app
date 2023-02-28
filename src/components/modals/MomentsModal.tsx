@@ -90,24 +90,26 @@ const MomentsModal = ({moments, momentIndex = 0, contentPath}: TProps) => {
           }}
         />
       </SafeAreaView>
-
-      <FlatList
-        data={moments}
-        style={styles.card}
-        initialNumToRender={1}
-        windowSize={3}
-        maxToRenderPerBatch={1}
-        snapToInterval={height}
-        getItemLayout={getItemLayout}
-        initialScrollIndex={momentIndex}
-        snapToAlignment={'start'}
-        showsVerticalScrollIndicator={false}
-        decelerationRate="fast"
-        keyExtractor={keyExtractor}
-        disableIntervalMomentum
-        viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
-        renderItem={renderItem}
-      />
+      <View style={[styles.card, {height, width}]}>
+        <FlatList
+          data={moments}
+          initialNumToRender={1}
+          windowSize={3}
+          maxToRenderPerBatch={1}
+          snapToInterval={height}
+          getItemLayout={getItemLayout}
+          initialScrollIndex={momentIndex}
+          snapToAlignment={'start'}
+          showsVerticalScrollIndicator={false}
+          decelerationRate="fast"
+          keyExtractor={keyExtractor}
+          disableIntervalMomentum
+          viewabilityConfigCallbackPairs={
+            viewabilityConfigCallbackPairs.current
+          }
+          renderItem={renderItem}
+        />
+      </View>
     </DefaultModal>
   );
 };
