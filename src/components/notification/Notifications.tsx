@@ -14,12 +14,22 @@ const Notifications = ({isPermitted}: TProps) => {
 
   const openModal = useCallback(
     (remoteMessage: EventDetail['notification']) => {
-      if (remoteMessage?.data?.collection) {
+      if (remoteMessage?.data?.collection === 'moments') {
         onUpdate({
-          target: (remoteMessage.data.collection as string).slice(0, -1),
+          target: 'moments',
           data: {
-            id: remoteMessage.data.id as string | undefined,
-            path: remoteMessage.data.path as string | undefined,
+            moments: [{id: remoteMessage?.data?.id}],
+            contentPath: remoteMessage?.data?.path,
+          },
+        });
+      } else if (remoteMessage?.data?.collection === 'rooms') {
+        return;
+      } else if (remoteMessage?.data?.collection) {
+        onUpdate({
+          target: remoteMessage?.data?.collection.slice(0, -1),
+          data: {
+            id: remoteMessage?.data?.id,
+            contentPath: remoteMessage?.data?.path,
           },
         });
       }
@@ -46,16 +56,29 @@ const Notifications = ({isPermitted}: TProps) => {
       const {notification, data} = remoteMessage;
 
       if (notification) {
-        addPopup({
-          title: notification.title,
-          body: notification.body,
-          target: (data.collection as string).slice(0, -1),
-          image: data.image,
-          data: {
-            id: data.id as string | undefined,
-            path: data.path as string | undefined,
-          },
-        });
+        if (data.collection === 'moments') {
+          addPopup({
+            title: notification.title,
+            body: notification.body,
+            target: 'moments',
+            image: data.fcm_options.image,
+            data: {
+              moments: [{id: data.id}],
+              contentPath: data.path as string | undefined,
+            },
+          });
+        } else if (data.collection) {
+          addPopup({
+            title: notification.title,
+            body: notification.body,
+            target: (data.collection as string).slice(0, -1),
+            image: data.fcm_options.image,
+            data: {
+              id: data.id as string | undefined,
+              path: data.path as string | undefined,
+            },
+          });
+        }
       }
     };
     const unsubscribe = messaging().onMessage(onMessageHandler);

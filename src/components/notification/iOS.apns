@@ -8,9 +8,11 @@
     "sound": "default",
     "mutable-content": 1,
   },
-  "collection": "users",
+  "collection": "rooms",
   "path": "path",
-  "id": "trPcL5i0haO3ydjCW3eH",
+  "id": "PLBZqbZcjqkjQtD4yXw1",
   "gcm.message_id": "123",
-  "image" : "https://img.freepik.com/free-photo/grunge-paint-background_1409-1337.jpg?w=360"
+  "fcm_options": {
+    "image" : "https://img.freepik.com/free-photo/grunge-paint-background_1409-1337.jpg?w=360"
+  }
 }

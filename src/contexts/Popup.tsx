@@ -18,7 +18,7 @@ type TPopup = {
   body: string;
   image?: string;
   target?: string;
-  data?: {id: string};
+  data?: {id?: string; path?: string};
   disabled?: boolean;
 };
 
@@ -128,7 +128,7 @@ const PopupProvider = ({children}: TProps) => {
               borderTopRightRadius: 20,
               borderBottomRightRadius: 20,
               flex: 1,
-              height: 70,
+              // height: 70,
             }}>
             <DefaultImage
               image={popups[0].image}

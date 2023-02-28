@@ -40,7 +40,7 @@ export default ContactButton;
 const styles = StyleSheet.create({
   badge: {
     position: 'absolute',
-    right: 0,
+    right: 20,
     top: -5,
     backgroundColor: defaultRed.lv1,
     padding: 5,

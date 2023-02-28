@@ -4,8 +4,6 @@ import Moments from './Moments';
 
 import notifee from '@notifee/react-native';
 import AuthUserContext from '../../contexts/AuthUser';
-import {ModalProvider} from '../../contexts/Modal';
-import {PopupProvider} from '../../contexts/Popup';
 import Permission from '../notification/Permission';
 import Header from './Header';
 import Landing from './Landing';
@@ -44,8 +42,6 @@ const Home = () => {
     }
   });
 
-  // [END] set badge count to 0 when app becomes active
-
   if (!loaded) {
     return null;
   }
@@ -64,21 +60,17 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
-      <ModalProvider>
-        <PopupProvider>
-          <Permission />
-          <Header
-            onFriends={() => setTab('friends')}
-            onGlobal={() => setTab('globe')}
-            tab={tab}
-          />
-          <Prompts style={[styles.prompts, tab !== 'friends' && styles.hide]} />
-          <Moments
-            style={[styles.moments, tab !== 'globe' && styles.hide]}
-            mount={tab === 'globe'}
-          />
-        </PopupProvider>
-      </ModalProvider>
+      <Permission />
+      <Header
+        onFriends={() => setTab('friends')}
+        onGlobal={() => setTab('globe')}
+        tab={tab}
+      />
+      <Prompts style={[styles.prompts, tab !== 'friends' && styles.hide]} />
+      <Moments
+        style={[styles.moments, tab !== 'globe' && styles.hide]}
+        mount={tab === 'globe'}
+      />
     </View>
   );
 };

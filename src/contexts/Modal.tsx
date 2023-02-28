@@ -1,5 +1,5 @@
 import dynamicLinks from '@react-native-firebase/dynamic-links';
-import React, {createContext, useEffect, useState} from 'react';
+import React, {createContext, useContext, useEffect, useState} from 'react';
 import CreateRoomForm from '../components/forms/CreateRoomForm';
 import AuthUserModal from '../components/modals/AuthUserModal';
 import ContactsModal from '../components/modals/ContactsModal';
@@ -9,6 +9,7 @@ import UserModal from '../components/modals/UserModal';
 import UsersModal from '../components/modals/UsersModal';
 import {TObject} from '../types/Firebase';
 import {getQueryParams} from '../utils/Share';
+import AuthUserContext from './AuthUser';
 
 type TModal = {
   target: string;
@@ -28,6 +29,7 @@ export type TProps = {
 
 const ModalProvider = ({children}: TProps) => {
   const [modal, setModal] = useState<TModal>();
+  const {authUserData} = useContext(AuthUserContext);
 
   useEffect(() => {
     const loadInitialLink = async () => {
@@ -47,24 +49,28 @@ const ModalProvider = ({children}: TProps) => {
       }
     };
 
-    loadInitialLink();
-  }, []);
+    if (authUserData) {
+      loadInitialLink();
+    }
+  }, [authUserData]);
 
   useEffect(() => {
-    const unsub = dynamicLinks().onLink(link => {
-      const {collection, id, path} = getQueryParams(link.url);
+    if (authUserData) {
+      const unsub = dynamicLinks().onLink(link => {
+        const {collection, id, path} = getQueryParams(link.url);
 
-      if (collection === 'moments') {
-        onUpdate({
-          target: 'moments',
-          data: {moments: [{id}], contentPath: path},
-        });
-      } else if (collection) {
-        onUpdate({target: collection.slice(0, -1), data: {id, path}});
-      }
-    });
-    return () => unsub();
-  }, []);
+        if (collection === 'moments') {
+          onUpdate({
+            target: 'moments',
+            data: {moments: [{id}], contentPath: path},
+          });
+        } else if (collection) {
+          onUpdate({target: collection.slice(0, -1), data: {id, path}});
+        }
+      });
+      return () => unsub();
+    }
+  }, [authUserData]);
 
   const onUpdate = (newModal?: TModal) => {
     setModal(undefined);

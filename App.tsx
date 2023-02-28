@@ -13,6 +13,8 @@ import {StatusBar, StyleSheet, View} from 'react-native';
 import Home from './src/components/screen/Home';
 import {AuthUserProvider} from './src/contexts/AuthUser';
 import {CacheProvider} from './src/contexts/Cache';
+import {ModalProvider} from './src/contexts/Modal';
+import {PopupProvider} from './src/contexts/Popup';
 import {TBundleId} from './src/types/Data';
 import {TStatus} from './src/types/Screen';
 import {initAlgolia} from './src/utils/Algolia';
@@ -43,7 +45,11 @@ const App = ({bundleId}: TProps) => {
       <StatusBar barStyle="light-content" />
       <CacheProvider>
         <AuthUserProvider bundleId={bundleId}>
-          <Home />
+          <ModalProvider>
+            <PopupProvider>
+              <Home />
+            </PopupProvider>
+          </ModalProvider>
         </AuthUserProvider>
       </CacheProvider>
     </View>

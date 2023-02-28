@@ -61,10 +61,6 @@ const CreateMomentButton = ({
 
       setData({remotePath, localPath, id: momentId});
       setModal('form');
-
-      if (onSuccess) {
-        onSuccess();
-      }
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {
         DefaultAlert({
@@ -81,6 +77,10 @@ const CreateMomentButton = ({
   const onForm = () => {
     onUpdate(undefined);
     setModal(undefined);
+
+    if (onSuccess) {
+      onSuccess();
+    }
   };
 
   return (

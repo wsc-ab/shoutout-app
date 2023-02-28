@@ -23,6 +23,7 @@ const Welcome = ({style}: TProps) => {
 
   const onDone = async () => {
     setSubmitting(true);
+
     await addLog({
       id: authUserData.id,
       collection: 'users',
