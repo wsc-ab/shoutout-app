@@ -140,6 +140,7 @@ const RoomSummary = ({room, style}: TProps) => {
             title="No moment shared yet"
             style={{
               height: 50,
+              paddingHorizontal: 10,
               width: itemWidth,
             }}
           />
