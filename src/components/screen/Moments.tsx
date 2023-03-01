@@ -55,7 +55,7 @@ const Moments = ({style, mount}: TProps) => {
   useEffect(() => {
     const load = async () => {
       try {
-        const {moments} = await getMoments({pagination: {number: 5}});
+        const {moments} = await getMoments({pagination: {number: 10}});
 
         setData(moments);
 
@@ -78,7 +78,7 @@ const Moments = ({style, mount}: TProps) => {
   useEffect(() => {
     const load = async () => {
       try {
-        const {moments} = await getMoments({pagination: {number: 5}});
+        const {moments} = await getMoments({pagination: {number: 10}});
 
         setData(pre => {
           const copy = [...pre];
