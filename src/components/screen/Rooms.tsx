@@ -16,7 +16,7 @@ const Rooms = ({style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
 
   const renderItem = ({item}) => {
-    return <RoomSummary room={{id: item}} style={{marginHorizontal: 10}} />;
+    return <RoomSummary room={{id: item}} />;
   };
 
   const ListEmptyComponent = () => {

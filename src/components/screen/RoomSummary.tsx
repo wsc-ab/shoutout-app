@@ -94,6 +94,8 @@ const RoomSummary = ({room, style}: TProps) => {
           flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
+          marginHorizontal: 10,
+          flex: 1,
         }}>
         <DefaultText
           title={data.name}
@@ -128,7 +130,7 @@ const RoomSummary = ({room, style}: TProps) => {
       <FlatList
         data={grouped[0].length === 0 ? [] : grouped}
         horizontal
-        snapToInterval={itemWidth + 20}
+        snapToInterval={width}
         snapToAlignment={'start'}
         decelerationRate="fast"
         disableIntervalMomentum
@@ -157,7 +159,7 @@ const RoomSummary = ({room, style}: TProps) => {
                     <Pressable
                       key={path}
                       style={{
-                        // marginHorizontal: 10,
+                        marginHorizontal: 10,
                         flexDirection: 'row',
                         width: itemWidth,
                         height: 50,
