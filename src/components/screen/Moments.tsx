@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   FlatList,
   RefreshControl,
@@ -8,7 +8,6 @@ import {
   ViewabilityConfigCallbackPairs,
   ViewToken,
 } from 'react-native';
-import AuthUserContext from '../../contexts/AuthUser';
 import {getMoments} from '../../functions/Moment';
 import {TDocData} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
@@ -27,7 +26,7 @@ const Moments = ({style, mount}: TProps) => {
   const [data, setData] = useState<{id: string}[]>([]);
 
   const [status, setStatus] = useState<TStatus>('loading');
-  const {authUserData} = useContext(AuthUserContext);
+
   const {height, width} = useWindowDimensions();
   const [index, setIndex] = useState(0);
 
@@ -56,10 +55,8 @@ const Moments = ({style, mount}: TProps) => {
     const load = async () => {
       try {
         const {moments} = await getMoments({pagination: {number: 10}});
-        console.log(moments.length, 'len');
 
         setData(moments);
-
         setStatus('loaded');
       } catch (error) {
         DefaultAlert({
@@ -74,13 +71,13 @@ const Moments = ({style, mount}: TProps) => {
     if (status === 'loading') {
       load();
     }
-  }, [authUserData.contributeTo.items, status]);
+  }, [status]);
 
   useEffect(() => {
     const load = async () => {
       try {
         const {moments} = await getMoments({pagination: {number: 10}});
-        console.log(moments.length, 'len load more');
+
         setData(pre => {
           const copy = [...pre];
           return [...copy, ...moments];
@@ -160,32 +157,36 @@ const Moments = ({style, mount}: TProps) => {
   const keyExtractor = (item: TDocData, elIndex: number) => item.id + elIndex;
 
   return (
-    <View style={[style]}>
-      <FlatList
-        data={data}
-        initialNumToRender={1}
-        windowSize={3}
-        maxToRenderPerBatch={1}
-        ListEmptyComponent={ListEmptyComponent}
-        snapToInterval={height}
-        snapToAlignment={'start'}
-        showsVerticalScrollIndicator={false}
-        decelerationRate="fast"
-        keyExtractor={keyExtractor}
-        refreshControl={
-          <RefreshControl
-            refreshing={status === 'loading'}
-            onRefresh={() => setStatus('loading')}
-            tintColor={'gray'}
-            progressViewOffset={100}
-          />
-        }
-        disableIntervalMomentum
-        viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
-        onEndReached={onEndReached}
-        renderItem={renderItem}
-      />
-    </View>
+    <FlatList
+      data={data}
+      style={style}
+      initialNumToRender={1}
+      windowSize={3}
+      maxToRenderPerBatch={1}
+      ListEmptyComponent={ListEmptyComponent}
+      snapToInterval={height}
+      snapToAlignment={'start'}
+      showsVerticalScrollIndicator={false}
+      decelerationRate="fast"
+      keyExtractor={keyExtractor}
+      onEndReachedThreshold={5}
+      refreshControl={
+        <RefreshControl
+          refreshing={status === 'loading'}
+          onRefresh={() => {
+            setData([]);
+            setStatus('loading');
+          }}
+          tintColor={'gray'}
+          style={{flex: 1}}
+          progressViewOffset={80}
+        />
+      }
+      disableIntervalMomentum
+      viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+      onEndReached={onEndReached}
+      renderItem={renderItem}
+    />
   );
 };
 

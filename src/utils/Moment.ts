@@ -24,7 +24,6 @@ export const getUserAdded = ({
 
 export const getNewContents = ({authUserData}: {authUserData: TDocData}) => {
   const viewedAt = authUserData.viewedAt;
-  console.log(viewedAt, 'viewedAt');
 
   const newContents = [];
 

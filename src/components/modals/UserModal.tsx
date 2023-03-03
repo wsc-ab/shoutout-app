@@ -72,8 +72,6 @@ const UserModal = ({id}: TProps) => {
 
   useEffect(() => {
     const updateViewedAt = async () => {
-      console.log('called');
-
       await updateUserViewedAt({user: {id: data?.id}});
     };
     if (data?.id === authUserData.id) {
