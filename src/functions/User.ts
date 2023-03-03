@@ -46,3 +46,11 @@ export const updateUserProfileImage = async ({
 }) => {
   await uploadFile({uri, path: getUserProfileImagePath(id)});
 };
+
+export const updateUserViewedAt = async (input: {user: {id: string}}) => {
+  const {data} = await firebaseFunctions.httpsCallable('updateUserViewedAt')(
+    input,
+  );
+
+  return {...data};
+};

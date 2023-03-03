@@ -5,6 +5,7 @@ import {
   faAngleLeft,
   faAngleRight,
   faCheck,
+  faCircle,
   faExclamation,
   faFaceSmile,
   faFlag,
@@ -50,4 +51,5 @@ library.add(
   faFolder,
   faLayerGroup,
   faUserGroup,
+  faCircle,
 );

@@ -21,3 +21,22 @@ export const getUserAdded = ({
 
   return {added, timeGap};
 };
+
+export const getNewContents = ({authUserData}: {authUserData: TDocData}) => {
+  const viewedAt = authUserData.viewedAt;
+  console.log(viewedAt, 'viewedAt');
+
+  const newContents = [];
+
+  for (const moment of authUserData.contributeTo.items) {
+    for (const content of moment.contents) {
+      if (!viewedAt) {
+        newContents.push(content);
+      } else if (getSecondsGap({start: content.addedAt, end: viewedAt}) >= 0) {
+        newContents.push(content);
+      }
+    }
+  }
+
+  return newContents;
+};

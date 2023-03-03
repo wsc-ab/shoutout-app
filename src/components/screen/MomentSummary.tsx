@@ -7,6 +7,8 @@ import {TStyleView} from '../../types/Style';
 import {getCityAndCountry} from '../../utils/Map';
 import {getThumbnailPath} from '../../utils/Storage';
 import DeleteButton from '../buttons/DeleteButton';
+import {defaultRed} from '../defaults/DefaultColors';
+import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultImage from '../defaults/DefaultImage';
 import DefaultText from '../defaults/DefaultText';
 
@@ -18,6 +20,7 @@ type TProps = {
       addedAt: TTimestamp;
       location: TLocation;
       name: string;
+      new: boolean;
       user: {id: string; displayName: string};
     }[];
   };
@@ -40,8 +43,27 @@ const MomentSummary = ({
     <View style={style}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {moment.contents.map(
-          ({path, name, location, user: {id: elId, displayName}}) => (
+          ({
+            path,
+            new: newContent,
+            name,
+            location,
+            user: {id: elId, displayName},
+          }) => (
             <View style={[{marginRight: 10}]} key={path}>
+              {newContent && (
+                <DefaultIcon
+                  icon="circle"
+                  color={defaultRed.lv1}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    zIndex: 100,
+                    padding: 10,
+                  }}
+                />
+              )}
               {elId === authUserData.id && (
                 <DeleteButton
                   content={{path: path}}
@@ -56,6 +78,7 @@ const MomentSummary = ({
                   onSuccess={onDelete}
                 />
               )}
+
               <DefaultImage
                 onPress={onPress ? () => onPress(path) : undefined}
                 image={getThumbnailPath(path, 'video')}

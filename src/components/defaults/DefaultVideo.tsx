@@ -149,6 +149,7 @@ const DefaultVideo = ({
               }}
               onLoad={() => {
                 onLoaded && onLoaded();
+                setStatus('loaded');
               }}
               bufferConfig={{
                 minBufferMs: 0,

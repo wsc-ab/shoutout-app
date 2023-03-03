@@ -16,8 +16,10 @@ import MomentSummary from '../screen/MomentSummary';
 
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
+import {updateUserViewedAt} from '../../functions/User';
 import {TDocData, TLocation, TTimestamp} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
+import {getNewContents} from '../../utils/Moment';
 import FollowButton from '../buttons/FollowButton';
 import UserProfileImage from '../images/UserProfileImage';
 
@@ -68,10 +70,33 @@ const UserModal = ({id}: TProps) => {
     };
   }, [id, status]);
 
+  useEffect(() => {
+    const updateViewedAt = async () => {
+      console.log('called');
+
+      await updateUserViewedAt({user: {id: data?.id}});
+    };
+    if (data?.id === authUserData.id) {
+      updateViewedAt();
+    }
+  }, [authUserData.id, data?.id]);
+
+  const newContentPaths = data
+    ? getNewContents({authUserData: data}).map(({path: elPath}) => elPath)
+    : [];
+
   const sorted = data?.contributeTo?.items.map(item => {
-    item.contents = item.contents.sort((a, b) =>
-      a.user.id === id ? -1 : b.user.id === id ? 1 : 0,
-    );
+    item.contents = item.contents
+      .sort((a, b) => (a.user.id === id ? -1 : b.user.id === id ? 1 : 0))
+      .map(content => ({
+        ...content,
+        new:
+          // if user is viewing its own profile
+          // show what content is new
+          data?.id === authUserData.id
+            ? newContentPaths.includes(content.path)
+            : false,
+      }));
 
     return item;
   });
@@ -142,6 +167,7 @@ const UserModal = ({id}: TProps) => {
                   location: TLocation;
                   name: string;
                   user: {id: string; displayName: string};
+                  new: boolean;
                 }[];
               };
               index: number;
