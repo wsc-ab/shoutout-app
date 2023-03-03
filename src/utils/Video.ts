@@ -19,6 +19,8 @@ export const getVideo = async ({
   const options: CameraOptions = {
     mediaType: 'video',
     videoQuality: 'high',
+    maxWidth: 1080,
+    maxHeight: 1920,
     durationLimit,
     presentationStyle: 'fullScreen',
   };
