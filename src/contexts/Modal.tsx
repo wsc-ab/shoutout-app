@@ -1,5 +1,6 @@
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 import React, {createContext, useContext, useEffect, useState} from 'react';
+import AddMomentForm from '../components/forms/AddMomentForm';
 import CreateRoomForm from '../components/forms/CreateRoomForm';
 import AuthUserModal from '../components/modals/AuthUserModal';
 import ContactsModal from '../components/modals/ContactsModal';
@@ -104,6 +105,9 @@ const ModalProvider = ({children}: TProps) => {
       {modal?.target === 'friends' && <ContactsModal />}
       {modal?.target === 'roomUsers' && modal.data && (
         <UsersModal users={modal.data.users} room={modal.data.room} />
+      )}
+      {modal?.target === 'addMoment' && modal.data && (
+        <AddMomentForm {...modal.data} />
       )}
     </ModalContext.Provider>
   );

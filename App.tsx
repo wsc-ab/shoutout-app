@@ -45,11 +45,11 @@ const App = ({bundleId}: TProps) => {
       <StatusBar barStyle="light-content" />
       <CacheProvider>
         <AuthUserProvider bundleId={bundleId}>
-          <ModalProvider>
-            <PopupProvider>
+          <PopupProvider>
+            <ModalProvider>
               <Home />
-            </PopupProvider>
-          </ModalProvider>
+            </ModalProvider>
+          </PopupProvider>
         </AuthUserProvider>
       </CacheProvider>
     </View>

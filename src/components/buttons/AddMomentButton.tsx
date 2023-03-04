@@ -10,7 +10,6 @@ import {takeVideo} from '../../utils/Video';
 import DefaultAlert from '../defaults/DefaultAlert';
 import {defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
-import AddMomentForm from '../forms/AddMomentForm';
 
 type TProps = {
   moment: {id: string};
@@ -23,18 +22,12 @@ const AddMomentButton = ({moment: {id}, added, style}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
   const [submitting, setSubmitting] = useState(false);
   const {uploading} = useContext(PopupContext);
-  const [modal, setModal] = useState<'form'>();
-  const [data, setData] = useState<{
-    id: string;
-    remotePath: string;
-    localPath: string;
-  }>();
 
   const onAdd = async () => {
-    if (added) {
-      return onAdded();
-    }
-    onUpdate({target: 'addMoment'});
+    // if (added) {
+    //   return onAdded();
+    // }
+    onUpdate({target: 'video'});
 
     setSubmitting(true);
 
@@ -48,13 +41,13 @@ const AddMomentButton = ({moment: {id}, added, style}: TProps) => {
     }
 
     try {
+      onUpdate(undefined);
       const {remotePath, localPath} = await takeVideo({
         id,
         userId: authUserData.id,
       });
 
-      setData({remotePath, localPath, id});
-      setModal('form');
+      onUpdate({target: 'addMoment', data: {remotePath, localPath, id}});
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {
         DefaultAlert({
@@ -76,11 +69,6 @@ const AddMomentButton = ({moment: {id}, added, style}: TProps) => {
     });
   };
 
-  const onForm = () => {
-    onUpdate(undefined);
-    setModal(undefined);
-  };
-
   return (
     <Pressable
       style={[styles.container, style]}
@@ -94,9 +82,6 @@ const AddMomentButton = ({moment: {id}, added, style}: TProps) => {
         />
       )}
       {submitting && <ActivityIndicator color="white" />}
-      {modal === 'form' && data && (
-        <AddMomentForm {...data} onSuccess={onForm} onCancel={onForm} />
-      )}
     </Pressable>
   );
 };

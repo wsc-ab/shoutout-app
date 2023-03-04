@@ -30,8 +30,6 @@ const RoomSummary = ({room, style}: TProps) => {
 
   useEffect(() => {
     const onNext = async (doc: TDocSnapshot) => {
-      console.log('onNext called');
-
       if (!doc.exists) {
         return DefaultAlert({
           title: 'Failed to read data',

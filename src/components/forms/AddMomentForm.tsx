@@ -2,7 +2,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import React, {useContext, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {object} from 'yup';
-import AuthUserContext from '../../contexts/AuthUser';
+import ModalContext from '../../contexts/Modal';
 import PopupContext from '../../contexts/Popup';
 
 import {addMoment} from '../../functions/Moment';
@@ -19,21 +19,13 @@ type TProps = {
   remotePath: string;
   localPath: string;
   id: string;
-  onCancel: () => void;
-  onSuccess: () => void;
 };
 
-const AddMomentForm = ({
-  remotePath,
-  localPath,
-  id,
-  onSuccess,
-  onCancel,
-}: TProps) => {
+const AddMomentForm = ({remotePath, localPath, id}: TProps) => {
   const {text} = defaultSchema();
   const [submitting, setSubmitting] = useState(false);
-  const {addUpload, addPopup, removeUpload} = useContext(PopupContext);
-  const {authUserData} = useContext(AuthUserContext);
+  const {addUpload, removeUpload} = useContext(PopupContext);
+  const {onUpdate} = useContext(ModalContext);
 
   const schema = object({
     name: text({min: 1, max: 50, required: true}),
@@ -55,7 +47,7 @@ const AddMomentForm = ({
       setSubmitting(true);
 
       const latlng = await getLatLng();
-      onSuccess();
+      onUpdate(undefined);
       addUpload({id, localPath});
 
       await uploadVideo({localPath, remotePath});
@@ -65,13 +57,6 @@ const AddMomentForm = ({
         content: {path: remotePath, name, latlng},
       });
       removeUpload({id});
-      addPopup({
-        id,
-        title: 'Moment uploaded',
-        body: 'Press to check your profile',
-        target: 'user',
-        data: {id: authUserData.id},
-      });
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {
         DefaultAlert({
@@ -88,7 +73,7 @@ const AddMomentForm = ({
     <DefaultModal>
       <DefaultForm
         title={'Moment'}
-        left={{onPress: onCancel}}
+        left={{onPress: () => onUpdate(undefined)}}
         right={{
           onPress: handleSubmit(onSubmit),
           submitting,

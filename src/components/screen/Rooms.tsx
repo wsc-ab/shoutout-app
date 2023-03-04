@@ -60,12 +60,7 @@ const Rooms = ({style}: TProps) => {
         }
       />
       <View style={styles.footer}>
-        <CreateRoomButton
-          style={styles.create}
-          onSuccess={() => {
-            setStatus('loading');
-          }}
-        />
+        <CreateRoomButton style={styles.create} />
       </View>
     </View>
   );

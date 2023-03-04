@@ -37,8 +37,7 @@ const CreateMomentForm = ({
 }: TProps) => {
   const {text} = defaultSchema();
   const [submitting, setSubmitting] = useState(false);
-  const {addUpload, removeUpload, addPopup} = useContext(PopupContext);
-  const {authUserData} = useContext(AuthUserContext);
+  const {addUpload, removeUpload} = useContext(PopupContext);
 
   const schema = object({
     name: text({max: 50, required: true}),
@@ -85,13 +84,6 @@ const CreateMomentForm = ({
       });
 
       removeUpload({id});
-      addPopup({
-        id,
-        title: 'Moment uploaded',
-        body: 'Press to check your profile',
-        target: 'user',
-        data: {id: authUserData.id},
-      });
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {
         DefaultAlert({
