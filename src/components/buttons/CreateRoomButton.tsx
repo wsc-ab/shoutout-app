@@ -6,15 +6,21 @@ import DefaultIcon from '../defaults/DefaultIcon';
 
 type TProps = {
   style?: TStyleView;
+  onSuccess?: () => void;
 };
 
-const CreateRoomButton = ({style}: TProps) => {
+const CreateRoomButton = ({style, onSuccess}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
 
   return (
     <Pressable
       style={[styles.container, style]}
-      onPress={() => onUpdate({target: 'createRoom'})}>
+      onPress={() => {
+        onUpdate({target: 'createRoom'});
+        if (onSuccess) {
+          onSuccess();
+        }
+      }}>
       <DefaultIcon icon="folder-plus" size={20} />
     </Pressable>
   );

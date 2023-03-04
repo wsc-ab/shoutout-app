@@ -1,6 +1,5 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
-import AuthUserContext from '../../contexts/AuthUser';
+import React, {useEffect, useState} from 'react';
+import {FlatList, RefreshControl, StyleSheet, View} from 'react-native';
 import {getRooms} from '../../functions/Room';
 import {TDocData} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
@@ -21,7 +20,6 @@ const Rooms = ({style}: TProps) => {
     const load = async () => {
       try {
         const {rooms} = await getRooms({pagination: {number: 10}});
-
         setData(rooms);
         setStatus('loaded');
       } catch (error) {
@@ -51,9 +49,23 @@ const Rooms = ({style}: TProps) => {
         renderItem={renderItem}
         indicatorStyle="white"
         ItemSeparatorComponent={() => <View style={styles.seperator} />}
+        refreshControl={
+          <RefreshControl
+            refreshing={status === 'loading'}
+            onRefresh={() => {
+              setStatus('loading');
+            }}
+            tintColor={'gray'}
+          />
+        }
       />
       <View style={styles.footer}>
-        <CreateRoomButton style={styles.create} />
+        <CreateRoomButton
+          style={styles.create}
+          onSuccess={() => {
+            setStatus('loading');
+          }}
+        />
       </View>
     </View>
   );

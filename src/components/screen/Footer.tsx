@@ -2,7 +2,6 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {TStyleView} from '../../types/Style';
 import AddMomentButton from '../buttons/AddMomentButton';
-import CreateMomentButton from '../buttons/CreateMomentButton';
 import LikeButton from '../buttons/LikeButton';
 import ReportButton from '../buttons/ReportButton';
 import ShareButton from '../buttons/ShareButton';
@@ -32,7 +31,6 @@ const Footer = ({content, moment, added, style}: TProps) => {
       />
 
       <AddMomentButton moment={moment} style={styles.button} added={added} />
-      <CreateMomentButton style={styles.button} />
       <ShareButton
         input={{
           title: `Hey! Check this ${content.name} moment out!`,
