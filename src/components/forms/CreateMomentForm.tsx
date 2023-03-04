@@ -3,7 +3,6 @@ import React, {useContext, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {StyleSheet} from 'react-native';
 import {object} from 'yup';
-import AuthUserContext from '../../contexts/AuthUser';
 import PopupContext from '../../contexts/Popup';
 
 import {createMoment} from '../../functions/Moment';
