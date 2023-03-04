@@ -1,12 +1,13 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
-import DefaultForm from '../defaults/DefaultForm';
-import DefaultModal from '../defaults/DefaultModal';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import {addRoomUser, removeRoomUser} from '../../functions/Room';
 import {TTimestampClient} from '../../types/Firebase';
 import SmallUserCard from '../cards/SmallUserCard';
+import DefaultAlert from '../defaults/DefaultAlert';
+import DefaultForm from '../defaults/DefaultForm';
+import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
 
 type TProps = {
@@ -21,6 +22,7 @@ type TProps = {
 const UsersModal = ({room, users}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
   const {authUserData} = useContext(AuthUserContext);
+  const [submitting, setSubmitting] = useState(false);
 
   const sortByAddedAt = users.sort((a, b) => {
     if (!a.moment?.addedAt._seconds) {
@@ -36,17 +38,32 @@ const UsersModal = ({room, users}: TProps) => {
   const joined = users.some(({id}) => id === authUserData.id);
 
   const onJoin = async () => {
-    await addRoomUser({room, user: {id: authUserData.id}});
-    onUpdate(undefined);
+    try {
+      setSubmitting(true);
+      await addRoomUser({room, user: {id: authUserData.id}});
+      onUpdate(undefined);
+    } catch (error) {
+      DefaultAlert({title: 'Error', message: 'Failed to join room.'});
+    } finally {
+      setSubmitting(false);
+    }
   };
   const onLeave = async () => {
-    await removeRoomUser({room, user: {id: authUserData.id}});
-    onUpdate(undefined);
+    try {
+      setSubmitting(true);
+      await removeRoomUser({room, user: {id: authUserData.id}});
+      onUpdate(undefined);
+    } catch (error) {
+      DefaultAlert({title: 'Error', message: 'Failed to leave room.'});
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const right = {
     icon: joined ? 'user-minus' : 'user-plus',
     onPress: joined ? onLeave : onJoin,
+    submitting,
   };
 
   return (
