@@ -25,6 +25,8 @@ import {
   faUpload,
   faUser,
   faUserGroup,
+  faUserMinus,
+  faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -52,4 +54,6 @@ library.add(
   faLayerGroup,
   faUserGroup,
   faCircle,
+  faUserPlus,
+  faUserMinus,
 );

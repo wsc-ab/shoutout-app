@@ -102,8 +102,8 @@ const ModalProvider = ({children}: TProps) => {
       {modal?.target === 'createRoom' && <CreateRoomForm {...modal.data} />}
       {modal?.target === 'auth' && <AuthUserModal />}
       {modal?.target === 'friends' && <ContactsModal />}
-      {modal?.target === 'roomUsers' && modal.data?.users && (
-        <UsersModal users={modal.data.users} />
+      {modal?.target === 'roomUsers' && modal.data && (
+        <UsersModal users={modal.data.users} room={modal.data.room} />
       )}
     </ModalContext.Provider>
   );

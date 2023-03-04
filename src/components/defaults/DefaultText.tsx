@@ -17,7 +17,7 @@ const DefaultText = <A extends string>({
   onPress,
   numberOfLines = 1,
 }: Props<A>) => {
-  if (!title) {
+  if (title === undefined) {
     return null;
   }
 

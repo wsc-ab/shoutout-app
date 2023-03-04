@@ -67,10 +67,10 @@ const Home = () => {
         tab={tab}
       />
       <Rooms style={[styles.rooms, tab !== 'friends' && styles.hide]} />
-      <Moments
+      {/* <Moments
         style={[styles.moments, tab !== 'globe' && styles.hide]}
         mount={tab === 'globe'}
-      />
+      /> */}
     </View>
   );
 };

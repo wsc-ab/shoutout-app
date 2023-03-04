@@ -17,7 +17,7 @@ export const getUserAdded = ({
     : undefined;
   const timeGap = authUserAddedAt ? getTimeGap(authUserAddedAt) : undefined;
 
-  const added = secondsGap ? secondsGap - 24 * 60 * 60 : false;
+  const added = secondsGap ? secondsGap - 24 * 60 * 60 < 0 : false;
 
   return {added, timeGap};
 };

@@ -2,13 +2,15 @@ import React, {useContext} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
-
+import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
+import {addRoomUser, removeRoomUser} from '../../functions/Room';
 import {TTimestampClient} from '../../types/Firebase';
 import SmallUserCard from '../cards/SmallUserCard';
 import DefaultText from '../defaults/DefaultText';
 
 type TProps = {
+  room: {id: string};
   users: {
     id: string;
     displayName: string;
@@ -16,8 +18,9 @@ type TProps = {
   }[];
 };
 
-const UsersModal = ({users}: TProps) => {
+const UsersModal = ({room, users}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
+  const {authUserData} = useContext(AuthUserContext);
 
   const sortByAddedAt = users.sort((a, b) => {
     if (!a.moment?.addedAt._seconds) {
@@ -30,13 +33,30 @@ const UsersModal = ({users}: TProps) => {
     return b.moment.addedAt._seconds - a.moment.addedAt._seconds;
   });
 
+  const joined = users.some(({id}) => id === authUserData.id);
+
+  const onJoin = async () => {
+    await addRoomUser({room, user: {id: authUserData.id}});
+    onUpdate(undefined);
+  };
+  const onLeave = async () => {
+    await removeRoomUser({room, user: {id: authUserData.id}});
+    onUpdate(undefined);
+  };
+
+  const right = {
+    icon: joined ? 'user-minus' : 'user-plus',
+    onPress: joined ? onLeave : onJoin,
+  };
+
   return (
     <DefaultModal style={{zIndex: 200}}>
       <DefaultForm
         title={'Users'}
         left={{
           onPress: () => onUpdate(undefined),
-        }}>
+        }}
+        right={right}>
         <FlatList
           data={sortByAddedAt}
           contentContainerStyle={styles.container}

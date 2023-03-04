@@ -8,7 +8,6 @@ import {TStyleView} from '../../types/Style';
 import {groupByLength} from '../../utils/Array';
 import {getTimeGap} from '../../utils/Date';
 import {getCityAndCountry} from '../../utils/Map';
-import {getUserAdded} from '../../utils/Moment';
 import {getThumbnailPath} from '../../utils/Storage';
 import CreateMomentButton from '../buttons/CreateMomentButton';
 import DefaultAlert from '../defaults/DefaultAlert';
@@ -31,6 +30,8 @@ const RoomSummary = ({room, style}: TProps) => {
 
   useEffect(() => {
     const onNext = async (doc: TDocSnapshot) => {
+      console.log('onNext called');
+
       if (!doc.exists) {
         return DefaultAlert({
           title: 'Failed to read data',
@@ -79,7 +80,9 @@ const RoomSummary = ({room, style}: TProps) => {
 
   const itemWidth = width - 20;
 
-  const {added} = getUserAdded({authUserData, room: data});
+  const joined = data.inviteTo.items.some(
+    ({id: elId}) => elId === authUserData.id,
+  );
 
   const getItemLayout = (_: any[] | null | undefined, itemIndex: number) => ({
     length: itemWidth,
@@ -107,10 +110,20 @@ const RoomSummary = ({room, style}: TProps) => {
             alignItems: 'center',
             flexDirection: 'row',
           }}>
-          <CreateMomentButton
-            room={{id: data.id}}
-            color={added ? 'white' : defaultRed.lv2}
-          />
+          {joined && <CreateMomentButton room={{id: data.id}} />}
+          {!joined && (
+            <DefaultIcon
+              icon="square-plus"
+              size={20}
+              onPress={() =>
+                DefaultAlert({
+                  title: 'Need to join',
+                  message: 'First join this room to share your moments!',
+                })
+              }
+            />
+          )}
+
           <DefaultText
             title={data.moments.number.toString()}
             style={{marginLeft: 5}}
@@ -122,8 +135,13 @@ const RoomSummary = ({room, style}: TProps) => {
             flexDirection: 'row',
             marginLeft: 10,
           }}
-          onPress={() => onUpdate({target: 'roomUsers', data: {users}})}>
-          <DefaultIcon icon="user-group" style={{padding: 0}} size={20} />
+          onPress={() => onUpdate({target: 'roomUsers', data: {users, room}})}>
+          <DefaultIcon
+            icon="user-group"
+            style={{padding: 0}}
+            size={20}
+            color={joined ? defaultRed.lv2 : 'white'}
+          />
           <DefaultText title={data.inviteTo.number} style={{marginLeft: 5}} />
         </Pressable>
       </View>
