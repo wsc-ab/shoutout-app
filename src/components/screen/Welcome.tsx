@@ -39,7 +39,12 @@ const Welcome = ({style}: TProps) => {
       title: ['Welcome to Shoutout!'],
     },
     {
-      title: ['To share live moment with others!'],
+      title: ['To view your rooms!'],
+      detail: 'Go to',
+      icon: 'folder',
+    },
+    {
+      title: ['To share live moment in a room!'],
       detail: 'Press',
       icon: 'square-plus',
     },
@@ -49,12 +54,7 @@ const Welcome = ({style}: TProps) => {
       icon: 'layer-group',
     },
     {
-      title: ['To view your rooms!'],
-      detail: 'Go to',
-      icon: 'folder',
-    },
-    {
-      title: ['To connect with others!'],
+      title: ['To view trending moments!'],
       detail: 'Go to',
       icon: 'globe',
     },
@@ -69,11 +69,7 @@ const Welcome = ({style}: TProps) => {
       icon: 'hand-point-up',
     },
     {
-      title: [
-        'Now upload your live moment!',
-        'How about sharing how the weather is like?',
-        'Moment should be 3 ~ 15 seconds.',
-      ],
+      title: ["Let's go!"],
       icon: 'face-smile',
       onPress: onDone,
     },
