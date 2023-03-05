@@ -19,6 +19,7 @@ import ModalContext from '../../contexts/Modal';
 import {updateUserViewedAt} from '../../functions/User';
 import {TDocData, TLocation, TTimestamp} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
+import {getSameIds} from '../../utils/Array';
 import {getNewContents} from '../../utils/Moment';
 import FollowButton from '../buttons/FollowButton';
 import UserProfileImage from '../images/UserProfileImage';
@@ -99,6 +100,11 @@ const UserModal = ({id}: TProps) => {
     return item;
   });
 
+  const friend =
+    getSameIds(authUserData.followTo.items, authUserData.followFrom.items).some(
+      ({id: elId}) => elId === data?.id,
+    ) || data?.id === authUserData.id;
+
   return (
     <DefaultModal style={{zIndex: 200}}>
       {status === 'loading' && !data && (
@@ -117,82 +123,92 @@ const UserModal = ({id}: TProps) => {
                 ? () => onUpdate({target: 'auth'})
                 : undefined,
           }}>
-          <FlatList
-            data={sorted}
-            indicatorStyle="white"
+          <View
             style={{
-              paddingHorizontal: 10,
-            }}
-            ListEmptyComponent={<DefaultText title="No moments found" />}
-            ListHeaderComponent={
-              <View
-                style={{
-                  flexDirection: 'row',
-                  marginBottom: 10,
-                }}>
-                <UserProfileImage user={{id}} />
-                <View style={{alignItems: 'flex-start', marginLeft: 10}}>
-                  <DefaultText
-                    title={data.displayName}
-                    textStyle={{fontWeight: 'bold', fontSize: 16}}
-                  />
-                  <FollowButton
-                    user={{
-                      id: data.id,
+              flexDirection: 'row',
+              marginBottom: 10,
+              marginHorizontal: 10,
+            }}>
+            <UserProfileImage user={{id}} />
+            <View style={{alignItems: 'flex-start', marginLeft: 10}}>
+              <DefaultText
+                title={data.displayName}
+                textStyle={{fontWeight: 'bold', fontSize: 16}}
+              />
+              <FollowButton
+                user={{
+                  id: data.id,
+                }}
+              />
+            </View>
+          </View>
+          {!friend && (
+            <DefaultText
+              title="Moments are only shown to friends."
+              style={{
+                marginHorizontal: 10,
+              }}
+            />
+          )}
+          {friend && (
+            <FlatList
+              data={sorted}
+              indicatorStyle="white"
+              style={{
+                paddingHorizontal: 10,
+              }}
+              ListEmptyComponent={<DefaultText title="No moments found" />}
+              contentContainerStyle={styles.container}
+              keyExtractor={(item, index) => item.id + index}
+              refreshControl={
+                <RefreshControl
+                  refreshing={status === 'loading'}
+                  onRefresh={() => setStatus('loading')}
+                  tintColor={'gray'}
+                />
+              }
+              renderItem={({
+                item,
+                index,
+              }: {
+                item: {
+                  id: string;
+                  contents: {
+                    path: string;
+                    addedAt: TTimestamp;
+                    location: TLocation;
+                    name: string;
+                    user: {id: string; displayName: string};
+                    new: boolean;
+                  }[];
+                };
+                index: number;
+              }) => {
+                return (
+                  <MomentSummary
+                    moment={item}
+                    onDelete={() => setStatus('loading')}
+                    onPress={path => {
+                      onUpdate({
+                        target: 'moments',
+                        data: {
+                          moments: sorted,
+                          momentIndex: index,
+                          contentPath: path,
+                        },
+                      });
+                    }}
+                    contentStyle={{
+                      width: videoWidth,
+                      height: videoHeight,
                     }}
                   />
-                </View>
-              </View>
-            }
-            contentContainerStyle={styles.container}
-            keyExtractor={(item, index) => item.id + index}
-            refreshControl={
-              <RefreshControl
-                refreshing={status === 'loading'}
-                onRefresh={() => setStatus('loading')}
-                tintColor={'gray'}
-              />
-            }
-            renderItem={({
-              item,
-              index,
-            }: {
-              item: {
-                id: string;
-                contents: {
-                  path: string;
-                  addedAt: TTimestamp;
-                  location: TLocation;
-                  name: string;
-                  user: {id: string; displayName: string};
-                  new: boolean;
-                }[];
-              };
-              index: number;
-            }) => {
-              return (
-                <MomentSummary
-                  moment={item}
-                  onDelete={() => setStatus('loading')}
-                  onPress={path => {
-                    onUpdate({
-                      target: 'moments',
-                      data: {
-                        moments: sorted,
-                        momentIndex: index,
-                        contentPath: path,
-                      },
-                    });
-                  }}
-                  contentStyle={{
-                    width: videoWidth,
-                    height: videoHeight,
-                  }}
-                />
-              );
-            }}
-            ItemSeparatorComponent={() => <View style={styles.seperator} />}
-          />
+                );
+              }}
+              ItemSeparatorComponent={() => <View style={styles.seperator} />}
+            />
+          )}
+          {}
         </DefaultForm>
       )}
     </DefaultModal>
