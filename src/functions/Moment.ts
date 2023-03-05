@@ -9,7 +9,7 @@ export const createMoment = async (input: {
     latlng: TLatLng;
     name: string;
   };
-  room?: {id: string};
+  channel: {id: string};
 }) => {
   try {
     const {data} = await firebaseFunctions.httpsCallable('createMoment')(input);

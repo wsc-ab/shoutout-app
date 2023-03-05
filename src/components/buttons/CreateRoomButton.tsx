@@ -8,21 +8,21 @@ type TProps = {
   style?: TStyleView;
 };
 
-const CreateRoomButton = ({style}: TProps) => {
+const CreateChannelButton = ({style}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
 
   return (
     <Pressable
       style={[styles.container, style]}
       onPress={() => {
-        onUpdate({target: 'createRoom'});
+        onUpdate({target: 'createChannel'});
       }}>
       <DefaultIcon icon="folder-plus" size={20} />
     </Pressable>
   );
 };
 
-export default CreateRoomButton;
+export default CreateChannelButton;
 
 const styles = StyleSheet.create({
   container: {

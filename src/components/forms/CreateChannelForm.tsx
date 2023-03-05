@@ -1,12 +1,13 @@
 import {yupResolver} from '@hookform/resolvers/yup';
 import {firebase} from '@react-native-firebase/auth';
 import React, {useContext, useState} from 'react';
-import {StyleSheet} from 'react-native';
 import {useForm} from 'react-hook-form';
+import {StyleSheet} from 'react-native';
 import {object} from 'yup';
 import ModalContext from '../../contexts/Modal';
-import {createRoom} from '../../functions/Room';
+import {createChannel} from '../../functions/Channel';
 
+import AuthUserContext from '../../contexts/AuthUser';
 import {defaultSchema} from '../../utils/Schema';
 import ControllerOption from '../controllers/ControllerOption';
 import ControllerText from '../controllers/ControllerText';
@@ -14,11 +15,10 @@ import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultKeyboardAwareScrollView from '../defaults/DefaultKeyboardAwareScrollView';
 import DefaultModal from '../defaults/DefaultModal';
-import AuthUserContext from '../../contexts/AuthUser';
 
 type TProps = {};
 
-const CreateRoomForm = ({}: TProps) => {
+const CreateChannelForm = ({}: TProps) => {
   const {text} = defaultSchema();
 
   const [submitting, setSubmitting] = useState(false);
@@ -52,11 +52,11 @@ const CreateRoomForm = ({}: TProps) => {
     try {
       setSubmitting(true);
 
-      const roomId = firebase.firestore().collection('rooms').doc().id;
+      const channelId = firebase.firestore().collection('channels').doc().id;
 
-      await createRoom({
-        room: {
-          id: roomId,
+      await createChannel({
+        channel: {
+          id: channelId,
           type,
           name,
         },
@@ -78,7 +78,7 @@ const CreateRoomForm = ({}: TProps) => {
   return (
     <DefaultModal>
       <DefaultForm
-        title={'Room'}
+        title={'Channel'}
         left={{
           onPress: () => onUpdate(undefined),
         }}
@@ -91,14 +91,14 @@ const CreateRoomForm = ({}: TProps) => {
             control={control}
             name="name"
             title="Name"
-            detail="A short description of your room."
+            detail="A short description of your channel."
             errors={errors.name}
           />
           <ControllerOption
             control={control}
             name="type"
             title="Type"
-            detail="Moments on public room are shared on the feed."
+            detail="Moments on public channel are shared on the feed."
             errors={errors.type}
             style={styles.textInput}
             options={[
@@ -112,6 +112,6 @@ const CreateRoomForm = ({}: TProps) => {
   );
 };
 
-export default CreateRoomForm;
+export default CreateChannelForm;
 
 const styles = StyleSheet.create({textInput: {marginTop: 20}});

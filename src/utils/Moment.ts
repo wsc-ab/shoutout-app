@@ -3,12 +3,12 @@ import {getSecondsGap, getTimeGap} from './Date';
 
 export const getUserAdded = ({
   authUserData,
-  room,
+  channel,
 }: {
   authUserData: TDocData;
-  room: TDocData;
+  channel: TDocData;
 }) => {
-  const authUserAddedAt = room.moments.items.filter(
+  const authUserAddedAt = channel.moments.items.filter(
     ({user: {id: elId}}) => elId === authUserData.id,
   )[0]?.addedAt;
 

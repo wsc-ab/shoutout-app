@@ -1,7 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {FlatList, RefreshControl, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
-import {getRooms} from '../../functions/Room';
+import ModalContext from '../../contexts/Modal';
+import {getChannels} from '../../functions/Channel';
 import {TDocData} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
@@ -9,14 +10,15 @@ import CreateRoomButton from '../buttons/CreateRoomButton';
 import DefaultAlert from '../defaults/DefaultAlert';
 import {defaultRed} from '../defaults/DefaultColors';
 import DefaultText from '../defaults/DefaultText';
-import RoomSummary from './RoomSummary';
+import ChannelSummary from './ChannelSummary';
 
 type TProps = {
   style: TStyleView;
 };
 
-const Rooms = ({style}: TProps) => {
+const Channels = ({style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
+  const {onUpdate} = useContext(ModalContext);
   const [data, setData] = useState<TDocData[]>([]);
   const [status, setStatus] = useState<TStatus>('loading');
   const [tab, setTab] = useState<'my' | 'public'>('my');
@@ -24,8 +26,9 @@ const Rooms = ({style}: TProps) => {
   useEffect(() => {
     const load = async () => {
       try {
-        const {rooms} = await getRooms({pagination: {number: 10}});
-        setData(rooms);
+        const {channels} = await getChannels({pagination: {number: 10}});
+
+        setData(channels);
         setStatus('loaded');
       } catch (error) {
         DefaultAlert({
@@ -43,7 +46,7 @@ const Rooms = ({style}: TProps) => {
   }, [status]);
 
   const renderItem = ({item}) => {
-    return <RoomSummary room={{id: item.id}} />;
+    return <ChannelSummary channel={{id: item.id}} />;
   };
 
   return (
@@ -55,7 +58,7 @@ const Rooms = ({style}: TProps) => {
           onPress={() => setTab('my')}
           style={{
             padding: 10,
-            borderRadius: 10,
+            borderRadius: 50,
             borderColor: tab === 'my' ? defaultRed.lv2 : 'white',
             borderWidth: 1,
           }}
@@ -65,9 +68,20 @@ const Rooms = ({style}: TProps) => {
           onPress={() => setTab('public')}
           style={{
             padding: 10,
-            borderRadius: 10,
+            borderRadius: 50,
             marginLeft: 10,
             borderColor: tab === 'public' ? defaultRed.lv2 : 'white',
+            borderWidth: 1,
+          }}
+        />
+        <DefaultText
+          title="Code"
+          onPress={() => onUpdate({target: 'channelCode'})}
+          style={{
+            padding: 10,
+            borderRadius: 50,
+            marginLeft: 10,
+            borderColor: 'white',
             borderWidth: 1,
           }}
         />
@@ -115,7 +129,7 @@ const Rooms = ({style}: TProps) => {
   );
 };
 
-export default Rooms;
+export default Channels;
 
 const styles = StyleSheet.create({
   contentContainer: {paddingBottom: 100},

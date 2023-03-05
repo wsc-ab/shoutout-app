@@ -16,13 +16,13 @@ import MomentCard from './MomentCard';
 
 type TProps = {
   style?: TStyleView;
-  room: TDocData;
+  channel: TDocData;
   pauseOnModal?: boolean;
   path?: string;
   mount: boolean;
 };
 
-const RoomCard = ({style, room, path, pauseOnModal, mount}: TProps) => {
+const ChannelCard = ({style, channel, path, pauseOnModal, mount}: TProps) => {
   const [status, setStatus] = useState<TStatus>('loading');
   const {height, width} = useWindowDimensions();
   const [index, setIndex] = useState(0);
@@ -94,7 +94,7 @@ const RoomCard = ({style, room, path, pauseOnModal, mount}: TProps) => {
           mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
           pauseOnModal={pauseOnModal}
           inView={index === elIndex}
-          room={{id: room.id}}
+          channel={{id: channel.id}}
         />
       </View>
     );
@@ -110,8 +110,8 @@ const RoomCard = ({style, room, path, pauseOnModal, mount}: TProps) => {
 
   const sortMoment = () =>
     path
-      ? sentToFirst({array: room.moments.items, field: 'path', value: path})
-      : room.moments.items;
+      ? sentToFirst({array: channel.moments.items, field: 'path', value: path})
+      : channel.moments.items;
 
   return (
     <View style={style}>
@@ -135,7 +135,7 @@ const RoomCard = ({style, room, path, pauseOnModal, mount}: TProps) => {
   );
 };
 
-export default RoomCard;
+export default ChannelCard;
 
 const styles = StyleSheet.create({
   noData: {flex: 1, justifyContent: 'center', alignItems: 'center'},

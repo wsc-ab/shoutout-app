@@ -1,7 +1,8 @@
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 import React, {createContext, useContext, useEffect, useState} from 'react';
 import AddMomentForm from '../components/forms/AddMomentForm';
-import CreateRoomForm from '../components/forms/CreateRoomForm';
+import ChannelCodeForm from '../components/forms/ChannelCodeForm';
+import CreateChannelForm from '../components/forms/CreateChannelForm';
 import AuthUserModal from '../components/modals/AuthUserModal';
 import ContactsModal from '../components/modals/ContactsModal';
 import MomentsModal from '../components/modals/MomentsModal';
@@ -100,15 +101,18 @@ const ModalProvider = ({children}: TProps) => {
       {modal?.target === 'room' && modal.data?.room && (
         <RoomModal room={modal.data.room} path={modal.data.path} />
       )}
-      {modal?.target === 'createRoom' && <CreateRoomForm {...modal.data} />}
+      {modal?.target === 'createChannel' && (
+        <CreateChannelForm {...modal.data} />
+      )}
       {modal?.target === 'auth' && <AuthUserModal />}
       {modal?.target === 'friends' && <ContactsModal />}
-      {modal?.target === 'roomUsers' && modal.data && (
-        <UsersModal users={modal.data.users} room={modal.data.room} />
+      {modal?.target === 'channelUsers' && modal.data && (
+        <UsersModal users={modal.data.users} channel={modal.data.channel} />
       )}
       {modal?.target === 'addMoment' && modal.data && (
         <AddMomentForm {...modal.data} />
       )}
+      {modal?.target === 'channelCode' && <ChannelCodeForm />}
     </ModalContext.Provider>
   );
 };

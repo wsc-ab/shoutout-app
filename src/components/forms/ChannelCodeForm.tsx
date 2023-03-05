@@ -2,42 +2,25 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import React, {useContext, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {object} from 'yup';
-import PopupContext from '../../contexts/Popup';
-
-import {createMoment} from '../../functions/Moment';
-import {getLatLng} from '../../utils/Location';
+import ModalContext from '../../contexts/Modal';
+import {joinChannelWithCode} from '../../functions/Channel';
 
 import {defaultSchema} from '../../utils/Schema';
-import {uploadVideo} from '../../utils/Video';
 import ControllerText from '../controllers/ControllerText';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultKeyboardAwareScrollView from '../defaults/DefaultKeyboardAwareScrollView';
 import DefaultModal from '../defaults/DefaultModal';
 
-type TProps = {
-  remotePath: string;
-  localPath: string;
-  id: string;
-  channel: {id: string};
-  onCancel: () => void;
-  onSuccess: () => void;
-};
+type TProps = {};
 
-const CreateMomentForm = ({
-  remotePath,
-  localPath,
-  id,
-  channel,
-  onCancel,
-  onSuccess,
-}: TProps) => {
+const ChannelCodeForm = ({}: TProps) => {
   const {text} = defaultSchema();
   const [submitting, setSubmitting] = useState(false);
-  const {addUpload, removeUpload} = useContext(PopupContext);
+  const {onUpdate} = useContext(ModalContext);
 
   const schema = object({
-    name: text({max: 50, required: true}),
+    code: text({min: 6, max: 6, required: true}),
   }).required();
 
   const {
@@ -47,31 +30,18 @@ const CreateMomentForm = ({
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      name: '',
+      code: '',
     },
   });
 
-  const onSubmit = async ({name}: {name: string}) => {
+  const onSubmit = async ({code}: {code: string}) => {
     try {
       setSubmitting(true);
 
-      const latlng = await getLatLng();
-      onSuccess();
-      addUpload({id, localPath});
-
-      await uploadVideo({localPath, remotePath});
-
-      await createMoment({
-        moment: {
-          id,
-          path: remotePath,
-          latlng,
-          name,
-        },
-        channel,
+      await joinChannelWithCode({
+        channel: {code},
       });
-
-      removeUpload({id});
+      onUpdate(undefined);
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {
         DefaultAlert({
@@ -87,8 +57,8 @@ const CreateMomentForm = ({
   return (
     <DefaultModal>
       <DefaultForm
-        title={'Moment'}
-        left={{onPress: onCancel}}
+        title={'Code'}
+        left={{onPress: () => onUpdate(undefined)}}
         right={{
           onPress: handleSubmit(onSubmit),
           submitting,
@@ -96,10 +66,10 @@ const CreateMomentForm = ({
         <DefaultKeyboardAwareScrollView>
           <ControllerText
             control={control}
-            name="name"
-            title="Name"
-            detail="Set the name of the moment."
-            errors={errors.name}
+            name="code"
+            title="Code"
+            detail="Channel invitation code."
+            errors={errors.code}
           />
         </DefaultKeyboardAwareScrollView>
       </DefaultForm>
@@ -107,4 +77,4 @@ const CreateMomentForm = ({
   );
 };
 
-export default CreateMomentForm;
+export default ChannelCodeForm;

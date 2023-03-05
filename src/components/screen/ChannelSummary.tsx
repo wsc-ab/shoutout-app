@@ -18,11 +18,11 @@ import DefaultText from '../defaults/DefaultText';
 import UserProfileImage from '../images/UserProfileImage';
 
 type TProps = {
-  room: {id: string};
+  channel: {id: string};
   style?: TStyleView;
 };
 
-const RoomSummary = ({room, style}: TProps) => {
+const Channelsummary = ({channel, style}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
   const {width} = useWindowDimensions();
   const [data, setData] = useState<TDocData>();
@@ -33,7 +33,7 @@ const RoomSummary = ({room, style}: TProps) => {
       if (!doc.exists) {
         return DefaultAlert({
           title: 'Failed to read data',
-          message: 'This room seems to be deleted.',
+          message: 'This channel seems to be deleted.',
         });
       }
 
@@ -46,18 +46,18 @@ const RoomSummary = ({room, style}: TProps) => {
 
     const onError = (error: Error) => {
       DefaultAlert({
-        title: 'Failed to get room data',
+        title: 'Failed to get channel data',
         message: (error as {message: string}).message,
       });
     };
 
     const unsubscribe = firestore()
-      .collection('rooms')
-      .doc(room.id)
+      .collection('channels')
+      .doc(channel.id)
       .onSnapshot(onNext, onError);
 
     return unsubscribe;
-  }, [authUserData.id, room.id]);
+  }, [authUserData.id, channel.id]);
 
   if (!data) {
     return null;
@@ -72,7 +72,7 @@ const RoomSummary = ({room, style}: TProps) => {
     })) ?? [];
 
   const onView = ({path}: {path: string}) =>
-    onUpdate({target: 'room', data: {room: data, path}});
+    onUpdate({target: 'channel', data: {channel: data, path}});
 
   const grouped = groupByLength(data.moments.items, 3);
 
@@ -115,7 +115,7 @@ const RoomSummary = ({room, style}: TProps) => {
             alignItems: 'center',
             flexDirection: 'row',
           }}>
-          {joined && <CreateMomentButton room={{id: data.id}} />}
+          {joined && <CreateMomentButton channel={{id: data.id}} />}
           {!joined && (
             <DefaultIcon
               icon="square-plus"
@@ -123,7 +123,7 @@ const RoomSummary = ({room, style}: TProps) => {
               onPress={() =>
                 DefaultAlert({
                   title: 'Need to join',
-                  message: 'First join this room to share your moments!',
+                  message: 'First join this channel to share your moments!',
                 })
               }
             />
@@ -140,7 +140,12 @@ const RoomSummary = ({room, style}: TProps) => {
             flexDirection: 'row',
             marginLeft: 10,
           }}
-          onPress={() => onUpdate({target: 'roomUsers', data: {users, room}})}>
+          onPress={() =>
+            onUpdate({
+              target: 'channelUsers',
+              data: {users, channel: {id: data.id, code: data.code}},
+            })
+          }>
           <DefaultIcon
             icon="user-group"
             style={{padding: 0}}
@@ -231,4 +236,4 @@ const RoomSummary = ({room, style}: TProps) => {
   );
 };
 
-export default RoomSummary;
+export default Channelsummary;

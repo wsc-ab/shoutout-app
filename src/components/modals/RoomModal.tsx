@@ -4,14 +4,14 @@ import ModalContext from '../../contexts/Modal';
 import {TDocData} from '../../types/Firebase';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultModal from '../defaults/DefaultModal';
-import RoomCard from '../screen/RoomCard';
+import ChannelCard from '../screen/ChannelCard';
 
 type TProps = {
-  room: TDocData;
+  channel: TDocData;
   path?: string;
 };
 
-const RoomModal = ({room, path}: TProps) => {
+const ChannelModal = ({channel, path}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
   const {height, width} = useWindowDimensions();
 
@@ -26,8 +26,8 @@ const RoomModal = ({room, path}: TProps) => {
           }}
         />
       </SafeAreaView>
-      <RoomCard
-        room={room}
+      <ChannelCard
+        channel={channel}
         path={path}
         mount
         pauseOnModal={false}
@@ -37,7 +37,7 @@ const RoomModal = ({room, path}: TProps) => {
   );
 };
 
-export default RoomModal;
+export default ChannelModal;
 
 const styles = StyleSheet.create({
   view: {

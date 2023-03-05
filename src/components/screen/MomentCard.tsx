@@ -34,7 +34,7 @@ type TProps = {
   pauseOnModal?: boolean;
   inView: boolean;
   blur?: boolean;
-  room?: {id: string};
+  channel?: {id: string};
 };
 
 const MomentCard = ({
@@ -45,7 +45,7 @@ const MomentCard = ({
   mount,
   inView,
   blur,
-  room,
+  channel,
 }: TProps) => {
   const {height, width} = useWindowDimensions();
   const [data, setData] = useState<TDocData>();
@@ -190,7 +190,7 @@ const MomentCard = ({
             repeat
             inView={inView && index === elIndex}
             blur={blur}
-            room={room}
+            channel={channel}
           />
         </View>
         {!blur && (

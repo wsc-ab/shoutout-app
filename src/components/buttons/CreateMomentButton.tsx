@@ -14,13 +14,13 @@ import CreateMomentForm from '../forms/CreateMomentForm';
 
 type TProps = {
   style?: TStyleView;
-  room?: {id: string};
+  channel: {id: string};
   color?: string;
   onSuccess?: () => void;
 };
 
 const CreateMomentButton = ({
-  room,
+  channel,
   color = 'white',
   onSuccess,
   style,
@@ -95,7 +95,7 @@ const CreateMomentButton = ({
       {modal === 'form' && data && (
         <CreateMomentForm
           {...data}
-          room={room}
+          channel={channel}
           onSuccess={onForm}
           onCancel={onForm}
         />

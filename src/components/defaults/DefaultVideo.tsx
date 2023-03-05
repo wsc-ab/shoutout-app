@@ -28,7 +28,7 @@ type TProps = {
   pauseOnModal?: boolean;
   inView: boolean;
   blur?: boolean;
-  room?: {id: string};
+  channel?: {id: string};
 };
 
 const DefaultVideo = ({
@@ -44,7 +44,7 @@ const DefaultVideo = ({
   pauseOnModal = true,
   inView: parentInview,
   blur,
-  room,
+  channel,
 }: TProps) => {
   const [uri, setUri] = useState<string>();
   const [thumbPath, setThumbPath] = useState<string>();
@@ -111,8 +111,10 @@ const DefaultVideo = ({
     );
   }
 
-  if (blur && room) {
-    return <DefaultBlurImage imageStyle={videoStyle} path={path} room={room} />;
+  if (blur && channel) {
+    return (
+      <DefaultBlurImage imageStyle={videoStyle} path={path} channel={channel} />
+    );
   }
 
   if (!thumbPath) {

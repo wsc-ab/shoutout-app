@@ -5,9 +5,9 @@ import Moments from './Moments';
 import notifee from '@notifee/react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import Permission from '../notification/Permission';
+import Channels from './Channels';
 import Header from './Header';
 import Landing from './Landing';
-import Rooms from './Rooms';
 import Welcome from './Welcome';
 
 const Home = () => {
@@ -66,7 +66,7 @@ const Home = () => {
         onGlobal={() => setTab('globe')}
         tab={tab}
       />
-      <Rooms style={[styles.rooms, tab !== 'friends' && styles.hide]} />
+      <Channels style={[styles.channels, tab !== 'friends' && styles.hide]} />
       <Moments
         style={[styles.moments, tab !== 'globe' && styles.hide]}
         mount={tab === 'globe'}
@@ -79,7 +79,7 @@ export default Home;
 
 const styles = StyleSheet.create({
   container: {flex: 1},
-  rooms: {flex: 1},
+  channels: {flex: 1},
   moments: {flex: 1},
   hide: {display: 'none'},
 });

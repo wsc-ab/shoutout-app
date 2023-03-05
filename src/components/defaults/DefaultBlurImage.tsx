@@ -11,11 +11,11 @@ import DefaultText from './DefaultText';
 type TProps = {
   path: string;
   imageStyle: {width: number; height: number};
-  room: {id: string};
+  channel: {id: string};
   style?: TStyleView;
 };
 
-const DefaultBlurImage = ({style, path, imageStyle, room}: TProps) => {
+const DefaultBlurImage = ({style, path, imageStyle, channel}: TProps) => {
   return (
     <View style={style}>
       <DefaultImage
@@ -35,7 +35,7 @@ const DefaultBlurImage = ({style, path, imageStyle, room}: TProps) => {
           style={styles.text}
           textStyle={styles.textText}
         />
-        <CreateMomentButton room={room} style={styles.createButton} />
+        <CreateMomentButton channel={channel} style={styles.createButton} />
       </View>
     </View>
   );
