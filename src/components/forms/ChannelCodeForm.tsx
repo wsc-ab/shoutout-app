@@ -10,11 +10,10 @@ import ControllerText from '../controllers/ControllerText';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultKeyboardAwareScrollView from '../defaults/DefaultKeyboardAwareScrollView';
-import DefaultModal from '../defaults/DefaultModal';
 
-type TProps = {};
+type TProps = {onCancel: () => void};
 
-const ChannelCodeForm = ({}: TProps) => {
+const ChannelCodeForm = ({onCancel}: TProps) => {
   const {text} = defaultSchema();
   const [submitting, setSubmitting] = useState(false);
   const {onUpdate} = useContext(ModalContext);
@@ -55,27 +54,25 @@ const ChannelCodeForm = ({}: TProps) => {
   };
 
   return (
-    <DefaultModal>
-      <DefaultForm
-        title={'Code'}
-        left={{onPress: () => onUpdate(undefined)}}
-        right={{
-          onPress: handleSubmit(onSubmit),
-          submitting,
-        }}>
-        <DefaultKeyboardAwareScrollView>
-          <ControllerText
-            control={control}
-            name="code"
-            title="Code"
-            autoFocus
-            detail="Channel invitation code."
-            keyboardType="number-pad"
-            errors={errors.code}
-          />
-        </DefaultKeyboardAwareScrollView>
-      </DefaultForm>
-    </DefaultModal>
+    <DefaultForm
+      title={'Code'}
+      left={{onPress: onCancel}}
+      right={{
+        onPress: handleSubmit(onSubmit),
+        submitting,
+      }}>
+      <DefaultKeyboardAwareScrollView>
+        <ControllerText
+          control={control}
+          name="code"
+          title="Code"
+          autoFocus
+          detail="Channel invitation code."
+          keyboardType="number-pad"
+          errors={errors.code}
+        />
+      </DefaultKeyboardAwareScrollView>
+    </DefaultForm>
   );
 };
 

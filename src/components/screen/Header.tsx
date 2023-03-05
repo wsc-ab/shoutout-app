@@ -3,6 +3,7 @@ import {SafeAreaView, StyleSheet} from 'react-native';
 import ContactButton from '../buttons/ContactButton';
 import FriendsButton from '../buttons/FriendButton';
 import GlobalButton from '../buttons/GlobalButton';
+import SearchButton from '../buttons/SearchButton';
 import UserButton from '../buttons/UserButton';
 
 type TProps = {onFriends: () => void; onGlobal: () => void; tab: string};
@@ -23,6 +24,7 @@ const Header = ({onFriends, onGlobal, tab}: TProps) => {
         onPress={onGlobal}
       />
       <ContactButton style={styles.button} />
+      <SearchButton style={styles.button} />
     </SafeAreaView>
   );
 };

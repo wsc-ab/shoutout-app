@@ -11,7 +11,6 @@ import {getCityAndCountry} from '../../utils/Map';
 import {getThumbnailPath} from '../../utils/Storage';
 import CreateMomentButton from '../buttons/CreateMomentButton';
 import DefaultAlert from '../defaults/DefaultAlert';
-import {defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultImage from '../defaults/DefaultImage';
 import DefaultText from '../defaults/DefaultText';
@@ -104,7 +103,6 @@ const Channelsummary = ({channel, style}: TProps) => {
         ) : (
           <DefaultIcon icon="lock" />
         )}
-
         <DefaultText
           title={data.name}
           textStyle={{fontWeight: 'bold', fontSize: 20}}
@@ -150,7 +148,7 @@ const Channelsummary = ({channel, style}: TProps) => {
             icon="user-group"
             style={{padding: 0}}
             size={20}
-            color={joined ? defaultRed.lv2 : 'white'}
+            color={'white'}
           />
           <DefaultText title={data.inviteTo.number} style={{marginLeft: 5}} />
         </Pressable>

@@ -8,8 +8,6 @@ import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
 import CreateRoomButton from '../buttons/CreateRoomButton';
 import DefaultAlert from '../defaults/DefaultAlert';
-import {defaultRed} from '../defaults/DefaultColors';
-import DefaultText from '../defaults/DefaultText';
 import ChannelSummary from './ChannelSummary';
 
 type TProps = {
@@ -21,7 +19,6 @@ const Channels = ({style}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
   const [data, setData] = useState<TDocData[]>([]);
   const [status, setStatus] = useState<TStatus>('loading');
-  const [tab, setTab] = useState<'my' | 'public'>('my');
 
   useEffect(() => {
     const load = async () => {
@@ -51,77 +48,22 @@ const Channels = ({style}: TProps) => {
 
   return (
     <View style={style}>
-      <View
-        style={{flexDirection: 'row', marginHorizontal: 10, marginBottom: 10}}>
-        <DefaultText
-          title="My"
-          onPress={() => setTab('my')}
-          style={{
-            padding: 10,
-            borderRadius: 50,
-            borderColor: tab === 'my' ? defaultRed.lv2 : 'white',
-            borderWidth: 1,
-          }}
-        />
-        <DefaultText
-          title="Public"
-          onPress={() => setTab('public')}
-          style={{
-            padding: 10,
-            borderRadius: 50,
-            marginLeft: 10,
-            borderColor: tab === 'public' ? defaultRed.lv2 : 'white',
-            borderWidth: 1,
-          }}
-        />
-        <DefaultText
-          title="Code"
-          onPress={() => onUpdate({target: 'channelCode'})}
-          style={{
-            padding: 10,
-            borderRadius: 50,
-            marginLeft: 10,
-            borderColor: 'white',
-            borderWidth: 1,
-          }}
-        />
-      </View>
-      {tab === 'my' && (
-        <FlatList
-          data={authUserData.inviteFrom.items}
-          contentContainerStyle={styles.contentContainer}
-          renderItem={renderItem}
-          indicatorStyle="white"
-          ItemSeparatorComponent={() => <View style={styles.seperator} />}
-          refreshControl={
-            <RefreshControl
-              refreshing={status === 'loading'}
-              onRefresh={() => {
-                setStatus('loading');
-              }}
-              tintColor={'gray'}
-            />
-          }
-        />
-      )}
-      {tab === 'public' && (
-        <FlatList
-          data={data}
-          contentContainerStyle={styles.contentContainer}
-          renderItem={renderItem}
-          indicatorStyle="white"
-          ItemSeparatorComponent={() => <View style={styles.seperator} />}
-          refreshControl={
-            <RefreshControl
-              refreshing={status === 'loading'}
-              onRefresh={() => {
-                setStatus('loading');
-              }}
-              tintColor={'gray'}
-            />
-          }
-        />
-      )}
+      <FlatList
+        data={authUserData.inviteFrom.items}
+        contentContainerStyle={styles.contentContainer}
+        renderItem={renderItem}
+        indicatorStyle="white"
+        ItemSeparatorComponent={() => <View style={styles.seperator} />}
+        refreshControl={
+          <RefreshControl
+            refreshing={status === 'loading'}
+            onRefresh={() => {
+              setStatus('loading');
+            }}
+            tintColor={'gray'}
+          />
+        }
+      />
       <View style={styles.footer}>
         <CreateRoomButton style={styles.create} />
       </View>

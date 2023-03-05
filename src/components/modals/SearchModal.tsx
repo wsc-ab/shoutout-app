@@ -19,7 +19,7 @@ type TProps = {
   }[];
 };
 
-const UsersModal = ({channel, users}: TProps) => {
+const SearchModal = ({channel, users}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
   const {authUserData} = useContext(AuthUserContext);
   const [submitting, setSubmitting] = useState(false);
@@ -88,7 +88,7 @@ const UsersModal = ({channel, users}: TProps) => {
                 style={{marginBottom: 20}}
               />
               <DefaultText
-                title={`Channel code: ${channel.code}`}
+                title={`Room code: ${channel.code}`}
                 textStyle={{fontWeight: 'bold'}}
                 style={{marginBottom: 20}}
               />
@@ -115,7 +115,7 @@ const UsersModal = ({channel, users}: TProps) => {
   );
 };
 
-export default UsersModal;
+export default SearchModal;
 
 const styles = StyleSheet.create({
   container: {paddingBottom: 100, paddingHorizontal: 10},

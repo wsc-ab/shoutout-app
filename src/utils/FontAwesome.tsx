@@ -20,6 +20,7 @@ import {
   faLock,
   faLockOpen,
   faPlay,
+  faPlus,
   faSearch,
   faShare,
   faSquarePlus,
@@ -60,4 +61,6 @@ library.add(
   faUserMinus,
   faLockOpen,
   faLock,
+  faSearch,
+  faPlus,
 );
