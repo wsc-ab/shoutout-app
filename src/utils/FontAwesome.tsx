@@ -4,6 +4,7 @@ import {
   faAddressBook,
   faAngleLeft,
   faAngleRight,
+  faCircle,
   faExclamation,
   faFaceSmile,
   faFlag,
@@ -51,4 +52,5 @@ library.add(
   faSearch,
   faPlus,
   faUserGroup,
+  faCircle,
 );
