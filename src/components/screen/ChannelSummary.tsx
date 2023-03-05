@@ -89,69 +89,78 @@ const Channelsummary = ({channel, style}: TProps) => {
 
   return (
     <View style={style}>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginHorizontal: 10,
-          marginBottom: 10,
-          flex: 1,
-        }}>
-        {data.type === 'public' ? (
-          <DefaultIcon icon="lock-open" />
-        ) : (
-          <DefaultIcon icon="lock" />
-        )}
-        <DefaultText
-          title={data.name}
-          textStyle={{fontWeight: 'bold', fontSize: 20}}
-          style={{flex: 1, marginLeft: 10}}
-        />
+      <View style={{marginBottom: 10, marginHorizontal: 10}}>
         <View
           style={{
-            alignItems: 'center',
             flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flex: 1,
           }}>
-          {joined && <CreateMomentButton channel={{id: data.id}} />}
-          {!joined && (
-            <DefaultIcon
-              icon="square-plus"
-              size={20}
-              onPress={() =>
-                DefaultAlert({
-                  title: 'Need to join',
-                  message: 'First join this channel to share your moments!',
-                })
-              }
-            />
-          )}
-
           <DefaultText
-            title={data.moments.number.toString()}
-            style={{marginLeft: 5}}
+            title={data.name}
+            textStyle={{fontWeight: 'bold', fontSize: 20}}
+            style={{flex: 1, marginLeft: 10}}
           />
+          <View
+            style={{
+              alignItems: 'center',
+              flexDirection: 'row',
+            }}>
+            {joined && (
+              <CreateMomentButton
+                channel={{id: data.id, live: data.options?.live}}
+              />
+            )}
+            {!joined && (
+              <DefaultIcon
+                icon="square-plus"
+                size={20}
+                onPress={() =>
+                  DefaultAlert({
+                    title: 'Need to join',
+                    message: 'First join this channel to share your moments!',
+                  })
+                }
+              />
+            )}
+
+            <DefaultText
+              title={data.moments.number.toString()}
+              style={{marginLeft: 5}}
+            />
+          </View>
+          <Pressable
+            style={{
+              alignItems: 'center',
+              flexDirection: 'row',
+              marginLeft: 10,
+            }}
+            onPress={() =>
+              onUpdate({
+                target: 'channelUsers',
+                data: {users, channel: {id: data.id, code: data.code}},
+              })
+            }>
+            <DefaultIcon
+              icon="user-group"
+              style={{padding: 0}}
+              size={20}
+              color={'white'}
+            />
+            <DefaultText title={data.inviteTo.number} style={{marginLeft: 5}} />
+          </Pressable>
         </View>
-        <Pressable
-          style={{
-            alignItems: 'center',
-            flexDirection: 'row',
-            marginLeft: 10,
-          }}
-          onPress={() =>
-            onUpdate({
-              target: 'channelUsers',
-              data: {users, channel: {id: data.id, code: data.code}},
-            })
-          }>
-          <DefaultIcon
-            icon="user-group"
-            style={{padding: 0}}
-            size={20}
-            color={'white'}
+        <View
+          style={{flexDirection: 'row', marginHorizontal: 10, marginTop: 5}}>
+          <DefaultText
+            title={data.options?.type === 'private' ? 'Private' : 'Public'}
+            textStyle={{color: 'gray'}}
           />
-          <DefaultText title={data.inviteTo.number} style={{marginLeft: 5}} />
-        </Pressable>
+          {data.options?.live && (
+            <DefaultText title={' / Live only'} textStyle={{color: 'gray'}} />
+          )}
+        </View>
       </View>
       <FlatList
         data={grouped[0].length === 0 ? [] : grouped}
@@ -163,10 +172,10 @@ const Channelsummary = ({channel, style}: TProps) => {
         getItemLayout={getItemLayout}
         ListEmptyComponent={() => (
           <DefaultText
-            title="No moment shared yet"
+            title="No moments in this channel."
             style={{
               height: 50,
-              paddingHorizontal: 10,
+              paddingHorizontal: 20,
               width: itemWidth,
             }}
           />

@@ -43,14 +43,9 @@ const Welcome = ({style}: TProps) => {
       icon: 'folder',
     },
     {
-      title: ['To share live moment in a room!'],
+      title: ['To share or connect moments!'],
       detail: 'Press',
       icon: 'square-plus',
-    },
-    {
-      title: ['To connect your moment!'],
-      detail: 'Press',
-      icon: 'layer-group',
     },
     {
       title: ['To view trending moments!'],

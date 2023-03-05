@@ -28,6 +28,7 @@ const CreateChannelForm = ({}: TProps) => {
   const schema = object({
     name: text({min: 1, max: 50, required: true}),
     type: text({required: true}),
+    live: text({required: true}),
   }).required();
 
   const {
@@ -39,15 +40,18 @@ const CreateChannelForm = ({}: TProps) => {
     defaultValues: {
       type: 'public',
       name: '',
+      live: 'off',
     },
   });
 
   const onSubmit = async ({
     name,
     type,
+    live,
   }: {
     name: string;
     type: 'public' | 'private';
+    live: 'on' | 'off';
   }) => {
     try {
       setSubmitting(true);
@@ -57,7 +61,11 @@ const CreateChannelForm = ({}: TProps) => {
       await createChannel({
         channel: {
           id: channelId,
-          type,
+          options: {
+            media: 'video',
+            type,
+            live: live === 'on',
+          },
           name,
         },
         users: {ids: [authUserData.id]},
@@ -91,19 +99,31 @@ const CreateChannelForm = ({}: TProps) => {
             control={control}
             name="name"
             title="Name"
-            detail="A short description of your channel."
+            detail="Name of your channel."
             errors={errors.name}
           />
           <ControllerOption
             control={control}
             name="type"
             title="Type"
-            detail="Moments on public channel are shared on the feed."
+            detail="Set it to prvite to not show channel moments on public channel."
             errors={errors.type}
             style={styles.textInput}
             options={[
               {name: 'public', title: 'Public'},
               {name: 'private', title: 'Private'},
+            ]}
+          />
+          <ControllerOption
+            control={control}
+            name="live"
+            title="Live only mode"
+            detail="Turn on live to allow users to only upload live videos."
+            errors={errors.type}
+            style={styles.textInput}
+            options={[
+              {name: 'off', title: 'Off'},
+              {name: 'on', title: 'On'},
             ]}
           />
         </DefaultKeyboardAwareScrollView>

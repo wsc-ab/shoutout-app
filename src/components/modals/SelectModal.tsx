@@ -53,7 +53,10 @@ const SelectModal = ({
 }: TProps) => {
   return (
     <DefaultModal>
-      <DefaultForm title={title} left={{onPress: onCancel}}>
+      <DefaultForm
+        title={title}
+        left={{onPress: onCancel}}
+        style={{marginHorizontal: 10}}>
         <ScrollView>
           <Controller
             control={control}

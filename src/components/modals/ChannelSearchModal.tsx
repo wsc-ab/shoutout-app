@@ -1,5 +1,4 @@
 import React, {useContext, useState} from 'react';
-import {StyleSheet} from 'react-native';
 import ModalContext from '../../contexts/Modal';
 
 import DefaultForm from '../defaults/DefaultForm';
@@ -15,7 +14,7 @@ const ChannelSearchModal = ({}: TProps) => {
   const [form, setForm] = useState<'search' | 'code'>('search');
 
   const renderItem = item => {
-    if (item?.type === 'private') {
+    if (item?.options?.type === 'private') {
       return null;
     }
     return <ChannelSummary channel={{id: item.objectID}} />;
@@ -44,5 +43,3 @@ const ChannelSearchModal = ({}: TProps) => {
 };
 
 export default ChannelSearchModal;
-
-const styles = StyleSheet.create({textInput: {marginTop: 20}});

@@ -11,10 +11,11 @@ import {takeVideo} from '../../utils/Video';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultIcon from '../defaults/DefaultIcon';
 import CreateMomentForm from '../forms/CreateMomentForm';
+import VideoModeModal from '../modals/VideoModeModal';
 
 type TProps = {
   style?: TStyleView;
-  channel: {id: string};
+  channel: {id: string; live: boolean};
   color?: string;
   onSuccess?: () => void;
 };
@@ -30,14 +31,16 @@ const CreateMomentButton = ({
   const [submitting, setSubmitting] = useState(false);
   const {uploading} = useContext(PopupContext);
 
-  const [modal, setModal] = useState<'form'>();
+  const [modal, setModal] = useState<'form' | 'mode'>();
+
   const [data, setData] = useState<{
     id: string;
     remotePath: string;
     localPath: string;
   }>();
 
-  const onAdd = async () => {
+  const onAdd = async (mode: 'camera' | 'library') => {
+    setModal(undefined);
     onUpdate({target: 'createMoment'});
 
     setSubmitting(true);
@@ -55,6 +58,7 @@ const CreateMomentButton = ({
 
     try {
       const {remotePath, localPath} = await takeVideo({
+        mode,
         id: momentId,
         userId: authUserData.id,
       });
@@ -83,11 +87,23 @@ const CreateMomentButton = ({
     }
   };
 
+  const onPress = () => {
+    if (uploading) {
+      return onUploading();
+    }
+
+    if (channel.live) {
+      return onAdd('camera');
+    }
+
+    setModal('mode');
+  };
+
   return (
     <Pressable
       style={[styles.container, style]}
       disabled={submitting}
-      onPress={uploading ? onUploading : onAdd}>
+      onPress={onPress}>
       {!submitting && (
         <DefaultIcon icon="square-plus" size={20} color={color} />
       )}
@@ -98,6 +114,12 @@ const CreateMomentButton = ({
           channel={channel}
           onSuccess={onForm}
           onCancel={onForm}
+        />
+      )}
+      {modal === 'mode' && (
+        <VideoModeModal
+          onCancel={() => setModal(undefined)}
+          onSuccess={mode => onAdd(mode)}
         />
       )}
     </Pressable>

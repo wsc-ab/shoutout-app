@@ -1,13 +1,8 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {FlatList, RefreshControl, StyleSheet, View} from 'react-native';
+import React, {useContext} from 'react';
+import {FlatList, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
-import ModalContext from '../../contexts/Modal';
-import {getChannels} from '../../functions/Channel';
-import {TDocData} from '../../types/Firebase';
-import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
 import CreateRoomButton from '../buttons/CreateRoomButton';
-import DefaultAlert from '../defaults/DefaultAlert';
 import ChannelSummary from './ChannelSummary';
 
 type TProps = {
@@ -16,31 +11,6 @@ type TProps = {
 
 const Channels = ({style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
-  const {onUpdate} = useContext(ModalContext);
-  const [data, setData] = useState<TDocData[]>([]);
-  const [status, setStatus] = useState<TStatus>('loading');
-
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const {channels} = await getChannels({pagination: {number: 10}});
-
-        setData(channels);
-        setStatus('loaded');
-      } catch (error) {
-        DefaultAlert({
-          title: 'Error',
-          message: (error as {message: string}).message,
-        });
-
-        setStatus('error');
-      }
-    };
-
-    if (status === 'loading') {
-      load();
-    }
-  }, [status]);
 
   const renderItem = ({item}) => {
     return <ChannelSummary channel={{id: item.id}} />;
@@ -54,15 +24,6 @@ const Channels = ({style}: TProps) => {
         renderItem={renderItem}
         indicatorStyle="white"
         ItemSeparatorComponent={() => <View style={styles.seperator} />}
-        refreshControl={
-          <RefreshControl
-            refreshing={status === 'loading'}
-            onRefresh={() => {
-              setStatus('loading');
-            }}
-            tintColor={'gray'}
-          />
-        }
       />
       <View style={styles.footer}>
         <CreateRoomButton style={styles.create} />

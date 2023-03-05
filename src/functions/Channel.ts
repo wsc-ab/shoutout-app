@@ -3,10 +3,12 @@ import {firebaseFunctions} from '../utils/Firebase';
 export const createChannel = async (input: {
   channel: {
     id: string;
-    type: 'public' | 'private';
     name: string;
-    startAt?: number;
-    endAt?: number;
+    options: {
+      type: 'public' | 'private';
+      media: 'photo' | 'video';
+      live: boolean;
+    };
   };
   users: {ids: string[]};
 }) => {

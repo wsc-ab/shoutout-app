@@ -2,6 +2,7 @@ import RNFS from 'react-native-fs';
 import {
   Asset,
   CameraOptions,
+  launchCamera,
   launchImageLibrary,
 } from 'react-native-image-picker';
 import DefaultAlert from '../components/defaults/DefaultAlert';
@@ -12,8 +13,10 @@ import {createStoragePath, uploadFile} from './Storage';
 
 export const getVideo = async ({
   durationLimit,
+  mode,
 }: {
   durationLimit: number;
+  mode: 'library' | 'camera';
 }): Promise<Asset> => {
   const options: CameraOptions = {
     mediaType: 'video',
@@ -26,7 +29,10 @@ export const getVideo = async ({
 
   let asset;
 
-  const {assets, didCancel} = await launchImageLibrary(options);
+  const {assets, didCancel} =
+    mode === 'library'
+      ? await launchImageLibrary(options)
+      : await launchCamera(options);
 
   if (didCancel) {
     throw new Error('cancel');
@@ -41,7 +47,15 @@ export const getVideo = async ({
   return asset;
 };
 
-export const takeVideo = async ({userId, id}: {userId: string; id: string}) => {
+export const takeVideo = async ({
+  userId,
+  id,
+  mode,
+}: {
+  userId: string;
+  id: string;
+  mode: 'library' | 'camera';
+}) => {
   const remotePath = createStoragePath({
     userId,
     collection: 'moments',
@@ -54,6 +68,7 @@ export const takeVideo = async ({userId, id}: {userId: string; id: string}) => {
   try {
     asset = await getVideo({
       durationLimit: 15,
+      mode,
     });
   } catch (error) {
     if ((error as {message: string}).message !== 'cancel') {

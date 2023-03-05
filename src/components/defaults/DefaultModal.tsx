@@ -10,7 +10,10 @@ type TProps = {
 
 const DefaultModal = ({children, style}: TProps) => {
   return (
-    <Modal animationType="slide">
+    <Modal
+      animationType="slide"
+      transparent
+      style={{backgroundColor: 'rgba(0,0,0,0.7)'}}>
       <View style={[styles.container, style]}>{children}</View>
     </Modal>
   );
