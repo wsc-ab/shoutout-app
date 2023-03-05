@@ -1,4 +1,4 @@
-import React, {useContext, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -7,12 +7,10 @@ import {
   ViewabilityConfigCallbackPairs,
   ViewToken,
 } from 'react-native';
-import AuthUserContext from '../../contexts/AuthUser';
 import {TDocData} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
 import {sentToFirst} from '../../utils/Array';
-import {getUserAdded} from '../../utils/Moment';
 import DefaultText from '../defaults/DefaultText';
 import MomentCard from './MomentCard';
 
@@ -28,10 +26,6 @@ const RoomCard = ({style, room, path, pauseOnModal, mount}: TProps) => {
   const [status, setStatus] = useState<TStatus>('loading');
   const {height, width} = useWindowDimensions();
   const [index, setIndex] = useState(0);
-
-  const {authUserData} = useContext(AuthUserContext);
-
-  const {added} = getUserAdded({authUserData, room});
 
   const onViewableItemsChanged = ({
     viewableItems,
@@ -100,7 +94,6 @@ const RoomCard = ({style, room, path, pauseOnModal, mount}: TProps) => {
           mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
           pauseOnModal={pauseOnModal}
           inView={index === elIndex}
-          blur={!added}
           room={{id: room.id}}
         />
       </View>

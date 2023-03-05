@@ -7,7 +7,6 @@ export const createMoment = async (input: {
     id: string;
     path: string;
     latlng: TLatLng;
-    type: 'everyone' | 'friends';
     name: string;
   };
   room?: {id: string};

@@ -17,6 +17,8 @@ import {
   faHandPointUp,
   faHeart,
   faLayerGroup,
+  faLock,
+  faLockOpen,
   faPlay,
   faSearch,
   faShare,
@@ -56,4 +58,6 @@ library.add(
   faCircle,
   faUserPlus,
   faUserMinus,
+  faLockOpen,
+  faLock,
 );

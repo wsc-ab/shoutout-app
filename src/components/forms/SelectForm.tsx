@@ -13,9 +13,18 @@ type TProps = {
   title: string;
   min?: number;
   max?: number;
+  submitting: boolean;
 };
 
-const SelectForm = ({title, onSuccess, onCancel, data, min, max}: TProps) => {
+const SelectForm = ({
+  title,
+  onSuccess,
+  submitting,
+  onCancel,
+  data,
+  min,
+  max,
+}: TProps) => {
   const [ids, setIds] = useState<string[]>([]);
 
   const onPress = (id: string) => {
@@ -77,6 +86,7 @@ const SelectForm = ({title, onSuccess, onCancel, data, min, max}: TProps) => {
       }}
       right={{
         onPress: onSubmit,
+        submitting,
       }}>
       <FlatList
         data={data}

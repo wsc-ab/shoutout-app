@@ -1,7 +1,6 @@
 import {yupResolver} from '@hookform/resolvers/yup';
 import React, {useContext, useState} from 'react';
 import {useForm} from 'react-hook-form';
-import {StyleSheet} from 'react-native';
 import {object} from 'yup';
 import PopupContext from '../../contexts/Popup';
 
@@ -10,7 +9,6 @@ import {getLatLng} from '../../utils/Location';
 
 import {defaultSchema} from '../../utils/Schema';
 import {uploadVideo} from '../../utils/Video';
-import ControllerOption from '../controllers/ControllerOption';
 import ControllerText from '../controllers/ControllerText';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
@@ -40,7 +38,6 @@ const CreateMomentForm = ({
 
   const schema = object({
     name: text({max: 50, required: true}),
-    type: text({required: true}),
   }).required();
 
   const {
@@ -50,18 +47,11 @@ const CreateMomentForm = ({
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      type: 'everyone',
       name: '',
-    } as {type: 'everyone' | 'friends'; name: string},
+    },
   });
 
-  const onSubmit = async ({
-    name,
-    type,
-  }: {
-    name: string;
-    type: 'everyone' | 'friends';
-  }) => {
+  const onSubmit = async ({name}: {name: string}) => {
     try {
       setSubmitting(true);
 
@@ -77,7 +67,6 @@ const CreateMomentForm = ({
           path: remotePath,
           latlng,
           name,
-          type,
         },
         room,
       });
@@ -112,18 +101,6 @@ const CreateMomentForm = ({
             detail="Set the name of the moment."
             errors={errors.name}
           />
-          <ControllerOption
-            control={control}
-            name="type"
-            title="Type"
-            detail="Select friends to share only with friends."
-            errors={errors.type}
-            style={styles.textInput}
-            options={[
-              {name: 'everyone', title: 'Everyone'},
-              {name: 'friends', title: 'Friends'},
-            ]}
-          />
         </DefaultKeyboardAwareScrollView>
       </DefaultForm>
     </DefaultModal>
@@ -131,5 +108,3 @@ const CreateMomentForm = ({
 };
 
 export default CreateMomentForm;
-
-const styles = StyleSheet.create({textInput: {marginTop: 20}});

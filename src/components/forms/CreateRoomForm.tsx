@@ -14,6 +14,7 @@ import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultKeyboardAwareScrollView from '../defaults/DefaultKeyboardAwareScrollView';
 import DefaultModal from '../defaults/DefaultModal';
+import AuthUserContext from '../../contexts/AuthUser';
 
 type TProps = {};
 
@@ -22,6 +23,7 @@ const CreateRoomForm = ({}: TProps) => {
 
   const [submitting, setSubmitting] = useState(false);
   const {onUpdate} = useContext(ModalContext);
+  const {authUserData} = useContext(AuthUserContext);
 
   const schema = object({
     name: text({min: 1, max: 50, required: true}),
@@ -35,7 +37,7 @@ const CreateRoomForm = ({}: TProps) => {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      type: 'open',
+      type: 'public',
       name: '',
     },
   });
@@ -45,7 +47,7 @@ const CreateRoomForm = ({}: TProps) => {
     type,
   }: {
     name: string;
-    type: 'open' | 'close';
+    type: 'public' | 'private';
   }) => {
     try {
       setSubmitting(true);
@@ -58,6 +60,7 @@ const CreateRoomForm = ({}: TProps) => {
           type,
           name,
         },
+        users: {ids: [authUserData.id]},
       });
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {
@@ -95,12 +98,12 @@ const CreateRoomForm = ({}: TProps) => {
             control={control}
             name="type"
             title="Type"
-            detail="Select close to create a private room with friends."
+            detail="Moments on public room are shared on the feed."
             errors={errors.type}
             style={styles.textInput}
             options={[
-              {name: 'open', title: 'Open'},
-              {name: 'close', title: 'Close'},
+              {name: 'public', title: 'Public'},
+              {name: 'private', title: 'Private'},
             ]}
           />
         </DefaultKeyboardAwareScrollView>

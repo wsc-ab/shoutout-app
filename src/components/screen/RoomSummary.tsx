@@ -46,7 +46,7 @@ const RoomSummary = ({room, style}: TProps) => {
 
     const onError = (error: Error) => {
       DefaultAlert({
-        title: 'Failed to get moment data',
+        title: 'Failed to get room data',
         message: (error as {message: string}).message,
       });
     };
@@ -96,12 +96,19 @@ const RoomSummary = ({room, style}: TProps) => {
           justifyContent: 'center',
           alignItems: 'center',
           marginHorizontal: 10,
+          marginBottom: 10,
           flex: 1,
         }}>
+        {data.type === 'public' ? (
+          <DefaultIcon icon="lock-open" />
+        ) : (
+          <DefaultIcon icon="lock" />
+        )}
+
         <DefaultText
           title={data.name}
           textStyle={{fontWeight: 'bold', fontSize: 20}}
-          style={{flex: 1, marginBottom: 10}}
+          style={{flex: 1, marginLeft: 10}}
         />
         <View
           style={{

@@ -10,7 +10,6 @@ import {
 import AuthUserContext from '../../contexts/AuthUser';
 import {addLog} from '../../functions/Log';
 import {TStyleView} from '../../types/Style';
-import CreateMomentButton from '../buttons/CreateMomentButton';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
 
@@ -113,14 +112,14 @@ const Welcome = ({style}: TProps) => {
               )}
 
               {isLast && !submitting && (
-                <CreateMomentButton
+                <DefaultText
+                  title={'GO'}
                   style={styles.button}
-                  onSuccess={item.onPress}
+                  onPress={item.onPress}
+                  textStyle={{fontWeight: 'bold'}}
                 />
               )}
-              {isLast && submitting && (
-                <ActivityIndicator style={styles.button} />
-              )}
+              {isLast && submitting && <ActivityIndicator />}
             </View>
           );
         }}

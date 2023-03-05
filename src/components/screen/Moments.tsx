@@ -59,12 +59,14 @@ const Moments = ({style, mount}: TProps) => {
         setData(moments);
         setStatus('loaded');
       } catch (error) {
-        DefaultAlert({
-          title: 'Error',
-          message: (error as {message: string}).message,
-        });
+        console.log(error, 'r');
 
-        setStatus('error');
+        // DefaultAlert({
+        //   title: 'Error',
+        //   message: (error as {message: string}).message,
+        // });
+
+        // setStatus('error');
       }
     };
 

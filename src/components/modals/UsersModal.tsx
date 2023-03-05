@@ -2,13 +2,14 @@ import React, {useContext, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
-import {addRoomUser, removeRoomUser} from '../../functions/Room';
+import {addRoomUsers, removeRoomUser} from '../../functions/Room';
 import {TTimestampClient} from '../../types/Firebase';
 import SmallUserCard from '../cards/SmallUserCard';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
+import SelectForm from '../forms/SelectForm';
 
 type TProps = {
   room: {id: string};
@@ -23,6 +24,7 @@ const UsersModal = ({room, users}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
   const {authUserData} = useContext(AuthUserContext);
   const [submitting, setSubmitting] = useState(false);
+  const [form, setForm] = useState<'list' | 'invite'>('list');
 
   const sortByAddedAt = users.sort((a, b) => {
     if (!a.moment?.addedAt._seconds) {
@@ -40,7 +42,7 @@ const UsersModal = ({room, users}: TProps) => {
   const onJoin = async () => {
     try {
       setSubmitting(true);
-      await addRoomUser({room, user: {id: authUserData.id}});
+      await addRoomUsers({room, users: {ids: [authUserData.id]}});
       onUpdate(undefined);
     } catch (error) {
       DefaultAlert({title: 'Error', message: 'Failed to join room.'});
@@ -66,44 +68,82 @@ const UsersModal = ({room, users}: TProps) => {
     submitting,
   };
 
+  const onInvite = async (ids: string[]) => {
+    try {
+      setSubmitting(true);
+      await addRoomUsers({room, users: {ids}});
+      onUpdate(undefined);
+    } catch (error) {
+      DefaultAlert({title: 'Error', message: 'Failed to join room.'});
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <DefaultModal style={{zIndex: 200}}>
-      <DefaultForm
-        title={'Users'}
-        left={{
-          onPress: () => onUpdate(undefined),
-        }}
-        right={right}>
-        <FlatList
-          data={sortByAddedAt}
-          contentContainerStyle={styles.container}
-          keyExtractor={item => item.id}
-          indicatorStyle="white"
-          showsVerticalScrollIndicator
-          ListHeaderComponent={
-            <DefaultText
-              title="Check who shared most recently!"
-              textStyle={{fontWeight: 'bold'}}
-              style={{marginBottom: 20}}
-            />
-          }
-          renderItem={({item, index}: {item: TProps['users'][0]}) => {
-            return (
-              <SmallUserCard
-                {...item}
-                index={index}
-                style={{
-                  padding: 20,
-                  borderWidth: 1,
-                  borderColor: 'gray',
-                  borderRadius: 10,
-                }}
-              />
-            );
+      {form === 'list' && (
+        <DefaultForm
+          title={'Users'}
+          left={{
+            onPress: () => onUpdate(undefined),
           }}
-          ItemSeparatorComponent={() => <View style={styles.seperator} />}
+          right={right}>
+          <FlatList
+            data={sortByAddedAt}
+            contentContainerStyle={styles.container}
+            keyExtractor={item => item.id}
+            indicatorStyle="white"
+            showsVerticalScrollIndicator
+            ListHeaderComponent={
+              <View>
+                <DefaultText
+                  title="Check who shared most recently!"
+                  textStyle={{fontWeight: 'bold'}}
+                  style={{marginBottom: 20}}
+                />
+                <DefaultText
+                  title="Invite friends"
+                  textStyle={{fontWeight: 'bold'}}
+                  style={{marginBottom: 20}}
+                  onPress={() => setForm('invite')}
+                />
+              </View>
+            }
+            renderItem={({item, index}: {item: TProps['users'][0]}) => {
+              return (
+                <SmallUserCard
+                  {...item}
+                  index={index}
+                  style={{
+                    padding: 20,
+                    borderWidth: 1,
+                    borderColor: 'gray',
+                    borderRadius: 10,
+                  }}
+                />
+              );
+            }}
+            ItemSeparatorComponent={() => <View style={styles.seperator} />}
+          />
+        </DefaultForm>
+      )}
+      {form === 'invite' && (
+        <SelectForm
+          data={authUserData.followTo.items
+            .map(({id, displayName}) => ({
+              id,
+              name: displayName,
+            }))
+            .some(({id: elId}) => {
+              return !users.map(({id: elId}) => elId).includes(elId);
+            })}
+          title="Invite"
+          onSuccess={onInvite}
+          onCancel={() => setForm('list')}
+          submitting={submitting}
         />
-      </DefaultForm>
+      )}
     </DefaultModal>
   );
 };
