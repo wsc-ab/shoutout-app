@@ -6,7 +6,7 @@ import CreateChannelForm from '../components/forms/CreateChannelForm';
 import AuthUserModal from '../components/modals/AuthUserModal';
 import ContactsModal from '../components/modals/ContactsModal';
 import MomentsModal from '../components/modals/MomentsModal';
-import RoomModal from '../components/modals/RoomModal';
+import ChannelModal from '../components/modals/RoomModal';
 import UserModal from '../components/modals/UserModal';
 import UsersModal from '../components/modals/UsersModal';
 import {TObject} from '../types/Firebase';
@@ -98,8 +98,8 @@ const ModalProvider = ({children}: TProps) => {
           contentPath={modal.data.contentPath}
         />
       )}
-      {modal?.target === 'room' && modal.data?.room && (
-        <RoomModal room={modal.data.room} path={modal.data.path} />
+      {modal?.target === 'channel' && modal.data?.channel && (
+        <ChannelModal channel={modal.data.channel} path={modal.data.path} />
       )}
       {modal?.target === 'createChannel' && (
         <CreateChannelForm {...modal.data} />

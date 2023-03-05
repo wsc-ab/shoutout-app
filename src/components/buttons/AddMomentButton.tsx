@@ -76,7 +76,7 @@ const AddMomentButton = ({moment: {id}, added, style}: TProps) => {
       onPress={uploading ? onUploading : onAdd}>
       {!submitting && (
         <DefaultIcon
-          icon="layer-group"
+          icon="square-plus"
           size={20}
           color={added ? defaultRed.lv2 : 'white'}
         />
