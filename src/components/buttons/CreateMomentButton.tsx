@@ -40,7 +40,6 @@ const CreateMomentButton = ({
   }>();
 
   const onAdd = async (mode: 'camera' | 'library') => {
-    setModal(undefined);
     onUpdate({target: 'createMoment'});
 
     setSubmitting(true);
@@ -75,6 +74,7 @@ const CreateMomentButton = ({
       onUpdate(undefined);
     } finally {
       setSubmitting(false);
+      setModal(undefined);
     }
   };
 
