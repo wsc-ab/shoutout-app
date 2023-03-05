@@ -66,18 +66,6 @@ const UsersModal = ({channel, users}: TProps) => {
     submitting,
   };
 
-  const onInvite = async (ids: string[]) => {
-    try {
-      setSubmitting(true);
-      await addChannelUsers({channel, users: {ids}});
-      onUpdate(undefined);
-    } catch (error) {
-      DefaultAlert({title: 'Error', message: 'Failed to join channel.'});
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
   return (
     <DefaultModal style={{zIndex: 200}}>
       <DefaultForm
@@ -103,11 +91,10 @@ const UsersModal = ({channel, users}: TProps) => {
                 title={`Room code: ${channel.code}`}
                 textStyle={{fontWeight: 'bold'}}
                 style={{marginBottom: 20}}
-                onPress={() => setForm('invite')}
               />
             </View>
           }
-          renderItem={({item, index}: {item: TProps['users'][0]}) => {
+          renderItem={({item, index}) => {
             return (
               <SmallUserCard
                 {...item}

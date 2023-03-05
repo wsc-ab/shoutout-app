@@ -2,7 +2,6 @@ import RNFS from 'react-native-fs';
 import {
   Asset,
   CameraOptions,
-  launchCamera,
   launchImageLibrary,
 } from 'react-native-image-picker';
 import DefaultAlert from '../components/defaults/DefaultAlert';
@@ -27,9 +26,7 @@ export const getVideo = async ({
 
   let asset;
 
-  const {assets, didCancel} = __DEV__
-    ? await launchImageLibrary(options)
-    : await launchCamera(options);
+  const {assets, didCancel} = await launchImageLibrary(options);
 
   if (didCancel) {
     throw new Error('cancel');
