@@ -68,7 +68,9 @@ const ChannelCodeForm = ({}: TProps) => {
             control={control}
             name="code"
             title="Code"
+            autoFocus
             detail="Channel invitation code."
+            keyboardType="number-pad"
             errors={errors.code}
           />
         </DefaultKeyboardAwareScrollView>
