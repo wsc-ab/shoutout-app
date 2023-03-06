@@ -28,6 +28,7 @@ const CreateMomentButton = ({channel, color = 'white', style}: TProps) => {
 
   const onAdd = async (mode: 'camera' | 'library') => {
     setModal(undefined);
+
     onUpdate({target: 'takeVideo'});
 
     setSubmitting(true);
@@ -67,6 +68,7 @@ const CreateMomentButton = ({channel, color = 'white', style}: TProps) => {
           message: (error as {message: string}).message,
         });
       }
+      onUpdate(undefined);
     } finally {
       setSubmitting(false);
     }

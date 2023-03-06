@@ -91,7 +91,7 @@ export const takeVideo = async ({
     throw new Error('cancel');
   }
 
-  if (asset.duration && asset.duration > duration.max) {
+  if (asset.duration && asset.duration > duration.max + 1) {
     DefaultAlert({
       title: 'Video is too long',
       message: `Video should be at most ${duration.max} seconds long.`,
@@ -183,9 +183,7 @@ export const uploadVideo = async ({
       localPath: thumbUri,
       size,
     });
-  } catch (error) {
-    console.log('failed to save thumb to cache');
-  }
+  } catch (error) {}
 
   try {
     const size = (await RNFS.stat(uri)).size;
@@ -195,7 +193,5 @@ export const uploadVideo = async ({
       localPath: uri,
       size,
     });
-  } catch (error) {
-    console.log('failed to save video to cache');
-  }
+  } catch (error) {}
 };

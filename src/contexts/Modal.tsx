@@ -36,6 +36,8 @@ const ModalProvider = ({children}: TProps) => {
   const [modal, setModal] = useState<TModal>();
   const {authUserData} = useContext(AuthUserContext);
 
+  console.log(modal, 'modal');
+
   useEffect(() => {
     const loadInitialLink = async () => {
       const initialLink = await dynamicLinks().getInitialLink();
