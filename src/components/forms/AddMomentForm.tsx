@@ -18,10 +18,11 @@ import DefaultModal from '../defaults/DefaultModal';
 type TProps = {
   remotePath: string;
   localPath: string;
+  options: {live: boolean};
   id: string;
 };
 
-const AddMomentForm = ({remotePath, localPath, id}: TProps) => {
+const AddMomentForm = ({remotePath, options, localPath, id}: TProps) => {
   const {text} = defaultSchema();
   const [submitting, setSubmitting] = useState(false);
   const {addUpload, removeUpload} = useContext(PopupContext);
@@ -54,7 +55,7 @@ const AddMomentForm = ({remotePath, localPath, id}: TProps) => {
 
       await addMoment({
         moment: {id},
-        content: {path: remotePath, name, latlng},
+        content: {path: remotePath, name, latlng, options},
       });
       removeUpload({id});
     } catch (error) {

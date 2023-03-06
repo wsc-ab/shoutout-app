@@ -48,7 +48,8 @@ const DefaultForm = ({title, left, right, children, style}: TProps) => {
             />
           )}
 
-          {right?.submitting && <ActivityIndicator style={styles.act} />}
+          {right?.submitting && <ActivityIndicator style={styles.icon} />}
+          {!right && <View style={styles.icon} />}
         </View>
       </SafeAreaView>
       <View style={{flex: 1}}>{children}</View>
@@ -70,7 +71,12 @@ const styles = StyleSheet.create({
     margin: 10,
     zIndex: 100,
   },
-  icon: {padding: 10},
+  icon: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 50,
+    width: 50,
+  },
   left: {alignItems: 'flex-start'},
   center: {
     flex: 1,
@@ -82,5 +88,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   right: {alignItems: 'flex-end'},
-  act: {padding: 10},
 });

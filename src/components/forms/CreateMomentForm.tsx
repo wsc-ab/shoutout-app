@@ -20,10 +20,17 @@ type TProps = {
   remotePath: string;
   localPath: string;
   id: string;
+  options: {live: boolean};
   channel: {id: string};
 };
 
-const CreateMomentForm = ({remotePath, localPath, id, channel}: TProps) => {
+const CreateMomentForm = ({
+  remotePath,
+  localPath,
+  id,
+  options,
+  channel,
+}: TProps) => {
   const {text} = defaultSchema();
   const [submitting, setSubmitting] = useState(false);
   const {addUpload, removeUpload} = useContext(PopupContext);
@@ -60,6 +67,7 @@ const CreateMomentForm = ({remotePath, localPath, id, channel}: TProps) => {
           path: remotePath,
           latlng,
           name,
+          options,
         },
         channel,
       });

@@ -21,6 +21,7 @@ import {TStyleView} from '../../types/Style';
 import {sentToFirst} from '../../utils/Array';
 import ContributorsButton from '../buttons/ContributorsButton';
 import DefaultAlert from '../defaults/DefaultAlert';
+import {defaultRed} from '../defaults/DefaultColors';
 import DefaultText from '../defaults/DefaultText';
 
 import DefaultVideo from '../defaults/DefaultVideo';
@@ -162,6 +163,7 @@ const MomentCard = ({
       path: string;
       uploading?: boolean;
       user: {id: string; name: string};
+      options: {live: boolean};
       addedAt: TTimestamp;
       name: string;
     };
@@ -170,17 +172,34 @@ const MomentCard = ({
     return (
       <View style={{flex: 1}}>
         <View style={{height, width}}>
-          <DefaultText
-            title={item.name}
-            numberOfLines={4}
+          <View
             style={{
               position: 'absolute',
               top: 100,
               zIndex: 100,
               paddingHorizontal: 20,
-            }}
-            textStyle={{fontWeight: 'bold', fontSize: 20}}
-          />
+            }}>
+            {item.options?.live && (
+              <DefaultText
+                title={'Live'}
+                textStyle={{fontWeight: 'bold'}}
+                style={{
+                  backgroundColor: defaultRed.lv1,
+                  borderRadius: 10,
+                  alignItems: 'center',
+                  marginBottom: 5,
+                  alignSelf: 'flex-start',
+                  paddingVertical: 3,
+                  paddingHorizontal: 6,
+                }}
+              />
+            )}
+            <DefaultText
+              title={item.name + item.name}
+              numberOfLines={4}
+              textStyle={{fontWeight: 'bold', fontSize: 20}}
+            />
+          </View>
 
           <DefaultVideo
             path={item.path}

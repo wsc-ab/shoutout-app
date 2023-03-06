@@ -29,18 +29,22 @@ const CreateChannelForm = ({}: TProps) => {
     name: text({min: 1, max: 50, required: true}),
     type: text({required: true}),
     live: text({required: true}),
+    sponsor: text({required: true}),
+    sponsorDetail: text({max: 500}),
   }).required();
 
   const {
     control,
     handleSubmit,
     formState: {errors},
+    watch,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       type: 'public',
       name: '',
       live: 'off',
+      sponsor: 'off',
     },
   });
 
@@ -48,11 +52,22 @@ const CreateChannelForm = ({}: TProps) => {
     name,
     type,
     live,
+    sponsor,
+    sponsorDetail,
   }: {
     name: string;
     type: 'public' | 'private';
     live: 'on' | 'off';
+    sponsor: 'on' | 'off';
+    sponsorDetail?: string;
   }) => {
+    if (sponsor === 'on' && !sponsorDetail) {
+      return DefaultAlert({
+        title: 'Error',
+        message: 'Sponsor detail is required for sponsored channels.',
+      });
+    }
+
     try {
       setSubmitting(true);
 
@@ -65,6 +80,7 @@ const CreateChannelForm = ({}: TProps) => {
             media: 'video',
             type,
             live: live === 'on',
+            sponsor: sponsorDetail ? {detail: sponsorDetail} : undefined,
           },
           name,
         },
@@ -82,6 +98,10 @@ const CreateChannelForm = ({}: TProps) => {
       onUpdate(undefined);
     }
   };
+
+  const sponsor = watch('sponsor') === 'on';
+
+  console.log(watch('sponsor') === 'on', 'sponsor');
 
   return (
     <DefaultModal>
@@ -106,7 +126,7 @@ const CreateChannelForm = ({}: TProps) => {
             control={control}
             name="type"
             title="Type"
-            detail="Set it to prvite to not show channel moments on public channel."
+            detail="Set it to prvite to not show moments on discovery."
             errors={errors.type}
             style={styles.textInput}
             options={[
@@ -119,13 +139,35 @@ const CreateChannelForm = ({}: TProps) => {
             name="live"
             title="Live only mode"
             detail="Turn on live to allow users to only upload live videos."
-            errors={errors.type}
+            errors={errors.live}
             style={styles.textInput}
             options={[
               {name: 'off', title: 'Off'},
               {name: 'on', title: 'On'},
             ]}
           />
+          <ControllerOption
+            control={control}
+            name="sponsor"
+            title="Sponsor"
+            detail="Turn on sponsor if users are getting rewards."
+            errors={errors.sponsor}
+            style={styles.textInput}
+            options={[
+              {name: 'off', title: 'Off'},
+              {name: 'on', title: 'On'},
+            ]}
+          />
+          {sponsor && (
+            <ControllerText
+              control={control}
+              name="sponsorDetail"
+              title="Sponsor Detail"
+              detail="Tell users about the rewards."
+              errors={errors.sponsorDetail}
+              style={styles.textInput}
+            />
+          )}
         </DefaultKeyboardAwareScrollView>
       </DefaultForm>
     </DefaultModal>

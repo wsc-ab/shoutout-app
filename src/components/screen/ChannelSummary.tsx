@@ -1,6 +1,13 @@
 import firestore from '@react-native-firebase/firestore';
 import React, {useContext, useEffect, useState} from 'react';
-import {FlatList, Pressable, useWindowDimensions, View} from 'react-native';
+import {
+  FlatList,
+  Pressable,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+  Text,
+} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import {TDocData, TDocSnapshot} from '../../types/Firebase';
@@ -14,6 +21,7 @@ import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultImage from '../defaults/DefaultImage';
 import DefaultText from '../defaults/DefaultText';
+import DetailModal from '../defaults/DetailModal';
 import UserProfileImage from '../images/UserProfileImage';
 
 type TProps = {
@@ -26,6 +34,8 @@ const Channelsummary = ({channel, style}: TProps) => {
   const {width} = useWindowDimensions();
   const [data, setData] = useState<TDocData>();
   const {authUserData} = useContext(AuthUserContext);
+  const [modal, setModal] = useState<'detail'>();
+  const [modalDetail, setModalDetail] = useState<string>();
 
   useEffect(() => {
     const onNext = async (doc: TDocSnapshot) => {
@@ -155,10 +165,37 @@ const Channelsummary = ({channel, style}: TProps) => {
           style={{flexDirection: 'row', marginHorizontal: 10, marginTop: 5}}>
           <DefaultText
             title={data.options?.type === 'private' ? 'Private' : 'Public'}
-            textStyle={{color: 'gray'}}
+            style={styles.tag}
+            onPress={() => {
+              setModal('detail');
+              setModalDetail(
+                data.options?.type === 'private'
+                  ? "Moments in this channel won't be shown on the discovery tab."
+                  : 'Moments in this channel will be shown on the discovery tab.',
+              );
+            }}
           />
           {data.options?.live && (
-            <DefaultText title={' / Live only'} textStyle={{color: 'gray'}} />
+            <DefaultText
+              title={'Live only'}
+              style={styles.tag}
+              onPress={() => {
+                setModal('detail');
+                setModalDetail(
+                  'This channel only allows moments taken from camera to be shared.',
+                );
+              }}
+            />
+          )}
+          {data.options?.sponsor?.detail && (
+            <DefaultText
+              title={'Sponsor'}
+              style={styles.tag}
+              onPress={() => {
+                setModal('detail');
+                setModalDetail(data.options?.sponsor?.detail);
+              }}
+            />
           )}
         </View>
       </View>
@@ -239,8 +276,30 @@ const Channelsummary = ({channel, style}: TProps) => {
           );
         }}
       />
+      {modal === 'detail' && modalDetail && (
+        <DetailModal
+          title="Detail"
+          onCancel={() => {
+            setModal(undefined);
+            setModalDetail(undefined);
+          }}>
+          <Text style={{color: 'white', marginHorizontal: 10}}>
+            {modalDetail}
+          </Text>
+        </DetailModal>
+      )}
     </View>
   );
 };
 
 export default Channelsummary;
+
+const styles = StyleSheet.create({
+  tag: {
+    backgroundColor: 'gray',
+    paddingVertical: 3,
+    paddingHorizontal: 6,
+    borderRadius: 10,
+    marginRight: 5,
+  },
+});

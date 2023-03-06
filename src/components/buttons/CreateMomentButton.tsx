@@ -52,7 +52,13 @@ const CreateMomentButton = ({channel, color = 'white', style}: TProps) => {
 
       onUpdate({
         target: 'createMoment',
-        data: {remotePath, localPath, id: momentId, channel},
+        data: {
+          remotePath,
+          localPath,
+          id: momentId,
+          channel,
+          options: {live: mode === 'camera'},
+        },
       });
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {

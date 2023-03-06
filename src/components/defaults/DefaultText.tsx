@@ -35,4 +35,6 @@ const DefaultText = <A extends string>({
 
 export default DefaultText;
 
-const styles = StyleSheet.create({text: {color: 'white'}});
+const styles = StyleSheet.create({
+  text: {color: 'white'},
+});

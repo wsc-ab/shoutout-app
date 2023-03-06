@@ -27,9 +27,6 @@ const AddMomentButton = ({moment: {id, channel}, added, style}: TProps) => {
   const [modal, setModal] = useState<'mode'>();
 
   const onAdd = async (mode: 'camera' | 'library') => {
-    if (added) {
-      return onAdded();
-    }
     onUpdate({target: 'takeVideo'});
     setSubmitting(true);
 
@@ -49,7 +46,10 @@ const AddMomentButton = ({moment: {id, channel}, added, style}: TProps) => {
         mode,
       });
 
-      onUpdate({target: 'addMoment', data: {remotePath, localPath, id}});
+      onUpdate({
+        target: 'addMoment',
+        data: {remotePath, localPath, id, options: {live: mode === 'camera'}},
+      });
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {
         DefaultAlert({
@@ -65,6 +65,9 @@ const AddMomentButton = ({moment: {id, channel}, added, style}: TProps) => {
   };
 
   const onPress = () => {
+    if (added) {
+      return onAdded();
+    }
     if (uploading) {
       return onUploading();
     }

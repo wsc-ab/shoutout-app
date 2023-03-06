@@ -8,6 +8,7 @@ export const createChannel = async (input: {
       type: 'public' | 'private';
       media: 'photo' | 'video';
       live: boolean;
+      sponsor?: {detail: string};
     };
   };
   users: {ids: string[]};

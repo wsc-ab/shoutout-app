@@ -8,6 +8,7 @@ export const createMoment = async (input: {
     path: string;
     latlng: TLatLng;
     name: string;
+    options: {live: boolean};
   };
   channel: {id: string};
 }) => {
@@ -64,14 +65,6 @@ export const getMoments = async (input: {pagination: {number: number}}) => {
   return {...data};
 };
 
-export const getFriendMoments = async (input: {}) => {
-  const {data} = await firebaseFunctions.httpsCallable('getFriendMoments')(
-    input,
-  );
-
-  return {...data};
-};
-
 export const createReport = async (input: {
   moment: {id: string; path: string; user: {id: string}};
 }) => {
@@ -90,7 +83,12 @@ export const deleteReport = async (input: {
 
 export const addMoment = async (input: {
   moment: {id: string};
-  content: {path: string; latlng: TLatLng; name: string};
+  content: {
+    path: string;
+    latlng: TLatLng;
+    name: string;
+    options: {live: boolean};
+  };
 }) => {
   const {data} = await firebaseFunctions.httpsCallable('addMoment')(input);
 
@@ -104,19 +102,6 @@ export const removeMoment = async (input: {
   content: {path: string};
 }) => {
   const {data} = await firebaseFunctions.httpsCallable('removeMoment')(input);
-
-  return {...data};
-};
-
-export const sendNotification = async (input: {
-  moment: {
-    id: string;
-  };
-  content: {path: string};
-}) => {
-  const {data} = await firebaseFunctions.httpsCallable('sendNotification')(
-    input,
-  );
 
   return {...data};
 };
