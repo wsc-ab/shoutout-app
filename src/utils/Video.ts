@@ -11,6 +11,8 @@ import {encodeToH264, generateThumb} from './Ffmpeg';
 
 import {createStoragePath, uploadFile} from './Storage';
 
+const duration = {max: 60, min: 10};
+
 export const getVideo = async ({
   durationLimit,
   mode,
@@ -67,7 +69,7 @@ export const takeVideo = async ({
 
   try {
     asset = await getVideo({
-      durationLimit: 15,
+      durationLimit: duration.max,
       mode,
     });
   } catch (error) {
@@ -81,18 +83,18 @@ export const takeVideo = async ({
     throw new Error('cancel');
   }
 
-  if (asset.duration && asset.duration < 3) {
+  if (asset.duration && asset.duration < duration.min) {
     DefaultAlert({
       title: 'Video is too short',
-      message: 'Video should be at least 3 seconds long.',
+      message: `Video should be at least ${duration.min} seconds long.`,
     });
     throw new Error('cancel');
   }
 
-  if (asset.duration && asset.duration > 15) {
+  if (asset.duration && asset.duration > duration.max) {
     DefaultAlert({
       title: 'Video is too long',
-      message: 'Video should be at most 15 seconds long.',
+      message: `Video should be at most ${duration.max} seconds long.`,
     });
     throw new Error('cancel');
   }
