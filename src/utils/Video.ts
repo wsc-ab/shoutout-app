@@ -30,7 +30,7 @@ export const getVideo = async ({
   let asset;
 
   const {assets, didCancel} =
-    mode === 'library'
+    mode === 'library' || __DEV__
       ? await launchImageLibrary(options)
       : await launchCamera(options);
 
@@ -85,6 +85,14 @@ export const takeVideo = async ({
     DefaultAlert({
       title: 'Video is too short',
       message: 'Video should be at least 3 seconds long.',
+    });
+    throw new Error('cancel');
+  }
+
+  if (asset.duration && asset.duration > 15) {
+    DefaultAlert({
+      title: 'Video is too long',
+      message: 'Video should be at most 15 seconds long.',
     });
     throw new Error('cancel');
   }

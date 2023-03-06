@@ -2,6 +2,7 @@ import dynamicLinks from '@react-native-firebase/dynamic-links';
 import React, {createContext, useContext, useEffect, useState} from 'react';
 import AddMomentForm from '../components/forms/AddMomentForm';
 import CreateChannelForm from '../components/forms/CreateChannelForm';
+import CreateMomentForm from '../components/forms/CreateMomentForm';
 import AuthUserModal from '../components/modals/AuthUserModal';
 import ChannelSearchModal from '../components/modals/ChannelSearchModal';
 import ContactsModal from '../components/modals/ContactsModal';
@@ -111,6 +112,9 @@ const ModalProvider = ({children}: TProps) => {
       )}
       {modal?.target === 'addMoment' && modal.data && (
         <AddMomentForm {...modal.data} />
+      )}
+      {modal?.target === 'createMoment' && modal.data && (
+        <CreateMomentForm {...modal.data} />
       )}
       {modal?.target === 'search' && <ChannelSearchModal />}
     </ModalContext.Provider>

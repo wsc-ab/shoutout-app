@@ -10,37 +10,25 @@ import {onUploading} from '../../utils/Upload';
 import {takeVideo} from '../../utils/Video';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultIcon from '../defaults/DefaultIcon';
-import CreateMomentForm from '../forms/CreateMomentForm';
 import VideoModeModal from '../modals/VideoModeModal';
 
 type TProps = {
   style?: TStyleView;
   channel: {id: string; live: boolean};
   color?: string;
-  onSuccess?: () => void;
 };
 
-const CreateMomentButton = ({
-  channel,
-  color = 'white',
-  onSuccess,
-  style,
-}: TProps) => {
+const CreateMomentButton = ({channel, color = 'white', style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
   const {onUpdate} = useContext(ModalContext);
   const [submitting, setSubmitting] = useState(false);
   const {uploading} = useContext(PopupContext);
 
-  const [modal, setModal] = useState<'form' | 'mode'>();
-
-  const [data, setData] = useState<{
-    id: string;
-    remotePath: string;
-    localPath: string;
-  }>();
+  const [modal, setModal] = useState<'mode'>();
 
   const onAdd = async (mode: 'camera' | 'library') => {
-    onUpdate({target: 'createMoment'});
+    setModal(undefined);
+    onUpdate({target: 'takeVideo'});
 
     setSubmitting(true);
 
@@ -62,8 +50,10 @@ const CreateMomentButton = ({
         userId: authUserData.id,
       });
 
-      setData({remotePath, localPath, id: momentId});
-      setModal('form');
+      onUpdate({
+        target: 'createMoment',
+        data: {remotePath, localPath, id: momentId, channel},
+      });
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {
         DefaultAlert({
@@ -71,19 +61,8 @@ const CreateMomentButton = ({
           message: (error as {message: string}).message,
         });
       }
-      onUpdate(undefined);
     } finally {
       setSubmitting(false);
-      setModal(undefined);
-    }
-  };
-
-  const onForm = () => {
-    onUpdate(undefined);
-    setModal(undefined);
-
-    if (onSuccess) {
-      onSuccess();
     }
   };
 
@@ -108,14 +87,6 @@ const CreateMomentButton = ({
         <DefaultIcon icon="square-plus" size={20} color={color} />
       )}
       {submitting && <ActivityIndicator color="white" />}
-      {modal === 'form' && data && (
-        <CreateMomentForm
-          {...data}
-          channel={channel}
-          onSuccess={onForm}
-          onCancel={onForm}
-        />
-      )}
       {modal === 'mode' && (
         <VideoModeModal
           onCancel={() => setModal(undefined)}

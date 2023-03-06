@@ -197,7 +197,7 @@ const MomentCard = ({
           <Footer
             added={added}
             content={item}
-            moment={moment}
+            moment={{id: data.id, channel: data.channel}}
             style={{marginHorizontal: 10}}
           />
         )}

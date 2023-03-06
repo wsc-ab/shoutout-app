@@ -13,7 +13,10 @@ type TProps = {
     name: string;
     user: {id: string};
   };
-  moment: {id: string};
+  moment: {
+    id: string;
+    channel: {id: string; name: string; options: {live: boolean}};
+  };
   added: boolean;
   style?: TStyleView;
 };

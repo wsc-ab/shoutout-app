@@ -24,7 +24,10 @@ export default DefaultBottomModal;
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 'auto',
     paddingBottom: 24,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    position: 'absolute',
   },
 });

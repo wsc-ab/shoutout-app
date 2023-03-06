@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: defaultBlack.lv4(1),
     padding: 20,
+    marginHorizontal: 10,
     alignItems: 'center',
   },
 });

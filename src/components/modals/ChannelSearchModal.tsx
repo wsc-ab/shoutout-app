@@ -17,7 +17,13 @@ const ChannelSearchModal = ({}: TProps) => {
     if (item?.options?.type === 'private') {
       return null;
     }
-    return <ChannelSummary channel={{id: item.objectID}} />;
+    return (
+      <ChannelSummary
+        channel={{id: item.objectID}}
+        key={item.objectID}
+        style={{marginBottom: 20}}
+      />
+    );
   };
 
   return (

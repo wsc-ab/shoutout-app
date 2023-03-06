@@ -2,6 +2,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import React, {useContext, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {object} from 'yup';
+import ModalContext from '../../contexts/Modal';
 import PopupContext from '../../contexts/Popup';
 
 import {createMoment} from '../../functions/Moment';
@@ -20,21 +21,13 @@ type TProps = {
   localPath: string;
   id: string;
   channel: {id: string};
-  onCancel: () => void;
-  onSuccess: () => void;
 };
 
-const CreateMomentForm = ({
-  remotePath,
-  localPath,
-  id,
-  channel,
-  onCancel,
-  onSuccess,
-}: TProps) => {
+const CreateMomentForm = ({remotePath, localPath, id, channel}: TProps) => {
   const {text} = defaultSchema();
   const [submitting, setSubmitting] = useState(false);
   const {addUpload, removeUpload} = useContext(PopupContext);
+  const {onUpdate} = useContext(ModalContext);
 
   const schema = object({
     name: text({max: 50, required: true}),
@@ -56,7 +49,7 @@ const CreateMomentForm = ({
       setSubmitting(true);
 
       const latlng = await getLatLng();
-      onSuccess();
+      onUpdate(undefined);
       addUpload({id, localPath});
 
       await uploadVideo({localPath, remotePath});
@@ -88,7 +81,7 @@ const CreateMomentForm = ({
     <DefaultModal>
       <DefaultForm
         title={'Moment'}
-        left={{onPress: onCancel}}
+        left={{onPress: () => onUpdate(undefined)}}
         right={{
           onPress: handleSubmit(onSubmit),
           submitting,

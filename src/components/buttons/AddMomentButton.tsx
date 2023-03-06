@@ -10,25 +10,27 @@ import {takeVideo} from '../../utils/Video';
 import DefaultAlert from '../defaults/DefaultAlert';
 import {defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
+import VideoModeModal from '../modals/VideoModeModal';
 
 type TProps = {
-  moment: {id: string};
+  moment: {id: string; channel: {id: string; options: {live: boolean}}};
   style?: TStyleView;
   added: boolean;
 };
 
-const AddMomentButton = ({moment: {id}, added, style}: TProps) => {
+const AddMomentButton = ({moment: {id, channel}, added, style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
   const {onUpdate} = useContext(ModalContext);
   const [submitting, setSubmitting] = useState(false);
   const {uploading} = useContext(PopupContext);
 
-  const onAdd = async () => {
-    if (added) {
-      return onAdded();
-    }
-    onUpdate({target: 'video'});
+  const [modal, setModal] = useState<'mode'>();
 
+  const onAdd = async (mode: 'camera' | 'library') => {
+    // if (added) {
+    //   return onAdded();
+    // }
+    onUpdate({target: 'takeVideo'});
     setSubmitting(true);
 
     const permitted = await checkLocationPermission();
@@ -41,10 +43,10 @@ const AddMomentButton = ({moment: {id}, added, style}: TProps) => {
     }
 
     try {
-      onUpdate(undefined);
       const {remotePath, localPath} = await takeVideo({
         id,
         userId: authUserData.id,
+        mode,
       });
 
       onUpdate({target: 'addMoment', data: {remotePath, localPath, id}});
@@ -62,6 +64,18 @@ const AddMomentButton = ({moment: {id}, added, style}: TProps) => {
     }
   };
 
+  const onPress = () => {
+    if (uploading) {
+      return onUploading();
+    }
+
+    if (channel.options.live) {
+      return onAdd('camera');
+    }
+
+    setModal('mode');
+  };
+
   const onAdded = () => {
     DefaultAlert({
       title: 'Great!',
@@ -73,7 +87,7 @@ const AddMomentButton = ({moment: {id}, added, style}: TProps) => {
     <Pressable
       style={[styles.container, style]}
       disabled={submitting}
-      onPress={uploading ? onUploading : onAdd}>
+      onPress={onPress}>
       {!submitting && (
         <DefaultIcon
           icon="square-plus"
@@ -82,6 +96,13 @@ const AddMomentButton = ({moment: {id}, added, style}: TProps) => {
         />
       )}
       {submitting && <ActivityIndicator color="white" />}
+
+      {modal === 'mode' && (
+        <VideoModeModal
+          onCancel={() => setModal(undefined)}
+          onSuccess={mode => onAdd(mode)}
+        />
+      )}
     </Pressable>
   );
 };
