@@ -33,6 +33,7 @@ const AddMomentButton = ({moment: {id, channel}, added, style}: TProps) => {
     const permitted = await checkLocationPermission();
 
     if (!permitted) {
+      setSubmitting(false);
       return DefaultAlert({
         title: 'Error',
         message: 'No location permission',

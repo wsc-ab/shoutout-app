@@ -27,8 +27,6 @@ const CreateMomentButton = ({channel, color = 'white', style}: TProps) => {
   const [modal, setModal] = useState<'mode'>();
 
   const onAdd = async (mode: 'camera' | 'library') => {
-    setModal(undefined);
-
     onUpdate({target: 'takeVideo'});
 
     setSubmitting(true);
@@ -36,6 +34,7 @@ const CreateMomentButton = ({channel, color = 'white', style}: TProps) => {
     const permitted = await checkLocationPermission();
 
     if (!permitted) {
+      setSubmitting(false);
       return DefaultAlert({
         title: 'Error',
         message: 'No location permission',
@@ -71,6 +70,7 @@ const CreateMomentButton = ({channel, color = 'white', style}: TProps) => {
       onUpdate(undefined);
     } finally {
       setSubmitting(false);
+      setModal(undefined);
     }
   };
 
@@ -98,7 +98,9 @@ const CreateMomentButton = ({channel, color = 'white', style}: TProps) => {
       {modal === 'mode' && (
         <VideoModeModal
           onCancel={() => setModal(undefined)}
-          onSuccess={mode => onAdd(mode)}
+          onSuccess={mode => {
+            onAdd(mode);
+          }}
         />
       )}
     </Pressable>
