@@ -27,9 +27,9 @@ const AddMomentButton = ({moment: {id, channel}, added, style}: TProps) => {
   const [modal, setModal] = useState<'mode'>();
 
   const onAdd = async (mode: 'camera' | 'library') => {
-    // if (added) {
-    //   return onAdded();
-    // }
+    if (added) {
+      return onAdded();
+    }
     onUpdate({target: 'takeVideo'});
     setSubmitting(true);
 

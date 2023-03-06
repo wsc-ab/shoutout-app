@@ -11,10 +11,10 @@ import ModalContext from '../../contexts/Modal';
 import {TTimestamp} from '../../types/Firebase';
 import {getTimeGap} from '../../utils/Date';
 import {getCityAndCountry} from '../../utils/Map';
+import {capitalizeFirstLetter} from '../../utils/String';
 import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultText from '../defaults/DefaultText';
 import UserProfileImage from '../images/UserProfileImage';
-import LocationButton from './LocationButton';
 
 type TProps = {
   users: {
@@ -46,7 +46,7 @@ const ContributorsButton = ({users, type, onPress, index, style}: TProps) => {
   return (
     <View style={style}>
       <DefaultText
-        title={`For ${type}`}
+        title={`${capitalizeFirstLetter(type)}`}
         textStyle={styles.nameText}
         style={styles.type}
       />

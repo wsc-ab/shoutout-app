@@ -228,7 +228,7 @@ const MomentCard = ({
       <ContributorsButton
         users={users}
         index={index}
-        type={data.type}
+        type={data.channel.options.type}
         onPress={onContributor}
         style={styles.users}
       />
