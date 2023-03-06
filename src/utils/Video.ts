@@ -11,7 +11,7 @@ import {encodeToH264, generateThumb} from './Ffmpeg';
 
 import {createStoragePath, uploadFile} from './Storage';
 
-const duration = {max: 60, min: 10};
+const duration = {max: 60, min: 5};
 
 export const getVideo = async ({
   durationLimit,
