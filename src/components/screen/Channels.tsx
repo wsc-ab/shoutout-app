@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import {TStyleView} from '../../types/Style';
-import CreateRoomButton from '../buttons/CreateRoomButton';
+import CreateRoomButton from '../buttons/CreateChannelButton';
 import ChannelSummary from './ChannelSummary';
 
 type TProps = {

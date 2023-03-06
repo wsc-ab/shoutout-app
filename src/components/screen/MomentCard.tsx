@@ -195,7 +195,7 @@ const MomentCard = ({
               />
             )}
             <DefaultText
-              title={item.name + item.name}
+              title={item.name}
               numberOfLines={4}
               textStyle={{fontWeight: 'bold', fontSize: 20}}
             />

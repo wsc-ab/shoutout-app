@@ -1,8 +1,11 @@
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 import React, {createContext, useContext, useEffect, useState} from 'react';
 import AddMomentForm from '../components/forms/AddMomentForm';
-import CreateChannelForm from '../components/forms/CreateChannelForm';
-import CreateMomentForm from '../components/forms/CreateMomentForm';
+import CreateGeneralChannelModal from '../components/forms/CreateGeneralChannelModal';
+import {
+  default as CreateMomentForm,
+  default as CreateSponsoredChannelModal,
+} from '../components/forms/CreateSponsoredChannelModal';
 import AuthUserModal from '../components/modals/AuthUserModal';
 import ChannelSearchModal from '../components/modals/ChannelSearchModal';
 import ContactsModal from '../components/modals/ContactsModal';
@@ -102,8 +105,11 @@ const ModalProvider = ({children}: TProps) => {
       {modal?.target === 'channel' && modal.data?.channel && (
         <ChannelModal channel={modal.data.channel} path={modal.data.path} />
       )}
-      {modal?.target === 'createChannel' && (
-        <CreateChannelForm {...modal.data} />
+      {modal?.target === 'createGeneralChannel' && (
+        <CreateGeneralChannelModal {...modal.data} />
+      )}
+      {modal?.target === 'createSponsoredChannel' && (
+        <CreateSponsoredChannelModal {...modal.data} />
       )}
       {modal?.target === 'auth' && <AuthUserModal />}
       {modal?.target === 'friends' && <ContactsModal />}
