@@ -9,6 +9,7 @@ import {createChannel} from '../../functions/Channel';
 
 import AuthUserContext from '../../contexts/AuthUser';
 import {defaultSchema} from '../../utils/Schema';
+import ControllerDetail from '../controllers/ControllerDetail';
 import ControllerOption from '../controllers/ControllerOption';
 import ControllerText from '../controllers/ControllerText';
 import DefaultAlert from '../defaults/DefaultAlert';
@@ -115,7 +116,7 @@ const CreateSponsoredChannelModal = ({}: TProps) => {
               {name: 'on', title: 'On'},
             ]}
           />
-          <ControllerText
+          <ControllerDetail
             control={control}
             name="detail"
             title="Detail"
