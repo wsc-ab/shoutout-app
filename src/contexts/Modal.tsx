@@ -2,10 +2,9 @@ import dynamicLinks from '@react-native-firebase/dynamic-links';
 import React, {createContext, useContext, useEffect, useState} from 'react';
 import AddMomentForm from '../components/forms/AddMomentForm';
 import CreateGeneralChannelModal from '../components/forms/CreateGeneralChannelModal';
-import {
-  default as CreateMomentForm,
-  default as CreateSponsoredChannelModal,
-} from '../components/forms/CreateSponsoredChannelModal';
+import CreateMomentForm from '../components/forms/CreateMomentForm';
+import CreateSponsoredChannelModal from '../components/forms/CreateSponsoredChannelModal';
+
 import AuthUserModal from '../components/modals/AuthUserModal';
 import ChannelSearchModal from '../components/modals/ChannelSearchModal';
 import ContactsModal from '../components/modals/ContactsModal';
