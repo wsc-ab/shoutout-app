@@ -13,7 +13,7 @@ import ModalContext from '../../contexts/Modal';
 import {TDocData, TDocSnapshot} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
 import {groupByKey, groupByLength} from '../../utils/Array';
-import {checkLurking} from '../../utils/Channel';
+import {checkGhosting} from '../../utils/Channel';
 import {getTimeGap} from '../../utils/Date';
 import {getCityAndCountry} from '../../utils/Map';
 import {getThumbnailPath} from '../../utils/Storage';
@@ -109,9 +109,7 @@ const ChannelSummary = ({channel, style}: TProps) => {
     index: itemIndex,
   });
 
-  const lurking = checkLurking({authUser: authUserData, channel: data});
-
-  console.log(data.options.lurking);
+  const ghosting = checkGhosting({authUser: authUserData, channel: data});
 
   return (
     <View style={style}>
@@ -224,15 +222,18 @@ const ChannelSummary = ({channel, style}: TProps) => {
             />
           )}
 
-          {['1', '7', '14'].includes(data.options.lurking?.mode) && (
+          {['1', '7', '14'].includes(data.options.ghosting?.mode) && (
             <DefaultText
-              title={`Lurking ${data.options.lurking.mode}`}
-              style={[styles.tag, lurking && {backgroundColor: defaultRed.lv2}]}
-              textStyle={{color: lurking ? 'black' : 'white'}}
+              title={`Ghosting ${data.options.ghosting.mode}`}
+              style={[
+                styles.tag,
+                ghosting && {backgroundColor: defaultRed.lv2},
+              ]}
+              textStyle={{color: ghosting ? 'black' : 'white'}}
               onPress={() => {
                 setModal('detail');
                 setModalDetail(
-                  `This channel shows moments to users who have shared in the last ${data.options.lurking.mode} days.`,
+                  `This channel shows moments to users who have shared in the last ${data.options.ghosting.mode} days.`,
                 );
               }}
             />
@@ -289,10 +290,10 @@ const ChannelSummary = ({channel, style}: TProps) => {
                         marginBottom: 10,
                       }}
                       onPress={() => {
-                        if (lurking) {
+                        if (ghosting) {
                           return DefaultAlert({
                             title: 'Please share a content',
-                            message: 'You have been lurking for too long.',
+                            message: 'You have been ghosting for too long.',
                           });
                         }
                         onView({id});

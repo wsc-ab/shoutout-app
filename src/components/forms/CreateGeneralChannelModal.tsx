@@ -30,7 +30,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
     type: text({required: true}),
     media: text({required: true}),
     mode: text({required: true}),
-    lurking: text({required: true}),
+    ghosting: text({required: true}),
   }).required();
 
   const {
@@ -44,7 +44,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
       name: '',
       media: 'both',
       mode: 'camera',
-      lurking: '7',
+      ghosting: '7',
     },
   });
 
@@ -52,13 +52,13 @@ const CreateGeneralChannelModal = ({}: TProps) => {
     name,
     type,
     mode,
-    lurking,
+    ghosting,
     media,
   }: {
     name: string;
     type: 'public' | 'private';
     mode: 'camera' | 'library' | 'both';
-    lurking: 'off' | '1' | '7' | '14';
+    ghosting: 'off' | '1' | '7' | '14';
     media: 'video' | 'image' | 'both';
   }) => {
     try {
@@ -73,7 +73,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
             media,
             type,
             mode,
-            lurking: {mode: lurking},
+            ghosting: {mode: ghosting},
           },
           name,
         },
@@ -151,10 +151,10 @@ const CreateGeneralChannelModal = ({}: TProps) => {
           />
           <ControllerOption
             control={control}
-            name="lurking"
-            title="Block lurking"
-            detail="Set the number of allowed lurking days. If set to 7 days, users who haven't posted in the last 7 days can't access the channel."
-            errors={errors.lurking}
+            name="ghosting"
+            title="Block ghosting"
+            detail="Set the number of allowed ghosting days. If set to 7 days, users who haven't posted in the last 7 days can't access the channel."
+            errors={errors.ghosting}
             style={styles.textInput}
             options={[
               {name: 'off', title: 'Off'},

@@ -1,22 +1,22 @@
 import {TDocData} from '../types/Firebase';
 import {getSecondsGap} from './Date';
 
-export const checkLurking = ({
+export const checkGhosting = ({
   authUser,
   channel,
 }: {
   authUser: TDocData;
   channel: TDocData;
 }) => {
-  // if lurking is not set
+  // if ghosting is not set
   // return false
-  if (!channel.options.lurking) {
+  if (!channel.options.ghosting) {
     return false;
   }
 
-  // if lurking is off
+  // if ghosting is off
   // return false
-  if (channel.options.lurking?.mode === 'off') {
+  if (channel.options.ghosting?.mode === 'off') {
     return false;
   }
 
@@ -36,11 +36,11 @@ export const checkLurking = ({
   // check if time has passed
 
   const allowedSeconds =
-    parseInt(channel.options.lurking.mode, 10) * 24 * 60 * 60;
+    parseInt(channel.options.ghosting.mode, 10) * 24 * 60 * 60;
 
   const secondsSinceLastAddedAt = getSecondsGap({end: userLastAddedAt});
 
-  const lurking = secondsSinceLastAddedAt > allowedSeconds;
+  const ghosting = secondsSinceLastAddedAt > allowedSeconds;
 
-  return lurking;
+  return ghosting;
 };

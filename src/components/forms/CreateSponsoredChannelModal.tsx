@@ -31,7 +31,7 @@ const CreateSponsoredChannelModal = ({}: TProps) => {
     media: text({required: true}),
     mode: text({required: true}),
     detail: text({min: 10, max: 500, required: true}),
-    lurking: text({required: true}),
+    ghosting: text({required: true}),
   }).required();
 
   const {
@@ -45,7 +45,7 @@ const CreateSponsoredChannelModal = ({}: TProps) => {
       media: 'both',
       mode: 'camera',
       detail: '',
-      lurking: '7',
+      ghosting: '7',
     },
   });
 
@@ -53,14 +53,14 @@ const CreateSponsoredChannelModal = ({}: TProps) => {
     name,
     detail,
     mode,
-    lurking,
+    ghosting,
     media,
   }: {
     name: string;
     detail: string;
     mode: 'camera' | 'library' | 'both';
     media: 'video' | 'image' | 'both';
-    lurking: 'off' | '1' | '7' | '14';
+    ghosting: 'off' | '1' | '7' | '14';
   }) => {
     try {
       setSubmitting(true);
@@ -74,7 +74,7 @@ const CreateSponsoredChannelModal = ({}: TProps) => {
             media,
             type: 'public',
             mode,
-            lurking: {mode: lurking},
+            ghosting: {mode: ghosting},
             sponsor: {detail},
           },
           name,
@@ -149,10 +149,10 @@ const CreateSponsoredChannelModal = ({}: TProps) => {
           />
           <ControllerOption
             control={control}
-            name="lurking"
-            title="Block lurking"
-            detail="Set the number of allowed lurking days. If set to 7 days, users who haven't posted in the last 7 days will be shown blured images."
-            errors={errors.lurking}
+            name="ghosting"
+            title="Block ghosting"
+            detail="Set the number of allowed ghosting days. If set to 7 days, users who haven't posted in the last 7 days will be shown blured images."
+            errors={errors.ghosting}
             style={styles.textInput}
             options={[
               {name: 'off', title: 'Off'},
