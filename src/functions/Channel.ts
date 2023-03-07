@@ -8,6 +8,7 @@ export const createChannel = async (input: {
       type: 'public' | 'private';
       media: 'photo' | 'video';
       mode: 'camera' | 'library' | 'both';
+      lurking: {mode: 'off' | '1' | '7' | '14'};
       sponsor?: {detail: string};
     };
   };

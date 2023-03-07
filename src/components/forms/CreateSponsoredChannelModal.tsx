@@ -30,6 +30,7 @@ const CreateSponsoredChannelModal = ({}: TProps) => {
     name: text({min: 1, max: 50, required: true}),
     mode: text({required: true}),
     detail: text({min: 10, max: 500, required: true}),
+    lurking: text({required: true}),
   }).required();
 
   const {
@@ -42,6 +43,7 @@ const CreateSponsoredChannelModal = ({}: TProps) => {
       name: '',
       mode: 'camera',
       detail: '',
+      lurking: '7',
     },
   });
 
@@ -49,10 +51,12 @@ const CreateSponsoredChannelModal = ({}: TProps) => {
     name,
     detail,
     mode,
+    lurking,
   }: {
     name: string;
     detail: string;
     mode: 'camera' | 'library' | 'both';
+    lurking: 'off' | '1' | '7' | '14';
   }) => {
     try {
       setSubmitting(true);
@@ -66,6 +70,7 @@ const CreateSponsoredChannelModal = ({}: TProps) => {
             media: 'video',
             type: 'public',
             mode,
+            lurking: {mode: lurking},
             sponsor: {detail},
           },
           name,
@@ -124,6 +129,20 @@ const CreateSponsoredChannelModal = ({}: TProps) => {
             detail="Detail of what's being sponsored."
             errors={errors.detail}
             style={styles.textInput}
+          />
+          <ControllerOption
+            control={control}
+            name="lurking"
+            title="Block lurking"
+            detail="Set the number of allowed lurking days. If set to 7 days, users who haven't posted in the last 7 days will be shown blured images."
+            errors={errors.lurking}
+            style={styles.textInput}
+            options={[
+              {name: 'off', title: 'Off'},
+              {name: '1', title: '1 Day'},
+              {name: '7', title: '7 Days'},
+              {name: '14', title: '14 Days'},
+            ]}
           />
         </DefaultKeyboardAwareScrollView>
       </DefaultForm>

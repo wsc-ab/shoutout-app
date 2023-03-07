@@ -13,11 +13,13 @@ import ModalContext from '../../contexts/Modal';
 import {TDocData, TDocSnapshot} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
 import {groupByKey, groupByLength} from '../../utils/Array';
+import {checkLurking} from '../../utils/Channel';
 import {getTimeGap} from '../../utils/Date';
 import {getCityAndCountry} from '../../utils/Map';
 import {getThumbnailPath} from '../../utils/Storage';
 import CreateMomentButton from '../buttons/CreateMomentButton';
 import DefaultAlert from '../defaults/DefaultAlert';
+import {defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultImage from '../defaults/DefaultImage';
 import DefaultText from '../defaults/DefaultText';
@@ -106,6 +108,10 @@ const ChannelSummary = ({channel, style}: TProps) => {
     index: itemIndex,
   });
 
+  const lurking = checkLurking({authUser: authUserData, channel: data});
+
+  console.log(data.options.lurking);
+
   return (
     <View style={style}>
       <View style={{marginBottom: 10}}>
@@ -156,12 +162,12 @@ const ChannelSummary = ({channel, style}: TProps) => {
               flexDirection: 'row',
               marginLeft: 10,
             }}
-            onPress={() =>
+            onPress={() => {
               onUpdate({
                 target: 'channelUsers',
                 data: {users, channel: {id: data.id, code: data.code}},
-              })
-            }>
+              });
+            }}>
             <DefaultIcon
               icon="user-group"
               style={{padding: 0}}
@@ -208,6 +214,19 @@ const ChannelSummary = ({channel, style}: TProps) => {
               }}
             />
           )}
+          {['1', '7', '14'].includes(data.options.lurking?.mode) && (
+            <DefaultText
+              title={`Lurking ${data.options.lurking.mode}`}
+              style={[styles.tag, lurking && {backgroundColor: defaultRed.lv2}]}
+              textStyle={{color: lurking ? 'black' : 'white'}}
+              onPress={() => {
+                setModal('detail');
+                setModalDetail(
+                  `This channel shows moments to users who have shared in the last ${data.options.lurking.mode} days.`,
+                );
+              }}
+            />
+          )}
           {data.options.sponsor?.detail && (
             <DefaultText
               title={'Sponsor'}
@@ -233,7 +252,6 @@ const ChannelSummary = ({channel, style}: TProps) => {
             title="No moments in this channel."
             style={{
               height: 50,
-              // paddingHorizontal: 20,
               width: itemWidth,
             }}
           />
@@ -261,6 +279,12 @@ const ChannelSummary = ({channel, style}: TProps) => {
                         marginBottom: 10,
                       }}
                       onPress={() => {
+                        if (lurking) {
+                          return DefaultAlert({
+                            title: 'Please share a content',
+                            message: 'You have been lurking for too long.',
+                          });
+                        }
                         onView({id});
                       }}>
                       <UserProfileImage
