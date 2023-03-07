@@ -28,6 +28,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
   const schema = object({
     name: text({min: 1, max: 50, required: true}),
     type: text({required: true}),
+    media: text({required: true}),
     mode: text({required: true}),
     lurking: text({required: true}),
   }).required();
@@ -41,6 +42,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
     defaultValues: {
       type: 'public',
       name: '',
+      media: 'both',
       mode: 'camera',
       lurking: '7',
     },
@@ -51,11 +53,13 @@ const CreateGeneralChannelModal = ({}: TProps) => {
     type,
     mode,
     lurking,
+    media,
   }: {
     name: string;
     type: 'public' | 'private';
     mode: 'camera' | 'library' | 'both';
     lurking: 'off' | '1' | '7' | '14';
+    media: 'video' | 'image' | 'both';
   }) => {
     try {
       setSubmitting(true);
@@ -66,7 +70,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
         channel: {
           id: channelId,
           options: {
-            media: 'video',
+            media,
             type,
             mode,
             lurking: {mode: lurking},
@@ -121,15 +125,28 @@ const CreateGeneralChannelModal = ({}: TProps) => {
           />
           <ControllerOption
             control={control}
+            name="media"
+            title="Media"
+            detail="Set allowed media."
+            errors={errors.media}
+            style={styles.textInput}
+            options={[
+              {name: 'both', title: 'Both'},
+              {name: 'image', title: 'Image'},
+              {name: 'video', title: 'Video'},
+            ]}
+          />
+          <ControllerOption
+            control={control}
             name="mode"
             title="Mode"
             detail="Use camera mode to allow users to share live videos taken from camera only."
             errors={errors.mode}
             style={styles.textInput}
             options={[
+              {name: 'both', title: 'Both'},
               {name: 'camera', title: 'Camera'},
               {name: 'library', title: 'Library'},
-              {name: 'both', title: 'Both'},
             ]}
           />
           <ControllerOption

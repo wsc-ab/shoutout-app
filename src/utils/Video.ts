@@ -13,15 +13,17 @@ import {createStoragePath, uploadFile} from './Storage';
 
 const duration = {max: 60, min: 3};
 
-export const getVideo = async ({
+export const getMoment = async ({
   durationLimit,
   mode,
+  mediaType,
 }: {
   durationLimit: number;
+  mediaType: CameraOptions['mediaType'];
   mode: 'library' | 'camera';
 }): Promise<Asset> => {
   const options: CameraOptions = {
-    mediaType: 'video',
+    mediaType,
     videoQuality: 'high',
     maxWidth: 1080,
     maxHeight: 1920,
@@ -49,28 +51,24 @@ export const getVideo = async ({
   return asset;
 };
 
-export const takeVideo = async ({
+export const takeMoment = async ({
   userId,
   id,
   mode,
+  mediaType,
 }: {
   userId: string;
   id: string;
   mode: 'library' | 'camera';
+  mediaType: CameraOptions['mediaType'];
 }) => {
-  const remotePath = createStoragePath({
-    userId,
-    collection: 'moments',
-    id,
-    type: 'video',
-  });
-
   let asset;
 
   try {
-    asset = await getVideo({
+    asset = await getMoment({
       durationLimit: duration.max,
       mode,
+      mediaType,
     });
   } catch (error) {
     if ((error as {message: string}).message !== 'cancel') {
@@ -102,12 +100,29 @@ export const takeVideo = async ({
   if (!asset.uri) {
     DefaultAlert({
       title: 'Error',
-      message: 'Video file path not found.',
+      message: 'File path not found.',
     });
     throw new Error('cancel');
   }
 
-  return {remotePath, localPath: asset.uri};
+  const media = asset.type?.split('/')[0];
+
+  if (!(media && ['image', 'video'].includes(media))) {
+    DefaultAlert({
+      title: 'Error',
+      message: `Invalid file type ${media}`,
+    });
+    throw new Error('cancel');
+  }
+
+  const remotePath = createStoragePath({
+    userId,
+    collection: 'moments',
+    id,
+    type: media as 'image' | 'video',
+  });
+
+  return {remotePath, localPath: asset.uri, media: asset.type?.split('/')[0]};
 };
 
 export const uploadVideo = async ({
@@ -191,6 +206,40 @@ export const uploadVideo = async ({
     await saveCacheData({
       remotePath,
       localPath: uri,
+      size,
+    });
+  } catch (error) {}
+};
+
+export const uploadImage = async ({
+  localPath,
+  remotePath,
+  onProgress,
+}: {
+  localPath: string;
+  remotePath: string;
+  onProgress?: () => void;
+}) => {
+  try {
+    await uploadFile({
+      path: remotePath,
+      uri: localPath,
+      onProgress,
+    });
+  } catch (error) {
+    DefaultAlert({
+      title: 'Error',
+      message: 'Failed to upload photo',
+    });
+    throw new Error('cancel');
+  }
+
+  try {
+    const size = (await RNFS.stat(localPath)).size;
+
+    await saveCacheData({
+      remotePath,
+      localPath,
       size,
     });
   } catch (error) {}

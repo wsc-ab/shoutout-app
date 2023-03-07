@@ -14,6 +14,8 @@ import {getTimeGap} from '../../utils/Date';
 import {getCityAndCountry} from '../../utils/Map';
 import ContributorButton from '../buttons/ContributorButton';
 import {defaultRed} from '../defaults/DefaultColors';
+import DefaultIcon from '../defaults/DefaultIcon';
+import DefaultImage from '../defaults/DefaultImage';
 import DefaultText from '../defaults/DefaultText';
 
 import DefaultVideo from '../defaults/DefaultVideo';
@@ -80,7 +82,7 @@ const MomentCard = ({
   }: {
     item: {
       id: string;
-      content: {path: string; mode: 'camera'};
+      content: {path: string; mode: 'camera'; media: 'image' | 'video'};
       addedAt: TTimestamp;
       name: string;
       createdBy: {id: string};
@@ -97,21 +99,31 @@ const MomentCard = ({
               zIndex: 100,
               paddingHorizontal: 20,
             }}>
-            {item.content.mode === 'camera' && (
-              <DefaultText
-                title={'Camera'}
-                textStyle={{fontWeight: 'bold'}}
-                style={{
-                  backgroundColor: defaultRed.lv1,
-                  borderRadius: 10,
-                  alignItems: 'center',
-                  marginBottom: 5,
-                  alignSelf: 'flex-start',
-                  paddingVertical: 3,
-                  paddingHorizontal: 6,
-                }}
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginBottom: 5,
+              }}>
+              <DefaultIcon
+                icon={item.content.media === 'video' ? 'video' : 'image'}
               />
-            )}
+              {item.content.mode === 'camera' && (
+                <DefaultText
+                  title={'Camera'}
+                  textStyle={{fontWeight: 'bold'}}
+                  style={{
+                    backgroundColor: defaultRed.lv1,
+                    borderRadius: 10,
+                    alignItems: 'center',
+                    marginLeft: 5,
+                    alignSelf: 'flex-start',
+                    paddingVertical: 3,
+                    paddingHorizontal: 6,
+                  }}
+                />
+              )}
+            </View>
 
             <DefaultText
               title={item.name}
@@ -128,17 +140,25 @@ const MomentCard = ({
               numberOfLines={3}
             />
           </View>
+          {item.content.media === 'image' && (
+            <DefaultImage
+              image={item.content.path}
+              imageStyle={{height, width}}
+            />
+          )}
 
-          <DefaultVideo
-            path={item.content.path}
-            videoStyle={{height, width}}
-            mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
-            pauseOnModal={pauseOnModal}
-            repeat
-            inView={inView && index === elIndex}
-            blur={blur}
-            channel={channel}
-          />
+          {item.content.media === 'video' && (
+            <DefaultVideo
+              path={item.content.path}
+              videoStyle={{height, width}}
+              mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
+              pauseOnModal={pauseOnModal}
+              repeat
+              inView={inView && index === elIndex}
+              blur={blur}
+              channel={channel}
+            />
+          )}
         </View>
         {!blur && <Footer moment={item} style={{marginHorizontal: 10}} />}
       </View>

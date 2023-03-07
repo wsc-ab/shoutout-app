@@ -28,6 +28,7 @@ const CreateSponsoredChannelModal = ({}: TProps) => {
 
   const schema = object({
     name: text({min: 1, max: 50, required: true}),
+    media: text({required: true}),
     mode: text({required: true}),
     detail: text({min: 10, max: 500, required: true}),
     lurking: text({required: true}),
@@ -41,6 +42,7 @@ const CreateSponsoredChannelModal = ({}: TProps) => {
     resolver: yupResolver(schema),
     defaultValues: {
       name: '',
+      media: 'both',
       mode: 'camera',
       detail: '',
       lurking: '7',
@@ -52,10 +54,12 @@ const CreateSponsoredChannelModal = ({}: TProps) => {
     detail,
     mode,
     lurking,
+    media,
   }: {
     name: string;
     detail: string;
     mode: 'camera' | 'library' | 'both';
+    media: 'video' | 'image' | 'both';
     lurking: 'off' | '1' | '7' | '14';
   }) => {
     try {
@@ -67,7 +71,7 @@ const CreateSponsoredChannelModal = ({}: TProps) => {
         channel: {
           id: channelId,
           options: {
-            media: 'video',
+            media,
             type: 'public',
             mode,
             lurking: {mode: lurking},
@@ -117,18 +121,31 @@ const CreateSponsoredChannelModal = ({}: TProps) => {
             errors={errors.mode}
             style={styles.textInput}
             options={[
+              {name: 'both', title: 'Both'},
               {name: 'camera', title: 'Camera'},
               {name: 'library', title: 'Library'},
-              {name: 'both', title: 'Both'},
             ]}
           />
           <ControllerDetail
             control={control}
             name="detail"
             title="Detail"
-            detail="Detail of what's being sponsored."
+            detail="What are you offering?"
             errors={errors.detail}
             style={styles.textInput}
+          />
+          <ControllerOption
+            control={control}
+            name="media"
+            title="Media"
+            detail="Set allowed media."
+            errors={errors.media}
+            style={styles.textInput}
+            options={[
+              {name: 'both', title: 'Both'},
+              {name: 'image', title: 'Image'},
+              {name: 'video', title: 'Video'},
+            ]}
           />
           <ControllerOption
             control={control}

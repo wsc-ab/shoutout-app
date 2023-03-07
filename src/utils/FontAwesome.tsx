@@ -15,6 +15,7 @@ import {
   faHandPointLeft,
   faHandPointUp,
   faHeart,
+  faImage,
   faPlay,
   faPlus,
   faSearch,
@@ -25,6 +26,7 @@ import {
   faUserGroup,
   faUserMinus,
   faUserPlus,
+  faVideo,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -53,4 +55,6 @@ library.add(
   faPlus,
   faUserGroup,
   faCircle,
+  faImage,
+  faVideo,
 );

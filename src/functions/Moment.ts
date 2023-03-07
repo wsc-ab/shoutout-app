@@ -10,7 +10,7 @@ export const createMoment = async (input: {
     content: {
       path: string;
       mode: 'camera' | 'library';
-      media: 'photo' | 'video';
+      media: 'image' | 'video';
     };
   };
   channel: {id: string};

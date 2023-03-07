@@ -9,7 +9,7 @@ import {createMoment} from '../../functions/Moment';
 import {getLatLng} from '../../utils/Location';
 
 import {defaultSchema} from '../../utils/Schema';
-import {uploadVideo} from '../../utils/Video';
+import {uploadImage, uploadVideo} from '../../utils/Video';
 import ControllerText from '../controllers/ControllerText';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
@@ -20,8 +20,10 @@ type TProps = {
   remotePath: string;
   localPath: string;
   id: string;
-  content: {mode: 'camera' | 'library'};
-  channel: {id: string};
+  content: {mode: 'camera' | 'library'; media: 'image' | 'video'};
+  channel: {
+    id: string;
+  };
 };
 
 const CreateMomentForm = ({
@@ -59,7 +61,11 @@ const CreateMomentForm = ({
       onUpdate(undefined);
       addUpload({id, localPath});
 
-      await uploadVideo({localPath, remotePath});
+      if (content.media === 'video') {
+        await uploadVideo({localPath, remotePath});
+      } else {
+        await uploadImage({localPath, remotePath});
+      }
 
       await createMoment({
         moment: {
@@ -67,7 +73,6 @@ const CreateMomentForm = ({
           content: {
             ...content,
             path: remotePath,
-            media: 'video',
           },
           latlng,
           name,

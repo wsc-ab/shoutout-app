@@ -7,14 +7,20 @@ import PopupContext from '../../contexts/Popup';
 import {TStyleView} from '../../types/Style';
 import {checkLocationPermission} from '../../utils/Location';
 import {onUploading} from '../../utils/Upload';
-import {takeVideo} from '../../utils/Video';
+import {takeMoment} from '../../utils/Video';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultIcon from '../defaults/DefaultIcon';
 import VideoModeModal from '../modals/VideoModeModal';
 
 type TProps = {
   style?: TStyleView;
-  channel: {id: string; mode: 'camera' | 'library' | 'both'};
+  channel: {
+    id: string;
+    options: {
+      mode: 'camera' | 'library' | 'both';
+      media: 'image' | 'video' | 'both';
+    };
+  };
   color?: string;
 };
 
@@ -27,7 +33,7 @@ const CreateMomentButton = ({channel, color = 'white', style}: TProps) => {
   const [modal, setModal] = useState<'mode'>();
 
   const onAdd = async (mode: 'camera' | 'library') => {
-    onUpdate({target: 'takeVideo'});
+    onUpdate({target: 'takeMoment'});
 
     setSubmitting(true);
 
@@ -44,10 +50,16 @@ const CreateMomentButton = ({channel, color = 'white', style}: TProps) => {
     const momentId = firebase.firestore().collection('moments').doc().id;
 
     try {
-      const {remotePath, localPath} = await takeVideo({
+      const {remotePath, localPath, media} = await takeMoment({
         mode,
         id: momentId,
         userId: authUserData.id,
+        mediaType:
+          channel.options.media === 'both'
+            ? 'mixed'
+            : channel.options.media === 'image'
+            ? 'photo'
+            : 'video',
       });
 
       onUpdate({
@@ -56,8 +68,8 @@ const CreateMomentButton = ({channel, color = 'white', style}: TProps) => {
           remotePath,
           localPath,
           id: momentId,
+          content: {mode, media},
           channel,
-          options: {live: mode === 'camera'},
         },
       });
     } catch (error) {

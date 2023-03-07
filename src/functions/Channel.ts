@@ -6,7 +6,7 @@ export const createChannel = async (input: {
     name: string;
     options: {
       type: 'public' | 'private';
-      media: 'photo' | 'video';
+      media: 'image' | 'video' | 'both';
       mode: 'camera' | 'library' | 'both';
       lurking: {mode: 'off' | '1' | '7' | '14'};
       sponsor?: {detail: string};

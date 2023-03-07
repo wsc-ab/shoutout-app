@@ -17,6 +17,7 @@ import {checkLurking} from '../../utils/Channel';
 import {getTimeGap} from '../../utils/Date';
 import {getCityAndCountry} from '../../utils/Map';
 import {getThumbnailPath} from '../../utils/Storage';
+import {capitalizeFirstLetter} from '../../utils/String';
 import CreateMomentButton from '../buttons/CreateMomentButton';
 import DefaultAlert from '../defaults/DefaultAlert';
 import {defaultRed} from '../defaults/DefaultColors';
@@ -134,7 +135,7 @@ const ChannelSummary = ({channel, style}: TProps) => {
             }}>
             {joined && (
               <CreateMomentButton
-                channel={{id: data.id, mode: data.options?.mode}}
+                channel={{id: data.id, options: data.options}}
               />
             )}
             {!joined && (
@@ -190,6 +191,14 @@ const ChannelSummary = ({channel, style}: TProps) => {
               );
             }}
           />
+          <DefaultText
+            title={
+              data.options.media === 'both'
+                ? 'Image & Video'
+                : capitalizeFirstLetter(data.options.media)
+            }
+            style={styles.tag}
+          />
           {data.options.mode === 'camera' && (
             <DefaultText
               title={'Camera'}
@@ -214,6 +223,7 @@ const ChannelSummary = ({channel, style}: TProps) => {
               }}
             />
           )}
+
           {['1', '7', '14'].includes(data.options.lurking?.mode) && (
             <DefaultText
               title={`Lurking ${data.options.lurking.mode}`}
@@ -265,7 +275,7 @@ const ChannelSummary = ({channel, style}: TProps) => {
                   name,
                   location,
                   addedAt,
-                  content: {path},
+                  content: {path, media},
                   createdBy: {id: userId, displayName},
                 }) => {
                   return (
@@ -308,7 +318,7 @@ const ChannelSummary = ({channel, style}: TProps) => {
                         />
                       </View>
                       <DefaultImage
-                        image={getThumbnailPath(path, 'video')}
+                        image={getThumbnailPath(path, media)}
                         imageStyle={{
                           height: 50,
                           width: 50,
