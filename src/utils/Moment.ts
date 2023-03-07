@@ -22,20 +22,18 @@ export const getUserAdded = ({
   return {added, timeGap};
 };
 
-export const getNewContents = ({authUserData}: {authUserData: TDocData}) => {
+export const getNewMoments = ({authUserData}: {authUserData: TDocData}) => {
   const viewedAt = authUserData.viewedAt;
 
-  const newContents = [];
+  const newMoments = [];
 
   for (const moment of authUserData.contributeTo.items) {
-    for (const content of moment.contents) {
-      if (!viewedAt) {
-        newContents.push(content);
-      } else if (getSecondsGap({start: content.addedAt, end: viewedAt}) >= 0) {
-        newContents.push(content);
-      }
+    if (!viewedAt) {
+      newMoments.push(moment);
+    } else if (getSecondsGap({start: moment.addedAt, end: viewedAt}) >= 0) {
+      newMoments.push(moment);
     }
   }
 
-  return newContents;
+  return newMoments;
 };

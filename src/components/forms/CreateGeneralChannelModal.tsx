@@ -28,7 +28,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
   const schema = object({
     name: text({min: 1, max: 50, required: true}),
     type: text({required: true}),
-    live: text({required: true}),
+    mode: text({required: true}),
   }).required();
 
   const {
@@ -40,18 +40,18 @@ const CreateGeneralChannelModal = ({}: TProps) => {
     defaultValues: {
       type: 'public',
       name: '',
-      live: 'off',
+      mode: 'camera',
     },
   });
 
   const onSubmit = async ({
     name,
     type,
-    live,
+    mode,
   }: {
     name: string;
     type: 'public' | 'private';
-    live: 'on' | 'off';
+    mode: 'camera' | 'library' | 'both';
   }) => {
     try {
       setSubmitting(true);
@@ -64,7 +64,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
           options: {
             media: 'video',
             type,
-            live: live === 'on',
+            mode,
           },
           name,
         },
@@ -116,14 +116,15 @@ const CreateGeneralChannelModal = ({}: TProps) => {
           />
           <ControllerOption
             control={control}
-            name="live"
-            title="Live only mode"
-            detail="Turn on live to allow users to only upload live videos."
-            errors={errors.live}
+            name="mode"
+            title="Mode"
+            detail="Use camera mode to allow users to share live videos taken from camera only."
+            errors={errors.mode}
             style={styles.textInput}
             options={[
-              {name: 'off', title: 'Off'},
-              {name: 'on', title: 'On'},
+              {name: 'camera', title: 'Camera'},
+              {name: 'library', title: 'Library'},
+              {name: 'both', title: 'Both'},
             ]}
           />
         </DefaultKeyboardAwareScrollView>

@@ -6,17 +6,17 @@ import GlobalButton from '../buttons/GlobalButton';
 import SearchButton from '../buttons/SearchButton';
 import UserButton from '../buttons/UserButton';
 
-type TProps = {onFriends: () => void; onGlobal: () => void; tab: string};
+type TProps = {onChannels: () => void; onGlobal: () => void; tab: string};
 
-const Header = ({onFriends, onGlobal, tab}: TProps) => {
-  const position = tab === 'friends' ? 'relative' : 'absolute';
+const Header = ({onChannels, onGlobal, tab}: TProps) => {
+  const position = tab === 'channels' ? 'relative' : 'absolute';
   return (
     <SafeAreaView style={[styles.container, {position}]}>
       <UserButton style={styles.button} />
       <FriendsButton
         style={[styles.button]}
-        color={tab === 'friends' ? 'white' : 'gray'}
-        onPress={onFriends}
+        color={tab === 'channels' ? 'white' : 'gray'}
+        onPress={onChannels}
       />
       <GlobalButton
         style={[styles.button]}

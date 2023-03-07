@@ -15,7 +15,7 @@ import DefaultModal from '../defaults/DefaultModal';
 import MomentCard from '../screen/MomentCard';
 
 type TProps = {
-  moments: {id: string; contents: {path: string; user: {id: string}}[]}[];
+  moments: {id: string; content: {path: string}; createdBy: {id: string}}[];
   momentIndex?: number;
   contentPath?: string;
 };

@@ -10,7 +10,6 @@ import {
 import {TDocData} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
-import {sentToFirst} from '../../utils/Array';
 import DefaultText from '../defaults/DefaultText';
 import MomentCard from './MomentCard';
 
@@ -18,11 +17,11 @@ type TProps = {
   style?: TStyleView;
   channel: TDocData;
   pauseOnModal?: boolean;
-  path?: string;
+  id?: string;
   mount: boolean;
 };
 
-const ChannelCard = ({style, channel, path, pauseOnModal, mount}: TProps) => {
+const ChannelCard = ({style, channel, pauseOnModal, mount}: TProps) => {
   const [status, setStatus] = useState<TStatus>('loading');
   const {height, width} = useWindowDimensions();
   const [index, setIndex] = useState(0);
@@ -90,7 +89,7 @@ const ChannelCard = ({style, channel, path, pauseOnModal, mount}: TProps) => {
           width,
         }}>
         <MomentCard
-          moment={item}
+          moments={item}
           mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
           pauseOnModal={pauseOnModal}
           inView={index === elIndex}
@@ -106,17 +105,14 @@ const ChannelCard = ({style, channel, path, pauseOnModal, mount}: TProps) => {
     index: itemIndex,
   });
 
-  const keyExtractor = (item: TDocData, elIndex: number) => item.id + elIndex;
-
-  const sortMoment = () =>
-    path
-      ? sentToFirst({array: channel.moments.items, field: 'path', value: path})
-      : channel.moments.items;
+  const keyExtractor = (item: TDocData, elIndex: number) => {
+    return item[0].id + elIndex;
+  };
 
   return (
     <View style={style}>
       <FlatList
-        data={sortMoment()}
+        data={channel.groupedMoments}
         initialNumToRender={1}
         windowSize={3}
         maxToRenderPerBatch={1}

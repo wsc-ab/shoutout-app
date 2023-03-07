@@ -1,60 +1,38 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {TStyleView} from '../../types/Style';
-import AddMomentButton from '../buttons/AddMomentButton';
 import LikeButton from '../buttons/LikeButton';
 import ReportButton from '../buttons/ReportButton';
 import ShareButton from '../buttons/ShareButton';
 
 type TProps = {
-  content: {
-    id: string;
-    path: string;
-    name: string;
-    user: {id: string};
-  };
   moment: {
     id: string;
-    channel: {id: string; name: string; options: {live: boolean}};
+    content: {path: string};
+    name: string;
+    createdBy: {id: string};
   };
-  added: boolean;
+
   style?: TStyleView;
 };
 
-const Footer = ({content, moment, added, style}: TProps) => {
+const Footer = ({moment, style}: TProps) => {
   return (
     <View style={[styles.container, style]}>
-      <LikeButton
-        moment={{
-          id: content.id,
-          path: content.path,
-          user: {id: content.user.id},
-        }}
-        style={styles.button}
-      />
-
-      <AddMomentButton moment={moment} style={styles.button} added={added} />
+      <LikeButton moment={moment} style={styles.button} />
       <ShareButton
         input={{
-          title: `Hey! Check this ${content.name} moment out!`,
+          title: `Hey! Check this ${moment.name} moment out!`,
           target: {
             collection: 'moments',
-            id: content.id,
-            path: content.path,
+            id: moment.id,
           },
-          image: {path: content.path, type: 'video'},
+          image: {path: moment.content.path, type: 'video'},
         }}
         style={styles.button}
       />
 
-      <ReportButton
-        moment={{
-          id: content.id,
-          path: content.path,
-          user: {id: content.user.id},
-        }}
-        style={styles.button}
-      />
+      <ReportButton moment={moment} style={styles.button} />
     </View>
   );
 };

@@ -13,7 +13,7 @@ import Welcome from './Welcome';
 const Home = () => {
   const {authUserData, loaded} = useContext(AuthUserContext);
 
-  const [tab, setTab] = useState<'friends' | 'globe'>('friends');
+  const [tab, setTab] = useState<'channels' | 'globe'>('channels');
 
   const appState = useRef(AppState.currentState);
 
@@ -62,11 +62,11 @@ const Home = () => {
     <View style={styles.container}>
       <Permission />
       <Header
-        onFriends={() => setTab('friends')}
+        onChannels={() => setTab('channels')}
         onGlobal={() => setTab('globe')}
         tab={tab}
       />
-      <Channels style={[styles.channels, tab !== 'friends' && styles.hide]} />
+      <Channels style={[styles.channels, tab !== 'channels' && styles.hide]} />
       <Moments
         style={[styles.moments, tab !== 'globe' && styles.hide]}
         mount={tab === 'globe'}

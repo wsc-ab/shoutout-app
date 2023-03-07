@@ -14,7 +14,7 @@ import VideoModeModal from '../modals/VideoModeModal';
 
 type TProps = {
   style?: TStyleView;
-  channel: {id: string; live: boolean};
+  channel: {id: string; mode: 'camera' | 'library' | 'both'};
   color?: string;
 };
 
@@ -79,8 +79,12 @@ const CreateMomentButton = ({channel, color = 'white', style}: TProps) => {
       return onUploading();
     }
 
-    if (channel.live) {
+    if (channel.mode === 'camera') {
       return onAdd('camera');
+    }
+
+    if (channel.mode === 'library') {
+      return onAdd('library');
     }
 
     setModal('mode');

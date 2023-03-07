@@ -7,7 +7,7 @@ export const createChannel = async (input: {
     options: {
       type: 'public' | 'private';
       media: 'photo' | 'video';
-      live: boolean;
+      mode: 'camera' | 'library' | 'both';
       sponsor?: {detail: string};
     };
   };

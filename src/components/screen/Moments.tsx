@@ -12,7 +12,6 @@ import {getMoments} from '../../functions/Moment';
 import {TDocData} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
-import CreateMomentButton from '../buttons/CreateMomentButton';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultText from '../defaults/DefaultText';
 import MomentCard from './MomentCard';
@@ -61,12 +60,12 @@ const Moments = ({style, mount}: TProps) => {
       } catch (error) {
         console.log(error, 'r');
 
-        // DefaultAlert({
-        //   title: 'Error',
-        //   message: (error as {message: string}).message,
-        // });
+        DefaultAlert({
+          title: 'Error',
+          message: (error as {message: string}).message,
+        });
 
-        // setStatus('error');
+        setStatus('error');
       }
     };
 
@@ -113,17 +112,7 @@ const Moments = ({style, mount}: TProps) => {
       </View>
     );
   }
-
-  const ListEmptyComponent = (
-    <>
-      {status === 'loaded' ? (
-        <View style={styles.noMoment}>
-          <DefaultText title="No moment found. Add one!" />
-          <CreateMomentButton style={{marginTop: 20}} />
-        </View>
-      ) : null}
-    </>
-  );
+  console.log(data, 'data');
 
   const renderItem = ({
     item,
@@ -139,7 +128,7 @@ const Moments = ({style, mount}: TProps) => {
     return (
       <View style={{height, width}}>
         <MomentCard
-          moment={{...item}}
+          moments={[item]}
           mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
           inView={index === elIndex}
         />
@@ -165,7 +154,6 @@ const Moments = ({style, mount}: TProps) => {
       initialNumToRender={1}
       windowSize={3}
       maxToRenderPerBatch={1}
-      ListEmptyComponent={ListEmptyComponent}
       snapToInterval={height}
       snapToAlignment={'start'}
       showsVerticalScrollIndicator={false}
@@ -197,8 +185,4 @@ export default Moments;
 const styles = StyleSheet.create({
   noData: {flex: 1, justifyContent: 'center', alignItems: 'center'},
   refresh: {marginTop: 10},
-  noMoment: {
-    top: 100,
-    alignItems: 'center',
-  },
 });

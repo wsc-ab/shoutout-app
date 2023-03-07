@@ -20,7 +20,7 @@ type TProps = {
   remotePath: string;
   localPath: string;
   id: string;
-  options: {live: boolean};
+  content: {mode: 'camera' | 'library'};
   channel: {id: string};
 };
 
@@ -28,7 +28,7 @@ const CreateMomentForm = ({
   remotePath,
   localPath,
   id,
-  options,
+  content,
   channel,
 }: TProps) => {
   const {text} = defaultSchema();
@@ -64,10 +64,13 @@ const CreateMomentForm = ({
       await createMoment({
         moment: {
           id,
-          path: remotePath,
+          content: {
+            ...content,
+            path: remotePath,
+            media: 'video',
+          },
           latlng,
           name,
-          options,
         },
         channel,
       });

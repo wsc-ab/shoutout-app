@@ -38,12 +38,12 @@ const Welcome = ({style}: TProps) => {
       title: ['Welcome to Shoutout!'],
     },
     {
-      title: ['To view your rooms!'],
+      title: ['To view your channels!'],
       detail: 'Go to',
       icon: 'folder',
     },
     {
-      title: ['To share or connect moments!'],
+      title: ['To share moments!'],
       detail: 'Press',
       icon: 'square-plus',
     },
@@ -114,7 +114,9 @@ const Welcome = ({style}: TProps) => {
                   textStyle={{fontWeight: 'bold'}}
                 />
               )}
-              {isLast && submitting && <ActivityIndicator />}
+              {isLast && submitting && (
+                <ActivityIndicator style={styles.button} />
+              )}
             </View>
           );
         }}

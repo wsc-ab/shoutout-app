@@ -28,7 +28,7 @@ const CreateSponsoredChannelModal = ({}: TProps) => {
 
   const schema = object({
     name: text({min: 1, max: 50, required: true}),
-    live: text({required: true}),
+    mode: text({required: true}),
     detail: text({min: 10, max: 500, required: true}),
   }).required();
 
@@ -40,7 +40,7 @@ const CreateSponsoredChannelModal = ({}: TProps) => {
     resolver: yupResolver(schema),
     defaultValues: {
       name: '',
-      live: 'off',
+      mode: 'camera',
       detail: '',
     },
   });
@@ -48,11 +48,11 @@ const CreateSponsoredChannelModal = ({}: TProps) => {
   const onSubmit = async ({
     name,
     detail,
-    live,
+    mode,
   }: {
     name: string;
     detail: string;
-    live: 'on' | 'off';
+    mode: 'camera' | 'library' | 'both';
   }) => {
     try {
       setSubmitting(true);
@@ -65,7 +65,7 @@ const CreateSponsoredChannelModal = ({}: TProps) => {
           options: {
             media: 'video',
             type: 'public',
-            live: live === 'on',
+            mode,
             sponsor: {detail},
           },
           name,
@@ -106,14 +106,15 @@ const CreateSponsoredChannelModal = ({}: TProps) => {
           />
           <ControllerOption
             control={control}
-            name="live"
-            title="Live only mode"
-            detail="Turn on live to allow users to only upload live videos."
-            errors={errors.live}
+            name="mode"
+            title="Mode"
+            detail="Use camera mode to allow users to share live videos taken from camera only."
+            errors={errors.mode}
             style={styles.textInput}
             options={[
-              {name: 'off', title: 'Off'},
-              {name: 'on', title: 'On'},
+              {name: 'camera', title: 'Camera'},
+              {name: 'library', title: 'Library'},
+              {name: 'both', title: 'Both'},
             ]}
           />
           <ControllerDetail

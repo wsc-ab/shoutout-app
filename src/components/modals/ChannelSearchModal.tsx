@@ -1,6 +1,5 @@
 import React, {useContext, useState} from 'react';
 import ModalContext from '../../contexts/Modal';
-
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import ChannelCodeForm from '../forms/ChannelCodeForm';
@@ -14,7 +13,7 @@ const ChannelSearchModal = ({}: TProps) => {
   const [form, setForm] = useState<'search' | 'code'>('search');
 
   const renderItem = item => {
-    if (item?.options?.type === 'private') {
+    if (item.options.type === 'private') {
       return null;
     }
     return (

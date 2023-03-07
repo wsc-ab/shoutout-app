@@ -10,7 +10,7 @@ import openShareModal from '../modals/ShareModal';
 type TProps = {
   input: {
     title: string;
-    target: {collection: string; id: string; path?: string};
+    target: {collection: string; id: string};
     image?: {path: string; type: 'video' | 'image'};
   };
   style?: TStyleView;

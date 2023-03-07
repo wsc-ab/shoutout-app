@@ -1,5 +1,4 @@
-import firestore from '@react-native-firebase/firestore';
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -8,19 +7,12 @@ import {
   ViewabilityConfigCallbackPairs,
   ViewToken,
 } from 'react-native';
-import AuthUserContext from '../../contexts/AuthUser';
 
-import {
-  TDocData,
-  TDocSnapshot,
-  TLocation,
-  TObject,
-  TTimestamp,
-} from '../../types/Firebase';
+import {TTimestamp} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
-import {sentToFirst} from '../../utils/Array';
-import ContributorsButton from '../buttons/ContributorsButton';
-import DefaultAlert from '../defaults/DefaultAlert';
+import {getTimeGap} from '../../utils/Date';
+import {getCityAndCountry} from '../../utils/Map';
+import ContributorButton from '../buttons/ContributorButton';
 import {defaultRed} from '../defaults/DefaultColors';
 import DefaultText from '../defaults/DefaultText';
 
@@ -28,10 +20,14 @@ import DefaultVideo from '../defaults/DefaultVideo';
 import Footer from './Footer';
 
 type TProps = {
-  moment: {id: string};
+  moments: {
+    id: string;
+    name: string;
+    content: {path: string};
+    createdBy: {id: string; displayName: string};
+  }[];
   style?: TStyleView;
   mount: boolean;
-  path?: string;
   pauseOnModal?: boolean;
   inView: boolean;
   blur?: boolean;
@@ -39,8 +35,7 @@ type TProps = {
 };
 
 const MomentCard = ({
-  moment,
-  path,
+  moments,
   style,
   pauseOnModal = true,
   mount,
@@ -49,57 +44,10 @@ const MomentCard = ({
   channel,
 }: TProps) => {
   const {height, width} = useWindowDimensions();
-  const [data, setData] = useState<TDocData>();
-
-  const {authUserData} = useContext(AuthUserContext);
 
   const ref = useRef<FlatList>(null);
 
   const [index, setIndex] = useState(0);
-  const [added, setAdded] = useState(false);
-
-  useEffect(() => {
-    setAdded(authUserData.contributeTo.ids.includes(moment.id));
-  }, [authUserData.contributeTo.ids, moment.id]);
-
-  useEffect(() => {
-    const onNext = async (doc: TDocSnapshot) => {
-      const newMoment = doc.data();
-
-      if (!doc.exists) {
-        return DefaultAlert({
-          title: 'Failed to read data',
-          message: 'This moment seems to be deleted.',
-        });
-      }
-
-      if (newMoment) {
-        newMoment.contents.items = path
-          ? sentToFirst({
-              array: newMoment.contents.items,
-              field: 'path',
-              value: path,
-            })
-          : newMoment.contents.items;
-
-        setData(newMoment);
-      }
-    };
-
-    const onError = (error: Error) => {
-      DefaultAlert({
-        title: 'Failed to get moment data',
-        message: (error as {message: string}).message,
-      });
-    };
-
-    const unsubscribe = firestore()
-      .collection('moments')
-      .doc(moment.id)
-      .onSnapshot(onNext, onError);
-
-    return unsubscribe;
-  }, [moment.id, path]);
 
   const onViewableItemsChanged = ({
     viewableItems,
@@ -120,34 +68,6 @@ const MomentCard = ({
     ],
   );
 
-  const onContributor = (newIndex: number) => {
-    ref.current?.scrollToIndex({index: newIndex, animated: true});
-  };
-
-  if (!data) {
-    return null;
-  }
-
-  const users = data.contents.items.map(
-    ({
-      user,
-      addedAt,
-      location,
-      uploading,
-      canceled,
-    }: {
-      uploading?: boolean;
-      user: {id: string; name: string};
-      addedAt: TTimestamp;
-      location: TLocation;
-      canceled?: boolean;
-    }) => ({...user, uploading, canceled, addedAt, location}),
-  );
-
-  if (!data) {
-    return null;
-  }
-
   const getItemLayout = (_: any[] | null | undefined, itemIndex: number) => ({
     length: width,
     offset: width * itemIndex,
@@ -160,12 +80,10 @@ const MomentCard = ({
   }: {
     item: {
       id: string;
-      path: string;
-      uploading?: boolean;
-      user: {id: string; name: string};
-      options: {live: boolean};
+      content: {path: string; mode: 'camera'};
       addedAt: TTimestamp;
       name: string;
+      createdBy: {id: string};
     };
     index: number;
   }) => {
@@ -179,9 +97,9 @@ const MomentCard = ({
               zIndex: 100,
               paddingHorizontal: 20,
             }}>
-            {item.options?.live && (
+            {item.content.mode === 'camera' && (
               <DefaultText
-                title={'Live'}
+                title={'Camera'}
                 textStyle={{fontWeight: 'bold'}}
                 style={{
                   backgroundColor: defaultRed.lv1,
@@ -194,15 +112,25 @@ const MomentCard = ({
                 }}
               />
             )}
+
             <DefaultText
               title={item.name}
-              numberOfLines={4}
               textStyle={{fontWeight: 'bold', fontSize: 20}}
+            />
+            <DefaultText
+              title={getCityAndCountry(item.location.formatted)}
+              textStyle={{fontSize: 14, color: 'lightgray'}}
+              numberOfLines={3}
+            />
+            <DefaultText
+              title={`${getTimeGap(item.createdAt ?? item.addedAt)} ago`}
+              textStyle={{fontSize: 14, color: 'lightgray'}}
+              numberOfLines={3}
             />
           </View>
 
           <DefaultVideo
-            path={item.path}
+            path={item.content.path}
             videoStyle={{height, width}}
             mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
             pauseOnModal={pauseOnModal}
@@ -212,15 +140,7 @@ const MomentCard = ({
             channel={channel}
           />
         </View>
-        {!blur && (
-          <Footer
-            added={added}
-            content={item}
-            moment={{id: data.id, channel: data.channel}}
-            style={{marginHorizontal: 10}}
-          />
-        )}
-        {item.uploading && <DefaultText title="Being uploaded" />}
+        {!blur && <Footer moment={item} style={{marginHorizontal: 10}} />}
       </View>
     );
   };
@@ -229,7 +149,7 @@ const MomentCard = ({
     <View style={style}>
       <FlatList
         ref={ref}
-        data={data.contents.items as TObject[]}
+        data={moments}
         initialNumToRender={1}
         windowSize={3}
         maxToRenderPerBatch={1}
@@ -240,16 +160,20 @@ const MomentCard = ({
         decelerationRate="fast"
         getItemLayout={getItemLayout}
         disableIntervalMomentum
-        keyExtractor={item => item.path}
+        keyExtractor={item => {
+          console.log(item, 'item');
+
+          return item.id;
+        }}
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         renderItem={renderItem}
       />
-      <ContributorsButton
-        users={users}
+
+      <ContributorButton
+        user={moments[0].createdBy}
         index={index}
-        type={data.channel.options.type}
-        onPress={onContributor}
-        style={styles.users}
+        length={moments.length}
+        style={styles.page}
       />
     </View>
   );
@@ -258,5 +182,14 @@ const MomentCard = ({
 export default MomentCard;
 
 const styles = StyleSheet.create({
-  users: {position: 'absolute', bottom: 70},
+  page: {
+    position: 'absolute',
+    bottom: 70,
+    left: 0,
+    right: 0,
+    marginHorizontal: 20,
+    alignItems: 'flex-end',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
 });

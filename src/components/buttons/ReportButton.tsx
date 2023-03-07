@@ -8,7 +8,7 @@ import {defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 
 type TProps = {
-  moment: {id: string; path: string; user: {id: string}};
+  moment: {id: string; content: {path: string}; createdBy: {id: string}};
   onSuccess?: () => void;
   style?: TStyleView;
 };
@@ -21,13 +21,13 @@ const ReportButton = ({moment, onSuccess, style}: TProps) => {
     const onPress = async () => {
       try {
         setIsReported(true);
-        addReportContent(moment.path);
+        addReportContent(moment.id);
         await createReport({moment});
 
         onSuccess && onSuccess();
       } catch (error) {
         setIsReported(false);
-        removeReportContent(moment.path);
+        removeReportContent(moment.id);
         if ((error as {message: string}).message === "target doesn't exist") {
           DefaultAlert({
             title: 'Deleted moment',
@@ -51,13 +51,13 @@ const ReportButton = ({moment, onSuccess, style}: TProps) => {
   const onUnreport = async () => {
     try {
       setIsReported(false);
-      removeReportContent(moment.path);
+      removeReportContent(moment.id);
       await deleteReport({
         moment,
       });
     } catch (error) {
       setIsReported(true);
-      addReportContent(moment.path);
+      addReportContent(moment.id);
       DefaultAlert({
         title: 'Error',
         message: (error as {message: string}).message,
@@ -70,10 +70,10 @@ const ReportButton = ({moment, onSuccess, style}: TProps) => {
   useEffect(() => {
     setIsReported(
       authUserData.reported.items
-        .map(({path}: {path: string}) => path)
-        .includes(moment.path),
+        .map(({id}: {id: string}) => id)
+        .includes(moment.id),
     );
-  }, [authUserData.reported.items, moment.path]);
+  }, [authUserData.reported.items, moment.id]);
 
   return (
     <Pressable

@@ -3,6 +3,7 @@ import {FlatList, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import {TStyleView} from '../../types/Style';
 import CreateRoomButton from '../buttons/CreateChannelButton';
+import DefaultText from '../defaults/DefaultText';
 import ChannelSummary from './ChannelSummary';
 
 type TProps = {
@@ -23,6 +24,15 @@ const Channels = ({style}: TProps) => {
         contentContainerStyle={styles.contentContainer}
         renderItem={renderItem}
         indicatorStyle="white"
+        ListEmptyComponent={() => (
+          <View style={{marginHorizontal: 10}}>
+            <DefaultText
+              title="No channels"
+              textStyle={{fontSize: 20, fontWeight: 'bold'}}
+            />
+            <DefaultText title="Create a channel or search and join public channels." />
+          </View>
+        )}
         ItemSeparatorComponent={() => <View style={styles.seperator} />}
       />
       <View style={styles.footer}>

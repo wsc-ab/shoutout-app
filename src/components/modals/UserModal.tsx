@@ -20,7 +20,7 @@ import {updateUserViewedAt} from '../../functions/User';
 import {TDocData, TLocation, TTimestamp} from '../../types/Firebase';
 import {TStatus} from '../../types/Screen';
 import {getSameIds} from '../../utils/Array';
-import {getNewContents} from '../../utils/Moment';
+import {getNewMoments} from '../../utils/Moment';
 import FollowButton from '../buttons/FollowButton';
 import UserProfileImage from '../images/UserProfileImage';
 
@@ -80,25 +80,7 @@ const UserModal = ({id}: TProps) => {
     }
   }, [authUserData.id, data?.id]);
 
-  const newContentPaths = data
-    ? getNewContents({authUserData: data}).map(({path: elPath}) => elPath)
-    : [];
-
-  const sorted = data?.contributeTo?.items.map(item => {
-    item.contents = item.contents
-      .sort((a, b) => (a.user.id === id ? -1 : b.user.id === id ? 1 : 0))
-      .map(content => ({
-        ...content,
-        new:
-          // if user is viewing its own profile
-          // show what content is new
-          data?.id === authUserData.id
-            ? newContentPaths.includes(content.path)
-            : false,
-      }));
-
-    return item;
-  });
+  const newMoments = data ? getNewMoments({authUserData: data}) : [];
 
   const friend =
     getSameIds(authUserData.followTo.items, authUserData.followFrom.items).some(
@@ -152,7 +134,7 @@ const UserModal = ({id}: TProps) => {
           )}
           {friend && (
             <FlatList
-              data={sorted}
+              data={data.contributeTo.items}
               indicatorStyle="white"
               style={{
                 paddingHorizontal: 10,
@@ -169,32 +151,45 @@ const UserModal = ({id}: TProps) => {
               }
               renderItem={({
                 item,
-                index,
               }: {
                 item: {
                   id: string;
-                  contents: {
-                    path: string;
-                    addedAt: TTimestamp;
-                    location: TLocation;
-                    name: string;
-                    user: {id: string; displayName: string};
-                    new: boolean;
-                  }[];
+                  addedAt: TTimestamp;
+                  location: TLocation;
+                  name: string;
+                  createdBy: {id: string; displayName: string};
                 };
                 index: number;
               }) => {
+                console.log(item, 'i');
+
                 return (
                   <MomentSummary
-                    moment={item}
+                    moment={{
+                      ...item,
+                      createdBy: {
+                        id: data.id,
+                        displayName: data.displayName,
+                      },
+                    }}
                     onDelete={() => setStatus('loading')}
-                    onPress={path => {
+                    onPress={id => {
+                      const momentIndex = data.contributeTo.items.findIndex(
+                        item => item.id === id,
+                      );
+                      data.contributeTo.items.unshift(
+                        data.contributeTo.items.splice(momentIndex, 1)[0],
+                      );
                       onUpdate({
                         target: 'moments',
                         data: {
-                          moments: sorted,
-                          momentIndex: index,
-                          contentPath: path,
+                          moments: data.contributeTo.items.map(item => ({
+                            ...item,
+                            createdBy: {
+                              id: data.id,
+                              displayName: data.displayName,
+                            },
+                          })),
                         },
                       });
                     }}

@@ -10,8 +10,8 @@ import DefaultIcon from '../defaults/DefaultIcon';
 type TProps = {
   moment: {
     id: string;
-    path: string;
-    user: {id: string};
+    content: {path: string};
+    createdBy: {id: string};
   };
   style?: TStyleView;
 };
@@ -65,11 +65,9 @@ const LikeButton = ({moment, style}: TProps) => {
 
   useEffect(() => {
     setLiked(
-      authUserData.likeTo?.items.some(
-        ({path}: {path: string}) => path === moment.path,
-      ),
+      authUserData.likeTo?.items.some(({id}: {id: string}) => id === moment.id),
     );
-  }, [authUserData.likeTo?.items, moment.path]);
+  }, [authUserData.likeTo?.items, moment.id]);
 
   return (
     <DefaultIcon

@@ -4,15 +4,15 @@ import {
   FlatList,
   Pressable,
   StyleSheet,
+  Text,
   useWindowDimensions,
   View,
-  Text,
 } from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import {TDocData, TDocSnapshot} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
-import {groupByLength} from '../../utils/Array';
+import {groupByKey, groupByLength} from '../../utils/Array';
 import {getTimeGap} from '../../utils/Date';
 import {getCityAndCountry} from '../../utils/Map';
 import {getThumbnailPath} from '../../utils/Storage';
@@ -29,7 +29,7 @@ type TProps = {
   style?: TStyleView;
 };
 
-const Channelsummary = ({channel, style}: TProps) => {
+const ChannelSummary = ({channel, style}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
   const {width} = useWindowDimensions();
   const [data, setData] = useState<TDocData>();
@@ -40,10 +40,7 @@ const Channelsummary = ({channel, style}: TProps) => {
   useEffect(() => {
     const onNext = async (doc: TDocSnapshot) => {
       if (!doc.exists) {
-        return DefaultAlert({
-          title: 'Failed to read data',
-          message: 'This channel seems to be deleted.',
-        });
+        return;
       }
 
       const newPrompt = doc.data();
@@ -72,16 +69,28 @@ const Channelsummary = ({channel, style}: TProps) => {
     return null;
   }
 
-  const users =
-    data.inviteTo?.items?.map(elItem => ({
-      ...elItem,
-      moment: data.moments.items.filter(
-        ({user: {id: elId}}) => elId === elItem.id,
-      )[0],
-    })) ?? [];
+  const users = data.inviteTo?.items;
 
-  const onView = ({path}: {path: string}) =>
-    onUpdate({target: 'channel', data: {channel: data, path}});
+  const onView = ({id}: {id: string}) => {
+    if (data) {
+      const groupedMoments = groupByKey({items: data.moments.items});
+      console.log(groupedMoments, 'groupedMoments');
+      const userIndex = groupedMoments.findIndex(item => item[0].id === id);
+      groupedMoments.unshift(groupedMoments.splice(userIndex, 1)[0]);
+      const momentIndex = groupedMoments[userIndex].findIndex(
+        item => item.id === id,
+      );
+
+      groupedMoments[userIndex].unshift(
+        groupedMoments[userIndex].splice(momentIndex, 1)[0],
+      );
+
+      onUpdate({
+        target: 'channel',
+        data: {channel: {...data, groupedMoments}},
+      });
+    }
+  };
 
   const grouped = groupByLength(data.moments.items, 3);
 
@@ -110,7 +119,7 @@ const Channelsummary = ({channel, style}: TProps) => {
           <DefaultText
             title={data.name}
             textStyle={{fontWeight: 'bold', fontSize: 20}}
-            style={{flex: 1, marginLeft: 10}}
+            style={{flex: 1}}
           />
           <View
             style={{
@@ -119,13 +128,14 @@ const Channelsummary = ({channel, style}: TProps) => {
             }}>
             {joined && (
               <CreateMomentButton
-                channel={{id: data.id, live: data.options?.live}}
+                channel={{id: data.id, mode: data.options?.mode}}
               />
             )}
             {!joined && (
               <DefaultIcon
                 icon="square-plus"
                 size={20}
+                color="gray"
                 onPress={() =>
                   DefaultAlert({
                     title: 'Need to join',
@@ -161,10 +171,9 @@ const Channelsummary = ({channel, style}: TProps) => {
             <DefaultText title={data.inviteTo.number} style={{marginLeft: 5}} />
           </Pressable>
         </View>
-        <View
-          style={{flexDirection: 'row', marginHorizontal: 10, marginTop: 5}}>
+        <View style={{flexDirection: 'row', marginTop: 5}}>
           <DefaultText
-            title={data.options?.type === 'private' ? 'Private' : 'Public'}
+            title={data.options.type === 'private' ? 'Private' : 'Public'}
             style={styles.tag}
             onPress={() => {
               setModal('detail');
@@ -175,9 +184,9 @@ const Channelsummary = ({channel, style}: TProps) => {
               );
             }}
           />
-          {data.options?.live && (
+          {data.options.mode === 'camera' && (
             <DefaultText
-              title={'Live only'}
+              title={'Camera'}
               style={styles.tag}
               onPress={() => {
                 setModal('detail');
@@ -187,7 +196,19 @@ const Channelsummary = ({channel, style}: TProps) => {
               }}
             />
           )}
-          {data.options?.sponsor?.detail && (
+          {data.options.mode === 'library' && (
+            <DefaultText
+              title={'Library'}
+              style={styles.tag}
+              onPress={() => {
+                setModal('detail');
+                setModalDetail(
+                  'This channel only allows moments from media library to be uploaded.',
+                );
+              }}
+            />
+          )}
+          {data.options.sponsor?.detail && (
             <DefaultText
               title={'Sponsor'}
               style={styles.tag}
@@ -212,7 +233,7 @@ const Channelsummary = ({channel, style}: TProps) => {
             title="No moments in this channel."
             style={{
               height: 50,
-              paddingHorizontal: 20,
+              // paddingHorizontal: 20,
               width: itemWidth,
             }}
           />
@@ -222,11 +243,12 @@ const Channelsummary = ({channel, style}: TProps) => {
             <View>
               {item.map(
                 ({
+                  id,
                   name,
-                  path,
                   location,
                   addedAt,
-                  user: {id: userId, displayName},
+                  content: {path},
+                  createdBy: {id: userId, displayName},
                 }) => {
                   return (
                     <Pressable
@@ -239,7 +261,7 @@ const Channelsummary = ({channel, style}: TProps) => {
                         marginBottom: 10,
                       }}
                       onPress={() => {
-                        onView({path});
+                        onView({id});
                       }}>
                       <UserProfileImage
                         user={{id: userId}}
@@ -292,7 +314,7 @@ const Channelsummary = ({channel, style}: TProps) => {
   );
 };
 
-export default Channelsummary;
+export default ChannelSummary;
 
 const styles = StyleSheet.create({
   tag: {

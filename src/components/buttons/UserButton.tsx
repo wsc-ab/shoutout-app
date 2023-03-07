@@ -3,7 +3,7 @@ import {Pressable, StyleSheet} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import {TStyleView} from '../../types/Style';
-import {getNewContents} from '../../utils/Moment';
+import {getNewMoments} from '../../utils/Moment';
 import {defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
@@ -16,7 +16,7 @@ const UserButton = ({style}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
   const {authUserData} = useContext(AuthUserContext);
 
-  const numberOfNewContents = getNewContents({authUserData}).length;
+  const numberOfNewContents = getNewMoments({authUserData}).length;
 
   return (
     <Pressable
