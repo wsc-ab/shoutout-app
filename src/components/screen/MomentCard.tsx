@@ -13,12 +13,13 @@ import {TStyleView} from '../../types/Style';
 import {getTimeGap} from '../../utils/Date';
 import {getCityAndCountry} from '../../utils/Map';
 import ContributorButton from '../buttons/ContributorButton';
-import {defaultRed} from '../defaults/DefaultColors';
+import {defaultBlack, defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultImage from '../defaults/DefaultImage';
 import DefaultText from '../defaults/DefaultText';
 
 import DefaultVideo from '../defaults/DefaultVideo';
+import UserProfileImage from '../images/UserProfileImage';
 import Footer from './Footer';
 
 type TProps = {
@@ -95,14 +96,20 @@ const MomentCard = ({
           <View
             style={{
               position: 'absolute',
-              top: 100,
+              bottom: 70,
               zIndex: 100,
-              paddingHorizontal: 20,
+              left: 0,
+              right: 0,
+              marginHorizontal: 20,
+              borderRadius: 10,
+              padding: 10,
+              backgroundColor: defaultBlack.lv3(0.5),
             }}>
             <View
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
+                justifyContent: 'center',
                 marginBottom: 5,
               }}>
               <DefaultIcon
@@ -111,7 +118,9 @@ const MomentCard = ({
               {item.content.mode === 'camera' && (
                 <DefaultText
                   title={'Camera'}
-                  textStyle={{fontWeight: 'bold'}}
+                  textStyle={{
+                    fontWeight: 'bold',
+                  }}
                   style={{
                     backgroundColor: defaultRed.lv1,
                     borderRadius: 10,
@@ -123,22 +132,45 @@ const MomentCard = ({
                   }}
                 />
               )}
+              <DefaultText
+                title={`${index + 1} / ${moments.length}`}
+                style={{flex: 1, alignItems: 'flex-end'}}
+                textStyle={{fontWeight: 'bold'}}
+              />
             </View>
 
-            <DefaultText
-              title={item.name}
-              textStyle={{fontWeight: 'bold', fontSize: 20}}
-            />
-            <DefaultText
-              title={getCityAndCountry(item.location.formatted)}
-              textStyle={{fontSize: 14, color: 'lightgray'}}
-              numberOfLines={3}
-            />
-            <DefaultText
-              title={`${getTimeGap(item.createdAt ?? item.addedAt)} ago`}
-              textStyle={{fontSize: 14, color: 'lightgray'}}
-              numberOfLines={3}
-            />
+            <View style={{flexDirection: 'row'}}>
+              <UserProfileImage
+                user={{
+                  id: moments[0].createdBy.id,
+                }}
+              />
+              <View style={{marginLeft: 5}}>
+                <DefaultText
+                  title={moments[0].createdBy.displayName}
+                  textStyle={{fontWeight: 'bold'}}
+                />
+                <DefaultText
+                  title={item.name}
+                  textStyle={{fontWeight: 'bold', fontSize: 20}}
+                />
+                <DefaultText
+                  title={getCityAndCountry(item.location.formatted)}
+                  textStyle={{fontSize: 14, color: 'lightgray'}}
+                  numberOfLines={3}
+                />
+                <DefaultText
+                  title={`${getTimeGap(item.createdAt ?? item.addedAt)} ago`}
+                  textStyle={{fontSize: 14, color: 'lightgray'}}
+                  numberOfLines={3}
+                />
+                {/* <DefaultText
+                  title={`${index + 1} / ${moments.length}`}
+                  textStyle={{fontWeight: 'bold'}}
+                /> */}
+              </View>
+            </View>
+            <View></View>
           </View>
           {item.content.media === 'image' && (
             <DefaultImage
@@ -187,13 +219,6 @@ const MomentCard = ({
         }}
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         renderItem={renderItem}
-      />
-
-      <ContributorButton
-        user={moments[0].createdBy}
-        index={index}
-        length={moments.length}
-        style={styles.page}
       />
     </View>
   );
