@@ -22,6 +22,7 @@ type TProps = {
     createdBy: {id: string; displayName: string};
     content: {
       path: string;
+      media: 'image' | 'video';
     };
   };
   style?: TStyleView;
@@ -71,7 +72,7 @@ const MomentSummary = ({
 
       <DefaultImage
         onPress={onPress ? () => onPress(moment.id) : undefined}
-        image={getThumbnailPath(moment.content.path, 'video')}
+        image={getThumbnailPath(moment.content.path, moment.content.media)}
         imageStyle={contentStyle}
       />
 
