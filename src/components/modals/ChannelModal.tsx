@@ -8,10 +8,10 @@ import ChannelCard from '../screen/ChannelCard';
 
 type TProps = {
   channel: TDocData;
-  id?: string;
+  momentIndex?: number;
 };
 
-const ChannelModal = ({channel, id}: TProps) => {
+const ChannelModal = ({channel, momentIndex}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
   const {height, width} = useWindowDimensions();
 
@@ -28,7 +28,7 @@ const ChannelModal = ({channel, id}: TProps) => {
       </SafeAreaView>
       <ChannelCard
         channel={channel}
-        id={id}
+        momentIndex={momentIndex}
         mount
         pauseOnModal={false}
         style={[styles.card, {height, width}]}

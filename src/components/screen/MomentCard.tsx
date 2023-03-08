@@ -30,6 +30,7 @@ type TProps = {
   }[];
   style?: TStyleView;
   mount: boolean;
+  momentIndex?: number;
   pauseOnModal?: boolean;
   inView: boolean;
   blur?: boolean;
@@ -39,6 +40,7 @@ type TProps = {
 const MomentCard = ({
   moments,
   style,
+  momentIndex,
   pauseOnModal = true,
   mount,
   inView,
@@ -202,6 +204,7 @@ const MomentCard = ({
         maxToRenderPerBatch={1}
         horizontal
         snapToInterval={width}
+        initialScrollIndex={momentIndex}
         showsHorizontalScrollIndicator={false}
         snapToAlignment={'start'}
         decelerationRate="fast"
@@ -218,16 +221,3 @@ const MomentCard = ({
 };
 
 export default MomentCard;
-
-const styles = StyleSheet.create({
-  page: {
-    position: 'absolute',
-    bottom: 70,
-    left: 0,
-    right: 0,
-    marginHorizontal: 20,
-    alignItems: 'flex-end',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-});

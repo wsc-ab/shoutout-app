@@ -77,23 +77,27 @@ const ChannelSummary = ({channel, style}: TProps) => {
 
   const users = data.inviteTo?.items;
 
-  const onView = ({id}: {id: string}) => {
+  const onView = ({
+    user: {id: userId},
+    moment: {id: momentId},
+  }: {
+    user: {id: string};
+    moment: {id: string};
+  }) => {
     if (data) {
       const groupedMoments = groupByKey({items: data.moments.items});
 
-      const userIndex = groupedMoments.findIndex(item => item[0].id === id);
+      const userIndex = groupedMoments.findIndex(
+        item => item[0].createdBy.id === userId,
+      );
       groupedMoments.unshift(groupedMoments.splice(userIndex, 1)[0]);
-      const momentIndex = groupedMoments[userIndex].findIndex(
-        item => item.id === id,
-      );
-
-      groupedMoments[userIndex].unshift(
-        groupedMoments[userIndex].splice(momentIndex, 1)[0],
-      );
+      const momentIndex = groupedMoments[0].findIndex(item => {
+        return item.id === momentId;
+      });
 
       onUpdate({
         target: 'channel',
-        data: {channel: {...data, groupedMoments}},
+        data: {channel: {...data, groupedMoments}, momentIndex},
       });
     }
   };
@@ -293,7 +297,7 @@ const ChannelSummary = ({channel, style}: TProps) => {
                         if (ghosting) {
                           return DefaultAlert(localization.ghostAlert);
                         }
-                        onView({id});
+                        onView({user: {id: userId}, moment: {id}});
                       }}>
                       <UserProfileImage
                         user={{id: userId}}
