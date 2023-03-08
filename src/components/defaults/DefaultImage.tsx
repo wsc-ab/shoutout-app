@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Image, Pressable, StyleSheet, View} from 'react-native';
+import AuthUserContext from '../../contexts/AuthUser';
 import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
 import {loadFromCache} from '../../utils/Cache';
@@ -12,26 +13,27 @@ import DefaultText from './DefaultText';
 export const getThumnailPath = (url: string) => url + '_200x200';
 
 export type Props = {
+  moment?: {id: string};
   image?: string;
   type?: string;
   style?: TStyleView;
   imageStyle: {height: number; width: number};
-  blurRadius?: number;
   onLoaded?: () => void;
   onPress?: () => void;
 };
 
 const DefaultImage = ({
+  moment,
   image,
   style,
   imageStyle,
-  blurRadius,
   onLoaded,
   onPress,
 }: Props) => {
   const [imageUrl, setImageUrl] = useState<string>();
   const [status, setStatus] = useState<TStatus>('loading');
-
+  const {reportedContents} = useContext(AuthUserContext);
+  const isReported = moment ? reportedContents.includes(moment.id) : false;
   useEffect(() => {
     let isMounted = true;
     const loadImageUrl = async () => {
@@ -66,6 +68,8 @@ const DefaultImage = ({
     return null;
   }
 
+  console.log(isReported, 'is');
+
   return (
     <Pressable style={style} onPress={onPress} disabled={!onPress}>
       {status === 'loaded' && image && (
@@ -77,7 +81,7 @@ const DefaultImage = ({
           resizeMode="cover"
           onLoadEnd={onLoaded}
           onError={() => setStatus('error')}
-          blurRadius={blurRadius}
+          blurRadius={isReported ? 20 : undefined}
         />
       )}
       {status === 'loaded' && !image && (

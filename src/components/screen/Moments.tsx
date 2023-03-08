@@ -58,8 +58,6 @@ const Moments = ({style, mount}: TProps) => {
         setData(moments);
         setStatus('loaded');
       } catch (error) {
-        console.log(error, 'r');
-
         DefaultAlert({
           title: 'Error',
           message: (error as {message: string}).message,
@@ -112,7 +110,6 @@ const Moments = ({style, mount}: TProps) => {
       </View>
     );
   }
-  console.log(data, 'data');
 
   const renderItem = ({
     item,

@@ -11,8 +11,8 @@ type TContextProps = {
   loaded: boolean;
   authUserData: TDocData;
   reportedContents: string[];
-  addReportContent: (path: string) => void;
-  removeReportContent: (path: string) => void;
+  addReportContent: (id: string) => void;
+  removeReportContent: (id: string) => void;
   onReload: () => void;
   onSignOut: () => void;
   bundleId: TBundleId;
@@ -92,12 +92,12 @@ const AuthUserProvider = ({children, bundleId}: TProps) => {
   }, [authUser?.uid]);
 
   useEffect(() => {
-    const newReportedContents = authUserData?.reported.items.map(
-      ({path}: {path: string}) => path,
+    const newReportedContents = authUserData?.reported.moments.map(
+      ({id}: {id: string}) => id,
     );
 
     setReportedContents(newReportedContents);
-  }, [authUserData?.reported.items]);
+  }, [authUserData?.reported.moments]);
 
   const onSignOut = async () => {
     try {
@@ -109,10 +109,10 @@ const AuthUserProvider = ({children, bundleId}: TProps) => {
     }
   };
 
-  const addReportContent = (path: string) =>
-    setReportedContents(pre => [...pre, path]);
-  const removeReportContent = (path: string) =>
-    setReportedContents(pre => pre.filter(el => el !== path));
+  const addReportContent = (id: string) =>
+    setReportedContents(pre => [...pre, id]);
+  const removeReportContent = (id: string) =>
+    setReportedContents(pre => pre.filter(el => el !== id));
 
   return (
     <AuthUserContext.Provider

@@ -118,8 +118,6 @@ export const sentToFirst = <A extends TObject>({
 };
 
 export const groupByKey = <A extends TObject>({items}: {items: A[]}) => {
-  console.log(items, 'items');
-
   return items.reduce(function (r, a) {
     const index = r.findIndex(item => item[0].createdBy.id === a.createdBy.id);
 

@@ -47,7 +47,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
       type: 'public',
       name: '',
       media: 'both',
-      mode: 'camera',
+      mode: 'both',
       ghosting: '7',
     },
   });

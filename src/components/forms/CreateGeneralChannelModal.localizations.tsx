@@ -67,7 +67,7 @@ export const localizations = {
       detail:
         '카메라 모드를 선택하면 카메라로 바로 찍은 라이브 모멘트만 올릴 수 있습니다.',
       options: [
-        {name: 'both', title: '모드'},
+        {name: 'both', title: '모두'},
         {name: 'camera', title: '카메라'},
         {name: 'library', title: '라이브러리'},
       ],

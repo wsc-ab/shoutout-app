@@ -60,10 +60,12 @@ const MomentsModal = ({moments, momentIndex = 0, contentPath}: TProps) => {
       return <View style={{height, width}} />;
     }
 
+    console.log(item, 'item');
+
     return (
       <View style={{height, width}}>
         <MomentCard
-          moment={{...item}}
+          moments={[item]}
           mount={index - 1 <= elIndex && elIndex <= index + 1}
           path={elIndex === momentIndex ? contentPath : undefined}
           pauseOnModal={false}

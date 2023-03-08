@@ -12,7 +12,6 @@ import {TTimestamp} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
 import {getTimeGap} from '../../utils/Date';
 import {getCityAndCountry} from '../../utils/Map';
-import ContributorButton from '../buttons/ContributorButton';
 import {defaultBlack, defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultImage from '../defaults/DefaultImage';
@@ -164,16 +163,12 @@ const MomentCard = ({
                   textStyle={{fontSize: 14, color: 'lightgray'}}
                   numberOfLines={3}
                 />
-                {/* <DefaultText
-                  title={`${index + 1} / ${moments.length}`}
-                  textStyle={{fontWeight: 'bold'}}
-                /> */}
               </View>
             </View>
-            <View></View>
           </View>
           {item.content.media === 'image' && (
             <DefaultImage
+              moment={{id: item.id}}
               image={item.content.path}
               imageStyle={{height, width}}
             />
@@ -181,7 +176,7 @@ const MomentCard = ({
 
           {item.content.media === 'video' && (
             <DefaultVideo
-              path={item.content.path}
+              moment={{id: item.id, content: {path: item.content.path}}}
               videoStyle={{height, width}}
               mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
               pauseOnModal={pauseOnModal}
@@ -213,8 +208,6 @@ const MomentCard = ({
         getItemLayout={getItemLayout}
         disableIntervalMomentum
         keyExtractor={item => {
-          console.log(item, 'item');
-
           return item.id;
         }}
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}

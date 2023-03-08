@@ -16,7 +16,7 @@ import DefaultImageBackground from './DefaultImageBackground';
 import DefaultText from './DefaultText';
 
 type TProps = {
-  path: string;
+  moment: {id: string; content: {path: string}};
   style?: TStyleView;
   videoStyle: {width: number; height: number};
   onLoaded?: () => void;
@@ -32,7 +32,10 @@ type TProps = {
 };
 
 const DefaultVideo = ({
-  path,
+  moment: {
+    id,
+    content: {path},
+  },
   onEnd,
   repeat = false,
   onPress,
@@ -91,7 +94,7 @@ const DefaultVideo = ({
     }
   }, [path, status]);
 
-  const isReported = reportedContents.includes(path);
+  const isReported = reportedContents.includes(id);
 
   const paused = !inView || userPaused;
 
@@ -99,12 +102,12 @@ const DefaultVideo = ({
     return (
       <View>
         <DefaultImage
+          moment={{id}}
           imageStyle={videoStyle}
-          blurRadius={20}
           image={getThumbnailPath(path, 'video')}
         />
         <DefaultText
-          title="Cancel report to view this moment"
+          title="Cancel report to view this video"
           style={styles.reported}
         />
       </View>

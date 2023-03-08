@@ -80,7 +80,7 @@ const ChannelSummary = ({channel, style}: TProps) => {
   const onView = ({id}: {id: string}) => {
     if (data) {
       const groupedMoments = groupByKey({items: data.moments.items});
-      console.log(groupedMoments, 'groupedMoments');
+
       const userIndex = groupedMoments.findIndex(item => item[0].id === id);
       groupedMoments.unshift(groupedMoments.splice(userIndex, 1)[0]);
       const momentIndex = groupedMoments[userIndex].findIndex(

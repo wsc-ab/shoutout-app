@@ -57,7 +57,6 @@ const MomentSummary = ({
       )}
       {moment.createdBy.id === authUserData.id && (
         <DeleteButton
-          content={{path: moment.content.path}}
           moment={{id: moment.id}}
           style={{
             position: 'absolute',

@@ -161,8 +161,6 @@ const UserModal = ({id}: TProps) => {
                 };
                 index: number;
               }) => {
-                console.log(item, 'i');
-
                 return (
                   <MomentSummary
                     moment={{

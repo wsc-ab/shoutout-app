@@ -15,7 +15,7 @@ const ChannelSearchModal = ({}: TProps) => {
       return null;
     }
 
-    return <ChannelSearch channel={item} />;
+    return <ChannelSearch channel={item} key={item.objectID} />;
   };
 
   return (

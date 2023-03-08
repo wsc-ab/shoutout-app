@@ -69,11 +69,11 @@ const ReportButton = ({moment, onSuccess, style}: TProps) => {
 
   useEffect(() => {
     setIsReported(
-      authUserData.reported.items
+      authUserData.reported.moments
         .map(({id}: {id: string}) => id)
         .includes(moment.id),
     );
-  }, [authUserData.reported.items, moment.id]);
+  }, [authUserData.reported.moments, moment.id]);
 
   return (
     <Pressable
