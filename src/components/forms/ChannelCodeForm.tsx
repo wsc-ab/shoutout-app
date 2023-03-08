@@ -47,10 +47,7 @@ const ChannelCodeForm = ({onCancel}: TProps) => {
       onUpdate(undefined);
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {
-        DefaultAlert({
-          title: 'Error',
-          message: (error as {message: string}).message,
-        });
+        DefaultAlert(localization.error);
       }
     } finally {
       setSubmitting(false);

@@ -1,9 +1,12 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import {TStyleView} from '../../types/Style';
 import CreateRoomButton from '../buttons/CreateChannelButton';
+import DefaultIcon from '../defaults/DefaultIcon';
+import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
+import ChannelCodeForm from '../forms/ChannelCodeForm';
 import ChannelSummary from './ChannelSummary';
 
 type TProps = {
@@ -12,7 +15,7 @@ type TProps = {
 
 const Channels = ({style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
-
+  const [modal, setModal] = useState<'code'>();
   const renderItem = ({item}) => {
     return <ChannelSummary channel={{id: item.id}} />;
   };
@@ -36,8 +39,19 @@ const Channels = ({style}: TProps) => {
         ItemSeparatorComponent={() => <View style={styles.seperator} />}
       />
       <View style={styles.footer}>
-        <CreateRoomButton style={styles.create} />
+        <CreateRoomButton style={styles.button} />
+        <DefaultText
+          title="Code"
+          onPress={() => setModal('code')}
+          textStyle={{fontWeight: 'bold'}}
+          style={styles.button}
+        />
       </View>
+      {modal === 'code' && (
+        <DefaultModal>
+          <ChannelCodeForm onCancel={() => setModal(undefined)} />
+        </DefaultModal>
+      )}
     </View>
   );
 };
@@ -53,14 +67,17 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 24,
     left: 0,
-    right: 0,
+    alignItems: 'center',
+    alignContent: 'center',
     flexDirection: 'row',
     marginHorizontal: 10,
+    padding: 5,
   },
-  create: {
-    height: 40,
-    width: 50,
+  button: {
     padding: 10,
-    marginHorizontal: 10,
+    paddingHorizontal: 20,
+    marginHorizontal: 5,
+    backgroundColor: 'gray',
+    borderRadius: 20,
   },
 });
