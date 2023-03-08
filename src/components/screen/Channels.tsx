@@ -3,7 +3,6 @@ import {FlatList, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import {TStyleView} from '../../types/Style';
 import CreateRoomButton from '../buttons/CreateChannelButton';
-import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
 import ChannelCodeForm from '../forms/ChannelCodeForm';
@@ -49,7 +48,10 @@ const Channels = ({style}: TProps) => {
       </View>
       {modal === 'code' && (
         <DefaultModal>
-          <ChannelCodeForm onCancel={() => setModal(undefined)} />
+          <ChannelCodeForm
+            onCancel={() => setModal(undefined)}
+            onSuccess={() => setModal(undefined)}
+          />
         </DefaultModal>
       )}
     </View>

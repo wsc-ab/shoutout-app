@@ -13,9 +13,9 @@ import DefaultForm from '../defaults/DefaultForm';
 import DefaultKeyboardAwareScrollView from '../defaults/DefaultKeyboardAwareScrollView';
 import {localizations} from './ChannelCodeForm.localizations';
 
-type TProps = {onCancel: () => void};
+type TProps = {onCancel: () => void; onSuccess: () => void};
 
-const ChannelCodeForm = ({onCancel}: TProps) => {
+const ChannelCodeForm = ({onCancel, onSuccess}: TProps) => {
   const {language} = useContext(LanguageContext);
   const localization = localizations[language];
   const {text} = defaultSchema();
@@ -46,6 +46,7 @@ const ChannelCodeForm = ({onCancel}: TProps) => {
       });
       onUpdate(undefined);
       DefaultAlert(localization.success);
+      onSuccess();
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {
         DefaultAlert(localization.error);
