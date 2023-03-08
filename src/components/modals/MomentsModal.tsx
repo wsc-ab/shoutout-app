@@ -17,10 +17,9 @@ import MomentCard from '../screen/MomentCard';
 type TProps = {
   moments: {id: string; content: {path: string}; createdBy: {id: string}}[];
   momentIndex?: number;
-  contentPath?: string;
 };
 
-const MomentsModal = ({moments, momentIndex = 0, contentPath}: TProps) => {
+const MomentsModal = ({moments, momentIndex = 0}: TProps) => {
   const {height, width} = useWindowDimensions();
   const [index, setIndex] = useState(0);
 
@@ -67,7 +66,6 @@ const MomentsModal = ({moments, momentIndex = 0, contentPath}: TProps) => {
         <MomentCard
           moments={[item]}
           mount={index - 1 <= elIndex && elIndex <= index + 1}
-          path={elIndex === momentIndex ? contentPath : undefined}
           pauseOnModal={false}
           inView={index === elIndex}
         />

@@ -151,6 +151,7 @@ const UserModal = ({id}: TProps) => {
               }
               renderItem={({
                 item,
+                index: elIndex,
               }: {
                 item: {
                   id: string;
@@ -171,16 +172,11 @@ const UserModal = ({id}: TProps) => {
                       },
                     }}
                     onDelete={() => setStatus('loading')}
-                    onPress={id => {
-                      const momentIndex = data.contributeTo.items.findIndex(
-                        item => item.id === id,
-                      );
-                      data.contributeTo.items.unshift(
-                        data.contributeTo.items.splice(momentIndex, 1)[0],
-                      );
+                    onPress={() => {
                       onUpdate({
                         target: 'moments',
                         data: {
+                          momentIndex: elIndex,
                           moments: data.contributeTo.items.map(item => ({
                             ...item,
                             createdBy: {

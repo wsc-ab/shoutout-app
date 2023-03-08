@@ -94,7 +94,10 @@ const ModalProvider = ({children}: TProps) => {
         <UserModal id={modal.data.id} />
       )}
       {modal?.target === 'moments' && modal.data && (
-        <MomentsModal moments={modal.data.moments} />
+        <MomentsModal
+          moments={modal.data.moments}
+          momentIndex={modal.data.momentIndex}
+        />
       )}
       {modal?.target === 'channel' && modal.data?.channel && (
         <ChannelModal channel={modal.data.channel} path={modal.data.path} />
