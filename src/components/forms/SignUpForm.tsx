@@ -1,9 +1,10 @@
 import {yupResolver} from '@hookform/resolvers/yup';
 import auth, {firebase} from '@react-native-firebase/auth';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {Linking, StyleSheet, View} from 'react-native';
 import {object} from 'yup';
+import LanguageContext from '../../contexts/Language';
 
 import {createUser, sendVerificationCode} from '../../functions/User';
 import {defaultSchema} from '../../utils/Schema';
@@ -12,6 +13,7 @@ import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultKeyboardAwareScrollView from '../defaults/DefaultKeyboardAwareScrollView';
 import DefaultText from '../defaults/DefaultText';
+import {localizations} from './SignUpForm.localizations';
 
 type TProps = {
   phoneNumber?: string;
@@ -19,6 +21,8 @@ type TProps = {
 };
 
 const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
+  const {language} = useContext(LanguageContext);
+  const localization = localizations[language];
   const {text, email} = defaultSchema();
 
   const schema = object({
@@ -90,20 +94,11 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
       await auth().signInWithEmailAndPassword(inputEmail, password);
     } catch (error) {
       if ((error as {message: string}).message === 'display name exists') {
-        DefaultAlert({
-          title: 'Error',
-          message: 'Please use a different ID. This ID has been used',
-        });
+        DefaultAlert(localization.differentId);
       } else if ((error as {message: string}).message === 'email exists') {
-        DefaultAlert({
-          title: 'Error',
-          message: 'Please user a different email. This email has been used',
-        });
+        DefaultAlert(localization.differentEmail);
       } else if ((error as {message: string}).message === 'invalid code') {
-        DefaultAlert({
-          title: 'Error',
-          message: 'This code is invalid',
-        });
+        DefaultAlert(localization.invalidCode);
       } else {
         DefaultAlert({
           title: 'Error',
@@ -119,7 +114,7 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
 
   return (
     <DefaultForm
-      title={'Sign Up'}
+      title={localization.title}
       left={{
         onPress: onCancel,
       }}
@@ -128,14 +123,11 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
         submitting,
       }}>
       <DefaultKeyboardAwareScrollView>
-        <DefaultText
-          title="Please set your profile to sign up."
-          style={{marginBottom: 20}}
-        />
+        <DefaultText title={localization.detail} style={{marginBottom: 20}} />
         <ControllerText
           control={control}
           name="email"
-          title="Email"
+          title={localization.email}
           autoCapitalize="none"
           placeholder="hello@airballoon.app"
           autoComplete="email"
@@ -146,18 +138,17 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
         <ControllerText
           control={control}
           name="password"
-          title="Password"
+          title={localization.password}
           errors={errors.password}
           autoCapitalize="none"
           autoComplete="password"
-          placeholder="keep it a secret"
           secureTextEntry
           style={styles.textInput}
         />
         <ControllerText
           control={control}
           name="displayName"
-          title="ID"
+          title={localization.id}
           errors={errors.displayName}
           autoCapitalize="none"
           autoComplete="username"
@@ -167,8 +158,8 @@ const SignUpForm = ({phoneNumber, onCancel}: TProps) => {
         <ControllerText
           control={control}
           name="code"
-          title="Code"
-          detail="Enter the code sent to your phone."
+          title={localization.code}
+          detail={localization.codeDetail}
           errors={errors.code}
           placeholder="000000"
           keyboardType="number-pad"

@@ -12,13 +12,15 @@ import {addLog} from '../../functions/Log';
 import {TStyleView} from '../../types/Style';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
+import {localizations} from './Welcome.localizations';
 
 type TProps = {style?: TStyleView};
 
 const Welcome = ({style}: TProps) => {
   const {height, width} = useWindowDimensions();
   const [submitting, setSubmitting] = useState(false);
-  const {authUserData} = useContext(AuthUserContext);
+  const {authUserData, language} = useContext(AuthUserContext);
+  const localization = localizations[language];
 
   const onDone = async () => {
     setSubmitting(true);
@@ -33,56 +35,21 @@ const Welcome = ({style}: TProps) => {
     });
   };
 
-  const data = [
-    {
-      title: ['Welcome to Shoutout!'],
-    },
-    {
-      title: ['To view your channels!'],
-      detail: 'Go to',
-      icon: 'folder',
-    },
-    {
-      title: ['To share moments!'],
-      detail: 'Press',
-      icon: 'square-plus',
-    },
-    {
-      title: ['To view trending moments!'],
-      detail: 'Go to',
-      icon: 'globe',
-    },
-    {
-      title: ['To watch connected moments'],
-      detail: 'Swipe',
-      icon: 'hand-point-left',
-    },
-    {
-      title: ['To watch the next moment'],
-      detail: 'Swipe',
-      icon: 'hand-point-up',
-    },
-    {
-      title: ["Let's go!"],
-      icon: 'face-smile',
-      onPress: onDone,
-    },
-  ];
   return (
     <View style={style}>
       <FlatList
-        data={data}
+        data={localization.data}
         horizontal
         snapToInterval={width}
         snapToAlignment={'start'}
         decelerationRate="fast"
         disableIntervalMomentum
         renderItem={({item, index}) => {
-          const isLast = index === data.length - 1;
+          const length = localization.data.length;
+          const isLast = index + 1 === length;
           return (
             <View style={[styles.card, {width, height}]}>
               <View style={styles.detail}>
-                {item.detail && <DefaultText title={item.detail} />}
                 <DefaultIcon
                   icon={item.icon as IconProp}
                   size={20}
@@ -95,13 +62,12 @@ const Welcome = ({style}: TProps) => {
                   title={text}
                   style={styles.title}
                   textStyle={styles.titleText}
-                  onPress={item.onPress}
                 />
               ))}
 
               {!isLast && (
                 <DefaultText
-                  title={`${index + 1}/${data.length}`}
+                  title={`${index + 1}/${length}`}
                   style={styles.button}
                 />
               )}
@@ -110,7 +76,7 @@ const Welcome = ({style}: TProps) => {
                 <DefaultText
                   title={'GO'}
                   style={styles.button}
-                  onPress={item.onPress}
+                  onPress={onDone}
                   textStyle={{fontWeight: 'bold'}}
                 />
               )}

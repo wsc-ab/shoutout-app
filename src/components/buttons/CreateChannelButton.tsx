@@ -1,5 +1,6 @@
 import React, {useContext, useState} from 'react';
 import {Pressable, StyleSheet, View} from 'react-native';
+import LanguageContext from '../../contexts/Language';
 import ModalContext from '../../contexts/Modal';
 import {TStyleView} from '../../types/Style';
 import DefaultBottomModal from '../defaults/DefaultBottomModal';
@@ -7,6 +8,7 @@ import {defaultBlack, defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 
 import DefaultText from '../defaults/DefaultText';
+import {localizations} from './CreateChannelButton.localizations';
 
 type TProps = {
   style?: TStyleView;
@@ -60,22 +62,18 @@ const ChannelTypeModal = ({
   onCancel: () => void;
   onSuccess: (type: string) => void;
 }) => {
+  const {language} = useContext(LanguageContext);
+  const localization = localizations[language];
   return (
     <DefaultBottomModal onCancel={onCancel}>
       <DefaultText
-        title="General channel"
+        title={localization.general}
         style={styles.option}
         onPress={() => onSuccess('general')}
         textStyle={{fontWeight: 'bold'}}
       />
       <DefaultText
-        title="Sponsored channel"
-        style={styles.option}
-        onPress={() => onSuccess('sponsored')}
-        textStyle={{fontWeight: 'bold'}}
-      />
-      <DefaultText
-        title="Cancel"
+        title={localization.cancel}
         style={styles.option}
         onPress={onCancel}
         textStyle={{fontWeight: 'bold', color: defaultRed.lv1}}

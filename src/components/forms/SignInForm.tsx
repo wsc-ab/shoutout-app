@@ -1,16 +1,17 @@
 import {yupResolver} from '@hookform/resolvers/yup';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {ActivityIndicator, StyleSheet} from 'react-native';
 import {object} from 'yup';
+import LanguageContext from '../../contexts/Language';
 import {defaultSchema} from '../../utils/Schema';
+import ControllerText from '../controllers/ControllerText';
 import DefaultAlert from '../defaults/DefaultAlert';
-import DefaultDivider from '../defaults/DefaultDivider';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultKeyboardAwareScrollView from '../defaults/DefaultKeyboardAwareScrollView';
 import DefaultText from '../defaults/DefaultText';
-import ControllerText from '../controllers/ControllerText';
+import {localizations} from './SignInForm.localizations';
 
 type TProps = {
   phoneNumber?: string;
@@ -18,6 +19,8 @@ type TProps = {
 };
 
 const SignInForm = ({phoneNumber, onCancel}: TProps) => {
+  const {language} = useContext(LanguageContext);
+  const localization = localizations[language];
   const {text} = defaultSchema();
   const schema = object({
     code: text({min: 6, max: 6, required: true}),
@@ -84,19 +87,19 @@ const SignInForm = ({phoneNumber, onCancel}: TProps) => {
   return (
     <>
       <DefaultForm
-        title={'Sign in'}
+        title={localization.title}
         left={{onPress: onCancel}}
         right={{onPress: handleSubmit(onSubmit), submitting}}>
         {confirm && (
           <DefaultKeyboardAwareScrollView>
             <DefaultText
-              title="Sign in by entering the code we just sent to your phone."
+              title={localization.detail}
               style={{marginBottom: 20}}
             />
             <ControllerText
               control={control}
               name="code"
-              title="Code"
+              title={localization.code}
               errors={errors.code}
               placeholder="000000"
               keyboardType="number-pad"

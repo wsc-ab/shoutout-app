@@ -13,6 +13,7 @@ import {StatusBar, StyleSheet, View} from 'react-native';
 import Home from './src/components/screen/Home';
 import {AuthUserProvider} from './src/contexts/AuthUser';
 import {CacheProvider} from './src/contexts/Cache';
+import {LanguageProvider} from './src/contexts/Language';
 import {ModalProvider} from './src/contexts/Modal';
 import {PopupProvider} from './src/contexts/Popup';
 import {TBundleId} from './src/types/Data';
@@ -44,13 +45,15 @@ const App = ({bundleId}: TProps) => {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
       <CacheProvider>
-        <AuthUserProvider bundleId={bundleId}>
-          <PopupProvider>
-            <ModalProvider>
-              <Home />
-            </ModalProvider>
-          </PopupProvider>
-        </AuthUserProvider>
+        <LanguageProvider>
+          <AuthUserProvider bundleId={bundleId}>
+            <PopupProvider>
+              <ModalProvider>
+                <Home />
+              </ModalProvider>
+            </PopupProvider>
+          </AuthUserProvider>
+        </LanguageProvider>
       </CacheProvider>
     </View>
   );

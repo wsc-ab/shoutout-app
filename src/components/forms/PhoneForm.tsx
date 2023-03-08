@@ -1,19 +1,20 @@
 import {yupResolver} from '@hookform/resolvers/yup';
 import {CountryCode} from 'libphonenumber-js/mobile';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {StyleSheet} from 'react-native';
 import {object} from 'yup';
+import LanguageContext from '../../contexts/Language';
 import {countryData} from '../../utils/CountryData';
 import {formatMobileNumber} from '../../utils/Phone';
 import {defaultSchema} from '../../utils/Schema';
 import ControllerText from '../controllers/ControllerText';
 import DefaultAlert from '../defaults/DefaultAlert';
-import DefaultDivider from '../defaults/DefaultDivider';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultKeyboardAwareScrollView from '../defaults/DefaultKeyboardAwareScrollView';
 import DefaultText from '../defaults/DefaultText';
 import SelectModal from '../modals/SelectModal';
+import {localizations} from './PhoneForm.localizations';
 
 type TProps = {
   onSuccess: (phoneNumber: string) => void;
@@ -22,6 +23,9 @@ type TProps = {
 };
 
 const PhoneForm = ({onCancel, onSuccess, submitting}: TProps) => {
+  const {language} = useContext(LanguageContext);
+  const localization = localizations[language];
+
   const {text} = defaultSchema();
 
   const schema = object({
@@ -70,24 +74,27 @@ const PhoneForm = ({onCancel, onSuccess, submitting}: TProps) => {
 
   return (
     <DefaultForm
-      title={'Enter'}
+      title={localization.title}
       left={{onPress: onCancel}}
       right={{
         onPress: handleSubmit(onSubmit),
         submitting,
       }}>
       <DefaultKeyboardAwareScrollView>
+        <DefaultText title={localization.detail} style={{marginBottom: 20}} />
         <DefaultText
-          title="Enter phone number to sign in or up."
-          style={{marginBottom: 20}}
+          title={localization.country}
+          textStyle={styles.countryText}
         />
-        <DefaultText title="Country" textStyle={styles.countryText} />
         <DefaultText
           title={countryCode}
           onPress={() => setModal('code')}
           style={styles.code}
         />
-        <DefaultText title="Phone number" textStyle={styles.numberText} />
+        <DefaultText
+          title={localization.phoneNumber}
+          textStyle={styles.numberText}
+        />
 
         <ControllerText
           control={control}
@@ -101,7 +108,7 @@ const PhoneForm = ({onCancel, onSuccess, submitting}: TProps) => {
       </DefaultKeyboardAwareScrollView>
       {modal === 'code' && (
         <SelectModal
-          title={'Country'}
+          title={localization.country}
           items={countryData
             .map(({countryNameEn, countryCode: code}) => ({
               title: countryNameEn,

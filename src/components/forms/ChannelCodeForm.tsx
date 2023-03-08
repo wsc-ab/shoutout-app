@@ -2,6 +2,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import React, {useContext, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {object} from 'yup';
+import LanguageContext from '../../contexts/Language';
 import ModalContext from '../../contexts/Modal';
 import {joinChannelWithCode} from '../../functions/Channel';
 
@@ -10,10 +11,13 @@ import ControllerText from '../controllers/ControllerText';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultKeyboardAwareScrollView from '../defaults/DefaultKeyboardAwareScrollView';
+import {localizations} from './ChannelCodeForm.localizations';
 
 type TProps = {onCancel: () => void};
 
 const ChannelCodeForm = ({onCancel}: TProps) => {
+  const {language} = useContext(LanguageContext);
+  const localization = localizations[language];
   const {text} = defaultSchema();
   const [submitting, setSubmitting] = useState(false);
   const {onUpdate} = useContext(ModalContext);
@@ -55,7 +59,7 @@ const ChannelCodeForm = ({onCancel}: TProps) => {
 
   return (
     <DefaultForm
-      title={'Code'}
+      title={localization.title}
       left={{onPress: onCancel}}
       right={{
         onPress: handleSubmit(onSubmit),
@@ -64,10 +68,9 @@ const ChannelCodeForm = ({onCancel}: TProps) => {
       <DefaultKeyboardAwareScrollView>
         <ControllerText
           control={control}
+          {...localization.code}
           name="code"
-          title="Code"
           autoFocus
-          detail="Channel invitation code."
           keyboardType="number-pad"
           errors={errors.code}
         />

@@ -1,23 +1,27 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
+import LanguageContext from '../../contexts/Language';
 import {TStyleView} from '../../types/Style';
 import DefaultText from '../defaults/DefaultText';
 import EnterModal from '../modals/EnterModal';
+import {localizations} from './Landing.localizations';
 
 type TProps = {style?: TStyleView};
 
 const Landing = ({style}: TProps) => {
   const [modal, setModal] = useState<'enter'>();
+  const {language} = useContext(LanguageContext);
+  const localization = localizations[language];
   return (
     <View style={style}>
       <View style={styles.texts}>
         <DefaultText title="Shoutout" textStyle={styles.titleText} />
         <DefaultText
-          title="Manage channels, Connect moments"
+          title={localization.detail}
           textStyle={styles.sloganText}
         />
         <DefaultText
-          title="Enter"
+          title={localization.enter}
           onPress={() => setModal('enter')}
           textStyle={styles.enterText}
           style={styles.enter}

@@ -15,10 +15,14 @@ import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultKeyboardAwareScrollView from '../defaults/DefaultKeyboardAwareScrollView';
 import DefaultModal from '../defaults/DefaultModal';
+import LanguageContext from '../../contexts/Language';
+import {localizations} from './CreateGeneralChannelModal.localizations';
 
 type TProps = {};
 
 const CreateGeneralChannelModal = ({}: TProps) => {
+  const {language} = useContext(LanguageContext);
+  const localization = localizations[language];
   const {text} = defaultSchema();
 
   const [submitting, setSubmitting] = useState(false);
@@ -95,7 +99,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
   return (
     <DefaultModal>
       <DefaultForm
-        title={'Channel'}
+        title={localization.title}
         left={{
           onPress: () => onUpdate(undefined),
         }}
@@ -107,61 +111,36 @@ const CreateGeneralChannelModal = ({}: TProps) => {
           <ControllerText
             control={control}
             name="name"
-            title="Name"
-            detail="Name of your channel."
+            {...localization.name}
             errors={errors.name}
           />
           <ControllerOption
             control={control}
             name="type"
-            title="Type"
-            detail="Set it to prvite to not show moments on discovery."
+            {...localization.type}
             errors={errors.type}
             style={styles.textInput}
-            options={[
-              {name: 'public', title: 'Public'},
-              {name: 'private', title: 'Private'},
-            ]}
           />
           <ControllerOption
             control={control}
             name="media"
-            title="Media"
-            detail="Set allowed media."
+            {...localization.media}
             errors={errors.media}
             style={styles.textInput}
-            options={[
-              {name: 'both', title: 'Both'},
-              {name: 'image', title: 'Image'},
-              {name: 'video', title: 'Video'},
-            ]}
           />
           <ControllerOption
             control={control}
             name="mode"
-            title="Mode"
-            detail="Use camera mode to allow users to share live videos taken from camera only."
+            {...localization.mode}
             errors={errors.mode}
             style={styles.textInput}
-            options={[
-              {name: 'both', title: 'Both'},
-              {name: 'camera', title: 'Camera'},
-              {name: 'library', title: 'Library'},
-            ]}
           />
           <ControllerOption
             control={control}
             name="ghosting"
-            title="Block ghosting"
-            detail="Set the number of allowed ghosting days. If set to 7 days, users who haven't posted in the last 7 days can't access the channel."
+            {...localization.ghosting}
             errors={errors.ghosting}
             style={styles.textInput}
-            options={[
-              {name: 'off', title: 'Off'},
-              {name: '1', title: '1 Day'},
-              {name: '7', title: '7 Days'},
-              {name: '14', title: '14 Days'},
-            ]}
           />
         </DefaultKeyboardAwareScrollView>
       </DefaultForm>

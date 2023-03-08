@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
+import LanguageContext from '../../contexts/Language';
 import ModalContext from '../../contexts/Modal';
 import {TDocData, TDocSnapshot} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
@@ -17,7 +18,6 @@ import {checkGhosting} from '../../utils/Channel';
 import {getTimeGap} from '../../utils/Date';
 import {getCityAndCountry} from '../../utils/Map';
 import {getThumbnailPath} from '../../utils/Storage';
-import {capitalizeFirstLetter} from '../../utils/String';
 import CreateMomentButton from '../buttons/CreateMomentButton';
 import DefaultAlert from '../defaults/DefaultAlert';
 import {defaultRed} from '../defaults/DefaultColors';
@@ -26,6 +26,7 @@ import DefaultImage from '../defaults/DefaultImage';
 import DefaultText from '../defaults/DefaultText';
 import DetailModal from '../defaults/DetailModal';
 import UserProfileImage from '../images/UserProfileImage';
+import {localizations} from './ChannelSummary.localizations';
 
 type TProps = {
   channel: {id: string};
@@ -33,6 +34,8 @@ type TProps = {
 };
 
 const ChannelSummary = ({channel, style}: TProps) => {
+  const {language} = useContext(LanguageContext);
+  const localization = localizations[language];
   const {onUpdate} = useContext(ModalContext);
   const {width} = useWindowDimensions();
   const [data, setData] = useState<TDocData>();
@@ -141,12 +144,7 @@ const ChannelSummary = ({channel, style}: TProps) => {
                 icon="square-plus"
                 size={20}
                 color="gray"
-                onPress={() =>
-                  DefaultAlert({
-                    title: 'Need to join',
-                    message: 'First join this channel to share your moments!',
-                  })
-                }
+                onPress={() => DefaultAlert(localization.needToJoin)}
               />
             )}
 
@@ -178,53 +176,55 @@ const ChannelSummary = ({channel, style}: TProps) => {
         </View>
         <View style={{flexDirection: 'row', marginTop: 5}}>
           <DefaultText
-            title={data.options.type === 'private' ? 'Private' : 'Public'}
+            title={
+              data.options.type === 'private'
+                ? localization.private
+                : localization.public
+            }
             style={styles.tag}
             onPress={() => {
               setModal('detail');
               setModalDetail(
                 data.options?.type === 'private'
-                  ? "Moments in this channel won't be shown on the discovery tab."
-                  : 'Moments in this channel will be shown on the discovery tab.',
+                  ? localization.privateModal
+                  : localization.publicModal,
               );
             }}
           />
           <DefaultText
             title={
               data.options.media === 'both'
-                ? 'Image & Video'
-                : capitalizeFirstLetter(data.options.media)
+                ? localization.imageVideo
+                : data.options.media === 'image'
+                ? localization.image
+                : localization.video
             }
             style={styles.tag}
           />
           {data.options.mode === 'camera' && (
             <DefaultText
-              title={'Camera'}
+              title={localization.camera}
               style={styles.tag}
               onPress={() => {
                 setModal('detail');
-                setModalDetail(
-                  'This channel only allows moments taken from camera to be shared.',
-                );
+                setModalDetail(localization.cameraModal);
               }}
             />
           )}
           {data.options.mode === 'library' && (
             <DefaultText
-              title={'Library'}
+              title={localization.library}
               style={styles.tag}
               onPress={() => {
                 setModal('detail');
-                setModalDetail(
-                  'This channel only allows moments from media library to be uploaded.',
-                );
+                setModalDetail(localization.libraryModal);
               }}
             />
           )}
 
           {['1', '7', '14'].includes(data.options.ghosting?.mode) && (
             <DefaultText
-              title={`Ghosting ${data.options.ghosting.mode}`}
+              title={`${localization.ghosting} ${data.options.ghosting.mode}`}
               style={[
                 styles.tag,
                 ghosting && {backgroundColor: defaultRed.lv2},
@@ -233,7 +233,7 @@ const ChannelSummary = ({channel, style}: TProps) => {
               onPress={() => {
                 setModal('detail');
                 setModalDetail(
-                  `This channel shows moments to users who have shared in the last ${data.options.ghosting.mode} days.`,
+                  localization.ghostingModal(data.options.ghosting?.mode),
                 );
               }}
             />
@@ -260,7 +260,7 @@ const ChannelSummary = ({channel, style}: TProps) => {
         getItemLayout={getItemLayout}
         ListEmptyComponent={() => (
           <DefaultText
-            title="No moments in this channel."
+            title={localization.nocontents}
             style={{
               height: 50,
               width: itemWidth,
@@ -291,10 +291,7 @@ const ChannelSummary = ({channel, style}: TProps) => {
                       }}
                       onPress={() => {
                         if (ghosting) {
-                          return DefaultAlert({
-                            title: 'Please share a content',
-                            message: 'You have been ghosting for too long.',
-                          });
+                          return DefaultAlert(localization.ghostAlert);
                         }
                         onView({id});
                       }}>
