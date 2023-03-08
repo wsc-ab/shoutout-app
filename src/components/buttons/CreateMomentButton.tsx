@@ -32,7 +32,7 @@ const CreateMomentButton = ({channel, color = 'white', style}: TProps) => {
 
   const [modal, setModal] = useState<'mode'>();
 
-  const onAdd = async (mode: 'camera' | 'library') => {
+  const onAdd = async (mode: 'cameraPhoto' | 'cameraVideo' | 'library') => {
     onUpdate({target: 'takeMoment'});
 
     setSubmitting(true);
@@ -51,13 +51,17 @@ const CreateMomentButton = ({channel, color = 'white', style}: TProps) => {
 
     try {
       const {remotePath, localPath, media} = await takeMoment({
-        mode,
+        mode: mode === 'library' ? 'library' : 'camera',
         id: momentId,
         userId: authUserData.id,
         mediaType:
-          channel.options.media === 'both'
-            ? 'mixed'
-            : channel.options.media === 'image'
+          mode === 'library'
+            ? channel.options.media === 'both'
+              ? 'mixed'
+              : channel.options.media === 'image'
+              ? 'photo'
+              : 'video'
+            : mode === 'cameraPhoto'
             ? 'photo'
             : 'video',
       });
@@ -91,14 +95,6 @@ const CreateMomentButton = ({channel, color = 'white', style}: TProps) => {
       return onUploading();
     }
 
-    if (channel.mode === 'camera') {
-      return onAdd('camera');
-    }
-
-    if (channel.mode === 'library') {
-      return onAdd('library');
-    }
-
     setModal('mode');
   };
 
@@ -114,6 +110,7 @@ const CreateMomentButton = ({channel, color = 'white', style}: TProps) => {
       {modal === 'mode' && (
         <VideoModeModal
           onCancel={() => setModal(undefined)}
+          options={channel.options}
           onSuccess={mode => {
             onAdd(mode);
           }}

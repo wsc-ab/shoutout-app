@@ -5,23 +5,47 @@ import {defaultBlack, defaultRed} from '../defaults/DefaultColors';
 
 import DefaultText from '../defaults/DefaultText';
 
-type TProps = {onCancel: () => void; onSuccess: (name: string) => void};
+type TProps = {
+  onCancel: () => void;
+  onSuccess: (name: string) => void;
+  options: {
+    mode: 'camera' | 'library' | 'both';
+    media: 'image' | 'video' | 'both';
+  };
+};
 
-const VideoModeModal = ({onCancel, onSuccess}: TProps) => {
+const VideoModeModal = ({onCancel, onSuccess, options}: TProps) => {
   return (
     <DefaultBottomModal onCancel={onCancel}>
-      <DefaultText
-        title="Camera"
-        style={styles.option}
-        onPress={() => onSuccess('camera')}
-        textStyle={{fontWeight: 'bold'}}
-      />
-      <DefaultText
-        title="Library"
-        style={styles.option}
-        onPress={() => onSuccess('library')}
-        textStyle={{fontWeight: 'bold'}}
-      />
+      {['camera', 'both'].includes(options.mode) && (
+        <>
+          {['image', 'both'].includes(options.media) && (
+            <DefaultText
+              title="Take photo"
+              style={styles.option}
+              onPress={() => onSuccess('cameraPhoto')}
+              textStyle={{fontWeight: 'bold'}}
+            />
+          )}
+          {['video', 'both'].includes(options.media) && (
+            <DefaultText
+              title="Take video"
+              style={styles.option}
+              onPress={() => onSuccess('cameraVideo')}
+              textStyle={{fontWeight: 'bold'}}
+            />
+          )}
+        </>
+      )}
+
+      {['library', 'both'].includes(options.mode) && (
+        <DefaultText
+          title="Open library"
+          style={styles.option}
+          onPress={() => onSuccess('library')}
+          textStyle={{fontWeight: 'bold'}}
+        />
+      )}
       <DefaultText
         title="Cancel"
         style={styles.option}
