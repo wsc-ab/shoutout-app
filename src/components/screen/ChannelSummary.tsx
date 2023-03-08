@@ -133,6 +133,7 @@ const ChannelSummary = ({channel, style}: TProps) => {
             textStyle={{fontWeight: 'bold', fontSize: 20}}
             style={{flex: 1}}
           />
+
           <View
             style={{
               alignItems: 'center',
