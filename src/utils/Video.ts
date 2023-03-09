@@ -34,7 +34,7 @@ export const getMoment = async ({
   let asset;
 
   const {assets, didCancel} =
-    mode === 'library'
+    mode === 'library' || __DEV__
       ? await launchImageLibrary(options)
       : await launchCamera(options);
 
