@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import DefaultBottomModal from '../defaults/DefaultBottomModal';
 import {defaultBlack, defaultRed} from '../defaults/DefaultColors';
 
@@ -17,41 +17,51 @@ type TProps = {
 const VideoModeModal = ({onCancel, onSuccess, options}: TProps) => {
   return (
     <DefaultBottomModal onCancel={onCancel}>
-      {['camera', 'both'].includes(options.mode) && (
-        <>
-          {['image', 'both'].includes(options.media) && (
-            <DefaultText
-              title="Take photo"
-              style={styles.option}
-              onPress={() => onSuccess('cameraPhoto')}
-              textStyle={{fontWeight: 'bold'}}
-            />
-          )}
-          {['video', 'both'].includes(options.media) && (
-            <DefaultText
-              title="Take video"
-              style={styles.option}
-              onPress={() => onSuccess('cameraVideo')}
-              textStyle={{fontWeight: 'bold'}}
-            />
-          )}
-        </>
-      )}
+      <View
+        style={{
+          bottom: 0,
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          paddingBottom: 24,
+          marginHorizontal: 10,
+        }}>
+        {['camera', 'both'].includes(options.mode) && (
+          <>
+            {['image', 'both'].includes(options.media) && (
+              <DefaultText
+                title="Take photo"
+                style={styles.option}
+                onPress={() => onSuccess('cameraPhoto')}
+                textStyle={{fontWeight: 'bold'}}
+              />
+            )}
+            {['video', 'both'].includes(options.media) && (
+              <DefaultText
+                title="Take video"
+                style={styles.option}
+                onPress={() => onSuccess('cameraVideo')}
+                textStyle={{fontWeight: 'bold'}}
+              />
+            )}
+          </>
+        )}
 
-      {['library', 'both'].includes(options.mode) && (
+        {['library', 'both'].includes(options.mode) && (
+          <DefaultText
+            title="Open library"
+            style={styles.option}
+            onPress={() => onSuccess('library')}
+            textStyle={{fontWeight: 'bold'}}
+          />
+        )}
         <DefaultText
-          title="Open library"
+          title="Cancel"
           style={styles.option}
-          onPress={() => onSuccess('library')}
-          textStyle={{fontWeight: 'bold'}}
+          onPress={onCancel}
+          textStyle={{fontWeight: 'bold', color: defaultRed.lv1}}
         />
-      )}
-      <DefaultText
-        title="Cancel"
-        style={styles.option}
-        onPress={onCancel}
-        textStyle={{fontWeight: 'bold', color: defaultRed.lv1}}
-      />
+      </View>
     </DefaultBottomModal>
   );
 };

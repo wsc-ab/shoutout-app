@@ -66,18 +66,28 @@ const ChannelTypeModal = ({
   const localization = localizations[language];
   return (
     <DefaultBottomModal onCancel={onCancel}>
-      <DefaultText
-        title={localization.general}
-        style={styles.option}
-        onPress={() => onSuccess('general')}
-        textStyle={{fontWeight: 'bold'}}
-      />
-      <DefaultText
-        title={localization.cancel}
-        style={styles.option}
-        onPress={onCancel}
-        textStyle={{fontWeight: 'bold', color: defaultRed.lv1}}
-      />
+      <View
+        style={{
+          bottom: 0,
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          paddingBottom: 24,
+          marginHorizontal: 10,
+        }}>
+        <DefaultText
+          title={localization.general}
+          style={styles.option}
+          onPress={() => onSuccess('general')}
+          textStyle={{fontWeight: 'bold'}}
+        />
+        <DefaultText
+          title={localization.cancel}
+          style={styles.option}
+          onPress={onCancel}
+          textStyle={{fontWeight: 'bold', color: defaultRed.lv1}}
+        />
+      </View>
     </DefaultBottomModal>
   );
 };

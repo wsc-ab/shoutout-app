@@ -1,5 +1,5 @@
 import DefaultAlert from '../components/defaults/DefaultAlert';
-import {TLatLng} from '../types/Firebase';
+import {TLatLng, TTimestamp} from '../types/Firebase';
 import {firebaseFunctions} from '../utils/Firebase';
 
 export const createMoment = async (input: {
@@ -84,6 +84,28 @@ export const deleteMoment = async (input: {
   };
 }) => {
   const {data} = await firebaseFunctions.httpsCallable('deleteMoment')(input);
+
+  return {...data};
+};
+
+export const addComment = async (input: {
+  moment: {
+    id: string;
+  };
+  comment: {detail: string};
+}) => {
+  const {data} = await firebaseFunctions.httpsCallable('addComment')(input);
+
+  return {...data};
+};
+
+export const removeComment = async (input: {
+  moment: {
+    id: string;
+  };
+  comment: {detail: string; addedAt: TTimestamp};
+}) => {
+  const {data} = await firebaseFunctions.httpsCallable('removeComment')(input);
 
   return {...data};
 };

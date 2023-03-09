@@ -1,7 +1,6 @@
 import React, {useRef, useState} from 'react';
 import {
   FlatList,
-  StyleSheet,
   useWindowDimensions,
   View,
   ViewabilityConfigCallbackPairs,

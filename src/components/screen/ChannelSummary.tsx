@@ -50,10 +50,10 @@ const ChannelSummary = ({channel, style}: TProps) => {
         return;
       }
 
-      const newPrompt = doc.data();
+      const newChanneld = doc.data();
 
-      if (newPrompt) {
-        setData(newPrompt);
+      if (newChanneld) {
+        setData(newChanneld);
       }
     };
 

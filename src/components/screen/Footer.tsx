@@ -11,7 +11,6 @@ type TProps = {
     content: {path: string};
     name: string;
     createdBy: {id: string};
-    comments?: [];
   };
 
   style?: TStyleView;

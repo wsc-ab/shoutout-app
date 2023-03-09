@@ -18,7 +18,7 @@ type TProps = {
   moments: {id: string; content: {path: string}; createdBy: {id: string}}[];
 };
 
-const MomentsModal = ({moments, momentIndex = 0}: TProps) => {
+const MomentsModal = ({moments}: TProps) => {
   const {height, width} = useWindowDimensions();
   const [index, setIndex] = useState(0);
 

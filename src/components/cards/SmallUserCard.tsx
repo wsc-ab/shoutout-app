@@ -35,7 +35,10 @@ const SmallUserCard = ({id, index, displayName, moment, style}: TProps) => {
             textStyle={styles.displayNameText}
           />
           {moment && (
-            <DefaultText title={`${getTimeGap(moment.addedAt)} ago`} />
+            <DefaultText
+              title={`${getTimeGap(moment.addedAt)} ago`}
+              textStyle={{fontSize: 14, color: 'lightgray'}}
+            />
           )}
           {!moment && <DefaultText title={'Not shared'} />}
         </View>

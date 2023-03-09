@@ -20,6 +20,8 @@ type TProps = {
 
 const CommentButton = ({moment, style}: TProps) => {
   const [modal, setModal] = useState<'comments'>();
+  console.log(moment.comments, 'com');
+
   return (
     <View>
       <DefaultIcon
@@ -30,10 +32,7 @@ const CommentButton = ({moment, style}: TProps) => {
         size={20}
       />
       {modal === 'comments' && (
-        <CommentsModal
-          comments={[{user: {id: '1', displayName: '123'}, detail: '123123'}]}
-          onCancel={() => setModal(undefined)}
-        />
+        <CommentsModal moment={moment} onCancel={() => setModal(undefined)} />
       )}
     </View>
   );
