@@ -1,12 +1,14 @@
 import React, {useContext, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
+import LanguageContext from '../../contexts/Language';
 import {TStyleView} from '../../types/Style';
 import CreateRoomButton from '../buttons/CreateChannelButton';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
 import ChannelCodeForm from '../forms/ChannelCodeForm';
 import ChannelSummary from './ChannelSummary';
+import {localizations} from './ChannelSummary.localizations';
 
 type TProps = {
   style: TStyleView;
@@ -14,6 +16,8 @@ type TProps = {
 
 const Channels = ({style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
+  const {language} = useContext(LanguageContext);
+  const localization = localizations[language];
   const [modal, setModal] = useState<'code'>();
   const renderItem = ({item}) => {
     return <ChannelSummary channel={{id: item.id}} />;
@@ -29,10 +33,10 @@ const Channels = ({style}: TProps) => {
         ListEmptyComponent={() => (
           <View style={{marginHorizontal: 10}}>
             <DefaultText
-              title="No channels"
-              textStyle={{fontSize: 20, fontWeight: 'bold'}}
+              title={localization.noChannels.title}
+              textStyle={{fontSize: 20, fontWeight: 'bold', marginBottom: 5}}
             />
-            <DefaultText title="Create a channel or search and join public channels." />
+            <DefaultText title={localization.noChannels.message} />
           </View>
         )}
         ItemSeparatorComponent={() => <View style={styles.seperator} />}
@@ -40,7 +44,7 @@ const Channels = ({style}: TProps) => {
       <View style={styles.footer}>
         <CreateRoomButton style={styles.button} />
         <DefaultText
-          title="Code"
+          title={localization.code}
           onPress={() => setModal('code')}
           textStyle={{fontWeight: 'bold'}}
           style={styles.button}

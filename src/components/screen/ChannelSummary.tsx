@@ -26,6 +26,7 @@ import DefaultImage from '../defaults/DefaultImage';
 import DefaultText from '../defaults/DefaultText';
 import DetailModal from '../defaults/DetailModal';
 import UserProfileImage from '../images/UserProfileImage';
+import EditChannelModal from '../modals/EditChannelModal';
 import {localizations} from './ChannelSummary.localizations';
 
 type TProps = {
@@ -40,7 +41,7 @@ const ChannelSummary = ({channel, style}: TProps) => {
   const {width} = useWindowDimensions();
   const [data, setData] = useState<TDocData>();
   const {authUserData} = useContext(AuthUserContext);
-  const [modal, setModal] = useState<'detail'>();
+  const [modal, setModal] = useState<'detail' | 'setting'>();
   const [modalDetail, setModalDetail] = useState<string>();
 
   useEffect(() => {
@@ -128,11 +129,19 @@ const ChannelSummary = ({channel, style}: TProps) => {
             alignItems: 'center',
             flex: 1,
           }}>
-          <DefaultText
-            title={data.name}
-            textStyle={{fontWeight: 'bold', fontSize: 20}}
-            style={{flex: 1}}
-          />
+          <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+            <DefaultText
+              title={data.name}
+              textStyle={{fontWeight: 'bold', fontSize: 20}}
+            />
+            {data.createdBy.id === authUserData.id && (
+              <DefaultIcon
+                icon="cog"
+                onPress={() => setModal('setting')}
+                style={{marginLeft: 10}}
+              />
+            )}
+          </View>
 
           <View
             style={{
@@ -346,6 +355,9 @@ const ChannelSummary = ({channel, style}: TProps) => {
             {modalDetail}
           </Text>
         </DetailModal>
+      )}
+      {modal === 'setting' && (
+        <EditChannelModal onCancel={() => setModal(undefined)} channel={data} />
       )}
     </View>
   );
