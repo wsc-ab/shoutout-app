@@ -17,11 +17,17 @@ type TProps = {
   style?: TStyleView;
   channel: TDocData;
   pauseOnModal?: boolean;
-  id?: string;
+  momentIndex?: number;
   mount: boolean;
 };
 
-const ChannelCard = ({style, channel, pauseOnModal, mount}: TProps) => {
+const ChannelCard = ({
+  style,
+  channel,
+  pauseOnModal,
+  momentIndex,
+  mount,
+}: TProps) => {
   const [status, setStatus] = useState<TStatus>('loading');
   const {height, width} = useWindowDimensions();
   const [index, setIndex] = useState(0);
@@ -90,6 +96,7 @@ const ChannelCard = ({style, channel, pauseOnModal, mount}: TProps) => {
         }}>
         <MomentCard
           moments={item}
+          momentIndex={elIndex === 0 ? momentIndex : 0}
           mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
           pauseOnModal={pauseOnModal}
           inView={index === elIndex}

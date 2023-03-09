@@ -26,6 +26,7 @@ import DefaultImage from '../defaults/DefaultImage';
 import DefaultText from '../defaults/DefaultText';
 import DetailModal from '../defaults/DetailModal';
 import UserProfileImage from '../images/UserProfileImage';
+import EditChannelModal from '../modals/EditChannelModal';
 import {localizations} from './ChannelSummary.localizations';
 
 type TProps = {
@@ -40,7 +41,7 @@ const ChannelSummary = ({channel, style}: TProps) => {
   const {width} = useWindowDimensions();
   const [data, setData] = useState<TDocData>();
   const {authUserData} = useContext(AuthUserContext);
-  const [modal, setModal] = useState<'detail'>();
+  const [modal, setModal] = useState<'detail' | 'setting'>();
   const [modalDetail, setModalDetail] = useState<string>();
 
   useEffect(() => {
@@ -77,23 +78,27 @@ const ChannelSummary = ({channel, style}: TProps) => {
 
   const users = data.inviteTo?.items;
 
-  const onView = ({id}: {id: string}) => {
+  const onView = ({
+    user: {id: userId},
+    moment: {id: momentId},
+  }: {
+    user: {id: string};
+    moment: {id: string};
+  }) => {
     if (data) {
       const groupedMoments = groupByKey({items: data.moments.items});
 
-      const userIndex = groupedMoments.findIndex(item => item[0].id === id);
+      const userIndex = groupedMoments.findIndex(
+        item => item[0].createdBy.id === userId,
+      );
       groupedMoments.unshift(groupedMoments.splice(userIndex, 1)[0]);
-      const momentIndex = groupedMoments[userIndex].findIndex(
-        item => item.id === id,
-      );
-
-      groupedMoments[userIndex].unshift(
-        groupedMoments[userIndex].splice(momentIndex, 1)[0],
-      );
+      const momentIndex = groupedMoments[0].findIndex(item => {
+        return item.id === momentId;
+      });
 
       onUpdate({
         target: 'channel',
-        data: {channel: {...data, groupedMoments}},
+        data: {channel: {...data, groupedMoments}, momentIndex},
       });
     }
   };
@@ -124,11 +129,20 @@ const ChannelSummary = ({channel, style}: TProps) => {
             alignItems: 'center',
             flex: 1,
           }}>
-          <DefaultText
-            title={data.name}
-            textStyle={{fontWeight: 'bold', fontSize: 20}}
-            style={{flex: 1}}
-          />
+          <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+            <DefaultText
+              title={data.name}
+              textStyle={{fontWeight: 'bold', fontSize: 20}}
+            />
+            {data.createdBy.id === authUserData.id && (
+              <DefaultIcon
+                icon="cog"
+                onPress={() => setModal('setting')}
+                style={{marginLeft: 10}}
+              />
+            )}
+          </View>
+
           <View
             style={{
               alignItems: 'center',
@@ -162,7 +176,10 @@ const ChannelSummary = ({channel, style}: TProps) => {
             onPress={() => {
               onUpdate({
                 target: 'channelUsers',
-                data: {users, channel: {id: data.id, code: data.code}},
+                data: {
+                  users,
+                  channel: data,
+                },
               });
             }}>
             <DefaultIcon
@@ -293,7 +310,7 @@ const ChannelSummary = ({channel, style}: TProps) => {
                         if (ghosting) {
                           return DefaultAlert(localization.ghostAlert);
                         }
-                        onView({id});
+                        onView({user: {id: userId}, moment: {id}});
                       }}>
                       <UserProfileImage
                         user={{id: userId}}
@@ -341,6 +358,13 @@ const ChannelSummary = ({channel, style}: TProps) => {
             {modalDetail}
           </Text>
         </DetailModal>
+      )}
+      {modal === 'setting' && (
+        <EditChannelModal
+          onCancel={() => setModal(undefined)}
+          channel={data}
+          onSuccess={() => setModal(undefined)}
+        />
       )}
     </View>
   );

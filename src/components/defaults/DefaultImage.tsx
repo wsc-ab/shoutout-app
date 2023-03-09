@@ -68,8 +68,6 @@ const DefaultImage = ({
     return null;
   }
 
-  console.log(isReported, 'is');
-
   return (
     <Pressable style={style} onPress={onPress} disabled={!onPress}>
       {status === 'loaded' && image && (

@@ -41,8 +41,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
   },
-  titleText: {fontSize: 70, fontWeight: 'bold'},
-  sloganText: {fontSize: 20},
+  titleText: {fontSize: 50, fontWeight: 'bold'},
+  sloganText: {fontSize: 18},
   enter: {
     position: 'absolute',
     bottom: 100,

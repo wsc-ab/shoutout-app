@@ -36,15 +36,15 @@ export const localizations = {
         title: ['샤라웃에 오신걸 환영합니다!'],
       },
       {
-        title: ['채널을 보시려면!'],
+        title: ['참여한 채널들 보기!'],
         icon: 'folder',
       },
       {
-        title: ['모멘트를 공유하려면!'],
+        title: ['모멘트를 공유하는 버튼!'],
         icon: 'square-plus',
       },
       {
-        title: ['인기 모멘트를 구경하려면!'],
+        title: ['인기 모멘트를 구경하는 곳!'],
         icon: 'globe',
       },
       {

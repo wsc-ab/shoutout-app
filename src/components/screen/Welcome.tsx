@@ -8,6 +8,7 @@ import {
   View,
 } from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
+import LanguageContext from '../../contexts/Language';
 import {addLog} from '../../functions/Log';
 import {TStyleView} from '../../types/Style';
 import DefaultIcon from '../defaults/DefaultIcon';
@@ -19,7 +20,8 @@ type TProps = {style?: TStyleView};
 const Welcome = ({style}: TProps) => {
   const {height, width} = useWindowDimensions();
   const [submitting, setSubmitting] = useState(false);
-  const {authUserData, language} = useContext(AuthUserContext);
+  const {language} = useContext(LanguageContext);
+  const {authUserData} = useContext(AuthUserContext);
   const localization = localizations[language];
 
   const onDone = async () => {

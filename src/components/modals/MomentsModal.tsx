@@ -16,7 +16,6 @@ import MomentCard from '../screen/MomentCard';
 
 type TProps = {
   moments: {id: string; content: {path: string}; createdBy: {id: string}}[];
-  momentIndex?: number;
 };
 
 const MomentsModal = ({moments, momentIndex = 0}: TProps) => {
@@ -58,8 +57,6 @@ const MomentsModal = ({moments, momentIndex = 0}: TProps) => {
     if (index - 3 >= elIndex || index + 3 <= elIndex) {
       return <View style={{height, width}} />;
     }
-
-    console.log(item, 'item');
 
     return (
       <View style={{height, width}}>

@@ -49,9 +49,11 @@ const CreateMomentButton = ({channel, color = 'white', style}: TProps) => {
 
     const momentId = firebase.firestore().collection('moments').doc().id;
 
+    const serverMode = mode === 'library' ? 'library' : 'camera';
+
     try {
       const {remotePath, localPath, media} = await takeMoment({
-        mode: mode === 'library' ? 'library' : 'camera',
+        mode: serverMode,
         id: momentId,
         userId: authUserData.id,
         mediaType:
@@ -72,7 +74,7 @@ const CreateMomentButton = ({channel, color = 'white', style}: TProps) => {
           remotePath,
           localPath,
           id: momentId,
-          content: {mode, media},
+          content: {mode: serverMode, media},
           channel,
         },
       });

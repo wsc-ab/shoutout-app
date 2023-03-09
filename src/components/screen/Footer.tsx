@@ -4,7 +4,6 @@ import {TStyleView} from '../../types/Style';
 import CommentButton from '../buttons/CommentButton';
 import LikeButton from '../buttons/LikeButton';
 import ReportButton from '../buttons/ReportButton';
-import ShareButton from '../buttons/ShareButton';
 
 type TProps = {
   moment: {
