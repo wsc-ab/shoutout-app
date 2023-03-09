@@ -3,7 +3,7 @@ import {FlatList, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import {addChannelUsers, removeChannelUser} from '../../functions/Channel';
-import {TTimestampClient} from '../../types/Firebase';
+import {TDocData, TTimestampClient} from '../../types/Firebase';
 import SmallUserCard from '../cards/SmallUserCard';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
@@ -11,7 +11,7 @@ import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
 
 type TProps = {
-  channel: {id: string; code: number};
+  channel: TDocData;
   users: {
     id: string;
     displayName: string;
@@ -40,7 +40,10 @@ const UsersModal = ({channel, users}: TProps) => {
   const onJoin = async () => {
     try {
       setSubmitting(true);
-      await addChannelUsers({channel, users: {ids: [authUserData.id]}});
+      await addChannelUsers({
+        channel: {id: channel.id},
+        users: {ids: [authUserData.id]},
+      });
       onUpdate(undefined);
     } catch (error) {
       DefaultAlert({title: 'Error', message: 'Failed to join channel.'});
@@ -51,7 +54,10 @@ const UsersModal = ({channel, users}: TProps) => {
   const onLeave = async () => {
     try {
       setSubmitting(true);
-      await removeChannelUser({channel, user: {id: authUserData.id}});
+      await removeChannelUser({
+        channel: {id: channel.id},
+        user: {id: authUserData.id},
+      });
       onUpdate(undefined);
     } catch (error) {
       DefaultAlert({title: 'Error', message: 'Failed to leave channel.'});
@@ -60,11 +66,14 @@ const UsersModal = ({channel, users}: TProps) => {
     }
   };
 
-  const right = {
-    icon: joined ? 'user-minus' : 'user-plus',
-    onPress: joined ? onLeave : onJoin,
-    submitting,
-  };
+  const right =
+    channel.createdBy.id === authUserData.id
+      ? undefined
+      : {
+          icon: joined ? 'user-minus' : 'user-plus',
+          onPress: joined ? onLeave : onJoin,
+          submitting,
+        };
 
   return (
     <DefaultModal style={{zIndex: 200}}>

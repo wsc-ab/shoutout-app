@@ -176,7 +176,10 @@ const ChannelSummary = ({channel, style}: TProps) => {
             onPress={() => {
               onUpdate({
                 target: 'channelUsers',
-                data: {users, channel: {id: data.id, code: data.code}},
+                data: {
+                  users,
+                  channel: data,
+                },
               });
             }}>
             <DefaultIcon
