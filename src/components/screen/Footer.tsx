@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {TStyleView} from '../../types/Style';
+import CommentButton from '../buttons/CommentButton';
 import LikeButton from '../buttons/LikeButton';
 import ReportButton from '../buttons/ReportButton';
 import ShareButton from '../buttons/ShareButton';
@@ -11,6 +12,7 @@ type TProps = {
     content: {path: string};
     name: string;
     createdBy: {id: string};
+    comments?: [];
   };
 
   style?: TStyleView;
@@ -20,18 +22,7 @@ const Footer = ({moment, style}: TProps) => {
   return (
     <View style={[styles.container, style]}>
       <LikeButton moment={moment} style={styles.button} />
-      <ShareButton
-        input={{
-          title: `Hey! Check this ${moment.name} moment out!`,
-          target: {
-            collection: 'moments',
-            id: moment.id,
-          },
-          image: {path: moment.content.path, type: 'video'},
-        }}
-        style={styles.button}
-      />
-
+      <CommentButton moment={moment} style={styles.button} />
       <ReportButton moment={moment} style={styles.button} />
     </View>
   );

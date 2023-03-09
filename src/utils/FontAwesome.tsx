@@ -5,6 +5,7 @@ import {
   faAngleLeft,
   faAngleRight,
   faCircle,
+  faComment,
   faExclamation,
   faFaceSmile,
   faFlag,
@@ -57,4 +58,5 @@ library.add(
   faCircle,
   faImage,
   faVideo,
+  faComment,
 );
