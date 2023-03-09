@@ -360,7 +360,11 @@ const ChannelSummary = ({channel, style}: TProps) => {
         </DetailModal>
       )}
       {modal === 'setting' && (
-        <EditChannelModal onCancel={() => setModal(undefined)} channel={data} />
+        <EditChannelModal
+          onCancel={() => setModal(undefined)}
+          channel={data}
+          onSuccess={() => setModal(undefined)}
+        />
       )}
     </View>
   );

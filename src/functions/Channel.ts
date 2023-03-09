@@ -58,3 +58,20 @@ export const deleteChannel = async (input: {
 
   return {...data};
 };
+
+export const editChannel = async (input: {
+  channel: {
+    id: string;
+    name: string;
+    options: {
+      type: 'public' | 'private';
+      media: 'image' | 'video' | 'both';
+      mode: 'camera' | 'library' | 'both';
+      ghosting: {mode: 'off' | '1' | '7' | '14'};
+    };
+  };
+}) => {
+  const {data} = await firebaseFunctions.httpsCallable('editChannel')(input);
+
+  return {...data};
+};
