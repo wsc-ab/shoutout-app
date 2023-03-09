@@ -25,11 +25,12 @@ const EditChannelModal = ({onCancel, channel}: TProps) => {
       setSubmitting(false);
     }
   };
+
   return (
     <DefaultModal>
       <DefaultForm
         left={{onPress: onCancel}}
-        right={{submitting}}
+        right={{submitting, onPress: onCancel}}
         title={localization.title}
         style={{marginHorizontal: 20}}>
         <DefaultText title={localization.delete} onPress={onDelete} />

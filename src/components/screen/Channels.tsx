@@ -7,8 +7,8 @@ import CreateRoomButton from '../buttons/CreateChannelButton';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
 import ChannelCodeForm from '../forms/ChannelCodeForm';
+import {localizations} from './Channels.localizations';
 import ChannelSummary from './ChannelSummary';
-import {localizations} from './ChannelSummary.localizations';
 
 type TProps = {
   style: TStyleView;
