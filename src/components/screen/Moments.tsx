@@ -100,7 +100,7 @@ const Moments = ({style, mount}: TProps) => {
 
   if (status === 'error') {
     return (
-      <View style={styles.noData}>
+      <View style={[styles.noData, style]}>
         <DefaultText title="Error. Please retry." />
         <DefaultText
           title="Reload"
