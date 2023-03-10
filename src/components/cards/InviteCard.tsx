@@ -27,7 +27,7 @@ const InviteCard = ({style}: TProps) => {
         target: {collection: 'users', id: authUserData.id},
       });
       await openShareModal({
-        title: "Let's connect our live moments on Shoutout!",
+        title: "Let's share without ghosts, spammers and lurkers!",
         url: shareLink,
       });
     } catch (error) {
@@ -47,7 +47,7 @@ const InviteCard = ({style}: TProps) => {
       <View style={styles.body}>
         <DefaultText title={'Invite friends'} textStyle={styles.textName} />
         <DefaultText
-          title={'Connect live moments with friends!'}
+          title={"Don't invite with ghosts or spammers"}
           numberOfLines={1}
           style={styles.detail}
           textStyle={styles.detailText}

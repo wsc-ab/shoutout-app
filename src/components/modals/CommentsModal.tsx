@@ -17,7 +17,7 @@ import DefaultBottomModal from '../defaults/DefaultBottomModal';
 import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultText from '../defaults/DefaultText';
 import UserProfileImage from '../images/UserProfileImage';
-import SubmitIcon from './DeleteIcon';
+import SubmitIcon from '../buttons/SubmitIconButton';
 
 type TProps = {
   moment: {

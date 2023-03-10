@@ -1,6 +1,5 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {Pressable, StyleSheet, View} from 'react-native';
-import ModalContext from '../../contexts/Modal';
 import {TStyleView} from '../../types/Style';
 import {getTimeGap} from '../../utils/Date';
 import DefaultText from '../defaults/DefaultText';
@@ -15,12 +14,8 @@ type TProps = {
 };
 
 const SmallUserCard = ({id, index, displayName, moment, style}: TProps) => {
-  const {onUpdate} = useContext(ModalContext);
-
   return (
-    <Pressable
-      onPress={() => onUpdate({target: 'user', data: {id}})}
-      style={style}>
+    <Pressable style={style}>
       <View style={styles.body}>
         <DefaultText
           title={moment ? (index + 1).toString() : '-'}

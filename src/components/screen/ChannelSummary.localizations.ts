@@ -1,5 +1,3 @@
-
-
 export const localizations = {
   en: {
     needToJoin: {

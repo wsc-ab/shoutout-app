@@ -11,7 +11,7 @@ type TProps = {
   style?: TStyleView;
 };
 
-const SubmitIcon = ({onPress, icon, style, color}: TProps) => {
+const SubmitIconButton = ({onPress, icon, style, color}: TProps) => {
   const [submitting, setSubmitting] = useState(false);
 
   const onDelete = async () => {
@@ -35,6 +35,6 @@ const SubmitIcon = ({onPress, icon, style, color}: TProps) => {
   );
 };
 
-export default SubmitIcon;
+export default SubmitIconButton;
 
 const styles = StyleSheet.create({container: {padding: 10}});

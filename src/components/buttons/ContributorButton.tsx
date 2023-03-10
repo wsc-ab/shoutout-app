@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {
   Pressable,
   StyleSheet,
@@ -6,7 +6,6 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import ModalContext from '../../contexts/Modal';
 import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultText from '../defaults/DefaultText';
 import UserProfileImage from '../images/UserProfileImage';
@@ -24,13 +23,9 @@ type TProps = {
 const ContributorButton = ({user, index, length, style}: TProps) => {
   const {width} = useWindowDimensions();
 
-  const {onUpdate} = useContext(ModalContext);
-
   return (
     <View style={style}>
-      <Pressable
-        style={[styles.container, {width: (width - 80) / 1.5}]}
-        onPress={() => onUpdate({target: 'user', data: {id: user.id}})}>
+      <Pressable style={[styles.container, {width: (width - 80) / 1.5}]}>
         <View style={styles.user}>
           <UserProfileImage
             user={{

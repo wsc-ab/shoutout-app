@@ -9,7 +9,6 @@ import ChannelModal from '../components/modals/ChannelModal';
 import ChannelSearchModal from '../components/modals/ChannelSearchModal';
 import ContactsModal from '../components/modals/ContactsModal';
 import MomentsModal from '../components/modals/MomentsModal';
-import UserModal from '../components/modals/UserModal';
 import UsersModal from '../components/modals/UsersModal';
 import {TObject} from '../types/Firebase';
 import {getQueryParams} from '../utils/Share';
@@ -90,9 +89,6 @@ const ModalProvider = ({children}: TProps) => {
         onUpdate,
       }}>
       {children}
-      {modal?.target === 'user' && modal.data?.id && (
-        <UserModal id={modal.data.id} />
-      )}
       {modal?.target === 'moments' && modal.data && (
         <MomentsModal moments={modal.data.moments} />
       )}

@@ -9,6 +9,7 @@ import DefaultText from '../defaults/DefaultText';
 import ChannelCodeForm from '../forms/ChannelCodeForm';
 import {localizations} from './Channels.localizations';
 import ChannelSummary from './ChannelSummary';
+import EmptyChannel from './EmptyChannel';
 
 type TProps = {
   style: TStyleView;
@@ -30,15 +31,7 @@ const Channels = ({style}: TProps) => {
         contentContainerStyle={styles.contentContainer}
         renderItem={renderItem}
         indicatorStyle="white"
-        ListEmptyComponent={() => (
-          <View style={{marginHorizontal: 10}}>
-            <DefaultText
-              title={localization.noChannels.title}
-              textStyle={{fontSize: 20, fontWeight: 'bold', marginBottom: 5}}
-            />
-            <DefaultText title={localization.noChannels.message} />
-          </View>
-        )}
+        ListEmptyComponent={EmptyChannel}
         ItemSeparatorComponent={() => <View style={styles.seperator} />}
       />
       <View style={styles.footer}>

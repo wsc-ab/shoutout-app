@@ -312,12 +312,7 @@ const ChannelSummary = ({channel, style}: TProps) => {
                         }
                         onView({user: {id: userId}, moment: {id}});
                       }}>
-                      <UserProfileImage
-                        user={{id: userId}}
-                        onPress={() => {
-                          onUpdate({target: 'user', data: {id: userId}});
-                        }}
-                      />
+                      <UserProfileImage user={{id: userId}} />
                       <View style={{marginLeft: 10, flex: 1}}>
                         <DefaultText
                           title={displayName}
