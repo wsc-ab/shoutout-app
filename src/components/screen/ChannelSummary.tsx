@@ -101,7 +101,7 @@ const ChannelSummary = ({channel, style}: TProps) => {
     }
   };
 
-  const grouped = groupByLength(data.moments.items, 3);
+  const grouped = groupByLength(data.moments.items, 1);
 
   const itemWidth = width - 60;
 
@@ -264,7 +264,7 @@ const ChannelSummary = ({channel, style}: TProps) => {
       <FlatList
         data={grouped[0].length === 0 ? [] : grouped}
         horizontal
-        snapToInterval={width}
+        snapToInterval={width - 40}
         snapToAlignment={'start'}
         decelerationRate="fast"
         disableIntervalMomentum
@@ -299,6 +299,8 @@ const ChannelSummary = ({channel, style}: TProps) => {
                         width: itemWidth,
                         height: 50,
                         marginBottom: 10,
+                        borderWidth: 1,
+                        borderColor: 'white',
                       }}
                       onPress={() => {
                         if (ghosting) {
