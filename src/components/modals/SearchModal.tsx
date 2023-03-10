@@ -4,7 +4,7 @@ import AuthUserContext from '../../contexts/AuthUser';
 import ModalContext from '../../contexts/Modal';
 import {addChannelUsers, removeChannelUser} from '../../functions/Channel';
 import {TTimestampClient} from '../../types/Firebase';
-import SmallUserCard from '../cards/SmallUserCard';
+import SmallUserCard from '../cards/ChannelUserCard';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';

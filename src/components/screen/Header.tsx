@@ -1,6 +1,6 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
-import FriendsButton from '../buttons/FriendButton';
+import FriendsButton from '../buttons/ChannelsButton';
 import GlobalButton from '../buttons/GlobalButton';
 import SearchButton from '../buttons/SearchButton';
 import UserButton from '../buttons/UserButton';

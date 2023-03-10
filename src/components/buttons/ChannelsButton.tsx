@@ -8,7 +8,7 @@ type TProps = {
   color?: string;
 };
 
-const FriendsButton = ({style, color, onPress}: TProps) => {
+const ChannelsButton = ({style, color, onPress}: TProps) => {
   return (
     <DefaultIcon
       icon="folder"
@@ -20,4 +20,4 @@ const FriendsButton = ({style, color, onPress}: TProps) => {
   );
 };
 
-export default FriendsButton;
+export default ChannelsButton;

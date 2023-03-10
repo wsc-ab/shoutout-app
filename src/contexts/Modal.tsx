@@ -107,7 +107,7 @@ const ModalProvider = ({children}: TProps) => {
       {modal?.target === 'auth' && <AuthUserModal />}
       {modal?.target === 'friends' && <ContactsModal />}
       {modal?.target === 'channelUsers' && modal.data && (
-        <UsersModal users={modal.data.users} channel={modal.data.channel} />
+        <UsersModal channel={modal.data.channel} />
       )}
 
       {modal?.target === 'createMoment' && modal.data && (

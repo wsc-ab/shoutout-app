@@ -76,8 +76,6 @@ const ChannelSummary = ({channel, style}: TProps) => {
     return null;
   }
 
-  const users = data.inviteTo?.items;
-
   const onView = ({
     user: {id: userId},
     moment: {id: momentId},
@@ -163,7 +161,6 @@ const ChannelSummary = ({channel, style}: TProps) => {
               onUpdate({
                 target: 'channelUsers',
                 data: {
-                  users,
                   channel: data,
                 },
               });
