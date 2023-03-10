@@ -208,16 +208,6 @@ const ChannelSummary = ({channel, style}: TProps) => {
               );
             }}
           />
-          <DefaultText
-            title={
-              data.options.media === 'both'
-                ? localization.imageVideo
-                : data.options.media === 'image'
-                ? localization.image
-                : localization.video
-            }
-            style={styles.tag}
-          />
           {data.options.mode === 'camera' && (
             <DefaultText
               title={localization.camera}

@@ -42,7 +42,6 @@ const EditChannelModal = ({onCancel, channel, onSuccess}: TProps) => {
 
   const schema = object({
     name: text({min: 1, max: 50, required: true}),
-    media: text({required: true}),
     mode: text({required: true}),
     ghosting: text({required: true}),
   }).required();
@@ -55,7 +54,6 @@ const EditChannelModal = ({onCancel, channel, onSuccess}: TProps) => {
     resolver: yupResolver(schema),
     defaultValues: {
       name: channel.name as string,
-      media: channel.options.media as string,
       mode: channel.options.mode as string,
       ghosting: channel.options.ghosting.mode as string,
     },
@@ -65,12 +63,10 @@ const EditChannelModal = ({onCancel, channel, onSuccess}: TProps) => {
     name,
     mode,
     ghosting,
-    media,
   }: {
     name: string;
     mode: 'camera' | 'library' | 'both';
     ghosting: 'off' | '1' | '7' | '14';
-    media: 'video' | 'image' | 'both';
   }) => {
     try {
       setSubmitting(true);
@@ -80,7 +76,6 @@ const EditChannelModal = ({onCancel, channel, onSuccess}: TProps) => {
           id: channel.id,
           options: {
             type: channel.options.type,
-            media,
             mode,
             ghosting: {mode: ghosting},
           },

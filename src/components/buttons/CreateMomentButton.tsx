@@ -18,7 +18,6 @@ type TProps = {
     id: string;
     options: {
       mode: 'camera' | 'library' | 'both';
-      media: 'image' | 'video' | 'both';
     };
   };
   color?: string;
@@ -58,11 +57,7 @@ const CreateMomentButton = ({channel, color = 'white', style}: TProps) => {
         userId: authUserData.id,
         mediaType:
           mode === 'library'
-            ? channel.options.media === 'both'
-              ? 'mixed'
-              : channel.options.media === 'image'
-              ? 'photo'
-              : 'video'
+            ? 'mixed'
             : mode === 'cameraPhoto'
             ? 'photo'
             : 'video',

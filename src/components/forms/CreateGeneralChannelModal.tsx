@@ -8,6 +8,7 @@ import ModalContext from '../../contexts/Modal';
 import {createChannel} from '../../functions/Channel';
 
 import AuthUserContext from '../../contexts/AuthUser';
+import LanguageContext from '../../contexts/Language';
 import {defaultSchema} from '../../utils/Schema';
 import ControllerOption from '../controllers/ControllerOption';
 import ControllerText from '../controllers/ControllerText';
@@ -15,7 +16,6 @@ import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultKeyboardAwareScrollView from '../defaults/DefaultKeyboardAwareScrollView';
 import DefaultModal from '../defaults/DefaultModal';
-import LanguageContext from '../../contexts/Language';
 import {localizations} from './CreateGeneralChannelModal.localizations';
 
 type TProps = {};
@@ -32,7 +32,6 @@ const CreateGeneralChannelModal = ({}: TProps) => {
   const schema = object({
     name: text({min: 1, max: 50, required: true}),
     type: text({required: true}),
-    media: text({required: true}),
     mode: text({required: true}),
     ghosting: text({required: true}),
   }).required();
@@ -46,7 +45,6 @@ const CreateGeneralChannelModal = ({}: TProps) => {
     defaultValues: {
       type: 'public',
       name: '',
-      media: 'both',
       mode: 'both',
       ghosting: '7',
     },
@@ -57,13 +55,11 @@ const CreateGeneralChannelModal = ({}: TProps) => {
     type,
     mode,
     ghosting,
-    media,
   }: {
     name: string;
     type: 'public' | 'private';
     mode: 'camera' | 'library' | 'both';
     ghosting: 'off' | '1' | '7' | '14';
-    media: 'video' | 'image' | 'both';
   }) => {
     try {
       setSubmitting(true);
@@ -74,7 +70,6 @@ const CreateGeneralChannelModal = ({}: TProps) => {
         channel: {
           id: channelId,
           options: {
-            media,
             type,
             mode,
             ghosting: {mode: ghosting},
@@ -119,13 +114,6 @@ const CreateGeneralChannelModal = ({}: TProps) => {
             name="type"
             {...localization.type}
             errors={errors.type}
-            style={styles.textInput}
-          />
-          <ControllerOption
-            control={control}
-            name="media"
-            {...localization.media}
-            errors={errors.media}
             style={styles.textInput}
           />
           <ControllerOption

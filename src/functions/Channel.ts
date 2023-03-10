@@ -6,7 +6,6 @@ export const createChannel = async (input: {
     name: string;
     options: {
       type: 'public' | 'private';
-      media: 'image' | 'video' | 'both';
       mode: 'camera' | 'library' | 'both';
       ghosting: {mode: 'off' | '1' | '7' | '14'};
       sponsor?: {detail: string};
@@ -65,7 +64,6 @@ export const editChannel = async (input: {
     name: string;
     options: {
       type: 'public' | 'private';
-      media: 'image' | 'video' | 'both';
       mode: 'camera' | 'library' | 'both';
       ghosting: {mode: 'off' | '1' | '7' | '14'};
     };

@@ -28,7 +28,6 @@ const CreateSponsoredChannelModal = ({}: TProps) => {
 
   const schema = object({
     name: text({min: 1, max: 50, required: true}),
-    media: text({required: true}),
     mode: text({required: true}),
     detail: text({min: 10, max: 500, required: true}),
     ghosting: text({required: true}),
@@ -42,7 +41,6 @@ const CreateSponsoredChannelModal = ({}: TProps) => {
     resolver: yupResolver(schema),
     defaultValues: {
       name: '',
-      media: 'both',
       mode: 'camera',
       detail: '',
       ghosting: '7',
@@ -54,12 +52,10 @@ const CreateSponsoredChannelModal = ({}: TProps) => {
     detail,
     mode,
     ghosting,
-    media,
   }: {
     name: string;
     detail: string;
     mode: 'camera' | 'library' | 'both';
-    media: 'video' | 'image' | 'both';
     ghosting: 'off' | '1' | '7' | '14';
   }) => {
     try {
@@ -71,7 +67,6 @@ const CreateSponsoredChannelModal = ({}: TProps) => {
         channel: {
           id: channelId,
           options: {
-            media,
             type: 'public',
             mode,
             ghosting: {mode: ghosting},
@@ -133,19 +128,6 @@ const CreateSponsoredChannelModal = ({}: TProps) => {
             detail="What are you offering?"
             errors={errors.detail}
             style={styles.textInput}
-          />
-          <ControllerOption
-            control={control}
-            name="media"
-            title="Media"
-            detail="Set allowed media."
-            errors={errors.media}
-            style={styles.textInput}
-            options={[
-              {name: 'both', title: 'Both'},
-              {name: 'image', title: 'Image'},
-              {name: 'video', title: 'Video'},
-            ]}
           />
           <ControllerOption
             control={control}

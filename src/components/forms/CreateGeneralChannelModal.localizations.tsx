@@ -10,15 +10,6 @@ export const localizations = {
         {name: 'private', title: 'Private'},
       ],
     },
-    media: {
-      title: 'Media',
-      detail: 'Set allowed media.',
-      options: [
-        {name: 'both', title: 'Both'},
-        {name: 'image', title: 'Image'},
-        {name: 'video', title: 'Video'},
-      ],
-    },
     mode: {
       title: 'Mode',
       detail:
@@ -47,19 +38,10 @@ export const localizations = {
     type: {
       title: '종류',
       detail:
-        '프라이빗 채널은 디스커버리 탭이나 검색에서 모멘트를 보여주지 않습니다.',
+        '비공개 채널은 디스커버리 탭이나 검색에서 모멘트를 보여주지 않습니다.',
       options: [
-        {name: 'public', title: '퍼블릭'},
-        {name: 'private', title: '프라이빗'},
-      ],
-    },
-    media: {
-      title: '미디어',
-      detail: '지원하는 미디어 종류를 선택하세요.',
-      options: [
-        {name: 'both', title: '모두'},
-        {name: 'image', title: '이미지'},
-        {name: 'video', title: '동영상'},
+        {name: 'public', title: '공개'},
+        {name: 'private', title: '비공개'},
       ],
     },
     mode: {

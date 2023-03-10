@@ -11,15 +11,6 @@ export const localizations = {
       message: 'Failed to delete channel.',
     },
     name: {title: 'Name', detail: 'Change the name of this channel.'},
-    media: {
-      title: 'Media',
-      detail: 'Change allowed media.',
-      options: [
-        {name: 'both', title: 'Both'},
-        {name: 'image', title: 'Image'},
-        {name: 'video', title: 'Video'},
-      ],
-    },
     mode: {
       title: 'Mode',
       detail:
@@ -54,15 +45,6 @@ export const localizations = {
       message: '채널 삭제에 실패했습니다.',
     },
     name: {title: '이름', detail: '채널의 이름을 수정하세요.'},
-    media: {
-      title: '미디어',
-      detail: '지원하는 미디어 종류를 변경하세요.',
-      options: [
-        {name: 'both', title: '모두'},
-        {name: 'image', title: '이미지'},
-        {name: 'video', title: '동영상'},
-      ],
-    },
     mode: {
       title: '모드',
       detail:

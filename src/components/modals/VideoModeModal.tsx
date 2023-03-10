@@ -10,7 +10,6 @@ type TProps = {
   onSuccess: (name: string) => void;
   options: {
     mode: 'camera' | 'library' | 'both';
-    media: 'image' | 'video' | 'both';
   };
 };
 
@@ -28,25 +27,20 @@ const VideoModeModal = ({onCancel, onSuccess, options}: TProps) => {
         }}>
         {['camera', 'both'].includes(options.mode) && (
           <>
-            {['image', 'both'].includes(options.media) && (
-              <DefaultText
-                title="Take photo"
-                style={styles.option}
-                onPress={() => onSuccess('cameraPhoto')}
-                textStyle={{fontWeight: 'bold'}}
-              />
-            )}
-            {['video', 'both'].includes(options.media) && (
-              <DefaultText
-                title="Take video"
-                style={styles.option}
-                onPress={() => onSuccess('cameraVideo')}
-                textStyle={{fontWeight: 'bold'}}
-              />
-            )}
+            <DefaultText
+              title="Take photo"
+              style={styles.option}
+              onPress={() => onSuccess('cameraPhoto')}
+              textStyle={{fontWeight: 'bold'}}
+            />
+            <DefaultText
+              title="Take video"
+              style={styles.option}
+              onPress={() => onSuccess('cameraVideo')}
+              textStyle={{fontWeight: 'bold'}}
+            />
           </>
         )}
-
         {['library', 'both'].includes(options.mode) && (
           <DefaultText
             title="Open library"

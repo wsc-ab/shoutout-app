@@ -122,7 +122,7 @@ export const takeMoment = async ({
     type: media as 'image' | 'video',
   });
 
-  return {remotePath, localPath: asset.uri, media: asset.type?.split('/')[0]};
+  return {remotePath, localPath: asset.uri, media};
 };
 
 export const uploadVideo = async ({
