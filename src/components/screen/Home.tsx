@@ -66,8 +66,10 @@ const Home = () => {
         onGlobal={() => setTab('globe')}
         tab={tab}
       />
-      {tab === 'channels' && <Channels style={styles.channels} />}
-      {tab === 'globe' && <Moments style={styles.moments} />}
+      <Channels style={[styles.channels, tab !== 'channels' && styles.hide]} />
+      <View style={[styles.parent, tab !== 'globe' && styles.hide]}>
+        <Moments style={styles.moments} mount={tab === 'globe'} />
+      </View>
     </View>
   );
 };
@@ -77,5 +79,7 @@ export default Home;
 const styles = StyleSheet.create({
   container: {flex: 1},
   channels: {flex: 1},
+  parent: {flex: 1},
   moments: {flex: 1},
+  hide: {display: 'none'},
 });
