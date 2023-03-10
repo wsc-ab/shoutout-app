@@ -14,7 +14,7 @@ import ModalContext from '../../contexts/Modal';
 import {TDocData, TDocSnapshot} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
 import {groupByKey, groupByLength} from '../../utils/Array';
-import {checkGhosting} from '../../utils/Channel';
+import {checkGhosting, checkSpam} from '../../utils/Channel';
 import {getTimeGap} from '../../utils/Date';
 import {getCityAndCountry} from '../../utils/Map';
 import {getThumbnailPath} from '../../utils/Storage';
@@ -112,6 +112,11 @@ const ChannelSummary = ({channel, style}: TProps) => {
   });
 
   const ghosting = checkGhosting({authUser: authUserData, channel: data});
+  const {spam, nextTime} = checkSpam({authUser: authUserData, channel: data});
+
+  const onSpam = () => {
+    DefaultAlert(localization.spamAlert(nextTime));
+  };
 
   return (
     <View style={style}>
@@ -142,9 +147,14 @@ const ChannelSummary = ({channel, style}: TProps) => {
               alignItems: 'center',
               flexDirection: 'row',
             }}>
-            <CreateMomentButton
-              channel={{id: data.id, options: data.options}}
-            />
+            {!spam && (
+              <CreateMomentButton
+                channel={{id: data.id, options: data.options}}
+              />
+            )}
+            {spam && (
+              <DefaultIcon icon="square-plus" size={20} onPress={onSpam} />
+            )}
 
             <DefaultText
               title={data.moments.number.toString()}
@@ -225,6 +235,17 @@ const ChannelSummary = ({channel, style}: TProps) => {
                 setModalDetail(
                   localization.ghostingModal(data.options.ghosting?.mode),
                 );
+              }}
+            />
+          )}
+          {data.options.spam && data.options.spam !== 'off' && (
+            <DefaultText
+              title={`${localization.spam} ${data.options.spam}`}
+              style={[styles.tag, spam && {backgroundColor: defaultRed.lv2}]}
+              textStyle={{color: spam ? 'black' : 'white'}}
+              onPress={() => {
+                setModal('detail');
+                setModalDetail(localization.spamModal(data.options.spam));
               }}
             />
           )}

@@ -19,8 +19,15 @@ export const localizations = {
     libraryModal:
       'This channel only allows contents from media library to be uploaded.',
     ghosting: 'Ghosting',
+    spam: 'Spam',
     ghostingModal: (days: number) =>
       `This channel shows contents to users who have shared in the last ${days} days.`,
+    spamModal: (hours: number) =>
+      `This channel allows users to post every ${hours}.`,
+    spamAlert: (date: Date) => ({
+      title: 'Please wait',
+      message: `This channel has enabled the spam blocking. You can post from ${date.toLocaleString()}.`,
+    }),
     nocontents: 'No contents in this channel.',
     ghostAlert: {
       title: 'Please share a content',
@@ -44,12 +51,19 @@ export const localizations = {
     library: '라이브러리',
     libraryModal: '라이브러리 콘텐츠만 올릴 수 있습니다.',
     ghosting: '눈팅',
+    spam: '도배',
     ghostingModal: (days: number) =>
       `이 채널은 지난 ${days} 일 중 활동한 유저에게만 콘텐츠가 보입니다.`,
+    spamModal: (hours: number) =>
+      `이 채널은 ${hours} 시간에 한 번만 컨텐츠를 올릴 수 있습니다.`,
     nocontents: '아직 콘텐츠가 없습니다.',
     ghostAlert: {
       title: '콘텐츠를 공유하세요',
       message: '너무 오래 눈팅하셨어요.',
     },
+    spamAlert: (date: Date) => ({
+      title: '조금 더 기다리세요',
+      message: `이 채널은 스팸 방지 기능을 사용 중 입니다. ${date.toLocaleString()}에 포스팅 할 수 있습니다.`,
+    }),
   },
 };

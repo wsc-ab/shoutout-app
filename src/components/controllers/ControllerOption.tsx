@@ -52,7 +52,10 @@ const ControllerOption = ({
                 textStyle={styles.titleText}
               />
               <DefaultText title={detail} style={styles.detail} />
-              <ScrollView horizontal style={styles.options}>
+              <ScrollView
+                horizontal
+                style={styles.options}
+                indicatorStyle="white">
                 {options.map(({title: elTitle, name: elName}) => (
                   <DefaultText
                     title={elTitle}

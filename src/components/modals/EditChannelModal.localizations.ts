@@ -30,7 +30,7 @@ export const localizations = {
       ],
     },
     ghosting: {
-      title: 'Block ghosting',
+      title: 'Ghosting',
       detail:
         "Change the number of allowed ghosting days. If set to 7 days, users who haven't posted in the last 7 days can't access the channel.",
       options: [
@@ -38,6 +38,19 @@ export const localizations = {
         {name: '1', title: '1 Day'},
         {name: '7', title: '7 Days'},
         {name: '14', title: '14 Days'},
+      ],
+    },
+    spam: {
+      title: 'Spam',
+      detail:
+        'Change options for spam. If set to 6 hours, users can post only once every 6 hours.',
+      options: [
+        {name: 'off', title: 'Off'},
+        {name: '1', title: '1 hour'},
+        {name: '3', title: '3 hour'},
+        {name: '6', title: '6 hour'},
+        {name: '12', title: '12 hours'},
+        {name: '24', title: '24 hours'},
       ],
     },
   },
@@ -80,6 +93,19 @@ export const localizations = {
         {name: '1', title: '1일'},
         {name: '7', title: '7일'},
         {name: '14', title: '14일'},
+      ],
+    },
+    spam: {
+      title: '도배',
+      detail:
+        '도배 관련 옵션을 변경하세요. 6시간으로 설정시, 6시간에 한 번만 공유할 수 있습니다.',
+      options: [
+        {name: 'off', title: 'Off'},
+        {name: '1', title: '1 시간'},
+        {name: '3', title: '3 시간'},
+        {name: '6', title: '6 시간'},
+        {name: '12', title: '12 시간'},
+        {name: '24', title: '24 시간'},
       ],
     },
   },

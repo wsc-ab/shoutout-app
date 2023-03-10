@@ -60,6 +60,7 @@ const EditChannelModal = ({onCancel, channel, onSuccess}: TProps) => {
     name: text({min: 1, max: 50, required: true}),
     mode: text({required: true}),
     ghosting: text({required: true}),
+    spam: text({required: true}),
   }).required();
 
   const {
@@ -72,6 +73,7 @@ const EditChannelModal = ({onCancel, channel, onSuccess}: TProps) => {
       name: channel.name as string,
       mode: channel.options.mode as string,
       ghosting: channel.options.ghosting.mode as string,
+      spam: channel.options.spam as string,
     },
   });
 
@@ -79,10 +81,12 @@ const EditChannelModal = ({onCancel, channel, onSuccess}: TProps) => {
     name,
     mode,
     ghosting,
+    spam,
   }: {
     name: string;
     mode: 'camera' | 'library' | 'both';
     ghosting: 'off' | '1' | '7' | '14';
+    spam: 'off' | '1' | '3' | '6' | '12' | '24';
   }) => {
     try {
       setSubmitting(true);
@@ -94,6 +98,7 @@ const EditChannelModal = ({onCancel, channel, onSuccess}: TProps) => {
             type: channel.options.type,
             mode,
             ghosting: {mode: ghosting},
+            spam,
           },
           name,
         },
@@ -137,6 +142,13 @@ const EditChannelModal = ({onCancel, channel, onSuccess}: TProps) => {
             name="ghosting"
             {...localization.ghosting}
             errors={errors.ghosting}
+            style={styles.textInput}
+          />
+          <ControllerOption
+            control={control}
+            name="spam"
+            {...localization.spam}
+            errors={errors.spam}
             style={styles.textInput}
           />
           <View style={styles.textInput}>

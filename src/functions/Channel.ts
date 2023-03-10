@@ -8,6 +8,7 @@ export const createChannel = async (input: {
       type: 'public' | 'private';
       mode: 'camera' | 'library' | 'both';
       ghosting: {mode: 'off' | '1' | '7' | '14'};
+      spam: 'off' | '1' | '3' | '6' | '12' | '24';
       sponsor?: {detail: string};
     };
   };
@@ -66,6 +67,7 @@ export const editChannel = async (input: {
       type: 'public' | 'private';
       mode: 'camera' | 'library' | 'both';
       ghosting: {mode: 'off' | '1' | '7' | '14'};
+      spam: 'off' | '1' | '3' | '6' | '12' | '24';
     };
   };
 }) => {

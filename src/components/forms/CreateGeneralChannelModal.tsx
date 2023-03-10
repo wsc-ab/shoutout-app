@@ -34,6 +34,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
     type: text({required: true}),
     mode: text({required: true}),
     ghosting: text({required: true}),
+    spam: text({required: true}),
   }).required();
 
   const {
@@ -47,6 +48,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
       name: '',
       mode: 'both',
       ghosting: '7',
+      spam: '1',
     },
   });
 
@@ -55,11 +57,13 @@ const CreateGeneralChannelModal = ({}: TProps) => {
     type,
     mode,
     ghosting,
+    spam,
   }: {
     name: string;
     type: 'public' | 'private';
     mode: 'camera' | 'library' | 'both';
     ghosting: 'off' | '1' | '7' | '14';
+    spam: 'off' | '1' | '3' | '6' | '12' | '24';
   }) => {
     try {
       setSubmitting(true);
@@ -73,6 +77,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
             type,
             mode,
             ghosting: {mode: ghosting},
+            spam,
           },
           name,
         },
@@ -128,6 +133,13 @@ const CreateGeneralChannelModal = ({}: TProps) => {
             name="ghosting"
             {...localization.ghosting}
             errors={errors.ghosting}
+            style={styles.textInput}
+          />
+          <ControllerOption
+            control={control}
+            name="spam"
+            {...localization.spam}
+            errors={errors.spam}
             style={styles.textInput}
           />
         </DefaultKeyboardAwareScrollView>
