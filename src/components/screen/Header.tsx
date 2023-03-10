@@ -1,6 +1,5 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
-import ContactButton from '../buttons/ContactButton';
 import FriendsButton from '../buttons/FriendButton';
 import GlobalButton from '../buttons/GlobalButton';
 import SearchButton from '../buttons/SearchButton';
@@ -23,7 +22,6 @@ const Header = ({onChannels, onGlobal, tab}: TProps) => {
         color={tab === 'globe' ? 'white' : 'gray'}
         onPress={onGlobal}
       />
-      <ContactButton style={styles.button} />
       <SearchButton style={styles.button} />
     </SafeAreaView>
   );
