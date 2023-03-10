@@ -27,7 +27,7 @@ type TProps = {
 };
 
 const CommentsModal = ({moment, onCancel}: TProps) => {
-  const [value, setValue] = useState<string>('');
+  const [value, setValue] = useState<string>(undefined);
 
   const [data, setData] = useState<TDocData>();
   const [status, setStatus] = useState<TStatus>('loading');
@@ -69,11 +69,13 @@ const CommentsModal = ({moment, onCancel}: TProps) => {
           }}
         />
         <View style={{marginLeft: 10, flex: 1}}>
-          <DefaultText
-            title={item.user.displayName}
-            textStyle={{fontWeight: 'bold', fontSize: 16}}
-            style={{marginBottom: 5, flex: 1}}
-          />
+          <View>
+            <DefaultText
+              title={item.user.displayName}
+              textStyle={{fontWeight: 'bold', fontSize: 16}}
+              style={{marginBottom: 5, flex: 1}}
+            />
+          </View>
           <DefaultText title={item.detail} textStyle={{}} />
           <View
             style={{
@@ -84,6 +86,7 @@ const CommentsModal = ({moment, onCancel}: TProps) => {
             <DefaultText
               title={`${getTimeGap(item.addedAt)} ago`}
               textStyle={{fontSize: 14, color: 'lightgray'}}
+              style={{flex: 1}}
             />
             <SubmitIcon
               onPress={async () => await onRemove(item)}
@@ -115,6 +118,7 @@ const CommentsModal = ({moment, onCancel}: TProps) => {
           bottom: 0,
           backgroundColor: defaultBlack.lv2(1),
           paddingTop: 20,
+          paddingHorizontal: 20,
         }}>
         <FlatList
           data={data?.comments ?? []}
@@ -164,18 +168,20 @@ const CommentsModal = ({moment, onCancel}: TProps) => {
             },
           ]}
         />
-        <SubmitIcon
-          icon="plus"
-          color={value ? 'black' : 'gray'}
-          onPress={onAdd}
-          style={{
-            padding: 10,
-            marginBottom: 24,
-            height: 50,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        />
+        {value?.length >= 1 && (
+          <SubmitIcon
+            icon="plus"
+            color={'black'}
+            onPress={onAdd}
+            style={{
+              padding: 10,
+              marginBottom: 24,
+              height: 50,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          />
+        )}
       </KeyboardAvoidingView>
     </DefaultBottomModal>
   );

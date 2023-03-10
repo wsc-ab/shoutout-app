@@ -26,20 +26,15 @@ const SubmitIcon = ({onPress, icon, style, color}: TProps) => {
     }
   };
   return (
-    <View style={style}>
+    <View style={[styles.container, style]}>
       {!submitting && (
-        <DefaultIcon
-          icon={icon}
-          style={{padding: 10}}
-          color={color}
-          onPress={onDelete}
-        />
+        <DefaultIcon icon={icon} size={20} color={color} onPress={onDelete} />
       )}
-      {submitting && <ActivityIndicator style={{padding: 10}} />}
+      {submitting && <ActivityIndicator />}
     </View>
   );
 };
 
 export default SubmitIcon;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({container: {padding: 10}});
