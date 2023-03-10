@@ -107,10 +107,6 @@ const ChannelSummary = ({channel, style}: TProps) => {
 
   const itemWidth = width - 20;
 
-  const joined = data.inviteTo.items.some(
-    ({id: elId}) => elId === authUserData.id,
-  );
-
   const getItemLayout = (_: any[] | null | undefined, itemIndex: number) => ({
     length: itemWidth,
     offset: itemWidth * itemIndex,
@@ -148,19 +144,9 @@ const ChannelSummary = ({channel, style}: TProps) => {
               alignItems: 'center',
               flexDirection: 'row',
             }}>
-            {joined && (
-              <CreateMomentButton
-                channel={{id: data.id, options: data.options}}
-              />
-            )}
-            {!joined && (
-              <DefaultIcon
-                icon="square-plus"
-                size={20}
-                color="gray"
-                onPress={() => DefaultAlert(localization.needToJoin)}
-              />
-            )}
+            <CreateMomentButton
+              channel={{id: data.id, options: data.options}}
+            />
 
             <DefaultText
               title={data.moments.number.toString()}
