@@ -9,7 +9,6 @@ import {defaultSchema} from '../../utils/Schema';
 import SubmitTextButton from '../buttons/SubmitTextButton';
 import ControllerText from '../controllers/ControllerText';
 import DefaultAlert from '../defaults/DefaultAlert';
-import DefaultKeyboardAwareScrollView from '../defaults/DefaultKeyboardAwareScrollView';
 import DefaultText from '../defaults/DefaultText';
 import {localizations} from './EmptyChannel.localizations';
 
@@ -50,45 +49,37 @@ const EmptyChannel = () => {
   const onPress = handleSubmit(onSubmit);
 
   return (
-    <View
-      style={{
-        marginHorizontal: 10,
-        alignContent: 'center',
-        flex: 1,
-      }}>
-      <DefaultText
-        title={localization.title}
-        textStyle={{
-          fontSize: 20,
-          fontWeight: 'bold',
-          marginBottom: 5,
-          paddingHorizontal: 10,
-        }}
+    <View style={styles.container}>
+      <DefaultText title={localization.title} textStyle={styles.titleText} />
+      <DefaultText title={localization.detail} textStyle={styles.detail} />
+      <ControllerText
+        control={control}
+        title={localization.code}
+        name="code"
+        autoFocus
+        keyboardType="number-pad"
+        errors={errors.code}
       />
-      <DefaultText
-        title={localization.detail}
-        textStyle={{marginBottom: 20, paddingHorizontal: 10}}
+      <SubmitTextButton
+        title={localization.enter}
+        textStyle={styles.submitText}
+        onPress={onPress}
+        style={styles.submit}
       />
-      <DefaultKeyboardAwareScrollView>
-        <ControllerText
-          control={control}
-          title={localization.code}
-          name="code"
-          autoFocus
-          keyboardType="number-pad"
-          errors={errors.code}
-        />
-        <SubmitTextButton
-          title={localization.enter}
-          textStyle={{fontSize: 20, fontWeight: 'bold', marginBottom: 5}}
-          onPress={onPress}
-          style={{alignSelf: 'center', marginTop: 10}}
-        />
-      </DefaultKeyboardAwareScrollView>
     </View>
   );
 };
 
 export default EmptyChannel;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {flex: 1},
+  titleText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  detail: {marginBottom: 20},
+  submit: {alignSelf: 'center', marginTop: 10},
+  submitText: {fontSize: 20, fontWeight: 'bold', marginBottom: 5},
+});
