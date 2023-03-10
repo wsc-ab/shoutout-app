@@ -103,7 +103,7 @@ const ChannelSummary = ({channel, style}: TProps) => {
 
   const grouped = groupByLength(data.moments.items, 3);
 
-  const itemWidth = width - 20;
+  const itemWidth = width - 60;
 
   const getItemLayout = (_: any[] | null | undefined, itemIndex: number) => ({
     length: itemWidth,

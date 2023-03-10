@@ -58,7 +58,7 @@ const Channels = ({style}: TProps) => {
 export default Channels;
 
 const styles = StyleSheet.create({
-  contentContainer: {paddingBottom: 100},
+  contentContainer: {paddingBottom: 100, paddingHorizontal: 20},
   seperator: {
     marginVertical: 20,
   },

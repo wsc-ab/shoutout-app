@@ -52,7 +52,7 @@ const DefaultForm = ({title, left, right, children, style}: TProps) => {
           {!right && <View style={styles.icon} />}
         </View>
       </SafeAreaView>
-      <View style={{flex: 1}}>{children}</View>
+      <View style={{flex: 1, marginHorizontal: 20}}>{children}</View>
     </View>
   );
 };

@@ -97,13 +97,13 @@ const MomentCard = ({
             style={{
               position: 'absolute',
               bottom: 70,
-              zIndex: 100,
               left: 0,
               right: 0,
               marginHorizontal: 20,
               borderRadius: 10,
               padding: 10,
               backgroundColor: defaultBlack.lv3(0.5),
+              zIndex: 500,
             }}>
             <View
               style={{
@@ -179,6 +179,7 @@ const MomentCard = ({
             <DefaultVideo
               moment={{id: item.id, content: {path: item.content.path}}}
               videoStyle={{height, width}}
+              style={{zIndex: 300}}
               mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
               pauseOnModal={pauseOnModal}
               repeat
@@ -188,7 +189,9 @@ const MomentCard = ({
             />
           )}
         </View>
-        {!blur && <Footer moment={item} style={{marginHorizontal: 10}} />}
+        {!blur && (
+          <Footer moment={item} style={{marginHorizontal: 10, zIndex: 500}} />
+        )}
       </View>
     );
   };
