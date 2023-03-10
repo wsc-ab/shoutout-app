@@ -2,6 +2,14 @@ export const localizations = {
   en: {
     title: 'Edit channel',
     delete: 'Delete channel',
+    deleteDetail:
+      "This channel will be removed from all joined users. You can't restore data once you delete a channel.",
+    deleteConfirm: {
+      title: 'Confirm',
+      message: 'Are you sure you want to delete this channel?',
+      no: 'No',
+      delete: 'Delete',
+    },
     deleteSuccess: {
       title: 'Deleted',
       message: 'This channel has been deleted.',
@@ -36,9 +44,17 @@ export const localizations = {
   ko: {
     title: '채널 수정',
     delete: '채널 삭제',
+    deleteDetail:
+      '참여한 모든 유저들로부터 이 채널이 삭제됩니다. 삭제 후에는 복원할 수 없습니다.',
+    deleteConfirm: {
+      title: '확인해주세요',
+      message: '이 채널을 정말로 삭제할까요?',
+      no: '아니요',
+      delete: '삭제하기',
+    },
     deleteSuccess: {
       title: '삭제 완료',
-      message: '이 채널은 삭제되었습니다.',
+      message: '이 채널이 삭제되었습니다.',
     },
     deleteError: {
       title: '에러',

@@ -1,7 +1,7 @@
 import {yupResolver} from '@hookform/resolvers/yup';
 import React, {useContext, useState} from 'react';
 import {useForm} from 'react-hook-form';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {object} from 'yup';
 import LanguageContext from '../../contexts/Language';
 import ModalContext from '../../contexts/Modal';
@@ -27,16 +27,31 @@ const EditChannelModal = ({onCancel, channel, onSuccess}: TProps) => {
 
   const {text} = defaultSchema();
 
-  const onDelete = async () => {
-    try {
-      setSubmitting(true);
-      await deleteChannel({channel: {id: channel.id}});
-      DefaultAlert(localization.deleteSuccess);
-    } catch (error) {
-      DefaultAlert(localization.deleteError);
-    } finally {
-      setSubmitting(false);
-    }
+  const onDelete = () => {
+    const onPress = async () => {
+      try {
+        setSubmitting(true);
+        await deleteChannel({channel: {id: channel.id}});
+        DefaultAlert(localization.deleteSuccess);
+      } catch (error) {
+        DefaultAlert(localization.deleteError);
+      } finally {
+        setSubmitting(false);
+      }
+    };
+
+    DefaultAlert({
+      title: localization.deleteConfirm.title,
+      message: localization.deleteConfirm.message,
+      buttons: [
+        {text: localization.deleteConfirm.no},
+        {
+          text: localization.deleteConfirm.delete,
+          onPress,
+          style: 'destructive',
+        },
+      ],
+    });
   };
 
   const {onUpdate} = useContext(ModalContext);
@@ -112,13 +127,6 @@ const EditChannelModal = ({onCancel, channel, onSuccess}: TProps) => {
           />
           <ControllerOption
             control={control}
-            name="media"
-            {...localization.media}
-            errors={errors.media}
-            style={styles.textInput}
-          />
-          <ControllerOption
-            control={control}
             name="mode"
             {...localization.mode}
             errors={errors.mode}
@@ -131,12 +139,17 @@ const EditChannelModal = ({onCancel, channel, onSuccess}: TProps) => {
             errors={errors.ghosting}
             style={styles.textInput}
           />
-          <DefaultText
-            title={localization.delete}
-            onPress={onDelete}
-            textStyle={{color: defaultRed.lv1}}
-            style={styles.textInput}
-          />
+          <View style={styles.textInput}>
+            <DefaultText
+              title={localization.delete}
+              onPress={onDelete}
+              textStyle={{color: defaultRed.lv1, fontSize: 20}}
+            />
+            <DefaultText
+              title={localization.deleteDetail}
+              style={{marginTop: 5}}
+            />
+          </View>
         </DefaultKeyboardAwareScrollView>
       </DefaultForm>
     </DefaultModal>

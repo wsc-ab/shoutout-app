@@ -18,14 +18,13 @@ const SubmitTextButton = ({onPress, title, style, textStyle}: TProps) => {
     try {
       setSubmitting(true);
       await onPress();
-      console.log('called0');
     } catch (error) {
     } finally {
       setSubmitting(false);
     }
   };
   return (
-    <View style={[styles.container, style]}>
+    <View style={style}>
       {!submitting && (
         <DefaultText title={title} onPress={onSubmit} textStyle={textStyle} />
       )}
@@ -35,5 +34,3 @@ const SubmitTextButton = ({onPress, title, style, textStyle}: TProps) => {
 };
 
 export default SubmitTextButton;
-
-const styles = StyleSheet.create({container: {padding: 10}});
