@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, View} from 'react-native';
+import LanguageContext from '../../contexts/Language';
 import DefaultBottomModal from '../defaults/DefaultBottomModal';
 import {defaultBlack, defaultRed} from '../defaults/DefaultColors';
 
 import DefaultText from '../defaults/DefaultText';
+import {localizations} from './AddOptionsModal.localizations';
 
 type TProps = {
   onCancel: () => void;
@@ -13,7 +15,10 @@ type TProps = {
   };
 };
 
-const VideoModeModal = ({onCancel, onSuccess, options}: TProps) => {
+const AddOptionsModal = ({onCancel, onSuccess, options}: TProps) => {
+  const {language} = useContext(LanguageContext);
+  const localization = localizations[language];
+
   return (
     <DefaultBottomModal onCancel={onCancel}>
       <View
@@ -28,13 +33,13 @@ const VideoModeModal = ({onCancel, onSuccess, options}: TProps) => {
         {['camera', 'both'].includes(options.mode) && (
           <>
             <DefaultText
-              title="Take photo"
+              title={localization.image}
               style={styles.option}
               onPress={() => onSuccess('cameraPhoto')}
               textStyle={{fontWeight: 'bold'}}
             />
             <DefaultText
-              title="Take video"
+              title={localization.video}
               style={styles.option}
               onPress={() => onSuccess('cameraVideo')}
               textStyle={{fontWeight: 'bold'}}
@@ -43,14 +48,14 @@ const VideoModeModal = ({onCancel, onSuccess, options}: TProps) => {
         )}
         {['library', 'both'].includes(options.mode) && (
           <DefaultText
-            title="Open library"
+            title={localization.library}
             style={styles.option}
             onPress={() => onSuccess('library')}
             textStyle={{fontWeight: 'bold'}}
           />
         )}
         <DefaultText
-          title="Cancel"
+          title={localization.cancel}
           style={styles.option}
           onPress={onCancel}
           textStyle={{fontWeight: 'bold', color: defaultRed.lv1}}
@@ -60,7 +65,7 @@ const VideoModeModal = ({onCancel, onSuccess, options}: TProps) => {
   );
 };
 
-export default VideoModeModal;
+export default AddOptionsModal;
 
 const styles = StyleSheet.create({
   option: {

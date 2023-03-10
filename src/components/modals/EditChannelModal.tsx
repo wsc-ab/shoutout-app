@@ -16,16 +16,17 @@ import DefaultForm from '../defaults/DefaultForm';
 import DefaultKeyboardAwareScrollView from '../defaults/DefaultKeyboardAwareScrollView';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
-import {localizations} from './EditChannelModal.localization';
+import {localizations} from './EditChannelModal.localizations';
 
 type TProps = {onCancel: () => void; channel: TDocData; onSuccess: () => void};
 
 const EditChannelModal = ({onCancel, channel, onSuccess}: TProps) => {
   const [submitting, setSubmitting] = useState(false);
   const {language} = useContext(LanguageContext);
+  const localization = localizations[language];
+
   const {text} = defaultSchema();
 
-  const localization = localizations[language];
   const onDelete = async () => {
     try {
       setSubmitting(true);

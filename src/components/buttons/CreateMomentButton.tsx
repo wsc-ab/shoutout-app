@@ -10,7 +10,7 @@ import {onUploading} from '../../utils/Upload';
 import {takeMoment} from '../../utils/Video';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultIcon from '../defaults/DefaultIcon';
-import VideoModeModal from '../modals/VideoModeModal';
+import VideoModeModal from '../modals/AddOptionsModal';
 
 type TProps = {
   style?: TStyleView;
