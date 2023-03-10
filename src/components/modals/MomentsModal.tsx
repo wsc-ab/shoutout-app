@@ -95,7 +95,6 @@ const MomentsModal = ({moments}: TProps) => {
           maxToRenderPerBatch={1}
           snapToInterval={height}
           getItemLayout={getItemLayout}
-          initialScrollIndex={momentIndex}
           snapToAlignment={'start'}
           showsVerticalScrollIndicator={false}
           decelerationRate="fast"
