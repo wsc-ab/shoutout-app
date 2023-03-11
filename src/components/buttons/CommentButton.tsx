@@ -3,6 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import {TTimestamp} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
 import DefaultIcon from '../defaults/DefaultIcon';
+import DefaultText from '../defaults/DefaultText';
 import CommentsModal from '../modals/CommentsModal';
 
 type TProps = {
@@ -20,17 +21,19 @@ type TProps = {
 
 const CommentButton = ({moment, style}: TProps) => {
   const [modal, setModal] = useState<'comments'>();
-  console.log(moment.comments, 'com');
 
   return (
     <View>
-      <DefaultIcon
-        style={[styles.container, style]}
-        icon="comment"
-        onPress={() => setModal('comments')}
-        color={'white'}
-        size={20}
-      />
+      <View style={[{flexDirection: 'row', alignItems: 'center'}, style]}>
+        <DefaultIcon
+          icon="comment"
+          onPress={() => setModal('comments')}
+          color={'white'}
+          style={styles.icon}
+          size={20}
+        />
+        <DefaultText title={(moment.comments?.length ?? 0).toString()} />
+      </View>
       {modal === 'comments' && (
         <CommentsModal moment={moment} onCancel={() => setModal(undefined)} />
       )}
@@ -41,9 +44,7 @@ const CommentButton = ({moment, style}: TProps) => {
 export default CommentButton;
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+  icon: {
+    marginRight: 5,
   },
 });

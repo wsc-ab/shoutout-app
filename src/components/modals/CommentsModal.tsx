@@ -27,7 +27,7 @@ type TProps = {
 };
 
 const CommentsModal = ({moment, onCancel}: TProps) => {
-  const [value, setValue] = useState<string>(undefined);
+  const [value, setValue] = useState<string>();
 
   const [data, setData] = useState<TDocData>();
   const [status, setStatus] = useState<TStatus>('loading');
