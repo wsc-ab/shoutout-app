@@ -14,7 +14,7 @@ import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultText from '../defaults/DefaultText';
-import MomentCard from './MomentCard';
+import MomentCard from './MomentsCard';
 
 type TProps = {
   style: TStyleView;

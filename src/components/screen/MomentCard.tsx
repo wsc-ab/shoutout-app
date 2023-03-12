@@ -1,122 +1,112 @@
-import React, {useRef, useState} from 'react';
-import {
-  FlatList,
-  useWindowDimensions,
-  View,
-  ViewabilityConfigCallbackPairs,
-  ViewToken,
-} from 'react-native';
+import firestore from '@react-native-firebase/firestore';
+import React, {useContext, useEffect, useState} from 'react';
+import {useWindowDimensions, View} from 'react-native';
+import ModalContext from '../../contexts/Modal';
 
-import {TTimestamp} from '../../types/Firebase';
+import {TDocData, TDocSnapshot} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
+import DefaultAlert from '../defaults/DefaultAlert';
+import {defaultBlack, defaultRed} from '../defaults/DefaultColors';
+import DefaultIcon from '../defaults/DefaultIcon';
+import DefaultImage from '../defaults/DefaultImage';
+import DefaultText from '../defaults/DefaultText';
 
-import MomentTestCard from './MomentTestCard';
+import DefaultVideo from '../defaults/DefaultVideo';
+import Footer from './Footer';
 
 type TProps = {
-  moments: {
+  moment: {
     id: string;
     name: string;
     content: {path: string};
     createdBy: {id: string; displayName: string};
-  }[];
+  };
   style?: TStyleView;
+  length: number;
+  index: number;
   mount: boolean;
-  momentIndex?: number;
   pauseOnModal?: boolean;
   inView: boolean;
   blur?: boolean;
   channel?: {id: string};
 };
 
-const MomentCard = ({
-  moments,
+const MomentTestCard = ({
+  moment,
   style,
-  momentIndex,
   pauseOnModal = true,
   mount,
   inView,
   blur,
   channel,
+  length,
+  index,
 }: TProps) => {
   const {height, width} = useWindowDimensions();
+  const [data, setData] = useState<TDocData>();
+  const {onUpdate} = useContext(ModalContext);
 
-  const ref = useRef<FlatList>(null);
+  useEffect(() => {
+    const onNext = async (doc: TDocSnapshot) => {
+      if (!doc.exists) {
+        DefaultAlert({title: 'Deleted Moment'});
+        onUpdate();
+        return;
+      }
 
-  const [index, setIndex] = useState(0);
+      const newData = doc.data();
 
-  const onViewableItemsChanged = ({
-    viewableItems,
-  }: {
-    viewableItems: ViewToken[];
-  }) => {
-    if (viewableItems && viewableItems.length > 0) {
-      setIndex(viewableItems[0].index ?? 0);
-    }
-  };
-
-  const viewabilityConfigCallbackPairs = useRef<ViewabilityConfigCallbackPairs>(
-    [
-      {
-        onViewableItemsChanged,
-        viewabilityConfig: {itemVisiblePercentThreshold: 100},
-      },
-    ],
-  );
-
-  const getItemLayout = (_: any[] | null | undefined, itemIndex: number) => ({
-    length: width,
-    offset: width * itemIndex,
-    index: itemIndex,
-  });
-
-  const renderItem = ({
-    item,
-    index: elIndex,
-  }: {
-    item: {
-      id: string;
-      content: {path: string; mode: 'camera'; media: 'image' | 'video'};
-      addedAt: TTimestamp;
-      name: string;
-      createdBy: {id: string};
+      if (newData) {
+        setData(newData);
+      }
     };
-    index: number;
-  }) => {
-    return (
-      <MomentTestCard
-        moment={item}
-        length={moments.length}
-        index={index}
-        mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
-        inView={inView && index === elIndex}
-      />
-    );
-  };
+
+    const onError = (error: Error) => {
+      DefaultAlert({
+        title: 'Failed to get channel data',
+        message: (error as {message: string}).message,
+      });
+    };
+
+    const unsubscribe = firestore()
+      .collection('moments')
+      .doc(moment.id)
+      .onSnapshot(onNext, onError);
+
+    return unsubscribe;
+  }, [moment.id, onUpdate]);
+
+  if (!data) {
+    return null;
+  }
 
   return (
     <View style={style}>
-      <FlatList
-        ref={ref}
-        data={moments}
-        initialNumToRender={1}
-        windowSize={3}
-        maxToRenderPerBatch={1}
-        horizontal
-        snapToInterval={width}
-        initialScrollIndex={momentIndex}
-        showsHorizontalScrollIndicator={false}
-        snapToAlignment={'start'}
-        decelerationRate="fast"
-        getItemLayout={getItemLayout}
-        disableIntervalMomentum
-        keyExtractor={item => {
-          return item.id;
-        }}
-        viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
-        renderItem={renderItem}
-      />
+      <View style={{height, width}}>
+        {data.content.media === 'image' && (
+          <DefaultImage
+            moment={{id: data.id}}
+            image={data.content.path}
+            imageStyle={{height, width}}
+          />
+        )}
+
+        {data.content.media === 'video' && (
+          <DefaultVideo
+            moment={{id: data.id, content: {path: data.content.path}}}
+            videoStyle={{height, width}}
+            mount={mount}
+            pauseOnModal={pauseOnModal}
+            repeat
+            inView={inView}
+            blur={blur}
+            channel={channel}
+          />
+        )}
+      </View>
+      {!blur && <Footer moment={data} style={{marginHorizontal: 10}} />}
     </View>
   );
 };
 
-export default MomentCard;
+export default MomentTestCard;

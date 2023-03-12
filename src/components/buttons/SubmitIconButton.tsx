@@ -17,9 +17,7 @@ const SubmitIconButton = ({onPress, icon, style, color}: TProps) => {
   const onDelete = async () => {
     try {
       setSubmitting(true);
-      console.log('onpress');
       await onPress();
-      console.log('onpress end');
     } catch (error) {
     } finally {
       setSubmitting(false);

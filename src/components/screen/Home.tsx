@@ -67,10 +67,6 @@ const Home = () => {
         tab={tab}
       />
       <Channels style={[styles.channels, tab !== 'channels' && styles.hide]} />
-      <Moments
-        style={[styles.moments, tab !== 'globe' && styles.hide]}
-        mount={tab === 'globe'}
-      />
     </View>
   );
 };
@@ -80,6 +76,5 @@ export default Home;
 const styles = StyleSheet.create({
   container: {flex: 1},
   channels: {flex: 1},
-  moments: {flex: 1},
   hide: {display: 'none'},
 });

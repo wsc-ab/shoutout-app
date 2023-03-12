@@ -1,28 +1,18 @@
 import firestore from '@react-native-firebase/firestore';
 import React, {useContext, useEffect, useState} from 'react';
-import {
-  FlatList,
-  Pressable,
-  StyleSheet,
-  Text,
-  useWindowDimensions,
-  View,
-} from 'react-native';
+import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import LanguageContext from '../../contexts/Language';
 import ModalContext from '../../contexts/Modal';
 import {TDocData, TDocSnapshot} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
-import {groupByKey, groupByLength} from '../../utils/Array';
+import {groupByKey} from '../../utils/Array';
 import {checkGhosting, checkSpam} from '../../utils/Channel';
 import {getTimeGap} from '../../utils/Date';
-import {getCityAndCountry} from '../../utils/Map';
-import {getThumbnailPath} from '../../utils/Storage';
 import CreateMomentButton from '../buttons/CreateMomentButton';
 import DefaultAlert from '../defaults/DefaultAlert';
 import {defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
-import DefaultImage from '../defaults/DefaultImage';
 import DefaultText from '../defaults/DefaultText';
 import DetailModal from '../defaults/DetailModal';
 import UserProfileImage from '../images/UserProfileImage';
@@ -38,7 +28,7 @@ const ChannelSummary = ({channel, style}: TProps) => {
   const {language} = useContext(LanguageContext);
   const localization = localizations[language];
   const {onUpdate} = useContext(ModalContext);
-  const {width} = useWindowDimensions();
+
   const [data, setData] = useState<TDocData>();
   const {authUserData} = useContext(AuthUserContext);
   const [modal, setModal] = useState<'detail' | 'setting'>();
@@ -76,13 +66,7 @@ const ChannelSummary = ({channel, style}: TProps) => {
     return null;
   }
 
-  const onView = ({
-    user: {id: userId},
-    moment: {id: momentId},
-  }: {
-    user: {id: string};
-    moment: {id: string};
-  }) => {
+  const onView = ({user: {id: userId}}: {user: {id: string}}) => {
     if (data) {
       const groupedMoments = groupByKey({items: data.moments.items});
 
@@ -90,32 +74,27 @@ const ChannelSummary = ({channel, style}: TProps) => {
         item => item[0].createdBy.id === userId,
       );
       groupedMoments.unshift(groupedMoments.splice(userIndex, 1)[0]);
-      const momentIndex = groupedMoments[0].findIndex(item => {
-        return item.id === momentId;
-      });
 
       onUpdate({
         target: 'channel',
-        data: {channel: {...data, groupedMoments}, momentIndex},
+        data: {channel: {...data, groupedMoments}},
       });
     }
   };
-
-  const grouped = groupByLength(data.moments.items, 3);
-
-  const itemWidth = width - 20;
-
-  const getItemLayout = (_: any[] | null | undefined, itemIndex: number) => ({
-    length: itemWidth,
-    offset: itemWidth * itemIndex,
-    index: itemIndex,
-  });
 
   const ghosting = checkGhosting({authUser: authUserData, channel: data});
   const {spam, nextTime} = checkSpam({authUser: authUserData, channel: data});
 
   const onSpam = () => {
     DefaultAlert(localization.spamAlert(nextTime));
+  };
+
+  const getLastAddedAt = ({id}: {id: string}) => {
+    const lastAddedAt = data.moments.items.filter(
+      ({createdBy: {id: elId}}) => elId === id,
+    )[0]?.addedAt;
+
+    return lastAddedAt;
   };
 
   return (
@@ -262,77 +241,37 @@ const ChannelSummary = ({channel, style}: TProps) => {
         </View>
       </View>
       <FlatList
-        data={grouped[0].length === 0 ? [] : grouped}
+        data={data.inviteTo.items}
         horizontal
-        snapToInterval={width}
-        snapToAlignment={'start'}
-        decelerationRate="fast"
-        disableIntervalMomentum
-        getItemLayout={getItemLayout}
-        ListEmptyComponent={() => (
-          <DefaultText
-            title={localization.nocontents}
-            style={{
-              height: 50,
-              width: itemWidth,
-            }}
-          />
-        )}
         renderItem={({item}) => {
-          return (
-            <View>
-              {item.map(
-                ({
-                  id,
-                  name,
-                  location,
-                  addedAt,
-                  content: {path, media},
-                  createdBy: {id: userId, displayName},
-                }) => {
-                  return (
-                    <Pressable
-                      key={path}
-                      style={{
-                        marginHorizontal: 10,
-                        flexDirection: 'row',
-                        width: itemWidth,
-                        height: 50,
-                        marginBottom: 10,
-                      }}
-                      onPress={() => {
-                        if (ghosting) {
-                          return DefaultAlert(localization.ghostAlert);
-                        }
-                        onView({user: {id: userId}, moment: {id}});
-                      }}>
-                      <UserProfileImage user={{id: userId}} />
-                      <View style={{marginLeft: 10, flex: 1}}>
-                        <DefaultText
-                          title={displayName}
-                          textStyle={{fontWeight: 'bold', fontSize: 16}}
-                        />
-                        <DefaultText title={name} />
+          const lastAddedAt = getLastAddedAt({id: item.id});
 
-                        <DefaultText
-                          title={`${getTimeGap(
-                            addedAt,
-                          )} ago - ${getCityAndCountry(location.formatted)}`}
-                          textStyle={{fontSize: 14, color: 'gray'}}
-                        />
-                      </View>
-                      <DefaultImage
-                        image={getThumbnailPath(path, media)}
-                        imageStyle={{
-                          height: 50,
-                          width: 50,
-                        }}
-                      />
-                    </Pressable>
-                  );
-                },
-              )}
-            </View>
+          if (!lastAddedAt) {
+            return null;
+          }
+          return (
+            <Pressable
+              style={{
+                padding: 10,
+                flexDirection: 'row',
+              }}
+              onPress={() => {
+                if (ghosting) {
+                  return DefaultAlert(localization.ghostAlert);
+                }
+                onView({user: {id: item.id}});
+              }}>
+              <UserProfileImage user={{id: item.id}} />
+              <View style={{marginLeft: 10}}>
+                <DefaultText
+                  title={item.displayName}
+                  textStyle={{fontWeight: 'bold'}}
+                />
+                {lastAddedAt && (
+                  <DefaultText title={`${getTimeGap(lastAddedAt)} ago`} />
+                )}
+              </View>
+            </Pressable>
           );
         }}
       />

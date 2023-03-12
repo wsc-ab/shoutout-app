@@ -3,7 +3,7 @@ import {FlatList, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import LanguageContext from '../../contexts/Language';
 import {TStyleView} from '../../types/Style';
-import CreateRoomButton from '../buttons/CreateChannelButton';
+import CreateChannelButton from '../buttons/CreateChannelButton';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
 import ChannelCodeForm from '../forms/ChannelCodeForm';
@@ -20,7 +20,7 @@ const Channels = ({style}: TProps) => {
   const {language} = useContext(LanguageContext);
   const localization = localizations[language];
   const [modal, setModal] = useState<'code'>();
-  const renderItem = ({item}) => {
+  const renderItem = ({item}: {item: {id: string}}) => {
     return <ChannelSummary channel={{id: item.id}} />;
   };
 
@@ -35,11 +35,11 @@ const Channels = ({style}: TProps) => {
         ItemSeparatorComponent={() => <View style={styles.seperator} />}
       />
       <View style={styles.footer}>
-        <CreateRoomButton style={styles.button} />
+        <CreateChannelButton style={styles.button} />
         <DefaultText
           title={localization.code}
           onPress={() => setModal('code')}
-          textStyle={{fontWeight: 'bold'}}
+          textStyle={styles.codeText}
           style={styles.button}
         />
       </View>
@@ -60,7 +60,7 @@ export default Channels;
 const styles = StyleSheet.create({
   contentContainer: {paddingBottom: 100},
   seperator: {
-    marginVertical: 20,
+    marginVertical: 10,
   },
   footer: {
     position: 'absolute',
@@ -79,4 +79,5 @@ const styles = StyleSheet.create({
     backgroundColor: 'gray',
     borderRadius: 20,
   },
+  codeText: {fontWeight: 'bold'},
 });

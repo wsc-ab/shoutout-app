@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, View} from 'react-native';
 import {TStyleText, TStyleView} from '../../types/Style';
 import DefaultText from '../defaults/DefaultText';
 
@@ -7,7 +7,7 @@ type TProps = {
   onPress: () => Promise<void>;
   color?: string;
   title: string;
-  textStyle: TStyleText;
+  textStyle?: TStyleText;
   style?: TStyleView;
 };
 
