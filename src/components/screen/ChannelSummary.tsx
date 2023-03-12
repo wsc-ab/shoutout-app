@@ -11,7 +11,7 @@ import {checkGhosting, checkSpam} from '../../utils/Channel';
 import {getTimeGap} from '../../utils/Date';
 import CreateMomentButton from '../buttons/CreateMomentButton';
 import DefaultAlert from '../defaults/DefaultAlert';
-import {defaultRed} from '../defaults/DefaultColors';
+import {defaultBlack, defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
 import DetailModal from '../defaults/DetailModal';
@@ -254,6 +254,8 @@ const ChannelSummary = ({channel, style}: TProps) => {
               style={{
                 padding: 10,
                 flexDirection: 'row',
+                backgroundColor: defaultBlack.lv2(1),
+                borderRadius: 20,
               }}
               onPress={() => {
                 if (ghosting) {
