@@ -45,8 +45,6 @@ const ControllerOption = ({
           required: true,
         }}
         render={({field: {onChange, onBlur, value}}) => {
-          console.log(options, value, 'options');
-
           return (
             <>
               <DefaultText

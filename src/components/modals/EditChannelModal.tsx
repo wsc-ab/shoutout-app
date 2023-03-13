@@ -26,7 +26,7 @@ const EditChannelModal = ({onCancel, channel, onSuccess}: TProps) => {
   const {language} = useContext(LanguageContext);
   const localization = localizations[language];
 
-  const {text, number} = defaultSchema();
+  const {text} = defaultSchema();
 
   const onDelete = () => {
     const onPress = async () => {
@@ -62,7 +62,7 @@ const EditChannelModal = ({onCancel, channel, onSuccess}: TProps) => {
     mode: text({required: true}),
     ghosting: text({required: true}),
     spam: text({required: true}),
-    notificationHours: number({min: 0, max: 23}),
+    notificationHours: text({required: true}),
   }).required();
 
   const {
@@ -100,7 +100,7 @@ const EditChannelModal = ({onCancel, channel, onSuccess}: TProps) => {
 
       let notification;
 
-      if (typeof notificationHours === 'number') {
+      if (notificationHours !== 'off') {
         const now = new Date();
         now.setHours(parseInt(notificationHours, 10));
         now.getUTCHours();

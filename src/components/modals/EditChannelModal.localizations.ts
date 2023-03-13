@@ -54,7 +54,7 @@ export const localizations = {
       ],
     },
     notificationHours: {
-      title: 'Notification hours',
+      title: 'Notification',
       detail: 'Change the time to send a notification as a reminder.',
       options: [
         {value: 'off', title: 'Off'},
@@ -122,7 +122,7 @@ export const localizations = {
       ],
     },
     notificationHours: {
-      title: '노티 시간',
+      title: '알림',
       detail: '하루에 한 번 노티가 가는 시간을 변경하세요.',
       options: [
         {value: 'off', title: '끄기'},
