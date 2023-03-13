@@ -36,6 +36,8 @@ const ChannelSummary = ({channel, style}: TProps) => {
   const [modal, setModal] = useState<'detail' | 'setting'>();
   const [modalDetail, setModalDetail] = useState<string>();
 
+  const [offset, setOffset] = useState(0);
+
   useEffect(() => {
     const onNext = async (doc: TDocSnapshot) => {
       if (!doc.exists) {
@@ -89,14 +91,6 @@ const ChannelSummary = ({channel, style}: TProps) => {
 
   const onSpam = () => {
     DefaultAlert(localization.spamAlert(nextTime));
-  };
-
-  const getLastAddedAt = ({id}: {id: string}) => {
-    const lastAddedAt = data.moments.items.filter(
-      ({createdBy: {id: elId}}) => elId === id,
-    )[0]?.addedAt;
-
-    return lastAddedAt;
   };
 
   return (
@@ -245,6 +239,12 @@ const ChannelSummary = ({channel, style}: TProps) => {
       <FlatList
         data={data.moments.items}
         horizontal
+        onScroll={event => {
+          let currentOffset = event.nativeEvent.contentOffset.y;
+          let direction = currentOffset > offset ? 'down' : 'up';
+          setOffset(currentOffset);
+          console.log(direction); // up or down accordingly
+        }}
         ItemSeparatorComponent={() => <View style={{marginHorizontal: 5}} />}
         renderItem={({item}) => {
           return (
