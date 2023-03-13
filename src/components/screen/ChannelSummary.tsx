@@ -1,26 +1,18 @@
 import firestore from '@react-native-firebase/firestore';
 import React, {useContext, useEffect, useState} from 'react';
-import {
-  FlatList,
-  Pressable,
-  StyleSheet,
-  Text,
-  useWindowDimensions,
-  View,
-} from 'react-native';
+import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import LanguageContext from '../../contexts/Language';
 import ModalContext from '../../contexts/Modal';
 import {TDocData, TDocSnapshot} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
-import {groupByKey, groupByLength} from '../../utils/Array';
+import {groupByKey} from '../../utils/Array';
 import {checkGhosting, checkSpam} from '../../utils/Channel';
 import {getTimeGap} from '../../utils/Date';
-import {getCityAndCountry} from '../../utils/Map';
 import {getThumbnailPath} from '../../utils/Storage';
 import CreateMomentButton from '../buttons/CreateMomentButton';
 import DefaultAlert from '../defaults/DefaultAlert';
-import {defaultRed} from '../defaults/DefaultColors';
+import {defaultBlack, defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultImage from '../defaults/DefaultImage';
 import DefaultText from '../defaults/DefaultText';
@@ -38,11 +30,13 @@ const ChannelSummary = ({channel, style}: TProps) => {
   const {language} = useContext(LanguageContext);
   const localization = localizations[language];
   const {onUpdate} = useContext(ModalContext);
-  const {width} = useWindowDimensions();
+
   const [data, setData] = useState<TDocData>();
   const {authUserData} = useContext(AuthUserContext);
   const [modal, setModal] = useState<'detail' | 'setting'>();
   const [modalDetail, setModalDetail] = useState<string>();
+
+  const [offset, setOffset] = useState(0);
 
   useEffect(() => {
     const onNext = async (doc: TDocSnapshot) => {
@@ -76,13 +70,7 @@ const ChannelSummary = ({channel, style}: TProps) => {
     return null;
   }
 
-  const onView = ({
-    user: {id: userId},
-    moment: {id: momentId},
-  }: {
-    user: {id: string};
-    moment: {id: string};
-  }) => {
+  const onView = ({user: {id: userId}}: {user: {id: string}}) => {
     if (data) {
       const groupedMoments = groupByKey({items: data.moments.items});
 
@@ -90,26 +78,13 @@ const ChannelSummary = ({channel, style}: TProps) => {
         item => item[0].createdBy.id === userId,
       );
       groupedMoments.unshift(groupedMoments.splice(userIndex, 1)[0]);
-      const momentIndex = groupedMoments[0].findIndex(item => {
-        return item.id === momentId;
-      });
 
       onUpdate({
         target: 'channel',
-        data: {channel: {...data, groupedMoments}, momentIndex},
+        data: {channel: {...data, groupedMoments}},
       });
     }
   };
-
-  const grouped = groupByLength(data.moments.items, 3);
-
-  const itemWidth = width - 60;
-
-  const getItemLayout = (_: any[] | null | undefined, itemIndex: number) => ({
-    length: itemWidth,
-    offset: itemWidth * itemIndex,
-    index: itemIndex,
-  });
 
   const ghosting = checkGhosting({authUser: authUserData, channel: data});
   const {spam, nextTime} = checkSpam({authUser: authUserData, channel: data});
@@ -262,76 +237,68 @@ const ChannelSummary = ({channel, style}: TProps) => {
         </View>
       </View>
       <FlatList
-        data={grouped[0].length === 0 ? [] : grouped}
+        data={data.moments.items}
         horizontal
-        snapToInterval={width - 40}
-        snapToAlignment={'start'}
-        decelerationRate="fast"
-        disableIntervalMomentum
-        getItemLayout={getItemLayout}
-        ListEmptyComponent={() => (
-          <DefaultText
-            title={localization.nocontents}
-            style={{
-              height: 50,
-              width: itemWidth,
-            }}
-          />
-        )}
+        onScroll={event => {
+          let currentOffset = event.nativeEvent.contentOffset.y;
+          let direction = currentOffset > offset ? 'down' : 'up';
+          setOffset(currentOffset);
+          console.log(direction); // up or down accordingly
+        }}
+        ItemSeparatorComponent={() => <View style={{marginHorizontal: 5}} />}
         renderItem={({item}) => {
           return (
             <View>
-              {item.map(
-                ({
-                  id,
-                  name,
-                  location,
-                  addedAt,
-                  content: {path, media},
-                  createdBy: {id: userId, displayName},
-                }) => {
-                  return (
-                    <Pressable
-                      key={path}
-                      style={{
-                        marginHorizontal: 10,
-                        flexDirection: 'row',
-                        width: itemWidth,
-                        height: 50,
-                        marginBottom: 10,
-                      }}
-                      onPress={() => {
-                        if (ghosting) {
-                          return DefaultAlert(localization.ghostAlert);
-                        }
-                        onView({user: {id: userId}, moment: {id}});
-                      }}>
-                      <UserProfileImage user={{id: userId}} />
-                      <View style={{marginLeft: 10, flex: 1}}>
-                        <DefaultText
-                          title={displayName}
-                          textStyle={{fontWeight: 'bold', fontSize: 16}}
-                        />
-                        <DefaultText title={name} />
-
-                        <DefaultText
-                          title={`${getTimeGap(
-                            addedAt,
-                          )} ago - ${getCityAndCountry(location.formatted)}`}
-                          textStyle={{fontSize: 14, color: 'gray'}}
-                        />
-                      </View>
-                      <DefaultImage
-                        image={getThumbnailPath(path, media)}
-                        imageStyle={{
-                          height: 50,
-                          width: 50,
-                        }}
-                      />
-                    </Pressable>
-                  );
-                },
-              )}
+              <Pressable
+                onPress={() => {
+                  if (ghosting) {
+                    return DefaultAlert(localization.ghostAlert);
+                  }
+                  onView({user: {id: item.id}});
+                }}>
+                <DefaultImage
+                  image={getThumbnailPath(
+                    item.content.path,
+                    item.content.media,
+                  )}
+                  imageStyle={{
+                    borderRadius: 10,
+                    height: 150,
+                    width: 150,
+                  }}
+                />
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    position: 'absolute',
+                    bottom: 0,
+                    backgroundColor: defaultBlack.lv2(0.5),
+                    padding: 5,
+                    borderBottomLeftRadius: 10,
+                    borderBottomRightRadius: 10,
+                  }}>
+                  <UserProfileImage
+                    user={{
+                      id: item.createdBy.id,
+                    }}
+                    imageStyle={{height: 30, width: 30}}
+                  />
+                  <View style={{marginLeft: 5, flex: 1}}>
+                    <DefaultText
+                      title={item.createdBy.displayName}
+                      numberOfLines={1}
+                      textStyle={{fontWeight: 'bold'}}
+                    />
+                    <DefaultText title={item.name} numberOfLines={1} />
+                  </View>
+                </View>
+              </Pressable>
+              <DefaultText
+                title={`${getTimeGap(item.addedAt)} ago`}
+                numberOfLines={1}
+                textStyle={{fontSize: 14, color: 'gray'}}
+                style={{alignSelf: 'flex-end', marginTop: 5}}
+              />
             </View>
           );
         }}

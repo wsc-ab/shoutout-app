@@ -17,11 +17,11 @@ const Header = ({onChannels, onGlobal, tab}: TProps) => {
         color={tab === 'channels' ? 'white' : 'gray'}
         onPress={onChannels}
       />
-      <GlobalButton
+      {/* <GlobalButton
         style={[styles.button]}
         color={tab === 'globe' ? 'white' : 'gray'}
         onPress={onGlobal}
-      />
+      /> */}
       <SearchButton style={styles.button} />
     </SafeAreaView>
   );

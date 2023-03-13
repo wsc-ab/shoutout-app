@@ -1,49 +1,63 @@
 import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {TTimestamp} from '../../types/Firebase';
+import {TextInput, View} from 'react-native';
+
+import {addComment} from '../../functions/Moment';
 import {TStyleView} from '../../types/Style';
-import DefaultIcon from '../defaults/DefaultIcon';
-import CommentsModal from '../modals/CommentsModal';
+import SubmitIcon from '../buttons/SubmitIconButton';
+import DefaultAlert from '../defaults/DefaultAlert';
 
 type TProps = {
   moment: {
     id: string;
-    comments: {
-      id: string;
-      displayName: string;
-      addedAt: TTimestamp;
-      detail: string;
-    }[];
   };
   style?: TStyleView;
 };
 
 const CommentButton = ({moment, style}: TProps) => {
-  const [modal, setModal] = useState<'comments'>();
-  console.log(moment.comments, 'com');
+  const [value, setValue] = useState<string>();
 
+  const onAdd = async () => {
+    if (!value) {
+      return;
+    }
+    try {
+      await addComment({moment, comment: {detail: value}});
+      setValue(undefined);
+    } catch (error) {
+      DefaultAlert({title: 'Error', message: 'Failed to add comment.'});
+    }
+  };
   return (
-    <View>
-      <DefaultIcon
-        style={[styles.container, style]}
-        icon="comment"
-        onPress={() => setModal('comments')}
-        color={'white'}
-        size={20}
+    <View style={[{flexDirection: 'row'}, style]}>
+      <TextInput
+        value={value}
+        onChangeText={setValue}
+        placeholder="Comment"
+        style={[
+          {
+            alignItems: 'center',
+            flex: 1,
+            backgroundColor: '#fff',
+            padding: 10,
+            textAlignVertical: 'center',
+          },
+        ]}
       />
-      {modal === 'comments' && (
-        <CommentsModal moment={moment} onCancel={() => setModal(undefined)} />
-      )}
+      <SubmitIcon
+        icon="plus"
+        color={value ? 'white' : 'gray'}
+        onPress={onAdd}
+        style={{
+          height: 40,
+          width: 50,
+          padding: 10,
+          marginHorizontal: 10,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      />
     </View>
   );
 };
 
 export default CommentButton;
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

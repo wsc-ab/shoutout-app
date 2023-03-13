@@ -8,27 +8,17 @@ import {
   ViewToken,
 } from 'react-native';
 import {TDocData} from '../../types/Firebase';
-import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
-import DefaultText from '../defaults/DefaultText';
-import MomentCard from './MomentCard';
+import MomentCard from './MomentsCard';
 
 type TProps = {
   style?: TStyleView;
   channel: TDocData;
   pauseOnModal?: boolean;
-  momentIndex?: number;
   mount: boolean;
 };
 
-const ChannelCard = ({
-  style,
-  channel,
-  pauseOnModal,
-  momentIndex,
-  mount,
-}: TProps) => {
-  const [status, setStatus] = useState<TStatus>('loading');
+const ChannelCard = ({style, channel, pauseOnModal, mount}: TProps) => {
   const {height, width} = useWindowDimensions();
   const [index, setIndex] = useState(0);
 
@@ -53,30 +43,6 @@ const ChannelCard = ({
     ],
   );
 
-  if (status === 'error') {
-    return (
-      <View style={styles.noData}>
-        <DefaultText title="Error. Please retry." />
-        <DefaultText
-          title="Reload"
-          onPress={() => setStatus('loading')}
-          style={styles.refresh}
-        />
-      </View>
-    );
-  }
-
-  const ListEmptyComponent = (
-    <>
-      {status === 'loaded' ? (
-        <DefaultText
-          title="No moment found. Please reload."
-          style={styles.noMoment}
-        />
-      ) : null}
-    </>
-  );
-
   const renderItem = ({
     item,
     index: elIndex,
@@ -96,7 +62,7 @@ const ChannelCard = ({
         }}>
         <MomentCard
           moments={item}
-          momentIndex={elIndex === 0 ? momentIndex : 0}
+          momentIndex={0}
           mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
           pauseOnModal={pauseOnModal}
           inView={index === elIndex}
@@ -123,7 +89,6 @@ const ChannelCard = ({
         initialNumToRender={1}
         windowSize={3}
         maxToRenderPerBatch={1}
-        ListEmptyComponent={ListEmptyComponent}
         snapToInterval={height}
         snapToAlignment={'start'}
         showsVerticalScrollIndicator={false}
@@ -139,17 +104,3 @@ const ChannelCard = ({
 };
 
 export default ChannelCard;
-
-const styles = StyleSheet.create({
-  noData: {flex: 1, justifyContent: 'center', alignItems: 'center'},
-  refresh: {marginTop: 10},
-  noMoment: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

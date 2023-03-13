@@ -75,10 +75,7 @@ const ModalProvider = ({children}: TProps) => {
         <MomentsModal moments={modal.data.moments} />
       )}
       {modal?.target === 'channel' && modal.data?.channel && (
-        <ChannelModal
-          channel={modal.data.channel}
-          momentIndex={modal.data.momentIndex}
-        />
+        <ChannelModal channel={modal.data.channel} />
       )}
       {modal?.target === 'createGeneralChannel' && (
         <CreateGeneralChannelModal {...modal.data} />
@@ -91,7 +88,6 @@ const ModalProvider = ({children}: TProps) => {
       {modal?.target === 'channelUsers' && modal.data && (
         <UsersModal channel={modal.data.channel} />
       )}
-
       {modal?.target === 'createMoment' && modal.data && (
         <CreateMomentForm {...modal.data} />
       )}

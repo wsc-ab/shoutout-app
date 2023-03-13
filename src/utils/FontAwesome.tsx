@@ -2,8 +2,10 @@ import {library} from '@fortawesome/fontawesome-svg-core';
 
 import {
   faAddressBook,
+  faAngleDown,
   faAngleLeft,
   faAngleRight,
+  faAngleUp,
   faCircle,
   faComment,
   faExclamation,
@@ -23,6 +25,7 @@ import {
   faShare,
   faSquarePlus,
   faTimes,
+  faUpDown,
   faUser,
   faUserGroup,
   faUserMinus,
@@ -59,4 +62,6 @@ library.add(
   faImage,
   faVideo,
   faComment,
+  faAngleUp,
+  faAngleDown,
 );

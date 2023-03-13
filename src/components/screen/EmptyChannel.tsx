@@ -33,8 +33,6 @@ const EmptyChannel = () => {
   });
 
   const onSubmit = async ({code}: {code: string}) => {
-    console.log('called join');
-
     try {
       await joinChannelWithCode({
         channel: {code},
