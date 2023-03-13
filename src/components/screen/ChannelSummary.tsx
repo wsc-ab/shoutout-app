@@ -8,7 +8,7 @@ import {TDocData, TDocSnapshot} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
 import {groupByKey} from '../../utils/Array';
 import {checkGhosting, checkSpam} from '../../utils/Channel';
-import {getTimeGap} from '../../utils/Date';
+import {getDiffDays, getTimeGap} from '../../utils/Date';
 import {getThumbnailPath} from '../../utils/Storage';
 import CreateMomentButton from '../buttons/CreateMomentButton';
 import DefaultAlert from '../defaults/DefaultAlert';
@@ -99,6 +99,8 @@ const ChannelSummary = ({channel, style}: TProps) => {
     DefaultAlert(localization.spamAlert(nextTime));
   };
 
+  console.log(getDiffDays({start: data.createdAt}));
+
   return (
     <View style={style}>
       <View style={{marginBottom: 10}}>
@@ -166,6 +168,18 @@ const ChannelSummary = ({channel, style}: TProps) => {
           </Pressable>
         </View>
         <View style={{flexDirection: 'row', marginTop: 5}}>
+          <DefaultText
+            title={`${getDiffDays({start: data.createdAt})} Days`}
+            style={styles.tag}
+            onPress={() => {
+              setModal('detail');
+              setModalDetail(
+                `This channel started ${getDiffDays({
+                  start: data.createdAt,
+                })} Days ago.`,
+              );
+            }}
+          />
           <DefaultText
             title={
               data.options.type === 'private'

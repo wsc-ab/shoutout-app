@@ -62,3 +62,23 @@ export const getLocalHour = (hour: number) => {
 
   return localHour;
 };
+
+export const getDiffDays = ({
+  start,
+  end,
+}: {
+  start: TTimestampClient;
+  end?: TTimestampClient;
+}) => {
+  const startDate = getDate(start);
+  const endDate = end ? getDate(end) : new Date();
+
+  startDate.setUTCHours(0, 0, 0, 0);
+  endDate.setUTCHours(0, 0, 0, 0);
+
+  const days = Math.ceil(
+    (endDate.getTime() - startDate.getTime() + 1) / 86400000,
+  );
+
+  return days;
+};
