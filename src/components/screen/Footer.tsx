@@ -13,7 +13,6 @@ import {getTimeGap} from '../../utils/Date';
 import CommentButton from '../buttons/CommentButton';
 import LikeButton from '../buttons/LikeButton';
 import SubmitIconButton from '../buttons/SubmitIconButton';
-import SubmitTextButton from '../buttons/SubmitTextButton';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
@@ -26,11 +25,12 @@ type TProps = {
     name: string;
     createdBy: {id: string};
   };
-
+  index: number;
+  length: number;
   style?: TStyleView;
 };
 
-const Footer = ({moment}: TProps) => {
+const Footer = ({moment, index, length}: TProps) => {
   const fadeAnim = useRef(new Animated.Value(150)).current;
   const {authUserData} = useContext(AuthUserContext);
   const {height} = useWindowDimensions();
@@ -149,6 +149,16 @@ const Footer = ({moment}: TProps) => {
             <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
               <DefaultIcon
                 icon={moment.content.media === 'video' ? 'video' : 'image'}
+              />
+              <DefaultText
+                title={`${index + 1} / ${length}`}
+                textStyle={{
+                  fontWeight: 'bold',
+                }}
+                style={{
+                  borderRadius: 10,
+                  marginLeft: 10,
+                }}
               />
               {moment.content.mode === 'camera' && (
                 <DefaultText

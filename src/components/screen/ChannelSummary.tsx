@@ -70,18 +70,24 @@ const ChannelSummary = ({channel, style}: TProps) => {
     return null;
   }
 
-  const onView = ({user: {id: userId}}: {user: {id: string}}) => {
+  const onView = ({
+    user: {id: userId},
+    moment,
+  }: {
+    user: {id: string};
+    moment: {id: string};
+  }) => {
     if (data) {
       const groupedMoments = groupByKey({items: data.moments.items});
-
       const userIndex = groupedMoments.findIndex(
         item => item[0].createdBy.id === userId,
       );
+
       groupedMoments.unshift(groupedMoments.splice(userIndex, 1)[0]);
 
       onUpdate({
         target: 'channel',
-        data: {channel: {...data, groupedMoments}},
+        data: {channel: {...data, groupedMoments}, moment},
       });
     }
   };
@@ -254,7 +260,10 @@ const ChannelSummary = ({channel, style}: TProps) => {
                   if (ghosting) {
                     return DefaultAlert(localization.ghostAlert);
                   }
-                  onView({user: {id: item.id}});
+                  onView({
+                    user: {id: item.createdBy.id},
+                    moment: {id: item.id},
+                  });
                 }}>
                 <DefaultImage
                   image={getThumbnailPath(

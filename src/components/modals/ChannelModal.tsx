@@ -8,9 +8,10 @@ import ChannelCard from '../screen/ChannelCard';
 
 type TProps = {
   channel: TDocData;
+  moment: {id: string};
 };
 
-const ChannelModal = ({channel}: TProps) => {
+const ChannelModal = ({channel, moment}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
   const {height, width} = useWindowDimensions();
 
@@ -28,6 +29,7 @@ const ChannelModal = ({channel}: TProps) => {
       <ChannelCard
         channel={channel}
         mount
+        moment={moment}
         pauseOnModal={false}
         style={[styles.card, {height, width}]}
       />
