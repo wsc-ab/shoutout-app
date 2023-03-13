@@ -72,7 +72,7 @@ const Comment = ({moment, item, index}: TProps) => {
         />
       </View>
       {item.user.id === authUserData.id && index === 0 && (
-        <SubmitIconButton icon="times" onPress={() => onDelete(item)} />
+        <SubmitIconButton icon="times" onPress={() => onDelete()} />
       )}
       {item.user.id === authUserData.id && index !== 0 && (
         <SubmitIconButton
