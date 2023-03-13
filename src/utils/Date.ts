@@ -46,3 +46,19 @@ export const getTimeGap = (timestamp: TTimestampClient) => {
 export const getDate = (timestamp: TTimestampClient) => {
   return new Date(timestamp._seconds * 1000);
 };
+
+export const getUTCHour = (hour: number) => {
+  const now = new Date();
+  now.setHours(hour);
+  const utcHour = now.getUTCHours();
+
+  return utcHour;
+};
+
+export const getLocalHour = (hour: number) => {
+  const now = new Date();
+  now.setUTCHours(hour);
+  const localHour = now.getHours();
+
+  return localHour;
+};

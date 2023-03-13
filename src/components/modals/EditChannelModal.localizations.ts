@@ -24,9 +24,9 @@ export const localizations = {
       detail:
         'Change mode supported in this channel. Use camera mode to allow users to share moments taken from camera only.',
       options: [
-        {name: 'both', title: 'Both'},
-        {name: 'camera', title: 'Camera'},
-        {name: 'library', title: 'Library'},
+        {value: 'both', title: 'Both'},
+        {value: 'camera', title: 'Camera'},
+        {value: 'library', title: 'Library'},
       ],
     },
     ghosting: {
@@ -34,10 +34,10 @@ export const localizations = {
       detail:
         "Change the number of allowed ghosting days. If set to 7 days, users who haven't posted in the last 7 days can't access the channel.",
       options: [
-        {name: 'off', title: 'Off'},
-        {name: '1', title: '1 Day'},
-        {name: '7', title: '7 Days'},
-        {name: '14', title: '14 Days'},
+        {value: 'off', title: 'Off'},
+        {value: '1', title: '1 Day'},
+        {value: '7', title: '7 Days'},
+        {value: '14', title: '14 Days'},
       ],
     },
     spam: {
@@ -45,12 +45,25 @@ export const localizations = {
       detail:
         'Change options for spam. If set to 6 hours, users can post only once every 6 hours.',
       options: [
-        {name: 'off', title: 'Off'},
-        {name: '1', title: '1 hour'},
-        {name: '3', title: '3 hour'},
-        {name: '6', title: '6 hour'},
-        {name: '12', title: '12 hours'},
-        {name: '24', title: '24 hours'},
+        {value: 'off', title: 'Off'},
+        {value: '1', title: '1 hour'},
+        {value: '3', title: '3 hour'},
+        {value: '6', title: '6 hour'},
+        {value: '12', title: '12 hours'},
+        {value: '24', title: '24 hours'},
+      ],
+    },
+    notificationHours: {
+      title: 'Notification hours',
+      detail: 'Change the time to send a notification as a reminder.',
+      options: [
+        {value: 'off', title: 'Off'},
+        {value: '6', title: '6 AM'},
+        {value: '9', title: '9 AM'},
+        {value: '12', title: '12 PM'},
+        {value: '15', title: '15 PM'},
+        {value: '18', title: '18 PM'},
+        {value: '11', title: '21 PM'},
       ],
     },
   },
@@ -79,9 +92,9 @@ export const localizations = {
       detail:
         '지원 모드를 변경하세요. 카메라 모드를 선택하면 카메라로 바로 찍은 라이브 모멘트만 올릴 수 있습니다.',
       options: [
-        {name: 'both', title: '모두'},
-        {name: 'camera', title: '카메라'},
-        {name: 'library', title: '라이브러리'},
+        {value: 'both', title: '모두'},
+        {value: 'camera', title: '카메라'},
+        {value: 'library', title: '라이브러리'},
       ],
     },
     ghosting: {
@@ -89,10 +102,10 @@ export const localizations = {
       detail:
         '눈팅 가능한 날짜를 변경하세요. 7일을 선택하면, 지난 7일 동안 한 번도 채널에 참여하지 않은 유저들은 채널 내용을 볼 수 없습니다.',
       options: [
-        {name: 'off', title: '끄기'},
-        {name: '1', title: '1일'},
-        {name: '7', title: '7일'},
-        {name: '14', title: '14일'},
+        {value: 'off', title: '끄기'},
+        {value: '1', title: '1일'},
+        {value: '7', title: '7일'},
+        {value: '14', title: '14일'},
       ],
     },
     spam: {
@@ -100,12 +113,25 @@ export const localizations = {
       detail:
         '도배 관련 옵션을 변경하세요. 6시간으로 설정시, 6시간에 한 번만 공유할 수 있습니다.',
       options: [
-        {name: 'off', title: 'Off'},
-        {name: '1', title: '1 시간'},
-        {name: '3', title: '3 시간'},
-        {name: '6', title: '6 시간'},
-        {name: '12', title: '12 시간'},
-        {name: '24', title: '24 시간'},
+        {value: 'off', title: 'Off'},
+        {value: '1', title: '1 시간'},
+        {value: '3', title: '3 시간'},
+        {value: '6', title: '6 시간'},
+        {value: '12', title: '12 시간'},
+        {value: '24', title: '24 시간'},
+      ],
+    },
+    notificationHours: {
+      title: '노티 시간',
+      detail: '하루에 한 번 노티가 가는 시간을 변경하세요.',
+      options: [
+        {value: 'off', title: '끄기'},
+        {value: '6', title: '6시'},
+        {value: '9', title: '9시'},
+        {value: '12', title: '12시'},
+        {value: '15', title: '15시'},
+        {value: '18', title: '18시'},
+        {value: '11', title: '21시'},
       ],
     },
   },

@@ -7,6 +7,7 @@ import LanguageContext from '../../contexts/Language';
 import ModalContext from '../../contexts/Modal';
 import {deleteChannel, editChannel} from '../../functions/Channel';
 import {TDocData} from '../../types/Firebase';
+import {getLocalHour} from '../../utils/Date';
 import {defaultSchema} from '../../utils/Schema';
 import ControllerOption from '../controllers/ControllerOption';
 import ControllerText from '../controllers/ControllerText';
@@ -25,7 +26,7 @@ const EditChannelModal = ({onCancel, channel, onSuccess}: TProps) => {
   const {language} = useContext(LanguageContext);
   const localization = localizations[language];
 
-  const {text} = defaultSchema();
+  const {text, number} = defaultSchema();
 
   const onDelete = () => {
     const onPress = async () => {
@@ -61,6 +62,7 @@ const EditChannelModal = ({onCancel, channel, onSuccess}: TProps) => {
     mode: text({required: true}),
     ghosting: text({required: true}),
     spam: text({required: true}),
+    notificationHours: number({min: 0, max: 23}),
   }).required();
 
   const {
@@ -74,6 +76,9 @@ const EditChannelModal = ({onCancel, channel, onSuccess}: TProps) => {
       mode: channel.options.mode as string,
       ghosting: channel.options.ghosting.mode as string,
       spam: channel.options.spam as string,
+      notificationHours: channel.options.notification?.hours
+        ? getLocalHour(channel.options.notification.hours as number).toString()
+        : 'off',
     },
   });
 
@@ -82,14 +87,28 @@ const EditChannelModal = ({onCancel, channel, onSuccess}: TProps) => {
     mode,
     ghosting,
     spam,
+    notificationHours,
   }: {
     name: string;
     mode: 'camera' | 'library' | 'both';
     ghosting: 'off' | '1' | '7' | '14';
     spam: 'off' | '1' | '3' | '6' | '12' | '24';
+    notificationHours: string | undefined;
   }) => {
     try {
       setSubmitting(true);
+
+      let notification;
+
+      if (typeof notificationHours === 'number') {
+        const now = new Date();
+        now.setHours(parseInt(notificationHours, 10));
+        now.getUTCHours();
+        notification = {
+          hours: [now.getUTCHours()],
+          days: [0, 1, 2, 3, 4, 5, 6],
+        };
+      }
 
       await editChannel({
         channel: {
@@ -99,6 +118,7 @@ const EditChannelModal = ({onCancel, channel, onSuccess}: TProps) => {
             mode,
             ghosting: {mode: ghosting},
             spam,
+            notification,
           },
           name,
         },
@@ -149,6 +169,13 @@ const EditChannelModal = ({onCancel, channel, onSuccess}: TProps) => {
             name="spam"
             {...localization.spam}
             errors={errors.spam}
+            style={styles.textInput}
+          />
+          <ControllerOption
+            control={control}
+            name="notificationHours"
+            {...localization.notificationHours}
+            errors={errors.notificationHours}
             style={styles.textInput}
           />
           <View style={styles.textInput}>

@@ -23,7 +23,7 @@ type TProps = {};
 const CreateGeneralChannelModal = ({}: TProps) => {
   const {language} = useContext(LanguageContext);
   const localization = localizations[language];
-  const {text} = defaultSchema();
+  const {text, number} = defaultSchema();
 
   const [submitting, setSubmitting] = useState(false);
   const {onUpdate} = useContext(ModalContext);
@@ -35,6 +35,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
     mode: text({required: true}),
     ghosting: text({required: true}),
     spam: text({required: true}),
+    notificationHours: number({min: 0, max: 23}),
   }).required();
 
   const {
@@ -49,6 +50,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
       mode: 'both',
       ghosting: '7',
       spam: '1',
+      notificationHours: 'off',
     },
   });
 
@@ -58,17 +60,31 @@ const CreateGeneralChannelModal = ({}: TProps) => {
     mode,
     ghosting,
     spam,
+    notificationHours,
   }: {
     name: string;
     type: 'public' | 'private';
     mode: 'camera' | 'library' | 'both';
     ghosting: 'off' | '1' | '7' | '14';
     spam: 'off' | '1' | '3' | '6' | '12' | '24';
+    notificationHours: string | undefined;
   }) => {
     try {
       setSubmitting(true);
 
       const channelId = firebase.firestore().collection('channels').doc().id;
+
+      let notification;
+
+      if (notificationHours) {
+        const now = new Date();
+        now.setHours(parseInt(notificationHours, 10));
+        now.getUTCHours();
+        notification = {
+          hours: [now.getUTCHours()],
+          days: [0, 1, 2, 3, 4, 5, 6],
+        };
+      }
 
       await createChannel({
         channel: {
@@ -78,6 +94,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
             mode,
             ghosting: {mode: ghosting},
             spam,
+            notification,
           },
           name,
         },
@@ -140,6 +157,13 @@ const CreateGeneralChannelModal = ({}: TProps) => {
             name="spam"
             {...localization.spam}
             errors={errors.spam}
+            style={styles.textInput}
+          />
+          <ControllerOption
+            control={control}
+            name="notificationHours"
+            {...localization.notificationHours}
+            errors={errors.notificationHours}
             style={styles.textInput}
           />
         </DefaultKeyboardAwareScrollView>

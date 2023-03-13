@@ -10,6 +10,7 @@ export const createChannel = async (input: {
       ghosting: {mode: 'off' | '1' | '7' | '14'};
       spam: 'off' | '1' | '3' | '6' | '12' | '24';
       sponsor?: {detail: string};
+      notification?: {hours: number[]; days: number[]};
     };
   };
   users: {ids: string[]};
@@ -68,10 +69,19 @@ export const editChannel = async (input: {
       mode: 'camera' | 'library' | 'both';
       ghosting: {mode: 'off' | '1' | '7' | '14'};
       spam: 'off' | '1' | '3' | '6' | '12' | '24';
+      notification?: {hours: number[]; days: number[]};
     };
   };
 }) => {
   const {data} = await firebaseFunctions.httpsCallable('editChannel')(input);
+
+  return {...data};
+};
+
+export const sendNoti = async (input: {}) => {
+  const {data} = await firebaseFunctions.httpsCallable('sendNotifications')(
+    input,
+  );
 
   return {...data};
 };

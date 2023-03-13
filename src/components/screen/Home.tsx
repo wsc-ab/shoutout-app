@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {AppState, StyleSheet, View} from 'react-native';
-import Moments from './Moments';
 
 import notifee from '@notifee/react-native';
 import AuthUserContext from '../../contexts/AuthUser';

@@ -16,7 +16,7 @@ type TProps = {
   name: string;
   title?: string;
   detail?: string;
-  options: {name: string; title: string}[];
+  options: {value?: string | number | undefined; title: string}[];
   control: Control<any, any>;
   errors?: Merge<
     FieldError,
@@ -45,6 +45,8 @@ const ControllerOption = ({
           required: true,
         }}
         render={({field: {onChange, onBlur, value}}) => {
+          console.log(options, value, 'options');
+
           return (
             <>
               <DefaultText
@@ -56,14 +58,17 @@ const ControllerOption = ({
                 horizontal
                 style={styles.options}
                 indicatorStyle="white">
-                {options.map(({title: elTitle, name: elName}) => (
+                {options.map(({title: elTitle, value: elValue}) => (
                   <DefaultText
                     title={elTitle}
-                    key={elName}
-                    style={[styles.option, value === elName && styles.selected]}
+                    key={elValue}
+                    style={[
+                      styles.option,
+                      value === elValue && styles.selected,
+                    ]}
                     onPress={() => {
                       onBlur();
-                      onChange(elName);
+                      onChange(elValue);
                     }}
                   />
                 ))}

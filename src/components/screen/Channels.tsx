@@ -2,6 +2,7 @@ import React, {useContext, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import LanguageContext from '../../contexts/Language';
+import {sendNoti} from '../../functions/Channel';
 import {TStyleView} from '../../types/Style';
 import CreateChannelButton from '../buttons/CreateChannelButton';
 import DefaultModal from '../defaults/DefaultModal';
@@ -39,6 +40,12 @@ const Channels = ({style}: TProps) => {
         <DefaultText
           title={localization.code}
           onPress={() => setModal('code')}
+          textStyle={styles.codeText}
+          style={styles.button}
+        />
+        <DefaultText
+          title={'Notify'}
+          onPress={sendNoti}
           textStyle={styles.codeText}
           style={styles.button}
         />

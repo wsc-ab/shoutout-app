@@ -28,6 +28,31 @@ export const defaultSchema = () => {
 
       return schema;
     },
+    number: ({
+      min,
+      max,
+      required,
+    }: {
+      min?: number;
+      max?: number;
+      required?: boolean;
+    }) => {
+      let schema = string();
+
+      if (min !== undefined) {
+        schema = schema.min(min, `Min value is ${min}.`);
+      }
+
+      if (max !== undefined) {
+        schema = schema.max(max, `Max value is ${max}.`);
+      }
+
+      if (required) {
+        schema = schema.required(requiredText);
+      }
+
+      return schema;
+    },
     email: ({required}: {required?: boolean}) => {
       let schema = string().trim().email('Not a valid email address');
 
