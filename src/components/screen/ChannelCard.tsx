@@ -1,7 +1,6 @@
 import React, {useRef, useState} from 'react';
 import {
   FlatList,
-  StyleSheet,
   useWindowDimensions,
   View,
   ViewabilityConfigCallbackPairs,
@@ -14,11 +13,12 @@ import MomentCard from './MomentsCard';
 type TProps = {
   style?: TStyleView;
   channel: TDocData;
+  moment: {id: string};
   pauseOnModal?: boolean;
   mount: boolean;
 };
 
-const ChannelCard = ({style, channel, pauseOnModal, mount}: TProps) => {
+const ChannelCard = ({style, channel, pauseOnModal, moment, mount}: TProps) => {
   const {height, width} = useWindowDimensions();
   const [index, setIndex] = useState(0);
 
@@ -47,9 +47,11 @@ const ChannelCard = ({style, channel, pauseOnModal, mount}: TProps) => {
     item,
     index: elIndex,
   }: {
-    item: {id: string};
+    item: {id: string}[];
     index: number;
   }) => {
+    const momentIndex = item.findIndex(({id: elId}) => elId === moment.id);
+
     if (index - 3 >= elIndex || index + 3 <= elIndex) {
       return <View style={{height, width}} />;
     }
@@ -62,7 +64,7 @@ const ChannelCard = ({style, channel, pauseOnModal, mount}: TProps) => {
         }}>
         <MomentCard
           moments={item}
-          momentIndex={0}
+          momentIndex={momentIndex === -1 ? 0 : momentIndex}
           mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
           pauseOnModal={pauseOnModal}
           inView={index === elIndex}

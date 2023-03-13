@@ -40,15 +40,6 @@ const ModalProvider = ({children}: TProps) => {
 
       if (initialLink) {
         const {collection, id, path} = getQueryParams(initialLink.url);
-
-        if (collection === 'moments') {
-          onUpdate({
-            target: 'moments',
-            data: {moments: [{id}], contentPath: path},
-          });
-        } else if (collection) {
-          onUpdate({target: collection.slice(0, -1), data: {id, path}});
-        }
       }
     };
 
@@ -61,15 +52,6 @@ const ModalProvider = ({children}: TProps) => {
     if (authUserData) {
       const unsub = dynamicLinks().onLink(link => {
         const {collection, id, path} = getQueryParams(link.url);
-
-        if (collection === 'moments') {
-          onUpdate({
-            target: 'moments',
-            data: {moments: [{id}], contentPath: path},
-          });
-        } else if (collection) {
-          onUpdate({target: collection.slice(0, -1), data: {id, path}});
-        }
       });
       return () => unsub();
     }
@@ -93,7 +75,7 @@ const ModalProvider = ({children}: TProps) => {
         <MomentsModal moments={modal.data.moments} />
       )}
       {modal?.target === 'channel' && modal.data?.channel && (
-        <ChannelModal channel={modal.data.channel} />
+        <ChannelModal channel={modal.data.channel} moment={modal.data.moment} />
       )}
       {modal?.target === 'createGeneralChannel' && (
         <CreateGeneralChannelModal {...modal.data} />

@@ -25,10 +25,18 @@ type TProps = {
   pauseOnModal?: boolean;
   inView: boolean;
   blur?: boolean;
+
   channel?: {id: string};
 };
 
-const MomentsCard = ({moments, style, momentIndex, mount, inView}: TProps) => {
+const MomentsCard = ({
+  moments,
+  style,
+  momentIndex,
+  pauseOnModal,
+  mount,
+  inView,
+}: TProps) => {
   const {width} = useWindowDimensions();
 
   const ref = useRef<FlatList>(null);
@@ -77,6 +85,7 @@ const MomentsCard = ({moments, style, momentIndex, mount, inView}: TProps) => {
       <MomentTestCard
         moment={item}
         length={moments.length}
+        pauseOnModal={pauseOnModal}
         index={index}
         mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
         inView={inView && index === elIndex}

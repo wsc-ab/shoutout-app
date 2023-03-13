@@ -8,6 +8,7 @@ import SmallUserCard from '../cards/ChannelUserCard';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
+import DefaultText from '../defaults/DefaultText';
 
 type TProps = {
   channel: TDocData;
@@ -74,6 +75,15 @@ const UsersModal = ({channel}: TProps) => {
           keyExtractor={item => item.id}
           indicatorStyle="white"
           showsVerticalScrollIndicator
+          ListHeaderComponent={
+            <View>
+              <DefaultText
+                title={`Channel code: ${channel.code}`}
+                textStyle={{fontWeight: 'bold'}}
+                style={{marginBottom: 20}}
+              />
+            </View>
+          }
           renderItem={({item, index}) => {
             return <SmallUserCard {...item} index={index} />;
           }}

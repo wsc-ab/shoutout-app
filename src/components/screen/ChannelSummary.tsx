@@ -36,6 +36,8 @@ const ChannelSummary = ({channel, style}: TProps) => {
   const [modal, setModal] = useState<'detail' | 'setting'>();
   const [modalDetail, setModalDetail] = useState<string>();
 
+  const [offset, setOffset] = useState(0);
+
   useEffect(() => {
     const onNext = async (doc: TDocSnapshot) => {
       if (!doc.exists) {
@@ -68,18 +70,24 @@ const ChannelSummary = ({channel, style}: TProps) => {
     return null;
   }
 
-  const onView = ({user: {id: userId}}: {user: {id: string}}) => {
+  const onView = ({
+    user: {id: userId},
+    moment,
+  }: {
+    user: {id: string};
+    moment: {id: string};
+  }) => {
     if (data) {
       const groupedMoments = groupByKey({items: data.moments.items});
-
       const userIndex = groupedMoments.findIndex(
         item => item[0].createdBy.id === userId,
       );
+
       groupedMoments.unshift(groupedMoments.splice(userIndex, 1)[0]);
 
       onUpdate({
         target: 'channel',
-        data: {channel: {...data, groupedMoments}},
+        data: {channel: {...data, groupedMoments}, moment},
       });
     }
   };
@@ -89,14 +97,6 @@ const ChannelSummary = ({channel, style}: TProps) => {
 
   const onSpam = () => {
     DefaultAlert(localization.spamAlert(nextTime));
-  };
-
-  const getLastAddedAt = ({id}: {id: string}) => {
-    const lastAddedAt = data.moments.items.filter(
-      ({createdBy: {id: elId}}) => elId === id,
-    )[0]?.addedAt;
-
-    return lastAddedAt;
   };
 
   return (
@@ -245,6 +245,12 @@ const ChannelSummary = ({channel, style}: TProps) => {
       <FlatList
         data={data.moments.items}
         horizontal
+        onScroll={event => {
+          let currentOffset = event.nativeEvent.contentOffset.y;
+          let direction = currentOffset > offset ? 'down' : 'up';
+          setOffset(currentOffset);
+          console.log(direction); // up or down accordingly
+        }}
         ItemSeparatorComponent={() => <View style={{marginHorizontal: 5}} />}
         renderItem={({item}) => {
           return (
@@ -254,7 +260,10 @@ const ChannelSummary = ({channel, style}: TProps) => {
                   if (ghosting) {
                     return DefaultAlert(localization.ghostAlert);
                   }
-                  onView({user: {id: item.id}});
+                  onView({
+                    user: {id: item.createdBy.id},
+                    moment: {id: item.id},
+                  });
                 }}>
                 <DefaultImage
                   image={getThumbnailPath(

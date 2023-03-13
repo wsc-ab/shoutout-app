@@ -8,8 +8,7 @@
     "sound": "default",
     "mutable-content": 1,
   },
-  "collection": "rooms",
-  "path": "path",
+  "collection": "moments",
   "id": "PLBZqbZcjqkjQtD4yXw1",
   "gcm.message_id": "123",
   "fcm_options": {

@@ -6,10 +6,7 @@ import ModalContext from '../../contexts/Modal';
 import {TDocData, TDocSnapshot} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
 import DefaultAlert from '../defaults/DefaultAlert';
-import {defaultBlack, defaultRed} from '../defaults/DefaultColors';
-import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultImage from '../defaults/DefaultImage';
-import DefaultText from '../defaults/DefaultText';
 
 import DefaultVideo from '../defaults/DefaultVideo';
 import Footer from './Footer';
@@ -36,15 +33,17 @@ const MomentTestCard = ({
   style,
   pauseOnModal = true,
   mount,
+  index,
   inView,
   blur,
   channel,
   length,
-  index,
 }: TProps) => {
   const {height, width} = useWindowDimensions();
   const [data, setData] = useState<TDocData>();
   const {onUpdate} = useContext(ModalContext);
+
+  console.log(inView, moment.name, pauseOnModal, 'in');
 
   useEffect(() => {
     const onNext = async (doc: TDocSnapshot) => {
@@ -104,7 +103,14 @@ const MomentTestCard = ({
           />
         )}
       </View>
-      {!blur && <Footer moment={data} style={{marginHorizontal: 10}} />}
+      {!blur && (
+        <Footer
+          moment={data}
+          index={index}
+          length={length}
+          style={{marginHorizontal: 10}}
+        />
+      )}
     </View>
   );
 };
