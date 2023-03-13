@@ -33,6 +33,8 @@ const CommentButton = ({moment, style}: TProps) => {
         value={value}
         onChangeText={setValue}
         placeholder="Comment"
+        enablesReturnKeyAutomatically
+        onSubmitEditing={onAdd}
         style={[
           {
             alignItems: 'center',

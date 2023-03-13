@@ -2,6 +2,8 @@ import React, {useContext, useRef, useState} from 'react';
 import {
   Animated,
   KeyboardAvoidingView,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
   StyleSheet,
   useWindowDimensions,
   View,
@@ -34,6 +36,8 @@ const Footer = ({moment, index, length}: TProps) => {
   const fadeAnim = useRef(new Animated.Value(150)).current;
   const {authUserData} = useContext(AuthUserContext);
   const {height} = useWindowDimensions();
+  const [top, setTop] = useState(true);
+
   const onRemove = async ({detail, addedAt}) => {
     try {
       await removeComment({moment, comment: {detail, addedAt}});
@@ -126,6 +130,22 @@ const Footer = ({moment, index, length}: TProps) => {
     setExpanded(false);
   };
 
+  const [offset, setOffset] = useState(0);
+
+  const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const offsetY = event.nativeEvent.contentOffset.y;
+    const topReached = offsetY <= 0;
+    setOffset(offsetY);
+    const direction = offsetY > offset ? 'down' : 'up';
+    if (topReached && direction === 'down') {
+      short();
+    }
+
+    if (!topReached && direction === 'up') {
+      expandList();
+    }
+  };
+
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <Animated.FlatList
@@ -139,6 +159,7 @@ const Footer = ({moment, index, length}: TProps) => {
         ]}
         style={{maxHeight: fadeAnim}}
         renderItem={renderItem}
+        onScroll={onScroll}
         ListHeaderComponent={() => (
           <View
             style={{
@@ -173,10 +194,6 @@ const Footer = ({moment, index, length}: TProps) => {
                 />
               )}
             </View>
-            <DefaultIcon
-              icon={expanded ? 'angle-down' : 'angle-up'}
-              onPress={expanded ? short : expandList}
-            />
           </View>
         )}
       />
