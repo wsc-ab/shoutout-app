@@ -9,10 +9,12 @@ import {TStyleView} from '../../types/Style';
 import {groupByKey} from '../../utils/Array';
 import {checkGhosting, checkSpam} from '../../utils/Channel';
 import {getTimeGap} from '../../utils/Date';
+import {getThumbnailPath} from '../../utils/Storage';
 import CreateMomentButton from '../buttons/CreateMomentButton';
 import DefaultAlert from '../defaults/DefaultAlert';
 import {defaultBlack, defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
+import DefaultImage from '../defaults/DefaultImage';
 import DefaultText from '../defaults/DefaultText';
 import DetailModal from '../defaults/DetailModal';
 import UserProfileImage from '../images/UserProfileImage';
@@ -241,39 +243,63 @@ const ChannelSummary = ({channel, style}: TProps) => {
         </View>
       </View>
       <FlatList
-        data={data.inviteTo.items}
+        data={data.moments.items}
         horizontal
+        ItemSeparatorComponent={() => <View style={{marginHorizontal: 5}} />}
         renderItem={({item}) => {
-          const lastAddedAt = getLastAddedAt({id: item.id});
-
-          if (!lastAddedAt) {
-            return null;
-          }
           return (
-            <Pressable
-              style={{
-                padding: 10,
-                flexDirection: 'row',
-                backgroundColor: defaultBlack.lv2(1),
-                borderRadius: 20,
-              }}
-              onPress={() => {
-                if (ghosting) {
-                  return DefaultAlert(localization.ghostAlert);
-                }
-                onView({user: {id: item.id}});
-              }}>
-              <UserProfileImage user={{id: item.id}} />
-              <View style={{marginLeft: 10}}>
-                <DefaultText
-                  title={item.displayName}
-                  textStyle={{fontWeight: 'bold'}}
+            <View>
+              <Pressable
+                onPress={() => {
+                  if (ghosting) {
+                    return DefaultAlert(localization.ghostAlert);
+                  }
+                  onView({user: {id: item.id}});
+                }}>
+                <DefaultImage
+                  image={getThumbnailPath(
+                    item.content.path,
+                    item.content.media,
+                  )}
+                  imageStyle={{
+                    borderRadius: 10,
+                    height: 150,
+                    width: 150,
+                  }}
                 />
-                {lastAddedAt && (
-                  <DefaultText title={`${getTimeGap(lastAddedAt)} ago`} />
-                )}
-              </View>
-            </Pressable>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    position: 'absolute',
+                    bottom: 0,
+                    backgroundColor: defaultBlack.lv2(0.5),
+                    padding: 5,
+                    borderBottomLeftRadius: 10,
+                    borderBottomRightRadius: 10,
+                  }}>
+                  <UserProfileImage
+                    user={{
+                      id: item.createdBy.id,
+                    }}
+                    imageStyle={{height: 30, width: 30}}
+                  />
+                  <View style={{marginLeft: 5, flex: 1}}>
+                    <DefaultText
+                      title={item.createdBy.displayName}
+                      numberOfLines={1}
+                      textStyle={{fontWeight: 'bold'}}
+                    />
+                    <DefaultText title={item.name} numberOfLines={1} />
+                  </View>
+                </View>
+              </Pressable>
+              <DefaultText
+                title={`${getTimeGap(item.addedAt)} ago`}
+                numberOfLines={1}
+                textStyle={{fontSize: 14, color: 'gray'}}
+                style={{alignSelf: 'flex-end', marginTop: 5}}
+              />
+            </View>
           );
         }}
       />
