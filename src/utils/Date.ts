@@ -1,4 +1,4 @@
-import {TTimestampClient} from '../types/Firebase';
+import {TTimestamp, TTimestampClient} from '../types/Firebase';
 
 export const getSecondsFromTimestamp = (timestamp: TTimestampClient) =>
   new Date(timestamp._seconds * 1000).getTime();
@@ -16,8 +16,10 @@ export const getSecondsGap = ({
   return Math.floor(diff / 1000);
 };
 
-export const getTimeGap = (timestamp: TTimestampClient) => {
-  const seconds = Math.abs(getSecondsGap({end: timestamp}));
+export const getTimeGap = (timestamp: TTimestamp) => {
+  const seconds = Math.abs(
+    getSecondsGap({end: timestamp as unknown as TTimestampClient}),
+  );
 
   let interval = seconds / 31536000;
 
