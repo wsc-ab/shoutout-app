@@ -20,7 +20,7 @@ const statusDocId = 'ejmzYbEP8k9Nhj6Yq7ov';
 
 export type TServerStatus = {
   version: number;
-  isLive: boolean;
+  live: boolean;
   message?: {[key in 'en' | 'ko']: {title: string; detail: string}};
   clients: {
     ios: string[];
@@ -40,7 +40,7 @@ const ServerProvider = ({children, useEmulator}: TProps) => {
     if (useEmulator) {
       setData({
         version: 1,
-        isLive: true,
+        live: true,
         clients: {
           ios: [version],
           android: [version],
@@ -78,7 +78,7 @@ const ServerProvider = ({children, useEmulator}: TProps) => {
     return <ActivityIndicator style={styles.container} />;
   }
 
-  if (!data.isLive) {
+  if (!data.live) {
     return (
       <View style={styles.container}>
         <DefaultText
