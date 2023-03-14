@@ -6,8 +6,8 @@ import ModalContext from '../../contexts/Modal';
 import PopupContext from '../../contexts/Popup';
 import {TStyleView} from '../../types/Style';
 import {checkLocationPermission} from '../../utils/Location';
+import {takeMedia} from '../../utils/Media';
 import {onUploading} from '../../utils/Upload';
-import {takeMoment} from '../../utils/Video';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultIcon from '../defaults/DefaultIcon';
 import VideoModeModal from '../modals/AddOptionsModal';
@@ -32,7 +32,7 @@ const CreateMomentButton = ({channel, color = 'white', style}: TProps) => {
   const [modal, setModal] = useState<'mode'>();
 
   const onAdd = async (mode: 'cameraPhoto' | 'cameraVideo' | 'library') => {
-    onUpdate({target: 'takeMoment'});
+    onUpdate({target: 'takeMedia'});
 
     setSubmitting(true);
 
@@ -51,7 +51,7 @@ const CreateMomentButton = ({channel, color = 'white', style}: TProps) => {
     const serverMode = mode === 'library' ? 'library' : 'camera';
 
     try {
-      const {remotePath, localPath, media} = await takeMoment({
+      const {remotePath, localPath, media} = await takeMedia({
         mode: serverMode,
         id: momentId,
         userId: authUserData.id,

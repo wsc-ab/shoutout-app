@@ -9,7 +9,8 @@ import {createMoment} from '../../functions/Moment';
 import {getLatLng} from '../../utils/Location';
 
 import {defaultSchema} from '../../utils/Schema';
-import {uploadImage, uploadVideo} from '../../utils/Video';
+import {uploadImage, uploadVideo} from '../../utils/Upload';
+
 import ControllerText from '../controllers/ControllerText';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
