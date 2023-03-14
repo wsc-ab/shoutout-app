@@ -16,10 +16,12 @@ import {CacheProvider} from './src/contexts/Cache';
 import {LanguageProvider} from './src/contexts/Language';
 import {ModalProvider} from './src/contexts/Modal';
 import {PopupProvider} from './src/contexts/Popup';
+import {ServerProvider} from './src/contexts/Server';
 import {TBundleId} from './src/types/Data';
 import {TStatus} from './src/types/Screen';
 import {initAlgolia} from './src/utils/Algolia';
 import {initFirebase} from './src/utils/Firebase';
+
 import './src/utils/FontAwesome';
 
 type TProps = {
@@ -27,11 +29,13 @@ type TProps = {
 };
 
 const App = ({bundleId}: TProps) => {
+  // const useEmulator = process.env.NODE_ENV !== 'production';
+  const useEmulator = false;
   const [status, setStatus] = useState<TStatus>('loading');
 
   useEffect(() => {
     const load = () => {
-      initFirebase();
+      initFirebase(useEmulator);
       initAlgolia(bundleId);
       setStatus('loaded');
     };
@@ -39,20 +43,22 @@ const App = ({bundleId}: TProps) => {
     if (status === 'loading') {
       load();
     }
-  }, [bundleId, status]);
+  }, [bundleId, status, useEmulator]);
 
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
       <CacheProvider>
         <LanguageProvider>
-          <AuthUserProvider bundleId={bundleId}>
-            <PopupProvider>
-              <ModalProvider>
-                <Home />
-              </ModalProvider>
-            </PopupProvider>
-          </AuthUserProvider>
+          <ServerProvider useEmulator={useEmulator}>
+            <AuthUserProvider bundleId={bundleId}>
+              <PopupProvider>
+                <ModalProvider>
+                  <Home />
+                </ModalProvider>
+              </PopupProvider>
+            </AuthUserProvider>
+          </ServerProvider>
         </LanguageProvider>
       </CacheProvider>
     </View>
