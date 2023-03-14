@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import {TDocData} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
+import {sortByTimestamp} from '../../utils/Array';
 import MomentCard from './MomentsCard';
 
 type TProps = {
@@ -56,6 +57,8 @@ const ChannelCard = ({style, channel, pauseOnModal, moment, mount}: TProps) => {
       return <View style={{height, width}} />;
     }
 
+    const firstUploadDate = sortByTimestamp(item, 'addedAt', 'asc')[0].addedAt;
+
     return (
       <View
         style={{
@@ -65,6 +68,7 @@ const ChannelCard = ({style, channel, pauseOnModal, moment, mount}: TProps) => {
         <MomentCard
           moments={item}
           momentIndex={momentIndex === -1 ? 0 : momentIndex}
+          firstUploadDate={firstUploadDate}
           mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
           pauseOnModal={pauseOnModal}
           inView={index === elIndex}

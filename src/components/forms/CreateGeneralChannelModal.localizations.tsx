@@ -2,6 +2,7 @@ export const localizations = {
   en: {
     title: 'Channel',
     name: {title: 'Name', detail: 'Name of your channel.'},
+    detail: {title: 'Detail', detail: 'Purpose of this channel.'},
     type: {
       title: 'Type',
       detail: 'Set it to prvite to not show moments on discovery.',
@@ -61,6 +62,7 @@ export const localizations = {
   ko: {
     title: '채널',
     name: {title: '이름', detail: '채널의 이름을 적어주세요.'},
+    detail: {title: '세부사항', detail: '이 채널의 목적을 적어주세요.'},
     type: {
       title: '종류',
       detail:

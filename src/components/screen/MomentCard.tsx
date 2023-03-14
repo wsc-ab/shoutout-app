@@ -3,7 +3,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {useWindowDimensions, View} from 'react-native';
 import ModalContext from '../../contexts/Modal';
 
-import {TDocData, TDocSnapshot} from '../../types/Firebase';
+import {TDocData, TDocSnapshot, TTimestamp} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultImage from '../defaults/DefaultImage';
@@ -26,6 +26,7 @@ type TProps = {
   inView: boolean;
   blur?: boolean;
   channel?: {id: string};
+  firstUploadDate: TTimestamp;
 };
 
 const MomentTestCard = ({
@@ -38,12 +39,11 @@ const MomentTestCard = ({
   blur,
   channel,
   length,
+  firstUploadDate,
 }: TProps) => {
   const {height, width} = useWindowDimensions();
   const [data, setData] = useState<TDocData>();
   const {onUpdate} = useContext(ModalContext);
-
-  console.log(inView, moment.name, pauseOnModal, 'in');
 
   useEffect(() => {
     const onNext = async (doc: TDocSnapshot) => {
@@ -108,6 +108,7 @@ const MomentTestCard = ({
           moment={data}
           index={index}
           length={length}
+          firstUploadDate={firstUploadDate}
           style={{marginHorizontal: 10}}
         />
       )}

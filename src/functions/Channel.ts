@@ -4,6 +4,7 @@ export const createChannel = async (input: {
   channel: {
     id: string;
     name: string;
+    detail: string;
     options: {
       type: 'public' | 'private';
       mode: 'camera' | 'library' | 'both';
@@ -64,6 +65,7 @@ export const editChannel = async (input: {
   channel: {
     id: string;
     name: string;
+    detail: string;
     options: {
       type: 'public' | 'private';
       mode: 'camera' | 'library' | 'both';

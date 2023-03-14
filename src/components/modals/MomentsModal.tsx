@@ -9,13 +9,18 @@ import {
   ViewToken,
 } from 'react-native';
 import ModalContext from '../../contexts/Modal';
-import {TDocData} from '../../types/Firebase';
+import {TDocData, TTimestamp} from '../../types/Firebase';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultModal from '../defaults/DefaultModal';
 import MomentCard from '../screen/MomentsCard';
 
 type TProps = {
-  moments: {id: string; content: {path: string}; createdBy: {id: string}}[];
+  moments: {
+    id: string;
+    content: {path: string};
+    createdBy: {id: string};
+    addedAt: TTimestamp;
+  }[];
 };
 
 const MomentsModal = ({moments}: TProps) => {

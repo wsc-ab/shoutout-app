@@ -13,6 +13,7 @@ import CommentButton from '../buttons/CommentButton';
 import LikeButton from '../buttons/LikeButton';
 import CommentHeader from '../comment/CommentHeader';
 import Comment from '../comment/Comment';
+import {TTimestamp} from '../../types/Firebase';
 
 type TProps = {
   moment: {
@@ -21,12 +22,13 @@ type TProps = {
     name: string;
     createdBy: {id: string};
   };
+  firstUploadDate: TTimestamp;
   index: number;
   length: number;
   style?: TStyleView;
 };
 
-const Footer = ({moment, index, length}: TProps) => {
+const Footer = ({moment, index, firstUploadDate, length}: TProps) => {
   const fadeAnim = useRef(new Animated.Value(150)).current;
 
   const {height} = useWindowDimensions();
@@ -94,7 +96,12 @@ const Footer = ({moment, index, length}: TProps) => {
         onScrollBeginDrag={onScrollBeginDrag}
         onScrollEndDrag={onScrollEndDrag}
         ListHeaderComponent={() => (
-          <CommentHeader moment={moment} index={index} length={length} />
+          <CommentHeader
+            moment={moment}
+            index={index}
+            length={length}
+            firstUploadDate={firstUploadDate}
+          />
         )}
       />
       <View style={{flexDirection: 'row', paddingBottom: 24}}>

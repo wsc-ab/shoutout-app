@@ -1,14 +1,14 @@
-import React, {useRef, useState} from 'react';
+import React, { useRef, useState } from 'react';
 import {
   FlatList,
   useWindowDimensions,
   View,
   ViewabilityConfigCallbackPairs,
-  ViewToken,
+  ViewToken
 } from 'react-native';
 
-import {TTimestamp} from '../../types/Firebase';
-import {TStyleView} from '../../types/Style';
+import { TTimestamp } from '../../types/Firebase';
+import { TStyleView } from '../../types/Style';
 
 import MomentTestCard from './MomentCard';
 
@@ -25,7 +25,7 @@ type TProps = {
   pauseOnModal?: boolean;
   inView: boolean;
   blur?: boolean;
-
+  firstUploadDate: TTimestamp;
   channel?: {id: string};
 };
 
@@ -34,6 +34,7 @@ const MomentsCard = ({
   style,
   momentIndex,
   pauseOnModal,
+  firstUploadDate,
   mount,
   inView,
 }: TProps) => {
@@ -86,6 +87,7 @@ const MomentsCard = ({
         moment={item}
         length={moments.length}
         pauseOnModal={pauseOnModal}
+        firstUploadDate={firstUploadDate}
         index={index}
         mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
         inView={inView && index === elIndex}

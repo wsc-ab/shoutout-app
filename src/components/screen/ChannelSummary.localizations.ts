@@ -5,25 +5,17 @@ export const localizations = {
       message: 'First join this channel to share your contents!',
     },
     private: 'Private',
-    privateModal:
-      "Contents in this channel won't be shown on the discovery tab.",
     public: 'Public',
-    publicModal: 'contents in this channel will be shown on the discovery tab.',
     image: 'Image',
     video: 'Video',
     imageVideo: 'Image & Video',
     camera: 'Camera',
-    cameraModal:
-      'This channel only allows contents taken from camera to be shared.',
+
     library: 'Library',
-    libraryModal:
-      'This channel only allows contents from media library to be uploaded.',
+
     ghosting: 'Ghosting',
     spam: 'Spam',
-    ghostingModal: (days: number) =>
-      `This channel shows contents to users who have shared in the last ${days} days.`,
-    spamModal: (hours: number) =>
-      `This channel allows users to post every ${hours}.`,
+
     spamAlert: (date: Date) => ({
       title: 'Please wait',
       message: `This channel has enabled the spam blocking. You can post from ${date.toLocaleString()}.`,
@@ -40,22 +32,18 @@ export const localizations = {
       message: '우선 채널에 조인해주세요!',
     },
     private: '비공개',
-    privateModal: '이 채널의 콘텐츠는 디스커버리나 검색에서 보이지 않습니다.',
+
     public: '공개',
-    publicModal: '이 채널의 콘텐츠는 디스커버리나 검색에서 보입니다.',
+
     image: '이미지',
     video: '비디오',
     imageVideo: '이미지 & 비디오',
     camera: '카메라',
-    cameraModal: '카메라에서 바로 찍은 콘텐츠만 공유할 수 있습니다.',
+
     library: '라이브러리',
-    libraryModal: '라이브러리 콘텐츠만 올릴 수 있습니다.',
+
     ghosting: '눈팅',
     spam: '도배',
-    ghostingModal: (days: number) =>
-      `이 채널은 지난 ${days} 일 중 활동한 유저에게만 콘텐츠가 보입니다.`,
-    spamModal: (hours: number) =>
-      `이 채널은 ${hours} 시간에 한 번만 컨텐츠를 올릴 수 있습니다.`,
     nocontents: '아직 콘텐츠가 없습니다.',
     ghostAlert: {
       title: '콘텐츠를 공유하세요',

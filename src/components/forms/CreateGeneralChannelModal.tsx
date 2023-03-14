@@ -10,6 +10,7 @@ import {createChannel} from '../../functions/Channel';
 import AuthUserContext from '../../contexts/AuthUser';
 import LanguageContext from '../../contexts/Language';
 import {defaultSchema} from '../../utils/Schema';
+import ControllerDetail from '../controllers/ControllerDetail';
 import ControllerOption from '../controllers/ControllerOption';
 import ControllerText from '../controllers/ControllerText';
 import DefaultAlert from '../defaults/DefaultAlert';
@@ -31,6 +32,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
 
   const schema = object({
     name: text({min: 1, max: 50, required: true}),
+    detail: text({required: true}),
     type: text({required: true}),
     mode: text({required: true}),
     ghosting: text({required: true}),
@@ -45,8 +47,9 @@ const CreateGeneralChannelModal = ({}: TProps) => {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      type: 'public',
       name: '',
+      detail: '',
+      type: 'public',
       mode: 'both',
       ghosting: '7',
       spam: '1',
@@ -56,6 +59,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
 
   const onSubmit = async ({
     name,
+    detail,
     type,
     mode,
     ghosting,
@@ -63,6 +67,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
     notificationHours,
   }: {
     name: string;
+    detail: string;
     type: 'public' | 'private';
     mode: 'camera' | 'library' | 'both';
     ghosting: 'off' | '1' | '7' | '14';
@@ -76,7 +81,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
 
       let notification;
 
-      if (notificationHours) {
+      if (notificationHours !== 'off') {
         const now = new Date();
         now.setHours(parseInt(notificationHours, 10));
         now.getUTCHours();
@@ -89,6 +94,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
       await createChannel({
         channel: {
           id: channelId,
+          detail,
           options: {
             type,
             mode,
@@ -130,6 +136,12 @@ const CreateGeneralChannelModal = ({}: TProps) => {
             name="name"
             {...localization.name}
             errors={errors.name}
+          />
+          <ControllerDetail
+            control={control}
+            name="detail"
+            {...localization.detail}
+            errors={errors.detail}
           />
           <ControllerOption
             control={control}

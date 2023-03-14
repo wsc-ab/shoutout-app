@@ -25,6 +25,7 @@ type TProps = {
   optional?: boolean;
   style?: TStyleView;
   placeholder?: string;
+  editable?: boolean;
 };
 
 const ControllerOption = ({
@@ -36,6 +37,7 @@ const ControllerOption = ({
   errors,
   style,
   optional,
+  editable = true,
 }: TProps) => {
   return (
     <View style={style}>
@@ -65,8 +67,10 @@ const ControllerOption = ({
                       value === elValue && styles.selected,
                     ]}
                     onPress={() => {
-                      onBlur();
-                      onChange(elValue);
+                      if (editable) {
+                        onBlur();
+                        onChange(elValue);
+                      }
                     }}
                   />
                 ))}

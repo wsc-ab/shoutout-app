@@ -1,6 +1,6 @@
 import firestore from '@react-native-firebase/firestore';
 import React, {useContext, useEffect, useState} from 'react';
-import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
+import {FlatList, Pressable, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import LanguageContext from '../../contexts/Language';
 import ModalContext from '../../contexts/Modal';
@@ -8,7 +8,7 @@ import {TDocData, TDocSnapshot} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
 import {groupByKey} from '../../utils/Array';
 import {checkGhosting, checkSpam} from '../../utils/Channel';
-import {getDiffDays, getTimeGap} from '../../utils/Date';
+import {getTimeGap} from '../../utils/Date';
 import {getThumbnailPath} from '../../utils/Storage';
 import CreateMomentButton from '../buttons/CreateMomentButton';
 import DefaultAlert from '../defaults/DefaultAlert';
@@ -16,9 +16,8 @@ import {defaultBlack, defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultImage from '../defaults/DefaultImage';
 import DefaultText from '../defaults/DefaultText';
-import DetailModal from '../defaults/DetailModal';
 import UserProfileImage from '../images/UserProfileImage';
-import EditChannelModal from '../modals/EditChannelModal';
+import ChannelDetailModal from '../modals/ChannelDetailModal';
 import {localizations} from './ChannelSummary.localizations';
 
 type TProps = {
@@ -33,10 +32,7 @@ const ChannelSummary = ({channel, style}: TProps) => {
 
   const [data, setData] = useState<TDocData>();
   const {authUserData} = useContext(AuthUserContext);
-  const [modal, setModal] = useState<'detail' | 'setting'>();
-  const [modalDetail, setModalDetail] = useState<string>();
-
-  const [offset, setOffset] = useState(0);
+  const [modal, setModal] = useState<'detail' | 'info'>();
 
   useEffect(() => {
     const onNext = async (doc: TDocSnapshot) => {
@@ -99,8 +95,6 @@ const ChannelSummary = ({channel, style}: TProps) => {
     DefaultAlert(localization.spamAlert(nextTime));
   };
 
-  console.log(getDiffDays({start: data.createdAt}));
-
   return (
     <View style={style}>
       <View style={{marginBottom: 10}}>
@@ -116,13 +110,11 @@ const ChannelSummary = ({channel, style}: TProps) => {
               title={data.name}
               textStyle={{fontWeight: 'bold', fontSize: 20}}
             />
-            {data.createdBy.id === authUserData.id && (
-              <DefaultIcon
-                icon="cog"
-                onPress={() => setModal('setting')}
-                style={{marginLeft: 10}}
-              />
-            )}
+            <DefaultIcon
+              icon="info-circle"
+              onPress={() => setModal('info')}
+              style={{marginLeft: 10}}
+            />
           </View>
 
           <View
@@ -169,18 +161,6 @@ const ChannelSummary = ({channel, style}: TProps) => {
         </View>
         <View style={{flexDirection: 'row', marginTop: 5}}>
           <DefaultText
-            title={`${getDiffDays({start: data.createdAt})} Days`}
-            style={styles.tag}
-            onPress={() => {
-              setModal('detail');
-              setModalDetail(
-                `This channel started ${getDiffDays({
-                  start: data.createdAt,
-                })} Days ago.`,
-              );
-            }}
-          />
-          <DefaultText
             title={
               data.options.type === 'private'
                 ? localization.private
@@ -225,12 +205,6 @@ const ChannelSummary = ({channel, style}: TProps) => {
                 ghosting && {backgroundColor: defaultRed.lv2},
               ]}
               textStyle={{color: ghosting ? 'black' : 'white'}}
-              onPress={() => {
-                setModal('detail');
-                setModalDetail(
-                  localization.ghostingModal(data.options.ghosting?.mode),
-                );
-              }}
             />
           )}
           {data.options.spam && data.options.spam !== 'off' && (
@@ -238,33 +212,16 @@ const ChannelSummary = ({channel, style}: TProps) => {
               title={`${localization.spam} ${data.options.spam}`}
               style={[styles.tag, spam && {backgroundColor: defaultRed.lv2}]}
               textStyle={{color: spam ? 'black' : 'white'}}
-              onPress={() => {
-                setModal('detail');
-                setModalDetail(localization.spamModal(data.options.spam));
-              }}
             />
           )}
           {data.options.sponsor?.detail && (
-            <DefaultText
-              title={'Sponsor'}
-              style={styles.tag}
-              onPress={() => {
-                setModal('detail');
-                setModalDetail(data.options?.sponsor?.detail);
-              }}
-            />
+            <DefaultText title={'Sponsor'} style={styles.tag} />
           )}
         </View>
       </View>
       <FlatList
         data={data.moments.items}
         horizontal
-        onScroll={event => {
-          let currentOffset = event.nativeEvent.contentOffset.y;
-          let direction = currentOffset > offset ? 'down' : 'up';
-          setOffset(currentOffset);
-          console.log(direction); // up or down accordingly
-        }}
         ItemSeparatorComponent={() => <View style={{marginHorizontal: 5}} />}
         renderItem={({item}) => {
           return (
@@ -326,20 +283,8 @@ const ChannelSummary = ({channel, style}: TProps) => {
           );
         }}
       />
-      {modal === 'detail' && modalDetail && (
-        <DetailModal
-          title="Detail"
-          onCancel={() => {
-            setModal(undefined);
-            setModalDetail(undefined);
-          }}>
-          <Text style={{color: 'white', marginHorizontal: 10}}>
-            {modalDetail}
-          </Text>
-        </DetailModal>
-      )}
-      {modal === 'setting' && (
-        <EditChannelModal
+      {modal === 'info' && (
+        <ChannelDetailModal
           onCancel={() => setModal(undefined)}
           channel={data}
           onSuccess={() => setModal(undefined)}

@@ -1,6 +1,8 @@
 export const localizations = {
   en: {
-    title: 'Edit channel',
+    title: (editable: boolean) =>
+      editable ? 'Edit channel' : 'Channel detail',
+    detail: {title: 'Detail', detail: 'The purpose of this channel.'},
     delete: 'Delete channel',
     deleteDetail:
       "This channel will be removed from all joined users. You can't restore data once you delete a channel.",
@@ -18,11 +20,11 @@ export const localizations = {
       title: 'Error',
       message: 'Failed to delete channel.',
     },
-    name: {title: 'Name', detail: 'Change the name of this channel.'},
+    name: {title: 'Name', detail: 'The name of this channel.'},
     mode: {
       title: 'Mode',
       detail:
-        'Change mode supported in this channel. Use camera mode to allow users to share moments taken from camera only.',
+        'Share mode supported in this channel. Use camera mode to allow users to share moments taken from camera only.',
       options: [
         {value: 'both', title: 'Both'},
         {value: 'camera', title: 'Camera'},
@@ -32,7 +34,7 @@ export const localizations = {
     ghosting: {
       title: 'Ghosting',
       detail:
-        "Change the number of allowed ghosting days. If set to 7 days, users who haven't posted in the last 7 days can't access the channel.",
+        "The number of allowed ghosting days. If set to 7 days, users who haven't posted in the last 7 days can't access the channel.",
       options: [
         {value: 'off', title: 'Off'},
         {value: '1', title: '1 Day'},
@@ -43,7 +45,7 @@ export const localizations = {
     spam: {
       title: 'Spam',
       detail:
-        'Change options for spam. If set to 6 hours, users can post only once every 6 hours.',
+        'The option to prevent spams. If set to 6 hours, users can post only once every 6 hours.',
       options: [
         {value: 'off', title: 'Off'},
         {value: '1', title: '1 hour'},
@@ -55,7 +57,7 @@ export const localizations = {
     },
     notificationHours: {
       title: 'Notification',
-      detail: 'Change the time to send a notification as a reminder.',
+      detail: 'Reminder notification sent time.',
       options: [
         {value: 'off', title: 'Off'},
         {value: '6', title: '6 AM'},
@@ -68,7 +70,7 @@ export const localizations = {
     },
   },
   ko: {
-    title: '채널 수정',
+    title: (editable: boolean) => (editable ? '채널 수정' : '채널 세부 사항'),
     delete: '채널 삭제',
     deleteDetail:
       '참여한 모든 유저들로부터 이 채널이 삭제됩니다. 삭제 후에는 복원할 수 없습니다.',
@@ -87,10 +89,11 @@ export const localizations = {
       message: '채널 삭제에 실패했습니다.',
     },
     name: {title: '이름', detail: '채널의 이름을 수정하세요.'},
+    detail: {title: '세부사항', detail: '채널의 목적을 수정하세요.'},
     mode: {
       title: '모드',
       detail:
-        '지원 모드를 변경하세요. 카메라 모드를 선택하면 카메라로 바로 찍은 라이브 모멘트만 올릴 수 있습니다.',
+        '공유 모드. 카메라 모드를 선택하면 카메라로 바로 찍은 라이브 모멘트만 올릴 수 있습니다.',
       options: [
         {value: 'both', title: '모두'},
         {value: 'camera', title: '카메라'},
@@ -100,7 +103,7 @@ export const localizations = {
     ghosting: {
       title: '눈팅 방지',
       detail:
-        '눈팅 가능한 날짜를 변경하세요. 7일을 선택하면, 지난 7일 동안 한 번도 채널에 참여하지 않은 유저들은 채널 내용을 볼 수 없습니다.',
+        '눈팅 관련 설정. 7일을 선택하면, 지난 7일 동안 한 번도 채널에 참여하지 않은 유저들은 채널 내용을 볼 수 없습니다.',
       options: [
         {value: 'off', title: '끄기'},
         {value: '1', title: '1일'},
@@ -111,7 +114,7 @@ export const localizations = {
     spam: {
       title: '도배',
       detail:
-        '도배 관련 옵션을 변경하세요. 6시간으로 설정시, 6시간에 한 번만 공유할 수 있습니다.',
+        '도배 관련 옵션. 6시간으로 설정시, 6시간에 한 번만 공유할 수 있습니다.',
       options: [
         {value: 'off', title: 'Off'},
         {value: '1', title: '1 시간'},
@@ -123,7 +126,7 @@ export const localizations = {
     },
     notificationHours: {
       title: '알림',
-      detail: '하루에 한 번 노티가 가는 시간을 변경하세요.',
+      detail: '하루에 한 번 노티가 가는 시간.',
       options: [
         {value: 'off', title: '끄기'},
         {value: '6', title: '6시'},

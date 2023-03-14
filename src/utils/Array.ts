@@ -3,10 +3,15 @@ import {TObject} from '../types/Firebase';
 export const sortByTimestamp = <A extends TObject>(
   items: A[],
   field: string,
+  order?: 'asc' | 'desc',
 ) => {
-  return items.sort(
-    (a: TObject, b: TObject) => b[field].seconds - a[field].seconds,
-  );
+  return items.sort((a: TObject, b: TObject) => {
+    if (order === 'desc') {
+      return b[field].seconds - a[field].seconds;
+    }
+
+    return a[field].seconds - b[field].seconds;
+  });
 };
 
 export const groupByLength = <A extends TObject>(
