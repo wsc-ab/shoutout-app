@@ -122,16 +122,18 @@ export const sentToFirst = <A extends TObject>({
   return items;
 };
 
-export const groupByKey = <A extends TObject>({items}: {items: A[]}) => {
-  return items.reduce(function (r, a) {
-    const index = r.findIndex(item => item[0].createdBy.id === a.createdBy.id);
+export const groupArrayByUser = <A extends TObject>({items}: {items: A[]}) => {
+  return items.reduce((pre, cur) => {
+    const index = pre.findIndex(
+      item => item[0]?.createdBy.id === cur.createdBy.id,
+    );
 
     if (index === -1) {
-      r.push([a]);
+      pre.push([cur]);
     } else {
-      r[index].push(a);
+      pre[index].push(cur);
     }
 
-    return r;
-  }, []);
+    return pre;
+  }, [] as A[][]);
 };

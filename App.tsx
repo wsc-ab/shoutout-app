@@ -52,11 +52,11 @@ const App = ({bundleId}: TProps) => {
         <LanguageProvider>
           <ServerProvider useEmulator={useEmulator}>
             <AuthUserProvider bundleId={bundleId}>
-              <PopupProvider>
-                <ModalProvider>
+              <ModalProvider>
+                <PopupProvider>
                   <Home />
-                </ModalProvider>
-              </PopupProvider>
+                </PopupProvider>
+              </ModalProvider>
             </AuthUserProvider>
           </ServerProvider>
         </LanguageProvider>

@@ -1,15 +1,12 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
-import LanguageContext from '../../contexts/Language';
 import {TStyleView} from '../../types/Style';
-import CreateChannelButton from '../buttons/CreateChannelButton';
-import DefaultModal from '../defaults/DefaultModal';
-import DefaultText from '../defaults/DefaultText';
-import ChannelCodeForm from '../forms/ChannelCodeForm';
-import {localizations} from './Channels.localizations';
-import ChannelSummary from './ChannelSummary';
+
+import Channel from '../channel/Channel';
+
 import EmptyChannel from './EmptyChannel';
+import PlusChannelButton from './PlusChannelButton';
 
 type TProps = {
   style: TStyleView;
@@ -17,12 +14,10 @@ type TProps = {
 
 const Channels = ({style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
-  const {language} = useContext(LanguageContext);
-  const localization = localizations[language];
-  const [modal, setModal] = useState<'code'>();
-  const renderItem = ({item}: {item: {id: string}}) => {
-    return <ChannelSummary channel={{id: item.id}} />;
-  };
+
+  const renderItem = ({item}: {item: {id: string}}) => (
+    <Channel channel={{id: item.id}} />
+  );
 
   return (
     <View style={style}>
@@ -35,22 +30,8 @@ const Channels = ({style}: TProps) => {
         ItemSeparatorComponent={() => <View style={styles.seperator} />}
       />
       <View style={styles.footer}>
-        <CreateChannelButton style={styles.button} />
-        <DefaultText
-          title={localization.code}
-          onPress={() => setModal('code')}
-          textStyle={styles.codeText}
-          style={styles.button}
-        />
+        <PlusChannelButton style={styles.button} />
       </View>
-      {modal === 'code' && (
-        <DefaultModal>
-          <ChannelCodeForm
-            onCancel={() => setModal(undefined)}
-            onSuccess={() => setModal(undefined)}
-          />
-        </DefaultModal>
-      )}
     </View>
   );
 };
@@ -79,5 +60,4 @@ const styles = StyleSheet.create({
     backgroundColor: 'gray',
     borderRadius: 20,
   },
-  codeText: {fontWeight: 'bold'},
 });

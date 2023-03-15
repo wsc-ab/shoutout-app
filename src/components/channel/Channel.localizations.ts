@@ -12,10 +12,8 @@ export const localizations = {
     camera: 'Camera',
     anonymous: 'Anonymous',
     library: 'Library',
-
     ghosting: 'Ghosting',
     spam: 'Spam',
-
     spamAlert: (date: Date) => ({
       title: 'Please wait',
       message: `This channel has enabled the spam blocking. You can post from ${date.toLocaleString()}.`,
@@ -25,6 +23,13 @@ export const localizations = {
       title: 'Please share a content',
       message: 'You have been ghosting for too long.',
     },
+    noChannels: {
+      title: 'No channel',
+      message: 'Create a channel or join channels by searching or using codes.',
+    },
+    create: 'Create',
+    join: 'Join',
+    cancel: 'Cancel',
   },
   ko: {
     needToJoin: {
@@ -32,9 +37,7 @@ export const localizations = {
       message: '우선 채널에 조인해주세요!',
     },
     private: '비공개',
-
     public: '공개',
-
     image: '이미지',
     video: '비디오',
     imageVideo: '이미지 & 비디오',
@@ -52,5 +55,13 @@ export const localizations = {
       title: '조금 더 기다리세요',
       message: `이 채널은 스팸 방지 기능을 사용 중 입니다. ${date.toLocaleString()}에 포스팅 할 수 있습니다.`,
     }),
+    noChannels: {
+      title: '채널 없음',
+      message: '채널을 만들거나 검색 또는 코드 입력 후 참여하세요.',
+    },
+    code: '코드',
+    create: '만들기',
+    join: '참여하기',
+    cancel: '취소',
   },
 };

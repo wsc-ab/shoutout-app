@@ -2,15 +2,15 @@ import {firebase} from '@react-native-firebase/auth';
 import React, {useContext, useState} from 'react';
 import {ActivityIndicator, Pressable, StyleSheet} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
-import ModalContext from '../../contexts/Modal';
-import PopupContext from '../../contexts/Popup';
+import LanguageContext from '../../contexts/Language';
 import {TStyleView} from '../../types/Style';
 import {checkLocationPermission} from '../../utils/Location';
 import {takeMedia} from '../../utils/Media';
-import {onUploading} from '../../utils/Upload';
 import DefaultAlert from '../defaults/DefaultAlert';
+import DefaultBottomModal from '../defaults/DefaultBottomModal';
 import DefaultIcon from '../defaults/DefaultIcon';
-import VideoModeModal from '../modals/AddOptionsModal';
+import CreateMomentForm from '../forms/CreateMomentForm';
+import {localizations} from '../modals/AddOptionsModal.localizations';
 
 type TProps = {
   style?: TStyleView;
@@ -25,15 +25,18 @@ type TProps = {
 
 const CreateMomentButton = ({channel, color = 'white', style}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
-  const {onUpdate} = useContext(ModalContext);
   const [submitting, setSubmitting] = useState(false);
-  const {uploading} = useContext(PopupContext);
+  const {language} = useContext(LanguageContext);
+  const localization = localizations[language];
+  const [modal, setModal] = useState<'options' | 'create'>();
+  const [data, setData] = useState<{
+    remotePath: string;
+    localPath: string;
+    content: {media: 'image' | 'video'; mode: 'camera' | 'library'};
+    id: string;
+  }>();
 
-  const [modal, setModal] = useState<'mode'>();
-
-  const onAdd = async (mode: 'cameraPhoto' | 'cameraVideo' | 'library') => {
-    onUpdate({target: 'takeMedia'});
-
+  const onAdd = async (mode: 'photo' | 'video' | 'library') => {
     setSubmitting(true);
 
     const permitted = await checkLocationPermission();
@@ -55,23 +58,15 @@ const CreateMomentButton = ({channel, color = 'white', style}: TProps) => {
         mode: serverMode,
         id: momentId,
         userId: authUserData.id,
-        mediaType:
-          mode === 'library'
-            ? 'mixed'
-            : mode === 'cameraPhoto'
-            ? 'photo'
-            : 'video',
+        mediaType: mode === 'library' ? 'mixed' : mode,
       });
 
-      onUpdate({
-        target: 'createMoment',
-        data: {
-          remotePath,
-          localPath,
-          id: momentId,
-          content: {mode: serverMode, media},
-          channel,
-        },
+      setModal('create');
+      setData({
+        remotePath,
+        localPath,
+        id: momentId,
+        content: {mode: serverMode, media},
       });
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {
@@ -80,37 +75,60 @@ const CreateMomentButton = ({channel, color = 'white', style}: TProps) => {
           message: (error as {message: string}).message,
         });
       }
-      onUpdate(undefined);
-    } finally {
       setSubmitting(false);
-      setModal(undefined);
     }
   };
 
-  const onPress = () => {
-    if (uploading) {
-      return onUploading();
-    }
+  const options: {
+    name: 'photo' | 'video' | 'library' | 'cancel';
+    title: string;
+    type?: 'cancel';
+  }[] = [];
 
-    setModal('mode');
-  };
+  if (['camera', 'both'].includes(channel.options.mode)) {
+    options.push({name: 'photo', title: localization.image});
+    options.push({name: 'video', title: localization.video});
+  }
+
+  if (['library', 'both'].includes(channel.options.mode)) {
+    options.push({name: 'library', title: localization.library});
+  }
+
+  options.push({
+    name: 'cancel',
+    title: localization.cancel,
+    type: 'cancel',
+  });
 
   return (
     <Pressable
       style={[styles.container, style]}
       disabled={submitting}
-      onPress={onPress}>
+      onPress={() => setModal('options')}>
       {!submitting && (
         <DefaultIcon icon="square-plus" size={20} color={color} />
       )}
       {submitting && <ActivityIndicator color="white" />}
-      {modal === 'mode' && (
-        <VideoModeModal
+      {modal === 'options' && (
+        <DefaultBottomModal
           onCancel={() => setModal(undefined)}
-          options={channel.options}
-          onSuccess={mode => {
-            onAdd(mode);
+          options={options}
+          onPress={option => {
+            if (option === 'cancel') {
+              setModal(undefined);
+            } else {
+              onAdd(option);
+            }
           }}
+        />
+      )}
+      {modal === 'create' && data && (
+        <CreateMomentForm
+          {...data}
+          channel={channel}
+          onCancel={() => setModal(undefined)}
+          onStart={() => setModal(undefined)}
+          onSuccess={() => setSubmitting(false)}
         />
       )}
     </Pressable>

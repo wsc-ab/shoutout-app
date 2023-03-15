@@ -4,7 +4,6 @@ import React, {useContext, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {StyleSheet} from 'react-native';
 import {object} from 'yup';
-import ModalContext from '../../contexts/Modal';
 import {createChannel} from '../../functions/Channel';
 
 import AuthUserContext from '../../contexts/AuthUser';
@@ -19,15 +18,15 @@ import DefaultKeyboardAwareScrollView from '../defaults/DefaultKeyboardAwareScro
 import DefaultModal from '../defaults/DefaultModal';
 import {localizations} from './CreateGeneralChannelModal.localizations';
 
-type TProps = {};
+type TProps = {onCancel: () => void; onSuccess: () => void};
 
-const CreateGeneralChannelModal = ({}: TProps) => {
+const CreateGeneralChannelModal = ({onCancel, onSuccess}: TProps) => {
   const {language} = useContext(LanguageContext);
   const localization = localizations[language];
   const {text, number} = defaultSchema();
 
   const [submitting, setSubmitting] = useState(false);
-  const {onUpdate} = useContext(ModalContext);
+
   const {authUserData} = useContext(AuthUserContext);
 
   const schema = object({
@@ -111,6 +110,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
         },
         users: {ids: [authUserData.id]},
       });
+      onSuccess();
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {
         DefaultAlert({
@@ -120,7 +120,6 @@ const CreateGeneralChannelModal = ({}: TProps) => {
       }
     } finally {
       setSubmitting(false);
-      onUpdate(undefined);
     }
   };
 
@@ -129,7 +128,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
       <DefaultForm
         title={localization.title}
         left={{
-          onPress: () => onUpdate(undefined),
+          onPress: onCancel,
         }}
         right={{
           onPress: handleSubmit(onSubmit),

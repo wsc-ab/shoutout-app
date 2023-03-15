@@ -1,15 +1,11 @@
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 import React, {createContext, useContext, useEffect, useState} from 'react';
-import CreateGeneralChannelModal from '../components/forms/CreateGeneralChannelModal';
-import CreateMomentForm from '../components/forms/CreateMomentForm';
-import CreateSponsoredChannelModal from '../components/forms/CreateSponsoredChannelModal';
+import ChannelModal from '../components/channel/ChannelModal';
+import ChannelSearchModal from '../components/channel/ChannelSearchModal';
 
 import AuthUserModal from '../components/modals/AuthUserModal';
-import ChannelModal from '../components/modals/ChannelModal';
-import ChannelSearchModal from '../components/modals/ChannelSearchModal';
+
 import ContactsModal from '../components/modals/ContactsModal';
-import MomentsModal from '../components/modals/MomentsModal';
-import UsersModal from '../components/modals/UsersModal';
 import {TObject} from '../types/Firebase';
 import {getQueryParams} from '../utils/Share';
 import AuthUserContext from './AuthUser';
@@ -71,26 +67,11 @@ const ModalProvider = ({children}: TProps) => {
         onUpdate,
       }}>
       {children}
-      {modal?.target === 'moments' && modal.data && (
-        <MomentsModal moments={modal.data.moments} />
-      )}
       {modal?.target === 'channel' && modal.data?.channel && (
-        <ChannelModal channel={modal.data.channel} moment={modal.data.moment} />
-      )}
-      {modal?.target === 'createGeneralChannel' && (
-        <CreateGeneralChannelModal {...modal.data} />
-      )}
-      {modal?.target === 'createSponsoredChannel' && (
-        <CreateSponsoredChannelModal {...modal.data} />
+        <ChannelModal channel={modal.data.channel} />
       )}
       {modal?.target === 'auth' && <AuthUserModal />}
       {modal?.target === 'friends' && <ContactsModal />}
-      {modal?.target === 'channelUsers' && modal.data && (
-        <UsersModal channel={modal.data.channel} />
-      )}
-      {modal?.target === 'createMoment' && modal.data && (
-        <CreateMomentForm {...modal.data} />
-      )}
       {modal?.target === 'search' && <ChannelSearchModal />}
     </ModalContext.Provider>
   );

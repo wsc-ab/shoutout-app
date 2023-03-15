@@ -2,8 +2,8 @@ import React, {useContext} from 'react';
 import ModalContext from '../../contexts/Modal';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
+import SearchForm from '../modals/SearchForm';
 import ChannelSearch from './ChannelSearch';
-import SearchForm from './SearchForm';
 
 type TProps = {};
 

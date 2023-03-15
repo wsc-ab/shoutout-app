@@ -1,11 +1,5 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  Pressable,
-  SafeAreaView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import {Pressable, SafeAreaView, StyleSheet, View} from 'react-native';
 import {defaultBlue} from '../components/defaults/DefaultColors';
 import DefaultIcon from '../components/defaults/DefaultIcon';
 import DefaultImage from '../components/defaults/DefaultImage';
@@ -22,17 +16,9 @@ type TPopup = {
   disabled?: boolean;
 };
 
-type TUpload = {
-  id: string;
-  localPath: string;
-};
-
 type TContextProps = {
   addPopup: (popup: TPopup) => void;
   removePopup: ({id}: {id: string}) => void;
-  addUpload: (upload: TUpload) => void;
-  removeUpload: ({id}: {id: string}) => void;
-  uploading: boolean;
 };
 
 const PopupContext = createContext({} as TContextProps);
@@ -43,25 +29,8 @@ export type TProps = {
 
 const PopupProvider = ({children}: TProps) => {
   const {onUpdate, modal} = useContext(ModalContext);
-  const [uploading, setUploading] = useState(false);
-  const [uploads, setUploads] = useState<TUpload[]>([]);
+
   const [popups, setPopups] = useState<TPopup[]>([]);
-
-  const addUpload: TContextProps['addUpload'] = newUpload => {
-    setUploads(pre => [...pre, newUpload]);
-  };
-
-  useEffect(() => {
-    setUploading(uploads.length >= 1);
-  }, [uploads]);
-
-  const removeUpload: TContextProps['removeUpload'] = ({id}) => {
-    setUploads(pre => {
-      const copy = [...pre];
-      const filtered = copy.filter(({id: elId}) => elId !== id);
-      return filtered;
-    });
-  };
 
   const addPopup: TContextProps['addPopup'] = newPopup => {
     setPopups(pre => [...pre, newPopup]);
@@ -106,9 +75,6 @@ const PopupProvider = ({children}: TProps) => {
       value={{
         addPopup,
         removePopup,
-        addUpload,
-        removeUpload,
-        uploading,
       }}>
       {children}
       <SafeAreaView style={[styles.container, {zIndex: 400}]}>
@@ -151,20 +117,6 @@ const PopupProvider = ({children}: TProps) => {
               style={{padding: 10}}
             />
           </Pressable>
-        )}
-      </SafeAreaView>
-      <SafeAreaView style={[styles.container, {right: 0}]}>
-        {uploads[0] && (
-          <View
-            style={{
-              padding: 10,
-              backgroundColor: defaultBlue,
-              borderTopLeftRadius: 20,
-              borderBottomLeftRadius: 20,
-              flexDirection: 'row',
-            }}>
-            <ActivityIndicator color={'white'} />
-          </View>
         )}
       </SafeAreaView>
     </PopupContext.Provider>

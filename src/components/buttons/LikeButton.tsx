@@ -2,17 +2,14 @@ import React, {useContext, useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import {addLike, removeLike} from '../../functions/Moment';
+import {TDocData} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
 import DefaultAlert from '../defaults/DefaultAlert';
 import {defaultRed} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
 
 type TProps = {
-  moment: {
-    id: string;
-    content: {path: string};
-    createdBy: {id: string};
-  };
+  moment: TDocData;
   style?: TStyleView;
 };
 

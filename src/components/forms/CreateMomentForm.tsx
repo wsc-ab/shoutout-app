@@ -1,9 +1,7 @@
 import {yupResolver} from '@hookform/resolvers/yup';
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {object} from 'yup';
-import ModalContext from '../../contexts/Modal';
-import PopupContext from '../../contexts/Popup';
 
 import {createMoment} from '../../functions/Moment';
 import {getLatLng} from '../../utils/Location';
@@ -25,6 +23,9 @@ type TProps = {
   channel: {
     id: string;
   };
+  onCancel: () => void;
+  onStart: () => void;
+  onSuccess: () => void;
 };
 
 const CreateMomentForm = ({
@@ -33,11 +34,12 @@ const CreateMomentForm = ({
   id,
   content,
   channel,
+  onCancel,
+  onStart,
+  onSuccess,
 }: TProps) => {
   const {text} = defaultSchema();
   const [submitting, setSubmitting] = useState(false);
-  const {addUpload, removeUpload} = useContext(PopupContext);
-  const {onUpdate} = useContext(ModalContext);
 
   const schema = object({
     name: text({max: 50, required: true}),
@@ -59,8 +61,7 @@ const CreateMomentForm = ({
       setSubmitting(true);
 
       const latlng = await getLatLng();
-      onUpdate(undefined);
-      addUpload({id, localPath});
+      onStart();
 
       if (content.media === 'video') {
         await uploadVideo({localPath, remotePath});
@@ -81,7 +82,7 @@ const CreateMomentForm = ({
         channel,
       });
 
-      removeUpload({id});
+      onSuccess();
     } catch (error) {
       if ((error as {message: string}).message !== 'cancel') {
         DefaultAlert({
@@ -98,7 +99,7 @@ const CreateMomentForm = ({
     <DefaultModal>
       <DefaultForm
         title={'Moment'}
-        left={{onPress: () => onUpdate(undefined)}}
+        left={{onPress: onCancel}}
         right={{
           onPress: handleSubmit(onSubmit),
           submitting,

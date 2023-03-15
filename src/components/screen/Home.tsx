@@ -4,7 +4,8 @@ import {AppState, StyleSheet, View} from 'react-native';
 import notifee from '@notifee/react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import Permission from '../notification/Permission';
-import Channels from './Channels';
+
+import Channels from '../channel/Channels';
 import Header from './Header';
 import Landing from './Landing';
 import Welcome from './Welcome';

@@ -1,32 +1,42 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   FlatList,
-  RefreshControl,
-  StyleSheet,
   useWindowDimensions,
   View,
   ViewabilityConfigCallbackPairs,
   ViewToken,
 } from 'react-native';
-import {getMoments} from '../../functions/Moment';
-import {TDocData} from '../../types/Firebase';
-import {TStatus} from '../../types/Screen';
+
+import {TDocData, TTimestamp} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
-import DefaultAlert from '../defaults/DefaultAlert';
-import DefaultText from '../defaults/DefaultText';
-import MomentCard from './MomentsCard';
+import {sortByTimestamp} from '../../utils/Array';
+
+import Moment from './Moment';
 
 type TProps = {
-  style: TStyleView;
+  moments: {
+    id: string;
+    addedAt: TTimestamp;
+  }[];
+  channel: TDocData;
   mount: boolean;
+  pauseOnModal?: boolean;
+  inView: boolean;
+  style?: TStyleView;
 };
 
-const Moments = ({style, mount}: TProps) => {
-  const [data, setData] = useState<{id: string}[]>([]);
+const Moments = ({
+  moments,
+  style,
+  pauseOnModal,
+  mount,
+  channel,
+  inView,
+}: TProps) => {
+  const {width} = useWindowDimensions();
 
-  const [status, setStatus] = useState<TStatus>('loading');
+  const ref = useRef<FlatList>(null);
 
-  const {height, width} = useWindowDimensions();
   const [index, setIndex] = useState(0);
 
   const onViewableItemsChanged = ({
@@ -43,143 +53,65 @@ const Moments = ({style, mount}: TProps) => {
     [
       {
         onViewableItemsChanged,
-        viewabilityConfig: {
-          itemVisiblePercentThreshold: 100,
-        },
+        viewabilityConfig: {itemVisiblePercentThreshold: 100},
       },
     ],
   );
 
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const {moments} = await getMoments({pagination: {number: 10}});
+  const getItemLayout = (_: any[] | null | undefined, itemIndex: number) => ({
+    length: width,
+    offset: width * itemIndex,
+    index: itemIndex,
+  });
 
-        setData(moments);
-        setStatus('loaded');
-      } catch (error) {
-        DefaultAlert({
-          title: 'Error',
-          message: (error as {message: string}).message,
-        });
-
-        setStatus('error');
-      }
-    };
-
-    if (status === 'loading') {
-      load();
-    }
-  }, [status]);
-
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const {moments} = await getMoments({pagination: {number: 10}});
-
-        setData(pre => {
-          const copy = [...pre];
-          return [...copy, ...moments];
-        });
-
-        setStatus('loaded');
-      } catch (error) {
-        DefaultAlert({
-          title: 'Error',
-          message: (error as {message: string}).message,
-        });
-
-        setStatus('error');
-      }
-    };
-
-    if (status === 'loadMore') {
-      load();
-    }
-  }, [status]);
-
-  if (status === 'error') {
-    return (
-      <View style={[styles.noData, style]}>
-        <DefaultText title="Error. Please retry." />
-        <DefaultText
-          title="Reload"
-          onPress={() => setStatus('loading')}
-          style={styles.refresh}
-        />
-      </View>
-    );
-  }
+  const firstUploadDate = sortByTimestamp(moments, 'addedAt', 'asc')[0].addedAt;
 
   const renderItem = ({
     item,
     index: elIndex,
   }: {
-    item: {id: string};
+    item: {
+      id: string;
+    };
     index: number;
   }) => {
-    if (index - 3 >= elIndex || index + 3 <= elIndex) {
-      return <View style={{height, width}} />;
-    }
-
     return (
-      <View style={{height, width}}>
-        <MomentCard
-          moments={[item]}
-          mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
-          inView={index === elIndex}
-        />
-      </View>
+      <Moment
+        moment={item}
+        channel={channel}
+        length={moments.length}
+        pauseOnModal={pauseOnModal}
+        firstUploadDate={firstUploadDate}
+        index={index}
+        mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
+        inView={inView && index === elIndex}
+      />
     );
   };
 
-  const onEndReached = () => {
-    if (data.length >= 50) {
-      setData([]);
-      setStatus('loading');
-    } else {
-      setStatus('loadMore');
-    }
-  };
-
-  const keyExtractor = (item: TDocData, elIndex: number) => item.id + elIndex;
-
   return (
-    <FlatList
-      data={data}
-      style={style}
-      initialNumToRender={1}
-      windowSize={3}
-      maxToRenderPerBatch={1}
-      snapToInterval={height}
-      snapToAlignment={'start'}
-      showsVerticalScrollIndicator={false}
-      decelerationRate="fast"
-      keyExtractor={keyExtractor}
-      onEndReachedThreshold={5}
-      refreshControl={
-        <RefreshControl
-          refreshing={status === 'loading'}
-          onRefresh={() => {
-            setData([]);
-            setStatus('loading');
-          }}
-          tintColor={'gray'}
-          style={{flex: 1}}
-          progressViewOffset={80}
-        />
-      }
-      disableIntervalMomentum
-      viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
-      onEndReached={onEndReached}
-      renderItem={renderItem}
-    />
+    <View style={style}>
+      <FlatList
+        ref={ref}
+        data={moments}
+        initialNumToRender={1}
+        windowSize={3}
+        maxToRenderPerBatch={1}
+        horizontal
+        snapToInterval={width}
+        showsHorizontalScrollIndicator={false}
+        snapToAlignment={'start'}
+        decelerationRate="fast"
+        getItemLayout={getItemLayout}
+        disableIntervalMomentum
+        keyExtractor={item => {
+          return item.id;
+        }}
+        viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+        renderItem={renderItem}
+      />
+    </View>
   );
 };
 
 export default Moments;
-
-const styles = StyleSheet.create({
-  noData: {flex: 1, justifyContent: 'center', alignItems: 'center'},
-  refresh: {marginTop: 10},
-});

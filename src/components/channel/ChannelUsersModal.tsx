@@ -1,9 +1,9 @@
+import {IconProp} from '@fortawesome/fontawesome-svg-core';
 import React, {useContext, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
-import ModalContext from '../../contexts/Modal';
 import {addChannelUsers, removeChannelUser} from '../../functions/Channel';
-import {TDocData} from '../../types/Firebase';
+import {TDocData, TTimestamp} from '../../types/Firebase';
 import SmallUserCard from '../cards/ChannelUserCard';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
@@ -12,14 +12,18 @@ import DefaultText from '../defaults/DefaultText';
 
 type TProps = {
   channel: TDocData;
+  onCancel: () => void;
 };
 
-const UsersModal = ({channel}: TProps) => {
-  const {onUpdate} = useContext(ModalContext);
+const ChannelUsersModal = ({channel, onCancel}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
   const [submitting, setSubmitting] = useState(false);
 
-  const users = channel.inviteTo?.items;
+  const users = channel.inviteTo?.items as {
+    id: string;
+    displayName: string;
+    addedAt: TTimestamp;
+  }[];
 
   const joined = users.some(({id}) => id === authUserData.id);
 
@@ -30,7 +34,7 @@ const UsersModal = ({channel}: TProps) => {
         channel: {id: channel.id},
         users: {ids: [authUserData.id]},
       });
-      onUpdate(undefined);
+      onCancel();
     } catch (error) {
       DefaultAlert({title: 'Error', message: 'Failed to join channel.'});
     } finally {
@@ -44,7 +48,7 @@ const UsersModal = ({channel}: TProps) => {
         channel: {id: channel.id},
         user: {id: authUserData.id},
       });
-      onUpdate(undefined);
+      onCancel();
     } catch (error) {
       DefaultAlert({title: 'Error', message: 'Failed to leave channel.'});
     } finally {
@@ -56,7 +60,7 @@ const UsersModal = ({channel}: TProps) => {
     channel.createdBy.id === authUserData.id
       ? undefined
       : {
-          icon: joined ? 'user-minus' : 'user-plus',
+          icon: (joined ? 'user-minus' : 'user-plus') as IconProp,
           onPress: joined ? onLeave : onJoin,
           submitting,
         };
@@ -66,7 +70,7 @@ const UsersModal = ({channel}: TProps) => {
       <DefaultForm
         title={'Users'}
         left={{
-          onPress: () => onUpdate(undefined),
+          onPress: onCancel,
         }}
         right={right}>
         <FlatList
@@ -84,9 +88,7 @@ const UsersModal = ({channel}: TProps) => {
               />
             </View>
           }
-          renderItem={({item, index}) => {
-            return <SmallUserCard {...item} index={index} />;
-          }}
+          renderItem={({item}) => <SmallUserCard {...item} />}
           ItemSeparatorComponent={() => <View style={styles.seperator} />}
         />
       </DefaultForm>
@@ -94,7 +96,7 @@ const UsersModal = ({channel}: TProps) => {
   );
 };
 
-export default UsersModal;
+export default ChannelUsersModal;
 
 const styles = StyleSheet.create({
   container: {paddingBottom: 100, paddingHorizontal: 10},

@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import {StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import {deleteMoment, removeComment} from '../../functions/Moment';
-import {TTimestamp} from '../../types/Firebase';
+import {TDocData, TTimestamp} from '../../types/Firebase';
 import {getTimeGap} from '../../utils/Date';
 import SubmitIconButton from '../buttons/SubmitIconButton';
 import DefaultAlert from '../defaults/DefaultAlert';
@@ -11,7 +11,8 @@ import DefaultText from '../defaults/DefaultText';
 import UserProfileImage from '../images/UserProfileImage';
 
 type TProps = {
-  moment: {id: string};
+  moment: TDocData;
+  createdByUser: boolean;
   anonymous: 'off' | 'on';
   item: {
     addedAt: TTimestamp;
@@ -21,7 +22,7 @@ type TProps = {
   index: number;
 };
 
-const Comment = ({moment, anonymous, item, index}: TProps) => {
+const Comment = ({moment, createdByUser, anonymous, item, index}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
 
   const onRemove = async ({
@@ -32,7 +33,10 @@ const Comment = ({moment, anonymous, item, index}: TProps) => {
     addedAt: TTimestamp;
   }) => {
     try {
-      await removeComment({moment, comment: {detail, addedAt}});
+      await removeComment({
+        moment: {id: moment.id},
+        comment: {detail, addedAt},
+      });
     } catch (error) {
       DefaultAlert({title: 'Error', message: 'Failed to remove comment'});
     }
@@ -41,7 +45,7 @@ const Comment = ({moment, anonymous, item, index}: TProps) => {
   const onDelete = () => {
     const onPress = async () => {
       try {
-        await deleteMoment({moment});
+        await deleteMoment({moment: {id: moment.id}});
       } catch (error) {
         DefaultAlert({title: 'Error', message: 'Failed to remove comment'});
       }
@@ -68,7 +72,9 @@ const Comment = ({moment, anonymous, item, index}: TProps) => {
 
       <View style={styles.texts}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <DefaultIcon icon="crown" style={{marginRight: 5}} />
+          {createdByUser && (
+            <DefaultIcon icon="crown" style={{marginRight: 5}} />
+          )}
           <DefaultText title={name} textStyle={styles.displayNameText} />
         </View>
         <DefaultText title={item.detail} />

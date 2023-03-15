@@ -1,25 +1,25 @@
-import React, {useRef, useState} from 'react';
+import React, {useContext, useRef, useState} from 'react';
 import {
   FlatList,
+  SafeAreaView,
+  StyleSheet,
   useWindowDimensions,
   View,
   ViewabilityConfigCallbackPairs,
   ViewToken,
 } from 'react-native';
-import {TDocData} from '../../types/Firebase';
-import {TStyleView} from '../../types/Style';
-import {sortByTimestamp} from '../../utils/Array';
-import MomentsCard from './MomentsCard';
+import ModalContext from '../../contexts/Modal';
+import {TDocData, TTimestamp} from '../../types/Firebase';
+import DefaultIcon from '../defaults/DefaultIcon';
+import DefaultModal from '../defaults/DefaultModal';
+import Moments from '../screen/Moments';
 
 type TProps = {
-  style?: TStyleView;
   channel: TDocData;
-  moment: {id: string};
-  pauseOnModal?: boolean;
-  mount: boolean;
 };
 
-const ChannelCard = ({style, channel, pauseOnModal, moment, mount}: TProps) => {
+const ChannelModal = ({channel}: TProps) => {
+  const {onUpdate} = useContext(ModalContext);
   const {height, width} = useWindowDimensions();
   const [index, setIndex] = useState(0);
 
@@ -48,33 +48,25 @@ const ChannelCard = ({style, channel, pauseOnModal, moment, mount}: TProps) => {
     item,
     index: elIndex,
   }: {
-    item: {id: string}[];
+    item: {id: string; addedAt: TTimestamp}[];
     index: number;
   }) => {
-    const momentIndex = item.findIndex(({id: elId}) => elId === moment.id);
-
     if (index - 3 >= elIndex || index + 3 <= elIndex) {
       return <View style={{height, width}} />;
     }
 
-    const firstUploadDate = sortByTimestamp(item, 'addedAt', 'asc')[0].addedAt;
-
     return (
-      <View
+      <Moments
+        moments={item}
+        channel={channel}
+        mount={index - 1 <= elIndex && elIndex <= index + 1}
+        pauseOnModal={false}
+        inView={index === elIndex}
         style={{
           height,
           width,
-        }}>
-        <MomentsCard
-          moments={item}
-          momentIndex={momentIndex === -1 ? 0 : momentIndex}
-          firstUploadDate={firstUploadDate}
-          mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
-          pauseOnModal={pauseOnModal}
-          inView={index === elIndex}
-          channel={channel}
-        />
-      </View>
+        }}
+      />
     );
   };
 
@@ -89,7 +81,16 @@ const ChannelCard = ({style, channel, pauseOnModal, moment, mount}: TProps) => {
   };
 
   return (
-    <View style={style}>
+    <DefaultModal>
+      <SafeAreaView style={styles.view}>
+        <DefaultIcon
+          icon="angle-left"
+          style={styles.icon}
+          onPress={() => {
+            onUpdate(undefined);
+          }}
+        />
+      </SafeAreaView>
       <FlatList
         data={channel.groupedMoments}
         initialNumToRender={1}
@@ -104,9 +105,21 @@ const ChannelCard = ({style, channel, pauseOnModal, moment, mount}: TProps) => {
         disableIntervalMomentum
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         renderItem={renderItem}
+        style={StyleSheet.absoluteFill}
       />
-    </View>
+    </DefaultModal>
   );
 };
 
-export default ChannelCard;
+export default ChannelModal;
+
+const styles = StyleSheet.create({
+  view: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginHorizontal: 10,
+    zIndex: 100,
+  },
+  icon: {padding: 10},
+});

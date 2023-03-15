@@ -8,47 +8,56 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
+import {TDocData, TTimestamp} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
 import CommentButton from '../buttons/CommentButton';
 import LikeButton from '../buttons/LikeButton';
-import CommentHeader from '../comment/CommentHeader';
 import Comment from '../comment/Comment';
-import {TTimestamp} from '../../types/Firebase';
+import CommentHeader from '../comment/CommentHeader';
 
 type TProps = {
-  moment: {
-    id: string;
-    content: {path: string};
-    name: string;
-    createdBy: {id: string};
-  };
-  anonymous: 'off' | 'on';
-  createdByUser: boolean;
-  firstUploadDate: TTimestamp;
-  index: number;
+  moment: TDocData;
+  channel: TDocData;
   length: number;
+  index: number;
   style?: TStyleView;
+  firstUploadDate: TTimestamp;
 };
 
 const Footer = ({
   moment,
-  index,
-  firstUploadDate,
-  anonymous,
-  createdByUser,
+  channel,
   length,
+  firstUploadDate,
+  index,
+  style,
 }: TProps) => {
   const fadeAnim = useRef(new Animated.Value(150)).current;
 
   const {height} = useWindowDimensions();
 
-  const renderItem = ({item, index: elIndex}) => {
+  const createdByUser = channel.createdBy.id === moment.createdBy.id;
+
+  const renderItem = ({
+    item,
+    index: elIndex,
+  }: {
+    item: {
+      addedAt: TTimestamp;
+      user: {
+        id: string;
+        displayName: string;
+      };
+      detail: string;
+    };
+    index: number;
+  }) => {
     return (
       <Comment
         item={item}
         index={elIndex}
         moment={moment}
-        anonymous={anonymous}
+        anonymous={channel.options.anonymous}
         createdByUser={createdByUser}
       />
     );
@@ -98,7 +107,7 @@ const Footer = ({
   };
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding">
+    <KeyboardAvoidingView style={[styles.container, style]} behavior="padding">
       <Animated.FlatList
         data={[
           {
@@ -121,9 +130,9 @@ const Footer = ({
           />
         )}
       />
-      <View style={{flexDirection: 'row', paddingBottom: 24}}>
-        <LikeButton moment={moment} style={styles.button} />
-        <CommentButton moment={moment} style={{flex: 1}} />
+      <View style={styles.buttons}>
+        <LikeButton moment={moment} style={styles.like} />
+        <CommentButton moment={moment} style={styles.comment} />
       </View>
     </KeyboardAvoidingView>
   );
@@ -140,10 +149,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     zIndex: 1000,
   },
-  button: {
+  buttons: {flexDirection: 'row', paddingBottom: 24},
+  like: {
     height: 40,
     width: 50,
     padding: 10,
     marginHorizontal: 10,
   },
+  comment: {flex: 1},
 });

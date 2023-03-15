@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Image, Pressable, StyleSheet} from 'react-native';
+import {Image, Pressable, StyleSheet, View} from 'react-native';
 import {TStatus} from '../../types/Screen';
 import {TStyleView} from '../../types/Style';
 import {loadFromCache} from '../../utils/Cache';
@@ -10,6 +10,7 @@ import {
 
 import {defaultBlack} from '../defaults/DefaultColors';
 import DefaultIcon from '../defaults/DefaultIcon';
+import UserModal from '../user/UserModal';
 
 export const getThumnailPath = (url: string) => url + '_200x200';
 
@@ -17,18 +18,18 @@ export type Props = {
   user: {id: string};
   style?: TStyleView;
   imageStyle?: {height: number; width: number};
-  onPress?: () => void;
 };
 
 const UserProfileImage = ({
   style,
-  user: {id},
+  user,
   imageStyle = {height: 50, width: 50},
-  onPress,
 }: Props) => {
   const [imageUrl, setImageUrl] = useState<string>();
-
+  const [modal, setModal] = useState<'user'>();
   const [status, setStatus] = useState<TStatus>('loading');
+
+  const {id} = user;
 
   useEffect(() => {
     let isMounted = true;
@@ -60,30 +61,38 @@ const UserProfileImage = ({
     };
   }, [id]);
 
-  if (!imageUrl || status === 'error') {
-    return (
-      <DefaultIcon
-        icon="user"
-        style={[styles.icon, imageStyle]}
-        size={imageStyle.height / 3}
-        onPress={onPress}
-      />
-    );
-  }
-
   return (
-    <Pressable style={style} onPress={onPress} disabled={!onPress}>
-      {status === 'loaded' && imageUrl && (
-        <Image
-          style={[styles.image, imageStyle]}
-          source={{
-            uri: imageUrl,
+    <View>
+      {(!imageUrl || status === 'error') && (
+        <DefaultIcon
+          icon="user"
+          style={[styles.icon, imageStyle]}
+          size={imageStyle.height / 3}
+          onPress={() => {
+            console.log('modal called');
+
+            setModal('user');
           }}
-          resizeMode="cover"
-          onError={() => setStatus('error')}
         />
       )}
-    </Pressable>
+      {imageUrl && status === 'loaded' && (
+        <Pressable style={style} onPress={() => setModal('user')}>
+          {status === 'loaded' && imageUrl && (
+            <Image
+              style={[styles.image, imageStyle]}
+              source={{
+                uri: imageUrl,
+              }}
+              resizeMode="cover"
+              onError={() => setStatus('error')}
+            />
+          )}
+        </Pressable>
+      )}
+      {modal === 'user' && (
+        <UserModal user={user} onCancel={() => setModal(undefined)} />
+      )}
+    </View>
   );
 };
 

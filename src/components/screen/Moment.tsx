@@ -12,12 +12,8 @@ import DefaultVideo from '../defaults/DefaultVideo';
 import Footer from './Footer';
 
 type TProps = {
-  moment: {
-    id: string;
-    name: string;
-    content: {path: string};
-    createdBy: {id: string; displayName: string};
-  };
+  moment: TDocData;
+  channel: TDocData;
   style?: TStyleView;
   length: number;
   index: number;
@@ -25,11 +21,10 @@ type TProps = {
   pauseOnModal?: boolean;
   inView: boolean;
   blur?: boolean;
-  channel?: {id: string};
   firstUploadDate: TTimestamp;
 };
 
-const MomentTestCard = ({
+const Moment = ({
   moment,
   style,
   pauseOnModal = true,
@@ -54,10 +49,7 @@ const MomentTestCard = ({
       }
 
       const newData = doc.data();
-
-      if (newData) {
-        setData(newData);
-      }
+      setData(newData);
     };
 
     const onError = (error: Error) => {
@@ -98,24 +90,20 @@ const MomentTestCard = ({
             pauseOnModal={pauseOnModal}
             repeat
             inView={inView}
-            blur={blur}
-            channel={channel}
           />
         )}
       </View>
       {!blur && (
         <Footer
           moment={data}
+          channel={channel}
           index={index}
           length={length}
-          anonymous={channel.options.anonymous}
-          createdByUser={channel.createdBy.id === data.createdBy.id}
           firstUploadDate={firstUploadDate}
-          style={{marginHorizontal: 10}}
         />
       )}
     </View>
   );
 };
 
-export default MomentTestCard;
+export default Moment;

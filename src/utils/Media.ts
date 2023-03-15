@@ -102,7 +102,7 @@ export const takeMedia = async ({
     throw new Error('cancel');
   }
 
-  const media = asset.type?.split('/')[0];
+  const media = asset.type?.split('/')[0] as 'image' | 'video' | undefined;
 
   if (!(media && ['image', 'video'].includes(media))) {
     DefaultAlert({
@@ -116,7 +116,7 @@ export const takeMedia = async ({
     userId,
     collection: 'moments',
     id,
-    type: media as 'image' | 'video',
+    type: media,
   });
 
   return {remotePath, localPath: asset.uri, media};

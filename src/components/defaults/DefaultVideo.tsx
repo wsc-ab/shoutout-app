@@ -9,7 +9,6 @@ import {TStyleView} from '../../types/Style';
 import {loadFromCache} from '../../utils/Cache';
 
 import {getThumbnailPath} from '../../utils/Storage';
-import DefaultBlurImage from './DefaultBlurImage';
 import DefaultIcon from './DefaultIcon';
 import DefaultImage from './DefaultImage';
 import DefaultImageBackground from './DefaultImageBackground';
@@ -27,8 +26,6 @@ type TProps = {
   mount: boolean;
   pauseOnModal?: boolean;
   inView: boolean;
-  blur?: boolean;
-  channel?: {id: string};
 };
 
 const DefaultVideo = ({
@@ -46,8 +43,6 @@ const DefaultVideo = ({
   videoStyle,
   pauseOnModal = true,
   inView: parentInview,
-  blur,
-  channel,
 }: TProps) => {
   const [uri, setUri] = useState<string>();
   const [thumbPath, setThumbPath] = useState<string>();
@@ -111,12 +106,6 @@ const DefaultVideo = ({
           style={styles.reported}
         />
       </View>
-    );
-  }
-
-  if (blur && channel) {
-    return (
-      <DefaultBlurImage imageStyle={videoStyle} path={path} channel={channel} />
     );
   }
 
