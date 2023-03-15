@@ -6,11 +6,14 @@ import {TTimestamp} from '../../types/Firebase';
 import {getTimeGap} from '../../utils/Date';
 import SubmitIconButton from '../buttons/SubmitIconButton';
 import DefaultAlert from '../defaults/DefaultAlert';
+import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
 import UserProfileImage from '../images/UserProfileImage';
 
 type TProps = {
   moment: {id: string};
+  anonymous: 'off' | 'on';
+  createdByUser: boolean;
   item: {
     addedAt: TTimestamp;
     user: {id: string; displayName: string};
@@ -19,7 +22,7 @@ type TProps = {
   index: number;
 };
 
-const Comment = ({moment, item, index}: TProps) => {
+const Comment = ({moment, createdByUser, anonymous, item, index}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
 
   const onRemove = async ({
@@ -52,6 +55,8 @@ const Comment = ({moment, item, index}: TProps) => {
     });
   };
 
+  const name = anonymous === 'on' ? item.user.displayName : 'Anonymous';
+
   return (
     <View style={styles.container} key={item.detail + index}>
       <UserProfileImage
@@ -61,10 +66,10 @@ const Comment = ({moment, item, index}: TProps) => {
       />
 
       <View style={styles.texts}>
-        <DefaultText
-          title={item.user.displayName}
-          textStyle={styles.displayNameText}
-        />
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <DefaultIcon icon="crown" style={{marginRight: 5}} />
+          <DefaultText title={name} textStyle={styles.displayNameText} />
+        </View>
         <DefaultText title={item.detail} />
         <DefaultText
           title={`${getTimeGap(item.addedAt)} ago`}

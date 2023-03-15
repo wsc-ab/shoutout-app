@@ -6,6 +6,7 @@ export const createChannel = async (input: {
     name: string;
     detail: string;
     options: {
+      anonymous: 'off' | 'on';
       type: 'public' | 'private';
       mode: 'camera' | 'library' | 'both';
       ghosting: {mode: 'off' | '1' | '7' | '14'};

@@ -9,7 +9,7 @@ import {
 import {TDocData} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
 import {sortByTimestamp} from '../../utils/Array';
-import MomentCard from './MomentsCard';
+import MomentsCard from './MomentsCard';
 
 type TProps = {
   style?: TStyleView;
@@ -65,14 +65,14 @@ const ChannelCard = ({style, channel, pauseOnModal, moment, mount}: TProps) => {
           height,
           width,
         }}>
-        <MomentCard
+        <MomentsCard
           moments={item}
           momentIndex={momentIndex === -1 ? 0 : momentIndex}
           firstUploadDate={firstUploadDate}
           mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
           pauseOnModal={pauseOnModal}
           inView={index === elIndex}
-          channel={{id: channel.id}}
+          channel={channel}
         />
       </View>
     );

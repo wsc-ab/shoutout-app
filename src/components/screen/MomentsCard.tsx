@@ -1,14 +1,14 @@
-import React, { useRef, useState } from 'react';
+import React, {useRef, useState} from 'react';
 import {
   FlatList,
   useWindowDimensions,
   View,
   ViewabilityConfigCallbackPairs,
-  ViewToken
+  ViewToken,
 } from 'react-native';
 
-import { TTimestamp } from '../../types/Firebase';
-import { TStyleView } from '../../types/Style';
+import {TTimestamp} from '../../types/Firebase';
+import {TStyleView} from '../../types/Style';
 
 import MomentTestCard from './MomentCard';
 
@@ -36,6 +36,7 @@ const MomentsCard = ({
   pauseOnModal,
   firstUploadDate,
   mount,
+  channel,
   inView,
 }: TProps) => {
   const {width} = useWindowDimensions();
@@ -85,6 +86,7 @@ const MomentsCard = ({
     return (
       <MomentTestCard
         moment={item}
+        channel={channel}
         length={moments.length}
         pauseOnModal={pauseOnModal}
         firstUploadDate={firstUploadDate}

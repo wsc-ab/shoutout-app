@@ -169,32 +169,13 @@ const ChannelSummary = ({channel, style}: TProps) => {
             style={styles.tag}
             onPress={() => {
               setModal('detail');
-              setModalDetail(
-                data.options?.type === 'private'
-                  ? localization.privateModal
-                  : localization.publicModal,
-              );
             }}
           />
           {data.options.mode === 'camera' && (
-            <DefaultText
-              title={localization.camera}
-              style={styles.tag}
-              onPress={() => {
-                setModal('detail');
-                setModalDetail(localization.cameraModal);
-              }}
-            />
+            <DefaultText title={localization.camera} style={styles.tag} />
           )}
           {data.options.mode === 'library' && (
-            <DefaultText
-              title={localization.library}
-              style={styles.tag}
-              onPress={() => {
-                setModal('detail');
-                setModalDetail(localization.libraryModal);
-              }}
-            />
+            <DefaultText title={localization.library} style={styles.tag} />
           )}
 
           {['1', '7', '14'].includes(data.options.ghosting?.mode) && (
@@ -257,15 +238,32 @@ const ChannelSummary = ({channel, style}: TProps) => {
                     borderBottomLeftRadius: 10,
                     borderBottomRightRadius: 10,
                   }}>
-                  <UserProfileImage
-                    user={{
-                      id: item.createdBy.id,
-                    }}
-                    imageStyle={{height: 30, width: 30}}
-                  />
+                  <View>
+                    {data.options.anonymous === 'on' ? (
+                      <DefaultIcon
+                        icon="user"
+                        size={12}
+                        style={{
+                          height: 30,
+                          width: 30,
+                        }}
+                      />
+                    ) : (
+                      <UserProfileImage
+                        user={{
+                          id: item.createdBy.id,
+                        }}
+                        imageStyle={{height: 30, width: 30}}
+                      />
+                    )}
+                  </View>
                   <View style={{marginLeft: 5, flex: 1}}>
                     <DefaultText
-                      title={item.createdBy.displayName}
+                      title={
+                        data.options.anonymous === 'on'
+                          ? item.createdBy.displayName
+                          : 'Anonymous'
+                      }
                       numberOfLines={1}
                       textStyle={{fontWeight: 'bold'}}
                     />

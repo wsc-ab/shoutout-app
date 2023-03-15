@@ -37,6 +37,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
     mode: text({required: true}),
     ghosting: text({required: true}),
     spam: text({required: true}),
+    anonymous: text({required: true}),
     notificationHours: number({min: 0, max: 23}),
   }).required();
 
@@ -53,6 +54,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
       mode: 'both',
       ghosting: '7',
       spam: '1',
+      anonymous: 'off',
       notificationHours: 'off',
     },
   });
@@ -64,6 +66,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
     mode,
     ghosting,
     spam,
+    anonymous,
     notificationHours,
   }: {
     name: string;
@@ -72,6 +75,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
     mode: 'camera' | 'library' | 'both';
     ghosting: 'off' | '1' | '7' | '14';
     spam: 'off' | '1' | '3' | '6' | '12' | '24';
+    anonymous: 'off' | 'on';
     notificationHours: string | undefined;
   }) => {
     try {
@@ -98,6 +102,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
           options: {
             type,
             mode,
+            anonymous,
             ghosting: {mode: ghosting},
             spam,
             notification,
@@ -155,6 +160,13 @@ const CreateGeneralChannelModal = ({}: TProps) => {
             name="mode"
             {...localization.mode}
             errors={errors.mode}
+            style={styles.textInput}
+          />
+          <ControllerOption
+            control={control}
+            name="anonymous"
+            {...localization.anonymous}
+            errors={errors.anonymous}
             style={styles.textInput}
           />
           <ControllerOption

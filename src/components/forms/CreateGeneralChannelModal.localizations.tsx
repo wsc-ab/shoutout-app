@@ -11,6 +11,15 @@ export const localizations = {
         {value: 'private', title: 'Private'},
       ],
     },
+    anonymous: {
+      title: 'Anonymous',
+      detail:
+        "If turned on all user IDs will be hidden. It can't be changed once a channel has been created.",
+      options: [
+        {value: 'off', title: 'Off'},
+        {value: 'on', title: 'On'},
+      ],
+    },
     mode: {
       title: 'Mode',
       detail:
@@ -70,6 +79,15 @@ export const localizations = {
       options: [
         {value: 'public', title: '공개'},
         {value: 'private', title: '비공개'},
+      ],
+    },
+    anonymous: {
+      title: '익명',
+      detail:
+        '익명 모드 사용시 모든 유저 아이디가 보이지 않습니다. 채널 생성 후 수정할 수 없습니다.',
+      options: [
+        {value: 'off', title: 'Off'},
+        {value: 'on', title: 'On'},
       ],
     },
     mode: {

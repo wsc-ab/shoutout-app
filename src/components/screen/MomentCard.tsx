@@ -108,6 +108,8 @@ const MomentTestCard = ({
           moment={data}
           index={index}
           length={length}
+          anonymous={channel.options.anonymous}
+          createdByUser={channel.createdBy.id === data.createdBy.id}
           firstUploadDate={firstUploadDate}
           style={{marginHorizontal: 10}}
         />

@@ -8,6 +8,7 @@ import {
   faAngleUp,
   faCircle,
   faComment,
+  faCrown,
   faEdit,
   faExclamation,
   faFaceSmile,
@@ -67,4 +68,5 @@ library.add(
   faAngleDown,
   faInfoCircle,
   faEdit,
+  faCrown,
 );

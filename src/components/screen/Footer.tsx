@@ -22,19 +22,36 @@ type TProps = {
     name: string;
     createdBy: {id: string};
   };
+  anonymous: 'off' | 'on';
+  createdByUser: boolean;
   firstUploadDate: TTimestamp;
   index: number;
   length: number;
   style?: TStyleView;
 };
 
-const Footer = ({moment, index, firstUploadDate, length}: TProps) => {
+const Footer = ({
+  moment,
+  index,
+  firstUploadDate,
+  anonymous,
+  createdByUser,
+  length,
+}: TProps) => {
   const fadeAnim = useRef(new Animated.Value(150)).current;
 
   const {height} = useWindowDimensions();
 
   const renderItem = ({item, index: elIndex}) => {
-    return <Comment item={item} index={elIndex} moment={moment} />;
+    return (
+      <Comment
+        item={item}
+        index={elIndex}
+        moment={moment}
+        anonymous={anonymous}
+        createdByUser={createdByUser}
+      />
+    );
   };
 
   const expandList = () => {
