@@ -177,6 +177,9 @@ const ChannelSummary = ({channel, style}: TProps) => {
           {data.options.mode === 'library' && (
             <DefaultText title={localization.library} style={styles.tag} />
           )}
+          {data.options.anonymous === 'on' && (
+            <DefaultText title={localization.anonymous} style={styles.tag} />
+          )}
 
           {['1', '7', '14'].includes(data.options.ghosting?.mode) && (
             <DefaultText
@@ -239,16 +242,7 @@ const ChannelSummary = ({channel, style}: TProps) => {
                     borderBottomRightRadius: 10,
                   }}>
                   <View>
-                    {data.options.anonymous === 'on' ? (
-                      <DefaultIcon
-                        icon="user"
-                        size={12}
-                        style={{
-                          height: 30,
-                          width: 30,
-                        }}
-                      />
-                    ) : (
+                    {data.options.anonymous === 'off' && (
                       <UserProfileImage
                         user={{
                           id: item.createdBy.id,
@@ -261,8 +255,8 @@ const ChannelSummary = ({channel, style}: TProps) => {
                     <DefaultText
                       title={
                         data.options.anonymous === 'on'
-                          ? item.createdBy.displayName
-                          : 'Anonymous'
+                          ? 'Anonymous'
+                          : item.createdBy.displayName
                       }
                       numberOfLines={1}
                       textStyle={{fontWeight: 'bold'}}

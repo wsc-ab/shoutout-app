@@ -10,7 +10,7 @@ export const localizations = {
     video: 'Video',
     imageVideo: 'Image & Video',
     camera: 'Camera',
-
+    anonymous: 'Anonymous',
     library: 'Library',
 
     ghosting: 'Ghosting',
@@ -39,9 +39,8 @@ export const localizations = {
     video: '비디오',
     imageVideo: '이미지 & 비디오',
     camera: '카메라',
-
     library: '라이브러리',
-
+    anonymous: '익명',
     ghosting: '눈팅',
     spam: '도배',
     nocontents: '아직 콘텐츠가 없습니다.',

@@ -147,6 +147,7 @@ const CreateGeneralChannelModal = ({}: TProps) => {
             name="detail"
             {...localization.detail}
             errors={errors.detail}
+            style={styles.textInput}
           />
           <ControllerOption
             control={control}
