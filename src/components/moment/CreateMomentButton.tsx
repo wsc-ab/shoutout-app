@@ -101,8 +101,6 @@ const CreateMomentButton = ({channel, color = 'white', style}: TProps) => {
     type: 'cancel',
   });
 
-  console.log(modal, 'modal');
-
   return (
     <Pressable
       style={[styles.container, style]}

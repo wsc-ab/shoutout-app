@@ -1,8 +1,9 @@
-import React, {useContext} from 'react';
+import React, {useCallback, useContext, useEffect} from 'react';
 import {FlatList, Pressable, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
 import LanguageContext from '../../contexts/Language';
 import ModalContext from '../../contexts/Modal';
+import NotificationContext from '../../contexts/Notification';
 import {TDocData} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
 import {groupArrayByUser} from '../../utils/Array';
@@ -23,33 +24,57 @@ type TProps = {
 
 const ChannelMoments = ({channel, style}: TProps) => {
   const {language} = useContext(LanguageContext);
+  const {notification, onReset} = useContext(NotificationContext);
   const localization = localizations[language];
   const {authUserData} = useContext(AuthUserContext);
   const ghosting = checkGhosting({authUser: authUserData, channel});
   const {onUpdate} = useContext(ModalContext);
 
-  const onPress = ({
-    user: {id: userId},
-    moment,
-  }: {
-    user: {id: string};
-    moment: {id: string};
-  }) => {
-    const groupedMoments = groupArrayByUser({
-      items: channel.moments.items,
-    });
+  const onPress = useCallback(
+    ({
+      user: {id: userId},
+      moment,
+    }: {
+      user: {id: string};
+      moment: {id: string};
+    }) => {
+      const groupedMoments = groupArrayByUser({
+        items: channel.moments.items,
+      });
 
-    const userIndex = groupedMoments.findIndex(
-      item => item[0].createdBy.id === userId,
-    );
+      const userIndex = groupedMoments.findIndex(
+        item => item[0].createdBy.id === userId,
+      );
 
-    groupedMoments.unshift(groupedMoments.splice(userIndex, 1)[0]);
+      groupedMoments.unshift(groupedMoments.splice(userIndex, 1)[0]);
 
-    onUpdate({
-      target: 'channel',
-      data: {channel: {...channel, groupedMoments}, moment},
-    });
-  };
+      console.log('called');
+
+      onUpdate({
+        target: 'channel',
+        data: {channel: {...channel, groupedMoments}, moment},
+      });
+    },
+    [channel, onUpdate],
+  );
+
+  useEffect(() => {
+    if (
+      notification?.data?.collection === 'channels' &&
+      notification?.data?.id === channel.id &&
+      notification?.data?.momentId
+    ) {
+      const createdById = channel.moments.items.filter(
+        ({id: elId}: {id: string}) => elId === notification?.data?.momentId,
+      )[0].createdBy.id;
+
+      onPress({
+        user: {id: createdById},
+        moment: {id: notification?.data?.momentId as string},
+      });
+      onReset();
+    }
+  }, [channel, notification, onPress, onReset]);
 
   return (
     <FlatList

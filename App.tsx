@@ -10,12 +10,13 @@
 
 import React, {useEffect, useState} from 'react';
 import {StatusBar, StyleSheet, View} from 'react-native';
-import Permission from './src/components/notification/Permission';
 import Home from './src/components/screen/Home';
 import {AuthUserProvider} from './src/contexts/AuthUser';
 import {CacheProvider} from './src/contexts/Cache';
 import {LanguageProvider} from './src/contexts/Language';
+import {LinkProvider} from './src/contexts/Link';
 import {ModalProvider} from './src/contexts/Modal';
+import {NotificationProvider} from './src/contexts/Notification';
 import {PopupProvider} from './src/contexts/Popup';
 import {ServerProvider} from './src/contexts/Server';
 import {TBundleId} from './src/types/Data';
@@ -55,8 +56,11 @@ const App = ({bundleId}: TProps) => {
             <AuthUserProvider bundleId={bundleId}>
               <ModalProvider>
                 <PopupProvider>
-                  <Permission />
-                  <Home />
+                  <NotificationProvider>
+                    <LinkProvider>
+                      <Home />
+                    </LinkProvider>
+                  </NotificationProvider>
                 </PopupProvider>
               </ModalProvider>
             </AuthUserProvider>

@@ -67,11 +67,7 @@ const PopupProvider = ({children}: TProps) => {
   }, [modal, popups]);
 
   const onPress = (popup: TPopup) => {
-    console.log('called');
-
     onUpdate({target: popup.target, data: popup.data});
-
-    console.log({target: popup.target, data: popup.data});
 
     shiftPopups();
   };
