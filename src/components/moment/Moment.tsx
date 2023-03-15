@@ -9,7 +9,7 @@ import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultImage from '../defaults/DefaultImage';
 
 import DefaultVideo from '../defaults/DefaultVideo';
-import Footer from './Footer';
+import MomentFooter from './MomentFooter';
 
 type TProps = {
   moment: TDocData;
@@ -18,20 +18,15 @@ type TProps = {
   length: number;
   index: number;
   mount: boolean;
-  pauseOnModal?: boolean;
   inView: boolean;
-  blur?: boolean;
   firstUploadDate: TTimestamp;
 };
 
 const Moment = ({
   moment,
-  style,
-  pauseOnModal = true,
   mount,
   index,
   inView,
-  blur,
   channel,
   length,
   firstUploadDate,
@@ -72,36 +67,32 @@ const Moment = ({
   }
 
   return (
-    <View style={style}>
-      <View style={{height, width}}>
-        {data.content.media === 'image' && (
-          <DefaultImage
-            moment={{id: data.id}}
-            image={data.content.path}
-            imageStyle={{height, width}}
-          />
-        )}
-
-        {data.content.media === 'video' && (
-          <DefaultVideo
-            moment={{id: data.id, content: {path: data.content.path}}}
-            videoStyle={{height, width}}
-            mount={mount}
-            pauseOnModal={pauseOnModal}
-            repeat
-            inView={inView}
-          />
-        )}
-      </View>
-      {!blur && (
-        <Footer
-          moment={data}
-          channel={channel}
-          index={index}
-          length={length}
-          firstUploadDate={firstUploadDate}
+    <View style={{height, width}}>
+      {data.content.media === 'image' && (
+        <DefaultImage
+          moment={{id: data.id}}
+          image={data.content.path}
+          imageStyle={{height, width}}
         />
       )}
+
+      {data.content.media === 'video' && (
+        <DefaultVideo
+          moment={{id: data.id, content: {path: data.content.path}}}
+          videoStyle={{height, width}}
+          mount={mount}
+          repeat
+          inView={inView}
+        />
+      )}
+
+      <MomentFooter
+        moment={data}
+        channel={channel}
+        index={index}
+        length={length}
+        firstUploadDate={firstUploadDate}
+      />
     </View>
   );
 };

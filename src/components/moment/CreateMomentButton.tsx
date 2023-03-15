@@ -37,6 +37,7 @@ const CreateMomentButton = ({channel, color = 'white', style}: TProps) => {
   }>();
 
   const onAdd = async (mode: 'photo' | 'video' | 'library') => {
+    setModal(undefined);
     setSubmitting(true);
 
     const permitted = await checkLocationPermission();
@@ -99,6 +100,8 @@ const CreateMomentButton = ({channel, color = 'white', style}: TProps) => {
     title: localization.cancel,
     type: 'cancel',
   });
+
+  console.log(modal, 'modal');
 
   return (
     <Pressable

@@ -1,6 +1,7 @@
 import React, {useRef, useState} from 'react';
 import {
   FlatList,
+  StyleSheet,
   useWindowDimensions,
   View,
   ViewabilityConfigCallbackPairs,
@@ -10,7 +11,6 @@ import {
 import {TDocData, TTimestamp} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
 import {sortByTimestamp} from '../../utils/Array';
-
 import Moment from './Moment';
 
 type TProps = {
@@ -20,19 +20,11 @@ type TProps = {
   }[];
   channel: TDocData;
   mount: boolean;
-  pauseOnModal?: boolean;
   inView: boolean;
   style?: TStyleView;
 };
 
-const Moments = ({
-  moments,
-  style,
-  pauseOnModal,
-  mount,
-  channel,
-  inView,
-}: TProps) => {
+const Moments = ({moments, style, mount, channel, inView}: TProps) => {
   const {width} = useWindowDimensions();
 
   const ref = useRef<FlatList>(null);
@@ -80,11 +72,11 @@ const Moments = ({
         moment={item}
         channel={channel}
         length={moments.length}
-        pauseOnModal={pauseOnModal}
         firstUploadDate={firstUploadDate}
         index={index}
         mount={index - 1 <= elIndex && elIndex <= index + 1 && mount}
         inView={inView && index === elIndex}
+        style={StyleSheet.absoluteFill}
       />
     );
   };
@@ -109,6 +101,7 @@ const Moments = ({
         }}
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         renderItem={renderItem}
+        style={StyleSheet.absoluteFill}
       />
     </View>
   );

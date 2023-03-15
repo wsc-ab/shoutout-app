@@ -32,6 +32,7 @@ const ChannelMoments = ({channel, style}: TProps) => {
     const groupedMoments = groupArrayByUser({
       items: channel.moments.items,
     });
+
     const userIndex = groupedMoments.findIndex(
       item => item[0].createdBy.id === userId,
     );

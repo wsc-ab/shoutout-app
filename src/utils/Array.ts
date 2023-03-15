@@ -5,7 +5,8 @@ export const sortByTimestamp = <A extends TObject>(
   field: string,
   order?: 'asc' | 'desc',
 ) => {
-  return items.sort((a: TObject, b: TObject) => {
+  const copy = [...items];
+  return copy.sort((a: TObject, b: TObject) => {
     if (order === 'desc') {
       return b[field].seconds - a[field].seconds;
     }

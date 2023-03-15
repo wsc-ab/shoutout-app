@@ -12,7 +12,7 @@ import ModalContext from '../../contexts/Modal';
 import {TDocData, TTimestamp} from '../../types/Firebase';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultModal from '../defaults/DefaultModal';
-import Moments from '../screen/Moments';
+import Moments from '../moment/Moments';
 
 type TProps = {
   channel: TDocData;
@@ -60,7 +60,6 @@ const ChannelModal = ({channel}: TProps) => {
         moments={item}
         channel={channel}
         mount={index - 1 <= elIndex && elIndex <= index + 1}
-        pauseOnModal={false}
         inView={index === elIndex}
         style={{
           height,

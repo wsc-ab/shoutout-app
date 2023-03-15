@@ -2,7 +2,6 @@ import React, {useContext, useEffect, useState} from 'react';
 import {ActivityIndicator, Pressable, StyleSheet, View} from 'react-native';
 import Video from 'react-native-video';
 import AuthUserContext from '../../contexts/AuthUser';
-import ModalContext from '../../contexts/Modal';
 import {TStatus} from '../../types/Screen';
 
 import {TStyleView} from '../../types/Style';
@@ -24,7 +23,6 @@ type TProps = {
   disabled?: boolean;
   repeat?: boolean;
   mount: boolean;
-  pauseOnModal?: boolean;
   inView: boolean;
 };
 
@@ -41,27 +39,18 @@ const DefaultVideo = ({
   onLoaded,
   mount,
   videoStyle,
-  pauseOnModal = true,
-  inView: parentInview,
+  inView,
 }: TProps) => {
   const [uri, setUri] = useState<string>();
   const [thumbPath, setThumbPath] = useState<string>();
-  const [userPaused, setUserPaused] = useState(false);
-  const [inView, setInView] = useState(!parentInview);
+  const [paused, setPaused] = useState(false);
   const [buffer, setBuffer] = useState(false);
   const {reportedContents} = useContext(AuthUserContext);
-
-  const {modal} = useContext(ModalContext);
   const [status, setStatus] = useState<TStatus>('loading');
 
   useEffect(() => {
-    if (pauseOnModal) {
-      setInView(modal ? false : parentInview);
-      setUserPaused(false);
-    } else {
-      setInView(parentInview);
-    }
-  }, [modal, pauseOnModal, parentInview]);
+    setPaused(!inView);
+  }, [inView]);
 
   useEffect(() => {
     const load = async () => {
@@ -91,8 +80,6 @@ const DefaultVideo = ({
 
   const isReported = reportedContents.includes(id);
 
-  const paused = !inView || userPaused;
-
   if (isReported) {
     return (
       <View>
@@ -117,7 +104,7 @@ const DefaultVideo = ({
     <Pressable
       style={style}
       disabled={disabled}
-      onPress={onPress ? onPress : () => setUserPaused(pre => !pre)}>
+      onPress={onPress ? onPress : () => setPaused(pre => !pre)}>
       <DefaultImageBackground
         imageStyle={videoStyle}
         image={getThumbnailPath(path, 'video')}>
@@ -156,7 +143,7 @@ const DefaultVideo = ({
               repeat={repeat}
               onEnd={onEnd}
             />
-            {userPaused && (
+            {paused && (
               <DefaultIcon icon="play" style={styles.play} size={20} />
             )}
             {!paused && buffer && (
