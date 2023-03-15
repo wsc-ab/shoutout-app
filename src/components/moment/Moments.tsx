@@ -18,13 +18,21 @@ type TProps = {
     id: string;
     addedAt: TTimestamp;
   }[];
+  initialScrollIndex?: number;
   channel: TDocData;
   mount: boolean;
   inView: boolean;
   style?: TStyleView;
 };
 
-const Moments = ({moments, style, mount, channel, inView}: TProps) => {
+const Moments = ({
+  moments,
+  style,
+  initialScrollIndex,
+  mount,
+  channel,
+  inView,
+}: TProps) => {
   const {width} = useWindowDimensions();
 
   const ref = useRef<FlatList>(null);
@@ -91,14 +99,13 @@ const Moments = ({moments, style, mount, channel, inView}: TProps) => {
         maxToRenderPerBatch={1}
         horizontal
         snapToInterval={width}
+        initialScrollIndex={initialScrollIndex}
         showsHorizontalScrollIndicator={false}
         snapToAlignment={'start'}
         decelerationRate="fast"
         getItemLayout={getItemLayout}
         disableIntervalMomentum
-        keyExtractor={item => {
-          return item.id;
-        }}
+        keyExtractor={item => item.id}
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         renderItem={renderItem}
         style={StyleSheet.absoluteFill}

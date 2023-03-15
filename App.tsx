@@ -10,6 +10,7 @@
 
 import React, {useEffect, useState} from 'react';
 import {StatusBar, StyleSheet, View} from 'react-native';
+import Permission from './src/components/notification/Permission';
 import Home from './src/components/screen/Home';
 import {AuthUserProvider} from './src/contexts/AuthUser';
 import {CacheProvider} from './src/contexts/Cache';
@@ -54,6 +55,7 @@ const App = ({bundleId}: TProps) => {
             <AuthUserProvider bundleId={bundleId}>
               <ModalProvider>
                 <PopupProvider>
+                  <Permission />
                   <Home />
                 </PopupProvider>
               </ModalProvider>

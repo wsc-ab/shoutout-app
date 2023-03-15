@@ -1,4 +1,5 @@
-import React, {useContext, useRef, useState} from 'react';
+import firestore from '@react-native-firebase/firestore';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   FlatList,
   SafeAreaView,
@@ -8,19 +9,63 @@ import {
   ViewabilityConfigCallbackPairs,
   ViewToken,
 } from 'react-native';
-import ModalContext from '../../contexts/Modal';
 import {TDocData, TTimestamp} from '../../types/Firebase';
+import {TStatus} from '../../types/Screen';
+import {groupArrayByUser} from '../../utils/Array';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultModal from '../defaults/DefaultModal';
 import Moments from '../moment/Moments';
 
 type TProps = {
-  channel: TDocData;
+  channel: {id: string};
   moment?: {id: string};
+  onCancel: () => void;
 };
 
-const ChannelModal = ({channel, moment}: TProps) => {
-  const {onUpdate} = useContext(ModalContext);
+const ChannelIdModal = ({channel, moment, onCancel}: TProps) => {
+  const [data, setData] = useState<TDocData>();
+
+  const [status, setStatus] = useState<TStatus>('loading');
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const newData = (
+          await firestore().collection('channels').doc(channel.id).get()
+        ).data();
+
+        if (newData) {
+          const groupedMoments = groupArrayByUser({
+            items: newData.moments.items,
+          });
+
+          if (moment) {
+            const createdById = newData.moments.items.filter(
+              ({id: elId}: {id: string}) => elId === moment.id,
+            )[0].createdBy.id;
+
+            const userIndex = moment
+              ? groupedMoments.findIndex(
+                  item => item[0].createdBy.id === createdById,
+                )
+              : -1;
+
+            groupedMoments.unshift(groupedMoments.splice(userIndex, 1)[0]);
+          }
+
+          setData({...newData, groupedMoments});
+          setStatus('loaded');
+        }
+      } catch (error) {
+        setStatus('error');
+      }
+    };
+
+    if (status === 'loading') {
+      load();
+    }
+  }, [channel.id, moment, status]);
+
   const {height, width} = useWindowDimensions();
   const [index, setIndex] = useState(0);
 
@@ -44,6 +89,9 @@ const ChannelModal = ({channel, moment}: TProps) => {
       },
     ],
   );
+  if (!data) {
+    return null;
+  }
 
   const renderItem = ({
     item,
@@ -63,7 +111,7 @@ const ChannelModal = ({channel, moment}: TProps) => {
     return (
       <Moments
         moments={item}
-        channel={channel}
+        channel={data}
         initialScrollIndex={initialScrollIndex}
         mount={index - 1 <= elIndex && elIndex <= index + 1}
         inView={index === elIndex}
@@ -88,16 +136,10 @@ const ChannelModal = ({channel, moment}: TProps) => {
   return (
     <DefaultModal>
       <SafeAreaView style={styles.view}>
-        <DefaultIcon
-          icon="angle-left"
-          style={styles.icon}
-          onPress={() => {
-            onUpdate(undefined);
-          }}
-        />
+        <DefaultIcon icon="angle-left" style={styles.icon} onPress={onCancel} />
       </SafeAreaView>
       <FlatList
-        data={channel.groupedMoments}
+        data={data.groupedMoments}
         initialNumToRender={1}
         windowSize={3}
         maxToRenderPerBatch={1}
@@ -116,7 +158,7 @@ const ChannelModal = ({channel, moment}: TProps) => {
   );
 };
 
-export default ChannelModal;
+export default ChannelIdModal;
 
 const styles = StyleSheet.create({
   view: {

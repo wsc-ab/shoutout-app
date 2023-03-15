@@ -5,33 +5,37 @@ import messaging, {
 import {useCallback, useContext, useEffect} from 'react';
 import ModalContext from '../../contexts/Modal';
 import PopupContext from '../../contexts/Popup';
+import {TObject} from '../../types/Firebase';
 
 type TProps = {isPermitted: boolean};
 
 const Notifications = ({isPermitted}: TProps) => {
-  const {onUpdate} = useContext(ModalContext);
   const {addPopup} = useContext(PopupContext);
+  const {onUpdate} = useContext(ModalContext);
 
   const openModal = useCallback(
     (remoteMessage: EventDetail['notification']) => {
-      if (remoteMessage?.data?.collection === 'moments') {
-        onUpdate({
-          target: 'moments',
-          data: {
-            moments: [{id: remoteMessage?.data?.id}],
-            contentPath: remoteMessage?.data?.path,
-          },
-        });
-      } else if (remoteMessage?.data?.collection === 'rooms') {
-        return;
-      } else if (remoteMessage?.data?.collection) {
-        onUpdate({
-          target: remoteMessage?.data?.collection.slice(0, -1),
-          data: {
-            id: remoteMessage?.data?.id,
-            contentPath: remoteMessage?.data?.path,
-          },
-        });
+      const id = remoteMessage?.data?.id as string | undefined;
+      const collection = remoteMessage?.data?.collection as string | undefined;
+      switch (collection) {
+        case 'users':
+          if (id) {
+            onUpdate({target: 'user', data: {user: {id}}});
+          }
+          break;
+
+        case 'channels':
+          const momentId = remoteMessage?.data?.momentId as string | undefined;
+          if (id) {
+            onUpdate({
+              target: 'channelId',
+              data: {channel: {id}, moment: {id: momentId}},
+            });
+          }
+          break;
+
+        default:
+          break;
       }
     },
     [onUpdate],
@@ -53,32 +57,51 @@ const Notifications = ({isPermitted}: TProps) => {
     const onMessageHandler = async (
       remoteMessage: FirebaseMessagingTypes.RemoteMessage,
     ) => {
-      const {notification, data} = remoteMessage;
+      const notification = remoteMessage?.notification as TObject | undefined;
+      const messageData = remoteMessage?.data as TObject | undefined;
 
-      if (notification) {
-        if (data.collection === 'moments') {
-          addPopup({
+      if (!(notification && messageData)) {
+        return;
+      }
+
+      let popup;
+
+      switch (messageData.collection) {
+        case 'channels':
+          popup = {
             title: notification.title,
             body: notification.body,
-            target: 'moments',
-            image: data.fcm_options.image,
+            target: 'channelId',
+            image: messageData.fcm_options.image,
             data: {
-              moments: [{id: data.id}],
-              contentPath: data.path as string | undefined,
+              channel: {
+                id: messageData.id,
+              },
+              momentId: messageData.momentId,
             },
-          });
-        } else if (data.collection) {
-          addPopup({
+          };
+          break;
+
+        case 'users':
+          popup = {
             title: notification.title,
             body: notification.body,
-            target: (data.collection as string).slice(0, -1),
-            image: data.fcm_options.image,
+            target: 'user',
+            image: messageData.fcm_options.image,
             data: {
-              id: data.id as string | undefined,
-              path: data.path as string | undefined,
+              user: {
+                id: messageData.id,
+              },
             },
-          });
-        }
+          };
+          break;
+
+        default:
+          break;
+      }
+
+      if (popup) {
+        addPopup(popup);
       }
     };
     const unsubscribe = messaging().onMessage(onMessageHandler);

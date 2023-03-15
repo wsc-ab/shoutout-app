@@ -3,7 +3,6 @@ import {AppState, StyleSheet, View} from 'react-native';
 
 import notifee from '@notifee/react-native';
 import AuthUserContext from '../../contexts/AuthUser';
-import Permission from '../notification/Permission';
 
 import Channels from '../channel/Channels';
 import Header from './Header';
@@ -60,7 +59,6 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
-      <Permission />
       <Header
         onChannels={() => setTab('channels')}
         onGlobal={() => setTab('globe')}

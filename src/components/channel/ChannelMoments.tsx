@@ -28,7 +28,13 @@ const ChannelMoments = ({channel, style}: TProps) => {
   const ghosting = checkGhosting({authUser: authUserData, channel});
   const {onUpdate} = useContext(ModalContext);
 
-  const onPress = ({user: {id: userId}}: {user: {id: string}}) => {
+  const onPress = ({
+    user: {id: userId},
+    moment,
+  }: {
+    user: {id: string};
+    moment: {id: string};
+  }) => {
     const groupedMoments = groupArrayByUser({
       items: channel.moments.items,
     });
@@ -41,7 +47,7 @@ const ChannelMoments = ({channel, style}: TProps) => {
 
     onUpdate({
       target: 'channel',
-      data: {channel: {...channel, groupedMoments}},
+      data: {channel: {...channel, groupedMoments}, moment},
     });
   };
 
@@ -61,6 +67,7 @@ const ChannelMoments = ({channel, style}: TProps) => {
                 }
                 onPress({
                   user: {id: item.createdBy.id},
+                  moment: {id: item.id},
                 });
               }}>
               <DefaultImage
