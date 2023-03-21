@@ -13,10 +13,6 @@ export const localizations = {
         icon: 'square-plus',
       },
       {
-        title: ['To view trending moments!'],
-        icon: 'globe',
-      },
-      {
         title: ['To watch connected moments'],
         icon: 'hand-point-left',
       },
@@ -42,10 +38,6 @@ export const localizations = {
       {
         title: ['모멘트를 공유하는 버튼!'],
         icon: 'square-plus',
-      },
-      {
-        title: ['인기 모멘트를 구경하는 곳!'],
-        icon: 'globe',
       },
       {
         title: ['연결된 모멘트를 보려면'],

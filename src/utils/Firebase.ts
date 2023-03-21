@@ -11,7 +11,7 @@ export const initFirebase = (useEmulator: boolean) => {
   const region = 'us-central1';
 
   // firestore setting that works for both ios and android simulators
-  if (false) {
+  if (useEmulator) {
     console.log('using firebase emulator');
 
     const ip = 'localhost';

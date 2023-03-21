@@ -41,7 +41,7 @@ const PhoneForm = ({onCancel, onSuccess, submitting}: TProps) => {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      countryCode: 'US' as CountryCode,
+      countryCode: (language === 'ko' ? 'KR' : 'US') as CountryCode,
       phone: '',
     },
   });

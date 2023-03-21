@@ -31,8 +31,8 @@ type TProps = {
 };
 
 const App = ({bundleId}: TProps) => {
-  // const useEmulator = process.env.NODE_ENV !== 'production';
-  const useEmulator = false;
+  const useEmulator = process.env.NODE_ENV !== 'production';
+
   const [status, setStatus] = useState<TStatus>('loading');
 
   useEffect(() => {
