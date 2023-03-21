@@ -86,8 +86,8 @@ export const localizations = {
       detail:
         '익명 모드 사용시 모든 유저 아이디가 보이지 않습니다. 채널 생성 후 수정할 수 없습니다.',
       options: [
-        {value: 'off', title: 'Off'},
-        {value: 'on', title: 'On'},
+        {value: 'off', title: '끄기'},
+        {value: 'on', title: '켜기'},
       ],
     },
     mode: {
