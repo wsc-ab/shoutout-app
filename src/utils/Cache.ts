@@ -14,6 +14,7 @@ export const loadFromCache = async ({remotePath}: {remotePath: string}) => {
   }
 
   // 3. return local path
+  console.log(localPath, 'localPath');
 
   return `file://${localPath}`;
 };
@@ -60,7 +61,14 @@ export const saveCache = async ({remotePath}: {remotePath: string}) => {
     const metaData = await storageRef.getMetadata();
     const ext = metaData.contentType!.split('/')[1];
     const size = metaData.size;
-    const localPath = `${RNFS.CachesDirectoryPath}/${createMockId(5)}.${ext}`;
+
+    const cacheFolder = `${RNFS.CachesDirectoryPath}/firebase`;
+
+    if (!(await RNFS.exists(cacheFolder))) {
+      await RNFS.mkdir(RNFS.CachesDirectoryPath + '/firebase');
+    }
+
+    const localPath = `${cacheFolder}/${createMockId(10)}.${ext}`;
 
     const downloadUrl = await storageRef.getDownloadURL();
     await RNFS.downloadFile({fromUrl: downloadUrl, toFile: localPath}).promise;
@@ -69,6 +77,8 @@ export const saveCache = async ({remotePath}: {remotePath: string}) => {
 
     return localPath;
   } catch (error) {
+    console.log(error, 'failed to sve');
+
     throw new Error('failed to save cache');
   }
 };
@@ -129,14 +139,16 @@ export const clearCache = async () => {
       }
     }
 
-    await RNFS.unlink(RNFS.CachesDirectoryPath);
-    await RNFS.mkdir(RNFS.CachesDirectoryPath);
+    await RNFS.unlink(RNFS.CachesDirectoryPath + '/firebase');
+    await RNFS.mkdir(RNFS.CachesDirectoryPath + '/firebase');
     const now = Date.now();
     await saveToAS({
       key: 'lastCacheClean',
       data: JSON.stringify({cleanedAt: now}),
     });
   } catch (error) {
+    console.log(error, 'e');
+
     throw new Error('failed to clear cache');
   }
 };

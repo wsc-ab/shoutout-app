@@ -48,9 +48,12 @@ const DefaultImage = ({
 
       try {
         const localPath = await loadFromCache({remotePath: image});
+        console.log(localPath, 'localPath');
 
         setImageUrl(localPath);
       } catch (e) {
+        console.log(e, 'e');
+
         setStatus('error');
       } finally {
         isMounted && setStatus('loaded');

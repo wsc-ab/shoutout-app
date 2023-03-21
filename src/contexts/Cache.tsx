@@ -56,6 +56,8 @@ const CacheProvider = ({children}: TProps) => {
       await clearCache();
       setStatus('loaded');
     } catch (error) {
+      console.log(error, 'e');
+
       DefaultAlert({title: 'Error', message: 'Failed to clear cache.'});
       setStatus('error');
     }
