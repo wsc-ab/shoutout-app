@@ -1,7 +1,8 @@
 import {yupResolver} from '@hookform/resolvers/yup';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {object} from 'yup';
+import LanguageContext from '../../contexts/Language';
 
 import {createMoment} from '../../functions/Moment';
 import {getLatLng} from '../../utils/Location';
@@ -14,6 +15,7 @@ import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultKeyboardAwareScrollView from '../defaults/DefaultKeyboardAwareScrollView';
 import DefaultModal from '../defaults/DefaultModal';
+import {localizations} from './CreateMomentForm.localizations';
 
 type TProps = {
   remotePath: string;
@@ -39,6 +41,8 @@ const CreateMomentForm = ({
   onSuccess,
 }: TProps) => {
   const {text} = defaultSchema();
+  const {language} = useContext(LanguageContext);
+  const localization = localizations[language];
   const [submitting, setSubmitting] = useState(false);
 
   const schema = object({
@@ -98,7 +102,7 @@ const CreateMomentForm = ({
   return (
     <DefaultModal>
       <DefaultForm
-        title={'Moment'}
+        title={localization.title}
         left={{onPress: onCancel}}
         right={{
           onPress: handleSubmit(onSubmit),
@@ -108,8 +112,7 @@ const CreateMomentForm = ({
           <ControllerText
             control={control}
             name="name"
-            title="Name"
-            detail="Set the name of the moment."
+            {...localization.name}
             errors={errors.name}
           />
         </DefaultKeyboardAwareScrollView>
