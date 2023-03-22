@@ -89,14 +89,20 @@ const ChannelMoments = ({channel, style}: TProps) => {
       horizontal
       ItemSeparatorComponent={() => <View style={styles.separator} />}
       ListHeaderComponent={() => (
-        <View style={styles.button}>
+        <View>
           {!spam && (
             <CreateMomentButton
               channel={{id: channel.id, options: channel.options}}
+              style={styles.button}
             />
           )}
           {spam && (
-            <DefaultIcon icon="square-plus" size={20} onPress={onSpam} />
+            <DefaultIcon
+              icon="square-plus"
+              size={20}
+              onPress={onSpam}
+              style={styles.button}
+            />
           )}
         </View>
       )}
