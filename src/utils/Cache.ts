@@ -14,8 +14,6 @@ export const loadFromCache = async ({remotePath}: {remotePath: string}) => {
   }
 
   // 3. return local path
-  console.log(localPath, 'localPath');
-
   return `file://${localPath}`;
 };
 
@@ -77,8 +75,6 @@ export const saveCache = async ({remotePath}: {remotePath: string}) => {
 
     return localPath;
   } catch (error) {
-    console.log(error, 'failed to sve');
-
     throw new Error('failed to save cache');
   }
 };

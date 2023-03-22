@@ -30,6 +30,13 @@ export const localizations = {
     create: 'Create',
     join: 'Join',
     cancel: 'Cancel',
+    no: 'No',
+    leave: 'Leave',
+    leaveAlert: {
+      title: 'Really leave this channel?',
+      message: 'Once you leave, all your posts will be deleted!',
+    },
+    leaveError: {title: 'Error', message: 'Failed to leave channel.'},
   },
   ko: {
     needToJoin: {
@@ -63,5 +70,13 @@ export const localizations = {
     create: '만들기',
     join: '참여하기',
     cancel: '취소',
+    no: '아니요',
+    leave: '나가기',
+    leaveAlert: {
+      title: '채널에서 정말 나갈까요?',
+      message: '채널에서 나가면 모든 포스트가 삭제됩니다!',
+      buttons: [{text: '아니요'}, {text: '떠나기'}],
+    },
+    leaveError: {title: '에러', message: '채널 나가기에 실패했습니다.'},
   },
 };

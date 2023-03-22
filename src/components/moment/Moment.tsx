@@ -35,8 +35,6 @@ const Moment = ({
   const [data, setData] = useState<TDocData>();
   const {onUpdate} = useContext(ModalContext);
 
-  console.log(data, 'data');
-
   useEffect(() => {
     const onNext = async (doc: TDocSnapshot) => {
       if (!doc.exists) {

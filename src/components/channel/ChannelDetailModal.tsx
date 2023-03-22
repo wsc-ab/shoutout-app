@@ -123,6 +123,7 @@ const ChannelDetailModal = ({onCancel, channel, onSuccess}: TProps) => {
           id: channel.id,
           detail,
           options: {
+            anonymous: channel.options.anonymous,
             type: channel.options.type,
             mode,
             ghosting: {mode: ghosting},

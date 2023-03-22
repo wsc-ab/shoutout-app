@@ -69,8 +69,6 @@ const UserProfileImage = ({
           style={[styles.icon, imageStyle]}
           size={imageStyle.height / 3}
           onPress={() => {
-            console.log('modal called');
-
             setModal('user');
           }}
         />

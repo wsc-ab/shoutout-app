@@ -50,7 +50,6 @@ const DefaultImage = ({
 
       try {
         const localPath = await loadFromCache({remotePath: image});
-        console.log(localPath, 'localPath');
 
         setImageUrl(localPath);
       } catch (e) {

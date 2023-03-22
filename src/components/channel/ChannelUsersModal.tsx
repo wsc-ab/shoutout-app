@@ -2,6 +2,7 @@ import {IconProp} from '@fortawesome/fontawesome-svg-core';
 import React, {useContext, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
+import LanguageContext from '../../contexts/Language';
 import {addChannelUsers, removeChannelUser} from '../../functions/Channel';
 import {TDocData, TTimestamp} from '../../types/Firebase';
 import SmallUserCard from '../cards/ChannelUserCard';
@@ -9,6 +10,7 @@ import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultForm from '../defaults/DefaultForm';
 import DefaultModal from '../defaults/DefaultModal';
 import DefaultText from '../defaults/DefaultText';
+import {localizations} from './Channel.localizations';
 
 type TProps = {
   channel: TDocData;
@@ -18,6 +20,8 @@ type TProps = {
 const ChannelUsersModal = ({channel, onCancel}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
   const [submitting, setSubmitting] = useState(false);
+  const {language} = useContext(LanguageContext);
+  const localization = localizations[language];
 
   const users = channel.inviteTo?.items as {
     id: string;
@@ -41,19 +45,29 @@ const ChannelUsersModal = ({channel, onCancel}: TProps) => {
       setSubmitting(false);
     }
   };
-  const onLeave = async () => {
-    try {
-      setSubmitting(true);
-      await removeChannelUser({
-        channel: {id: channel.id},
-        user: {id: authUserData.id},
-      });
-      onCancel();
-    } catch (error) {
-      DefaultAlert({title: 'Error', message: 'Failed to leave channel.'});
-    } finally {
-      setSubmitting(false);
-    }
+  const onLeave = () => {
+    const onPress = async () => {
+      try {
+        setSubmitting(true);
+        await removeChannelUser({
+          channel: {id: channel.id},
+          user: {id: authUserData.id},
+        });
+        onCancel();
+      } catch (error) {
+        DefaultAlert(localization.leaveError);
+      } finally {
+        setSubmitting(false);
+      }
+    };
+
+    DefaultAlert({
+      ...localization.leaveAlert,
+      buttons: [
+        {text: localization.no},
+        {text: localization.leave, onPress, style: 'destructive'},
+      ],
+    });
   };
 
   const right =
