@@ -82,8 +82,6 @@ const ChannelMoments = ({channel, style}: TProps) => {
     DefaultAlert(localization.spamAlert(nextTime));
   };
 
-  console.log(channel.options.anonymous, 'channel.options.anonymous');
-
   return (
     <FlatList
       data={channel.moments.items}
