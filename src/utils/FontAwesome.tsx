@@ -26,6 +26,7 @@ import {
   faPlus,
   faSearch,
   faShare,
+  faSquareCaretRight,
   faSquarePlus,
   faTimes,
   faUser,
@@ -69,4 +70,5 @@ library.add(
   faInfoCircle,
   faEdit,
   faCrown,
+  faSquareCaretRight,
 );

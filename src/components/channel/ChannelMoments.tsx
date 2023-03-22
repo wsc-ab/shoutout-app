@@ -7,14 +7,16 @@ import NotificationContext from '../../contexts/Notification';
 import {TDocData} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
 import {groupArrayByUser} from '../../utils/Array';
-import {checkGhosting} from '../../utils/Channel';
+import {checkGhosting, checkSpam} from '../../utils/Channel';
 import {getTimeGap} from '../../utils/Date';
 import {getThumbnailPath} from '../../utils/Storage';
 import DefaultAlert from '../defaults/DefaultAlert';
 import {defaultBlack} from '../defaults/DefaultColors';
+import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultImage from '../defaults/DefaultImage';
 import DefaultText from '../defaults/DefaultText';
 import UserProfileImage from '../images/UserProfileImage';
+import CreateMomentButton from '../moment/CreateMomentButton';
 import {localizations} from './Channel.localizations';
 
 type TProps = {
@@ -48,8 +50,6 @@ const ChannelMoments = ({channel, style}: TProps) => {
 
       groupedMoments.unshift(groupedMoments.splice(userIndex, 1)[0]);
 
-      console.log('called');
-
       onUpdate({
         target: 'channel',
         data: {channel: {...channel, groupedMoments}, moment},
@@ -76,17 +76,36 @@ const ChannelMoments = ({channel, style}: TProps) => {
     }
   }, [channel, notification, onPress, onReset]);
 
+  const {spam, nextTime} = checkSpam({authUser: authUserData, channel});
+
+  const onSpam = () => {
+    DefaultAlert(localization.spamAlert(nextTime));
+  };
+
   return (
     <FlatList
       data={channel.moments.items}
       style={style}
       horizontal
       ItemSeparatorComponent={() => <View style={styles.separator} />}
+      ListHeaderComponent={() => (
+        <View style={styles.button}>
+          {!spam && (
+            <CreateMomentButton
+              channel={{id: channel.id, options: channel.options}}
+            />
+          )}
+          {spam && (
+            <DefaultIcon icon="square-plus" size={20} onPress={onSpam} />
+          )}
+        </View>
+      )}
       renderItem={({item}) => {
         const anonymousIndex =
           channel.inviteTo.items.findIndex(
-            ({id: elId}: {id: string}) => elId === item.user.id,
+            ({id: elId}: {id: string}) => elId === item.createdBy.id,
           ) + 1;
+
         return (
           <View>
             <Pressable
@@ -174,4 +193,11 @@ const styles = StyleSheet.create({
   displayNameText: {fontWeight: 'bold'},
   time: {alignSelf: 'flex-end', marginTop: 5},
   timeText: {fontSize: 14, color: 'gray'},
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+    height: 150,
+    width: 50,
+  },
 });
