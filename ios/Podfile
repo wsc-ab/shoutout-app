@@ -54,6 +54,10 @@ post_install do |installer|
                               # https://stackoverflow.com/questions/48122769/facebook-cocoapods-sharedapplication-is-unavailable-not-available-on-ios-app
                               target.build_configurations.each do |config|
                                 config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'No'
+                                # [START] fix 'value' is unavailable: introduced in iOS 12.0
+                                # https://github.com/facebook/react-native/issues/34106
+                                config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.4'
+                                # [END] fix 'value' is unavailable: introduced in iOS 12.0
                               end
                             # [END] fix build xcode build issue 
                             end
