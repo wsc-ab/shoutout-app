@@ -197,6 +197,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 10,
+    borderRadius: 10,
+    backgroundColor: defaultBlack.lv2(1),
     height: 150,
     width: 50,
   },
