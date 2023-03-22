@@ -124,7 +124,7 @@ const ChannelMoments = ({channel, style}: TProps) => {
                   <DefaultText
                     title={
                       channel.options.anonymous === 'on'
-                        ? 'Anonymous'
+                        ? localization.anonymous
                         : item.createdBy.displayName
                     }
                     numberOfLines={1}

@@ -1,10 +1,12 @@
 import React, {useContext} from 'react';
 import {StyleSheet, View} from 'react-native';
 import AuthUserContext from '../../contexts/AuthUser';
+import LanguageContext from '../../contexts/Language';
 import {deleteMoment, removeComment} from '../../functions/Moment';
 import {TDocData, TTimestamp} from '../../types/Firebase';
 import {getTimeGap} from '../../utils/Date';
 import SubmitIconButton from '../buttons/SubmitIconButton';
+import {localizations} from '../channel/Channel.localizations';
 import DefaultAlert from '../defaults/DefaultAlert';
 import DefaultIcon from '../defaults/DefaultIcon';
 import DefaultText from '../defaults/DefaultText';
@@ -24,6 +26,8 @@ type TProps = {
 
 const Comment = ({moment, channel, anonymous, item, index}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
+  const {language} = useContext(LanguageContext);
+  const localization = localizations[language];
 
   const onRemove = async ({
     detail,
@@ -58,7 +62,8 @@ const Comment = ({moment, channel, anonymous, item, index}: TProps) => {
     });
   };
 
-  const name = anonymous === 'on' ? 'Anonymous' : item.user.displayName;
+  const name =
+    anonymous === 'on' ? localization.anonymous : item.user.displayName;
 
   return (
     <View style={styles.container} key={item.detail + index}>
