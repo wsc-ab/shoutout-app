@@ -36,8 +36,6 @@ const Footer = ({
 
   const {height} = useWindowDimensions();
 
-  const createdByUser = channel.createdBy.id === moment.createdBy.id;
-
   const renderItem = ({
     item,
     index: elIndex,
@@ -58,7 +56,7 @@ const Footer = ({
         index={elIndex}
         moment={moment}
         anonymous={channel.options.anonymous}
-        createdByUser={createdByUser}
+        channel={channel}
       />
     );
   };

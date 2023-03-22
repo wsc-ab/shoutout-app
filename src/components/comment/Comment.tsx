@@ -12,7 +12,7 @@ import UserProfileImage from '../images/UserProfileImage';
 
 type TProps = {
   moment: TDocData;
-  createdByUser: boolean;
+  channel: TDocData;
   anonymous: 'off' | 'on';
   item: {
     addedAt: TTimestamp;
@@ -22,7 +22,7 @@ type TProps = {
   index: number;
 };
 
-const Comment = ({moment, createdByUser, anonymous, item, index}: TProps) => {
+const Comment = ({moment, channel, anonymous, item, index}: TProps) => {
   const {authUserData} = useContext(AuthUserContext);
 
   const onRemove = async ({
@@ -72,7 +72,7 @@ const Comment = ({moment, createdByUser, anonymous, item, index}: TProps) => {
 
       <View style={styles.texts}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          {createdByUser && (
+          {channel.createdBy.id === item.user.id && (
             <DefaultIcon icon="crown" style={{marginRight: 5}} />
           )}
           <DefaultText title={name} textStyle={styles.displayNameText} />
