@@ -29,6 +29,11 @@ const Comment = ({moment, channel, anonymous, item, index}: TProps) => {
   const {language} = useContext(LanguageContext);
   const localization = localizations[language];
 
+  const anonymousIndex =
+    channel.inviteTo.items.findIndex(
+      ({id: elId}: {id: string}) => elId === item.user.id,
+    ) + 1;
+
   const onRemove = async ({
     detail,
     addedAt,
@@ -63,7 +68,9 @@ const Comment = ({moment, channel, anonymous, item, index}: TProps) => {
   };
 
   const name =
-    anonymous === 'on' ? localization.anonymous : item.user.displayName;
+    anonymous === 'on'
+      ? localization.anonymous + anonymousIndex
+      : item.user.displayName;
 
   return (
     <View style={styles.container} key={item.detail + index}>

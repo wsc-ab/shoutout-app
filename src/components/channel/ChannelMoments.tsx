@@ -83,6 +83,10 @@ const ChannelMoments = ({channel, style}: TProps) => {
       horizontal
       ItemSeparatorComponent={() => <View style={styles.separator} />}
       renderItem={({item}) => {
+        const anonymousIndex =
+          channel.inviteTo.items.findIndex(
+            ({id: elId}: {id: string}) => elId === item.user.id,
+          ) + 1;
         return (
           <View>
             <Pressable
@@ -124,7 +128,7 @@ const ChannelMoments = ({channel, style}: TProps) => {
                   <DefaultText
                     title={
                       channel.options.anonymous === 'on'
-                        ? localization.anonymous
+                        ? localization.anonymous + anonymousIndex
                         : item.createdBy.displayName
                     }
                     numberOfLines={1}
