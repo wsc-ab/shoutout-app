@@ -120,8 +120,10 @@ const ChannelMoments = ({channel, style}: TProps) => {
               }}>
               <DefaultImage
                 image={getThumbnailPath(item.content.path, item.content.media)}
+                blurRadius={ghosting ? 5 : undefined}
                 imageStyle={styles.image}
               />
+
               <Pressable
                 style={styles.user}
                 onPress={

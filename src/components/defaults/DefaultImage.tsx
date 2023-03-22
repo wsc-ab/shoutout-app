@@ -18,6 +18,7 @@ export type Props = {
   type?: string;
   style?: TStyleView;
   imageStyle: {height: number; width: number};
+  blurRadius?: number;
   onLoaded?: () => void;
   onPress?: () => void;
 };
@@ -28,6 +29,7 @@ const DefaultImage = ({
   style,
   imageStyle,
   onLoaded,
+  blurRadius,
   onPress,
 }: Props) => {
   const [imageUrl, setImageUrl] = useState<string>();
@@ -82,7 +84,7 @@ const DefaultImage = ({
           resizeMode="cover"
           onLoadEnd={onLoaded}
           onError={() => setStatus('error')}
-          blurRadius={isReported ? 20 : undefined}
+          blurRadius={blurRadius ? blurRadius : isReported ? 20 : undefined}
         />
       )}
       {status === 'loaded' && !image && (
