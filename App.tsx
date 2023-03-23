@@ -8,8 +8,10 @@
  * @format
  */
 
+import 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
-import {StatusBar, StyleSheet, View} from 'react-native';
+import {StatusBar, StyleSheet} from 'react-native';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import Home from './src/components/screen/Home';
 import {AuthUserProvider} from './src/contexts/AuthUser';
 import {CacheProvider} from './src/contexts/Cache';
@@ -48,7 +50,7 @@ const App = ({bundleId}: TProps) => {
   }, [bundleId, status, useEmulator]);
 
   return (
-    <View style={styles.container}>
+    <GestureHandlerRootView style={styles.container}>
       <StatusBar barStyle="light-content" />
       <CacheProvider>
         <LanguageProvider>
@@ -67,7 +69,7 @@ const App = ({bundleId}: TProps) => {
           </ServerProvider>
         </LanguageProvider>
       </CacheProvider>
-    </View>
+    </GestureHandlerRootView>
   );
 };
 

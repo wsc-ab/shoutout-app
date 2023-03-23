@@ -1,11 +1,11 @@
 import React, {useRef, useState} from 'react';
 import {
-  FlatList,
   StyleSheet,
   useWindowDimensions,
   View,
   ViewabilityConfigCallbackPairs,
   ViewToken,
+  FlatList,
 } from 'react-native';
 
 import {TDocData, TTimestamp} from '../../types/Firebase';
@@ -23,6 +23,7 @@ type TProps = {
   mount: boolean;
   inView: boolean;
   style?: TStyleView;
+  setEnableScrollView: () => void;
 };
 
 const Moments = ({
@@ -32,6 +33,8 @@ const Moments = ({
   mount,
   channel,
   inView,
+  enableScrollView,
+  setEnableScrollView,
 }: TProps) => {
   const {width} = useWindowDimensions();
 
@@ -93,6 +96,7 @@ const Moments = ({
     <View style={style}>
       <FlatList
         ref={ref}
+        nestedScrollEnabled
         data={moments}
         initialNumToRender={1}
         windowSize={3}

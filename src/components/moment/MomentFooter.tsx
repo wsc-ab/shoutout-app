@@ -1,20 +1,20 @@
-import React, {useRef, useState} from 'react';
+import React from 'react';
 import {
-  Animated,
   KeyboardAvoidingView,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
+  Platform,
+  FlatList,
   StyleSheet,
   useWindowDimensions,
   View,
 } from 'react-native';
+
 import {TDocData, TTimestamp} from '../../types/Firebase';
 import {TStyleView} from '../../types/Style';
 import CommentButton from '../buttons/CommentButton';
 import LikeButton from '../buttons/LikeButton';
 import Comment from '../comment/Comment';
 import CommentHeader from '../comment/CommentHeader';
-
+import {defaultBlack} from '../defaults/DefaultColors';
 type TProps = {
   moment: TDocData;
   channel: TDocData;
@@ -32,10 +32,7 @@ const Footer = ({
   index,
   style,
 }: TProps) => {
-  const fadeAnim = useRef(new Animated.Value(150)).current;
-
   const {height} = useWindowDimensions();
-
   const renderItem = ({
     item,
     index: elIndex,
@@ -61,52 +58,13 @@ const Footer = ({
     );
   };
 
-  const expandList = () => {
-    // Will change fadeAnim value to 1 in 5 seconds
-    Animated.spring(fadeAnim, {
-      toValue: height / 1.2,
-      useNativeDriver: false,
-    }).start();
-  };
-
-  const short = () => {
-    // Will change fadeAnim value to 1 in 5 seconds
-    Animated.spring(fadeAnim, {
-      toValue: 150,
-      useNativeDriver: false,
-    }).start();
-  };
-
-  const [offset, setOffset] = useState(0);
-
-  const onScrollBeginDrag = (
-    event: NativeSyntheticEvent<NativeScrollEvent>,
-  ) => {
-    const offsetY = event.nativeEvent.contentOffset.y;
-    const topReached = offsetY <= 0;
-
-    setOffset(offsetY);
-    const direction = offsetY < offset ? 'down' : 'up';
-
-    if (topReached && direction === 'up') {
-      expandList();
-    }
-  };
-
-  const onScrollEndDrag = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const offsetY = event.nativeEvent.contentOffset.y;
-    const topReached = offsetY <= 0;
-
-    setOffset(offsetY);
-    const direction = offsetY < offset ? 'down' : 'up';
-    if (topReached && direction === 'down') {
-      short();
-    }
-  };
-
   return (
-    <KeyboardAvoidingView style={[styles.container, style]} behavior="padding">
-      <Animated.FlatList
+    <KeyboardAvoidingView
+      style={[styles.container, {height: height / 3}, style]}
+      enabled={Platform.OS === 'ios'}
+      behavior={'position'}>
+      <FlatList
+        nestedScrollEnabled
         data={[
           {
             detail: moment.name,
@@ -115,10 +73,7 @@ const Footer = ({
           },
           ...(moment?.comments ?? []),
         ]}
-        style={{height: fadeAnim}}
         renderItem={renderItem}
-        onScrollBeginDrag={onScrollBeginDrag}
-        onScrollEndDrag={onScrollEndDrag}
         ListHeaderComponent={() => (
           <CommentHeader
             moment={moment}
@@ -127,8 +82,21 @@ const Footer = ({
             firstUploadDate={firstUploadDate}
           />
         )}
+        contentContainerStyle={{
+          paddingBottom: 100,
+        }}
       />
-      <View style={styles.buttons}>
+      <View
+        style={{
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: defaultBlack.lv2(1),
+          paddingTop: 10,
+          paddingBottom: 40,
+          flexDirection: 'row',
+        }}>
         <LikeButton moment={moment} style={styles.like} />
         <CommentButton moment={moment} style={styles.comment} />
       </View>
@@ -144,10 +112,10 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    zIndex: 1000,
+    borderWidth: 1,
+    flex: 1,
+    borderColor: 'white',
   },
-  buttons: {flexDirection: 'row', paddingBottom: 24},
   like: {
     height: 40,
     width: 50,

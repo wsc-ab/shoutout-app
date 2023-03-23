@@ -8,6 +8,7 @@ import {
   ViewabilityConfigCallbackPairs,
   ViewToken,
 } from 'react-native';
+
 import ModalContext from '../../contexts/Modal';
 import {TDocData, TTimestamp} from '../../types/Firebase';
 import DefaultIcon from '../defaults/DefaultIcon';
@@ -23,7 +24,6 @@ const ChannelModal = ({channel, moment}: TProps) => {
   const {onUpdate} = useContext(ModalContext);
   const {height, width} = useWindowDimensions();
   const [index, setIndex] = useState(0);
-
   const onViewableItemsChanged = ({
     viewableItems,
   }: {
@@ -96,8 +96,11 @@ const ChannelModal = ({channel, moment}: TProps) => {
           }}
         />
       </SafeAreaView>
+
       <FlatList
-        data={channel.groupedMoments}
+        removeClippedSubviews={false}
+        nestedScrollEnabled
+        data={[...channel.groupedMoments, ...channel.groupedMoments]}
         initialNumToRender={1}
         windowSize={3}
         maxToRenderPerBatch={1}

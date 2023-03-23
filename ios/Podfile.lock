@@ -1127,6 +1127,8 @@ PODS:
     - RNFBApp
   - RNFS (2.20.0):
     - React-Core
+  - RNGestureHandler (2.9.0):
+    - React-Core
   - RNNotifee (7.5.0):
     - React-Core
     - RNNotifee/NotifeeCore (= 7.5.0)
@@ -1186,6 +1188,7 @@ DEPENDENCIES:
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - "RNFBStorage (from `../node_modules/@react-native-firebase/storage`)"
   - RNFS (from `../node_modules/react-native-fs`)
+  - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNNotifee (from `../node_modules/@notifee/react-native`)"
   - RNSVG (from `../node_modules/react-native-svg`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -1317,6 +1320,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/storage"
   RNFS:
     :path: "../node_modules/react-native-fs"
+  RNGestureHandler:
+    :path: "../node_modules/react-native-gesture-handler"
   RNNotifee:
     :path: "../node_modules/@notifee/react-native"
   RNSVG:
@@ -1402,10 +1407,11 @@ SPEC CHECKSUMS:
   RNFBMessaging: c983bb0a37a7a2570236ea6de7ca4442944a43af
   RNFBStorage: d0494ec4981c39f12e72719499a7717dfefd86eb
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
+  RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNNotifee: 053c0ace9c73634709a0214fd9c436a5777a562f
   RNSVG: c1e76b81c76cdcd34b4e1188852892dc280eb902
   Yoga: 99caf8d5ab45e9d637ee6e0174ec16fbbb01bcfc
 
-PODFILE CHECKSUM: 48cdf47b9c4b98d57af943a77da26bc436045c2d
+PODFILE CHECKSUM: 2e07268df861dafe72f1fc08db862e074c65b8ad
 
 COCOAPODS: 1.11.3
