@@ -1,8 +1,8 @@
 import React from 'react';
 import {
+  FlatList,
   KeyboardAvoidingView,
   Platform,
-  FlatList,
   StyleSheet,
   useWindowDimensions,
   View,
@@ -112,9 +112,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    borderWidth: 1,
     flex: 1,
-    borderColor: 'white',
   },
   like: {
     height: 40,
