@@ -100,7 +100,7 @@ const ChannelModal = ({channel, moment}: TProps) => {
       <FlatList
         removeClippedSubviews={false}
         nestedScrollEnabled
-        data={[...channel.groupedMoments, ...channel.groupedMoments]}
+        data={channel.groupedMoments}
         initialNumToRender={1}
         windowSize={3}
         maxToRenderPerBatch={1}
